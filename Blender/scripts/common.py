@@ -467,6 +467,56 @@ def col_objects(col):
 ROT_EXPORT = Matrix.Rotation(math.pi, 3, "Z")
 
 
+def _clean_meshes(objs):
+    """Swap each mesh for a cleaned copy of its evaluated mesh (modifiers applied, duplicate verts merged,
+    zero-area faces removed). Zero-area faces have no normal and Unity warns "invalid normals" on import.
+    Returns [(obj, original_data)] for restoring."""
+    dg = bpy.context.evaluated_depsgraph_get()
+    swapped = []
+    for o in objs:
+        if o.type != "MESH":
+            continue
+        ev = o.evaluated_get(dg)
+        bm = bmesh.new()
+        bm.from_mesh(ev.to_mesh())
+        ev.to_mesh_clear()
+        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-6)
+        bmesh.ops.dissolve_degenerate(bm, edges=bm.edges, dist=1e-6)
+        # triangulate here (not in Unity) so concave or non-planar n-gons can't turn into zero-area triangles
+        bmesh.ops.triangulate(bm, faces=bm.faces, quad_method="BEAUTY", ngon_method="BEAUTY")
+        bad = [f for f in bm.faces if f.calc_area() < 1e-10]
+        if bad:
+            bmesh.ops.delete(bm, geom=bad, context="FACES_ONLY")
+        loose = [v for v in bm.verts if not v.link_faces]
+        if loose:
+            bmesh.ops.delete(bm, geom=loose, context="VERTS")
+        me = bpy.data.meshes.new(o.data.name + "__export")  # renamed back below so the FBX keeps the mesh name
+        bm.to_mesh(me)
+        bm.free()
+        if not me.materials:
+            for m in o.data.materials:
+                me.materials.append(m)
+        swapped.append((o, o.data, [md.show_viewport for md in o.modifiers]))
+        name = o.data.name
+        o.data.name = name + "__orig"
+        me.name = name
+        o.data = me
+        for md in o.modifiers:
+            md.show_viewport = False
+    return swapped
+
+
+def _restore_meshes(swapped):
+    for o, data, vis in reversed(swapped):  # reversed: undoes the renames of shared meshes in order
+        tmp = o.data
+        name = tmp.name
+        o.data = data
+        bpy.data.meshes.remove(tmp)
+        data.name = name
+        for md, v in zip(o.modifiers, vis):
+            md.show_viewport = v
+
+
 def export_collection(col, path, aliases=()):
     """Export one collection to FBX (Unity orientation, see module doc) and copy to alias paths."""
     ensure_dir(os.path.dirname(path))
@@ -484,6 +534,7 @@ def export_collection(col, path, aliases=()):
             renamed.insert(0, (o, old))
     transform_objects(objs, ROT_EXPORT)
     set_color_mode("srgb")
+    swapped = _clean_meshes(objs)
     try:
         lc = _find_layer_collection(bpy.context.view_layer.layer_collection, col.name)
         bpy.context.view_layer.active_layer_collection = lc
@@ -494,6 +545,7 @@ def export_collection(col, path, aliases=()):
             mesh_smooth_type="FACE", add_leaf_bones=False, bake_anim=False, use_custom_props=False,
             path_mode="AUTO", embed_textures=False, use_tspace=False)
     finally:
+        _restore_meshes(swapped)
         set_color_mode("linear")
         transform_objects(objs, ROT_EXPORT.inverted())
         for o, name in renamed:

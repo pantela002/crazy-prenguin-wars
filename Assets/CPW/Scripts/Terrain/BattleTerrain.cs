@@ -401,7 +401,7 @@ namespace CPW
 
         void WakeBodies(Vector2 center, float radius)
         {
-            int n = Physics2D.OverlapCircleNonAlloc(center, radius, wakeBuffer);
+            int n = Physics2D.OverlapCircle(center, radius, Phys.AllFilter, wakeBuffer);
             for (int k = 0; k < n; k++)
             {
                 var rb = wakeBuffer[k] != null ? wakeBuffer[k].attachedRigidbody : null;

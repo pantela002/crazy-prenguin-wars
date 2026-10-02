@@ -53,6 +53,21 @@ namespace CPW
 #endif
         }
 
+        /// <summary>
+        /// Filter matching the old *NonAlloc queries (all layers, triggers per Physics2D.queriesHitTriggers).
+        /// Use with the ContactFilter2D overloads of Raycast/CircleCast/OverlapCircle.
+        /// </summary>
+        public static ContactFilter2D AllFilter
+        {
+            get
+            {
+                var f = new ContactFilter2D();
+                f.useTriggers = Physics2D.queriesHitTriggers;
+                f.SetLayerMask(Physics2D.DefaultRaycastLayers);
+                return f;
+            }
+        }
+
         public static float GetDrag(this Rigidbody2D rb)
         {
 #if UNITY_6000_0_OR_NEWER

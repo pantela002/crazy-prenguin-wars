@@ -197,7 +197,7 @@ namespace CPW
             var d = b - a;
             float len = d.magnitude;
             if (len < 1e-5f) return false;
-            int n = Physics2D.CircleCastNonAlloc(a, radius, d / len, hits, len);
+            int n = Physics2D.CircleCast(a, radius, d / len, Phys.AllFilter, hits, len);
             float best = float.MaxValue;
             bool found = false;
             for (int i = 0; i < n; i++)

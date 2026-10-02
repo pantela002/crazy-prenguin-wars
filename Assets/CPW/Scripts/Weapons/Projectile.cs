@@ -183,8 +183,8 @@ namespace CPW
             var delta = to - from;
             float len = delta.magnitude;
             int n = len > 1e-4f
-                ? Physics2D.CircleCastNonAlloc(from, col.radius, delta / len, castBuf, len)
-                : Physics2D.CircleCastNonAlloc(from, col.radius, Vector2.right, castBuf, 0f);
+                ? Physics2D.CircleCast(from, col.radius, delta / len, Phys.AllFilter, castBuf, len)
+                : Physics2D.CircleCast(from, col.radius, Vector2.right, Phys.AllFilter, castBuf, 0f);
             for (int i = 0; i < n; i++)
             {
                 var h = castBuf[i];
@@ -266,7 +266,7 @@ namespace CPW
             Color beam = Def.Tail.Contains("Railgun") ? new Color(0.4f, 0.8f, 1f) : new Color(1f, 0.95f, 0.7f);
             Fx.Beam(origin, end, beam, Def.Tail.Contains("Railgun") ? 0.25f : 0.07f, Def.Tail.Contains("Railgun") ? 0.4f : 0.12f);
             if (len < 1e-3f) return;
-            int n = Physics2D.RaycastNonAlloc(end, path / len, castBuf, len);
+            int n = Physics2D.Raycast(end, path / len, Phys.AllFilter, castBuf, len);
             int limit = Def.RayHits < 0 ? n : Mathf.Min(n, Def.RayHits);
             var seen = new HashSet<Object>();
             for (int i = 0, used = 0; i < n && used < limit; i++)
