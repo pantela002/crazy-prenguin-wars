@@ -285,7 +285,20 @@ BOOSTERS = {
     "ProteinBar": protein_bar,
     "Mushroom": lambda n: S.mushroom(n),
     "Confetti": confetti,
+    "SpringMine": lambda n: S.spring_mine(n),
+    "Innertube": lambda n: innertube(n),
 }
+
+
+def innertube(n):
+    """Swim ring: a red/white striped inflatable torus with a valve."""
+    ring = C.torus(n + "_t", (0, 0, 0), 0.36, 0.15, M("red"), 32, 10, axis=(0, 1, 0))
+    ring.data.materials.append(M("white"))
+    for p in ring.data.polygons:
+        c = p.center
+        a = math.atan2(c.z, c.x) % (2 * math.pi)
+        p.material_index = int(a / (math.pi / 4)) % 2
+    return [ring, C.cyl(n + "_v", (0.0, -0.1, 0.48), (0.0, -0.1, 0.56), 0.03, 0.025, M("grey"), 8)]
 
 
 def _caltrops(n):

@@ -58,7 +58,8 @@ namespace CPW
             cref = lvl.size * 0.5f;
             TerrainStyle.SkyColors(look, out skyTop, out skyBottom);
             silhouette = TerrainStyle.SilhouetteColor(look);
-            gradient = Resources.Load<Texture2D>("Textures/Sky/" + bgTheme + "_Gradient");
+            // an ice cave is dark inside: it keeps its own procedural sky instead of the open-air gradient
+            gradient = look == "IceCave" ? null : Resources.Load<Texture2D>("Textures/Sky/" + bgTheme + "_Gradient");
             if (gradient != null) gradient.wrapMode = TextureWrapMode.Clamp;
             FindEnvModels();
             BuildSky();
@@ -195,7 +196,7 @@ namespace CPW
             if (gradient != null)
             {
                 // original gradient texture; styles tint it (a redder, darker volcano sky, a dim ice cave)
-                var tint = look == "Volcano" ? new Color(1f, 0.82f, 0.76f) : look == "IceCave" ? new Color(0.5f, 0.64f, 0.8f) : Color.white;
+                var tint = look == "Volcano" ? new Color(1f, 0.82f, 0.76f) : Color.white;
                 for (int i = 0; i < cs.Length; i++) cs[i] = tint;
             }
             var verts = new Vector3[ys.Length * 2];
@@ -229,7 +230,7 @@ namespace CPW
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             mr.receiveShadows = false;
             // the original backgrounds have their light painted in; only the volcano gets an extra glow
-            if (gradient == null || look == "Volcano") BuildSunGlow();
+            if ((gradient == null && look != "IceCave") || look == "Volcano") BuildSunGlow();
         }
 
         Color HorizonGlow()

@@ -69,6 +69,8 @@ SHAPES = {
     "water": lambda n: S.blob(n, "sky", 0.13, 5, 3),
     "balloon": lambda n: S.balloon(n, "blue"),
     "mine": lambda n: S.mine(n, "red"),
+    "spring_mine": lambda n: S.spring_mine(n),
+    "orbital_beam": lambda n: S.orbital_beam(n),
     "flame_mine": lambda n: S.mine(n, "fire", "orange_dark"),
     "rock": lambda n: S.rock(n, 0.25, 1),
     "snowball": lambda n: S.snowball(n),
@@ -124,7 +126,7 @@ MAP = {
     "Fireworks": "rocket_firework", "Caltrops": "caltrops",
 }
 # missiles without a MissileGraphic record (restored original weapons)
-EXTRA = {"ChocoCannon": "choco_ball"}
+EXTRA = {"ChocoCannon": "choco_ball", "SpringMine": "spring_mine", "OrbitalLaser": "orbital_beam"}
 MAP.update(EXTRA)
 
 

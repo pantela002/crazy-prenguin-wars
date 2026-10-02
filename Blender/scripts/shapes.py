@@ -159,6 +159,29 @@ def mine(n, light="red", body="gun"):
             C.torus(n + "_r", (0, 0, 0.03), 0.3, 0.025, M("yellow"), 18, 4)]
 
 
+def spring_mine(n):
+    """Spring mine: a blue mine with a coiled spring and a bounce pad on top."""
+    import math as _m
+    o = [C.cyl(n + "_b", (0, 0, 0), (0, 0, 0.1), 0.3, 0.26, M("blue"), 18),
+         C.torus(n + "_r", (0, 0, 0.03), 0.3, 0.025, M("yellow"), 18, 4),
+         C.cyl(n + "_base", (0, 0, 0.1), (0, 0, 0.13), 0.13, 0.12, M("grey"), 14)]
+    for i in range(4):
+        o.append(C.torus(n + "_c%d" % i, (0, 0, 0.15 + i * 0.045), 0.1 - 0.008 * (i % 2), 0.016, M("silver"), 14, 4))
+    o.append(C.cyl(n + "_pad", (0, 0, 0.32), (0, 0, 0.36), 0.15, 0.15, M("red"), 16))
+    o.append(C.sphere(n + "_l", (0.19, -0.1, 0.1), 0.045, G("lime"), 8, 5))
+    return o
+
+
+def orbital_beam(n, length=1.3, r=0.13):
+    """Orbital laser strike: a long glowing beam segment along x with a white core and energy rings."""
+    o = [C.sphere(n + "_b", (0, 0, 0), (length / 2, r, r), G("cyan"), 14, 6),
+         C.sphere(n + "_c", (length * 0.04, 0, 0), (length * 0.42, r * 0.5, r * 0.5), G("white"), 12, 5)]
+    for i, x in enumerate((-0.32, 0.0, 0.32)):
+        o.append(C.torus(n + "_g%d" % i, (x * length, 0, 0), r * (1.25 - 0.15 * abs(i - 1)), r * 0.12, G("sky"), 14, 3,
+                         axis=(1, 0, 0)))
+    return o
+
+
 def rock(n, r=0.22, seed=1, mat="stone"):
     return [C.ico(n + "_r", (0, 0, 0), r, M(mat), subdiv=1, seed=seed, jitter=0.2, scale=(1.1, 0.95, 0.9))]
 

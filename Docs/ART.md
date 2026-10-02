@@ -12,7 +12,15 @@ saved to `Blender/blend/` (one file per category, one collection per asset). Thi
   exporting; in Unity +X is right, +Y up and -Z faces the camera. `build_all.py verify` re-imports the penguin and checks it.
 - Flat colors only: one material per color, color in the Principled base color (exported as sRGB values so
   `Mats.ApplyToon` reproduces them). Team color: the penguin's `Scarf` uses a white material named `Team` (tint it).
-- Poly budget: penguin about 4k triangles, clothes/weapons/props under 1.5k.
+- Poly budget: penguin about 5.5k triangles, clothes/weapons/props under 1.5k.
+- Export-time data for the toon shader (`common._bake_vertex_data`): vertex color `Col` = baked ambient occlusion
+  (hemisphere rays against the whole asset, contact shadows between parts) times a soft top-down gradient; UV0 = Unity
+  object-space x/y (planar, used by `_DetailTex` and by the original sprites on props); UV1.xy/UV2.x = smoothed normal for
+  the outline hull (UV2.y = 1 marks it). Materials named `Glow_*` (fire, plasma, lasers, lava) render flat, bright and
+  without outline.
+- Shaders: `CPW/Toon` (two-tone ramp, AO, rim, toon specular, detail texture) and `CPW/ToonOutline` (the same pass plus an
+  inverted-hull ink outline, width clamped in world and screen space). `Mats.ApplyToon` picks a detail texture
+  (`Textures/Detail/{wood,stone,metal,ice,fabric}.png`) from the Blender material name.
 
 ## Penguin (`Models/Penguin/Penguin.fbx`)
 About 2.6 units tall, feet at the origin, beak towards +X, belly towards -Z (turned 40 degrees from facing the camera).
@@ -49,7 +57,7 @@ RedHat, RedSweater, Skates, army_boots_blue, army_boots_red, army_helmet_blue, a
 Grip at the origin, barrel along +X, child empty `Muzzle` at the tip. Thrown items are held slightly above the origin.
 Icons: `Icons/Weapons/{WeaponIcon id}.png`.
 
-ArmorPiercingRocket, ArtilleryStrike, BasicNuke, Beanbag, Broom, Cannon, Cat, CinderGrenade, ClusterGrenade, ClusterRocket, DoomsdayDevice, Drill, Dynamite, EasterEgg, FireHose, Fireworks, FlameMine, Flamethrower, FlareGun, FragmentationMissile, FuelAirBomb, GasGrenade, Grenade, GrenadeLauncher, ImpactCannon, LaserPistol, LemonGrenade, MegaNuke, Mine, MiniBazooka, Minigun, MiningLaser, Molotov, Mortar, Napalm, OrbitalLaser, Pistol, PlasmaBomb, PlasmaCannon, PlasmaMortar, PointTeleport, Punch, Railgun, Rock, Scythe, ShieldWall, Shotgun, SniperRifle, Snowball, StickyBomb, TeleportationGrenade, VoidGenerator, WandWind, WaterBalloon
+ArmorPiercingRocket, ArtilleryStrike, BasicNuke, Beanbag, Broom, Cannon, Cat, ChocoCannon, CinderGrenade, ClusterGrenade, ClusterRocket, DoomsdayDevice, Drill, Dynamite, EasterEgg, FireHose, Fireworks, FlameMine, Flamethrower, FlareGun, FragmentationMissile, FuelAirBomb, GasGrenade, Grenade, GrenadeLauncher, GreyGoo, HeatSeeker, ImpactCannon, LaserPistol, LemonGrenade, MegaNuke, Mine, MiniBazooka, Minigun, MiningLaser, Molotov, Mortar, Napalm, OrbitalLaser, Pistol, PlasmaBomb, PlasmaCannon, PlasmaMortar, PointTeleport, Punch, Railgun, Rock, Scythe, ShieldWall, Shotgun, SniperRifle, Snowball, StickyBomb, TeleportationGrenade, VoidGenerator, WandWind, WaterBalloon
 
 ## Missiles (`Models/Missiles/{MissileGraphic id}.fbx`)
 Centered, nose towards +X. Variants share a mesh (the same FBX copied under each id):
@@ -63,6 +71,7 @@ Centered, nose towards +X. Variants share a mesh (the same FBX copied under each
 - caltrops: Caltrops
 - cannonball: Cannon
 - cat: Cat
+- choco_ball: ChocoCannon
 - cinder: CinderGrenade1
 - cinder2: CinderGrenade2
 - doomsday: DoomsdayDevice
@@ -102,6 +111,7 @@ Centered, nose towards +X. Variants share a mesh (the same FBX copied under each
 - napalm: Napalm
 - nuke: BasicNuke
 - nuke_mega: MegaNuke
+- orbital_beam: OrbitalLaser
 - pellet: Shotgun
 - plasma_big: PlasmaCannon, PlasmaMortar
 - plasma_bomb: PlasmaBomb
@@ -125,6 +135,7 @@ Centered, nose towards +X. Variants share a mesh (the same FBX copied under each
 - shard_stone: DoomsdayDeviceShard, DrillShard
 - shield_wall: ShieldWall
 - snowball: Snowball
+- spring_mine: SpringMine
 - sticky: StickyBomb
 - sticky_blob: StickyBombBlob, StickyBombShard
 - void: VoidGenerator
@@ -168,10 +179,15 @@ to the far layer; the rest to the near layer).
 - Desert_Palm1
 - Desert_Rock1
 - Desert_Sun1
+- Forest_Mushroom1
+- Forest_Stump1
+- Winter_Igloo1
+- Desert_Pyramid1
+- Mountain_Volcano1
 
 ## Icons (`Icons/...`, 256x256 PNG, transparent, outline + drop shadow)
-- **Weapons** (51): ArmorPiercingRocket, ArtilleryStrike, BasicNuke, Beanbag, Broom, Cannon, Cat, CinderGrenade, ClusterGrenade, ClusterRocket, DoomsdayDevice, Drill, Dynamite, EasterEgg, FireHose, Fireworks, Flamethrower, FlareGun, FragmentationMissile, FuelAirBomb, GasGrenade, Grenade, GrenadeLauncher, ImpactCannon, LaserPistol, LemonGrenade, MegaNuke, MiniBazooka, Minigun, MiningLaser, Molotov, Mortar, Napalm, OrbitalLaser, Pistol, PlasmaBomb, PlasmaCannon, PlasmaMortar, PointTeleport, Punch, Railgun, Rock, Scythe, Shotgun, SniperRifle, Snowball, StickyBomb, TeleportationGrenade, VoidGenerator, WandWind, WaterBalloon
-- **Boosters** (16): Bandage, Burrito, Caltrops, Confetti, FlameMine, Kamikaze, Mine, Mushroom, PogoStick, ProteinBar, SalmonSushi, Scroll, Shield, SpicySushi, Umbrella, WasabiSushi
+- **Weapons** (55): ArmorPiercingRocket, ArtilleryStrike, BasicNuke, Beanbag, Broom, Cannon, Cat, ChocoCannon, CinderGrenade, ClusterGrenade, ClusterRocket, DoomsdayDevice, Drill, Dynamite, EasterEgg, FireHose, Fireworks, Flamethrower, FlareGun, FragmentationMissile, FuelAirBomb, GasGrenade, Grenade, GrenadeLauncher, GreyGoo, HeatSeeker, ImpactCannon, LaserPistol, LemonGrenade, MegaNuke, MiniBazooka, Minigun, MiningLaser, Molotov, Mortar, Napalm, OrbitalLaser, Pistol, PlasmaBomb, PlasmaCannon, PlasmaMortar, PointTeleport, Punch, Railgun, Rock, Scythe, ShieldWall, Shotgun, SniperRifle, Snowball, StickyBomb, TeleportationGrenade, VoidGenerator, WandWind, WaterBalloon
+- **Boosters** (18): Bandage, Burrito, Caltrops, Confetti, FlameMine, Innertube, Kamikaze, Mine, Mushroom, PogoStick, ProteinBar, SalmonSushi, Scroll, Shield, SpicySushi, SpringMine, Umbrella, WasabiSushi
 - **Clothes** (72): RedHat, RedSweater, Skates, army_boots_blue, army_boots_red, army_helmet_blue, army_helmet_red, army_jacket_blue, army_jacket_red, bunny_chest, bunny_feet, bunny_head, ...
 - **Trophies** (32): BandaidBadge, CreativityMedal, EagleEyeBadge, EfficiencyTrophy, EliteTrophy, ExplosivesExpertMedal, FlameBadge, GrenadierMedal, IndomitableMedal, InsanityMedal, MarineCertificate, MarkofAssassin, MedalofPain, MedalofVeteran, OverkillTrophy, PilotsLicense, Pinofcrafting, PurpleHeart, RibbonofExpertise, SharpshooterTrophy, SnackTrophy, TelekinesisMedal, TerraformerCertificate, ThreadsofFateMedal, TrapMasterTrophy, TrophyofPerseverance, TrophyofVeteran, TrophyofWar, TrophyofWealth, TrophyoftheMaster, UnderdogBadge, WeaponsExpertMedal
 - **Emoticons** (16): EmoticonAngry, EmoticonCrying, EmoticonDizzy, EmoticonFacepalm, EmoticonLaugh, EmoticonNice, EmoticonOuch, EmoticonPhew, EmoticonScream, EmoticonSrsly, EmoticonTaunt, EmoticonTrollface, EmoticonWaiting, EmoticonWoot, EmoticonWow, EmoticonWtf
@@ -183,11 +199,29 @@ to the far layer; the rest to the near layer).
 - `Ui/app_icon.png` is 1024x1024 and opaque. Achievements are 192x192 (group emblem + tier color).
 
 ## Textures
-- `Textures/Terrain/{id}.png`: seamless 256x256 tiles: CustomObjects, Desert, Forest, Ice, Lava, Metal, Mountain, Mud, OilRig, Stone, Winter, Wood
-- `Textures/Sky/{theme}.png`: 4x256 vertical gradients (top row = top of the sky): Desert, Forest, Mountain, OilRig, Winter
+The textures step (`textures.py`) writes procedural textures, then `original_art.py` imports the original Flash game's
+own 2D art from the map editor's exports (cpw-mapeditor/assets; set `CPW_ORIGINAL_ART` to point elsewhere) over them.
+Everything is resized to power-of-two sizes there; `Textures/original_art.txt` keeps the original pixel sizes
+(20 px = 1 unit) and extra fields (terrain mean color; water surface row and bottom color).
+- `Textures/Terrain/{id}.png`: terrain fill. Original `landmass_bg_tile` for Wood/Forest, Stone/Mountain, Ice/Winter,
+  Desert (tiled at the original 20 px per unit); procedural for the rest: CustomObjects, Desert, Desert_Cap, Forest, Forest_Cap, Ice, Ice_Cap, Lava, Metal, Mountain, Mountain_Cap, Mud, OilRig, Stone, Stone_Cap, Winter, Winter_Cap, Wood, Wood_Cap
+- `Textures/Terrain/{id}_Cap.png`: the grass/rock/snow/sand crust along the top edges, composed from the original
+  `landmass_tile` (half-tile steps like TerrainDisplayObject.drawTopTiles) into TerrainChunk's 1.6 x 0.5 unit cap strip.
+- `Textures/Parallax/{Theme}/parallax_A_B.png`: the original background layer graphics, named like the levels'
+  `graphics_export` ids. LevelBackground places them like ParallaxLayer.as (bottom-center at x + i * gap, scaled by zoom,
+  tiled when asked) and only falls back to procedural ridges and env models when a level has none.
+- `Textures/Sky/{Theme}_Gradient.png`: the original background gradients (stretched over the level height);
+  `Textures/Sky/{theme}.png`: procedural 4x256 gradients for the menus.
+- `Textures/Water/{Water,Lava,Mud}.png`: the original water tiles (LevelData.liquid picks one; 9.9 units per repeat).
+- `Textures/Items/{Material}/{shape}_{size}_{1,2,3}.png`: the original level object sprites with their damage stages.
+  `PropSkin` projects them onto the props models through UV0 and follows `DynamicObjectEntity.DamageStage`.
+- `Textures/Detail/*.png`: 256x256 gray detail tiles for the 3D models (0.5 = neutral).
 
 ## Code
 - `Scripts/Art/PenguinAvatar.cs`: spawns the penguin, rebuilds the hierarchy, procedural animation per `AvatarState`,
   clothes on sockets, held weapon on HandSocket (Muzzle), team-colored scarf, hit flash (`_Flash` via MaterialPropertyBlock),
   emote bubble. Works with primitive fallbacks when models are missing.
 - `Scripts/Art/ArtCatalog.cs`: id -> model/icon path helpers with fallbacks.
+- `Scripts/Art/PropSkin.cs`: original item sprites (and damage stages) on the level object models.
+- `Scripts/Terrain/LevelBackground.cs`, `WaterVolume.cs`, `TerrainStyle.cs`: original backgrounds, liquids and terrain
+  art; level styles Volcano (redder sky, volcano glow, lava bubbles/embers) and IceCave (dark cave sky, ice wall, icicles).
