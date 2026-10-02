@@ -349,7 +349,7 @@ namespace CPW
 
             void AddCap(Vector2 A, Vector2 B, PaletteEntry p)
             {
-                const float down = 0.16f, up = 0.34f, z = -0.02f, uScale = 1f / 1.6f;
+                const float down = 0.6f, up = 0.6f, z = -0.02f, uScale = 1f / 3.84f;   // centred on the edge like the original's crust
                 int slot = Slot(p.cap.index, true);
                 int b = verts.Count;
                 var c = p.capColor;

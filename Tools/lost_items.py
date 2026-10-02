@@ -104,7 +104,8 @@ def patch_config(cfg):
     _put(cfg, 'MissilePhysic', {'ID': 'OrbitalLaser', 'FixedRotation': True, 'BodyType': 'dynamic', 'Shape': 'Circle',
                                 'Radius': 6, 'Density': 75, 'Friction': 0.3, 'Restitution': 0, 'Bullet': True,
                                 'GravityScale': 0})                                                       # INV
-    _missile(cfg, 'OrbitalLaser', 'OrbitalLaser', 'Missile', ['OrbitalLaserExplosion'], graphic=None,
+    _put(cfg, 'MissileGraphic', {'ID': 'OrbitalLaser', 'SWF': 'flash/weapons/ammo.swf', 'Export': 'ammo_orbital_laser'})  # INV export name
+    _missile(cfg, 'OrbitalLaser', 'OrbitalLaser', 'Missile', ['OrbitalLaserExplosion'], graphic='OrbitalLaser',
              imin=0, imax=0, tail='LaserTail', tail_dist=12, script=['Orbital'])
     _missile_emitter(cfg, 'OrbitalLaser', 'OrbitalLaser', sound='OrbitalLaser')
     _item(cfg, 'OrbitalLaser', 40, ['Special'], 42, 1, 'Point', ['OrbitalLaser'], 'small_weapon', sim=0)  # INV level/amount
