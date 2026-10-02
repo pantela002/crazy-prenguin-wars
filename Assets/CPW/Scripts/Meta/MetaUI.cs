@@ -199,6 +199,8 @@ namespace CPW
         /// <summary>A small coin/cash/xp symbol (icon or colored disc with a letter).</summary>
         public static RectTransform CurrencyIcon(Transform parent, string kind)
         {
+            // the premium currency is "Cash" (green banknotes) in the UI, like the original; Ui/cash is a fish render
+            if (kind == "cash") return CashBill(parent);
             var sprite = ModelLibrary.Icon("Ui/" + kind);
             if (sprite != null) return UI.Image(parent, sprite, null, true, "Cur " + kind).rectTransform;
             Color c = kind == "coin" ? Theme.Coin : kind == "cash" ? Theme.Cash : kind == "vip" ? Gold : Theme.Xp;
@@ -207,6 +209,45 @@ namespace CPW
             var l = UI.Label(disc.transform, letter, 34, kind == "coin" ? new Color(0.45f, 0.3f, 0) : Color.white, TextAnchor.MiddleCenter, true);
             UI.Stretch(l.rectTransform, 2, 2, 2, 2);
             return disc.rectTransform;
+        }
+
+        static readonly Color BillGreen = new Color32(92, 178, 70, 255), BillDark = new Color32(36, 104, 36, 255), BillLight = new Color32(178, 230, 140, 255);
+
+        /// <summary>
+        /// The Cash icon: a small stack of green banknotes. Uses Resources/Icons/Ui/banknote when one is added,
+        /// otherwise draws it from UI shapes (two bills behind, the front one with a light inner frame and a "$" disc).
+        /// Returns a plain square container, so callers can size it like any icon.
+        /// </summary>
+        public static RectTransform CashBill(Transform parent)
+        {
+            var sprite = ModelLibrary.Icon("Ui/banknote");
+            if (sprite != null) return UI.Image(parent, sprite, null, true, "Cur cash").rectTransform;
+            var root = UI.Rect(parent, "Cur cash");
+            for (int i = 2; i >= 0; i--)
+            {
+                var bill = UI.Image(root, UI.RoundedSmall, i == 0 ? BillGreen : Color.Lerp(BillGreen, BillDark, 0.35f + i * 0.15f), false, "Bill" + i);
+                bill.type = Image.Type.Sliced;
+                UI.Anchor(bill.rectTransform, 0.04f + i * 0.05f, 0.18f + i * 0.07f, 0.86f + i * 0.05f, 0.66f + i * 0.07f);
+                bill.rectTransform.localEulerAngles = new Vector3(0, 0, 8 - i * 3);
+                var edge = bill.gameObject.AddComponent<Outline>();
+                edge.effectColor = BillDark; edge.effectDistance = new Vector2(1.5f, -1.5f);
+                if (i != 0) continue;
+                var frame = UI.Image(bill.transform, UI.RoundedSmall, BillLight, false, "Frame");
+                frame.type = Image.Type.Sliced;
+                UI.Anchor(frame.rectTransform, 0.08f, 0.14f, 0.92f, 0.86f);
+                var inner = UI.Image(frame.transform, UI.RoundedSmall, BillGreen, false, "Inner");
+                inner.type = Image.Type.Sliced;
+                UI.Anchor(inner.rectTransform, 0.05f, 0.1f, 0.95f, 0.9f);
+                var disc = UI.Image(bill.transform, UI.Circle, BillLight, false, "Disc");
+                UI.Anchor(disc.rectTransform, 0.36f, 0.12f, 0.64f, 0.88f);
+                var aspect = disc.gameObject.AddComponent<AspectRatioFitter>();
+                aspect.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth; aspect.aspectRatio = 1;
+                var l = UI.Label(disc.transform, "$", 40, BillDark, TextAnchor.MiddleCenter, true, "Sign");
+                foreach (var o in l.GetComponents<Shadow>()) UnityEngine.Object.Destroy(o);
+                l.resizeTextMinSize = 6;
+                UI.Stretch(l.rectTransform, 1, 1, 1, 1);
+            }
+            return root;
         }
 
         /// <summary>Icon + amount laid out horizontally; returns the amount label.</summary>
@@ -285,6 +326,94 @@ namespace CPW
                 var l = tabs[i].GetComponentInChildren<Text>();
                 if (l) l.color = i == selected ? Theme.PrimaryText : Theme.TextLight;
             }
+        }
+
+        // ---------- cartoon widgets (the original home screen look) ----------
+        /// <summary>color darkened toward black by amount (0..1), alpha kept.</summary>
+        public static Color Darker(Color c, float amount = 0.35f) => new Color(c.r * (1 - amount), c.g * (1 - amount), c.b * (1 - amount), c.a);
+
+        /// <summary>Thick colored outline around a label (bold sticker text like the Flash UI).</summary>
+        public static Text Outlined(Text t, Color outline, float width = 3f)
+        {
+            foreach (var o in t.GetComponents<Shadow>()) UnityEngine.Object.Destroy(o);
+            var ol = t.gameObject.AddComponent<Outline>();
+            ol.effectColor = outline;
+            ol.effectDistance = new Vector2(width, -width);
+            var sh = t.gameObject.AddComponent<Shadow>();
+            sh.effectColor = new Color(outline.r, outline.g, outline.b, 0.8f);
+            sh.effectDistance = new Vector2(0, -width - 2);
+            return t;
+        }
+
+        /// <summary>
+        /// Rounded button with a thick darker border, a darker "3D" bottom lip, a glossy top half and bold outlined
+        /// white text (Play, Custom game, the Supplies/Character tiles...). The label is the first Text child.
+        /// </summary>
+        public static Button CartoonButton(Transform parent, string caption, Color face, Action onClick, int fontSize = 48, string name = null)
+        {
+            var border = Darker(face, 0.42f);
+            var rim = UI.Panel(parent, border, true, name ?? ("Cartoon " + caption));
+            var b = rim.gameObject.AddComponent<Button>();
+            var colors = b.colors;
+            colors.highlightedColor = Color.white;
+            colors.pressedColor = new Color(0.85f, 0.85f, 0.85f);
+            colors.disabledColor = new Color(0.75f, 0.75f, 0.75f, 0.85f);
+            b.colors = colors;
+            var sh = rim.gameObject.AddComponent<Shadow>();
+            sh.effectColor = new Color(0, 0, 0, 0.3f);
+            sh.effectDistance = new Vector2(0, -8);
+            var lip = UI.Panel(rim.transform, Darker(face, 0.18f), true, "Lip");
+            UI.Stretch(lip.rectTransform, 6, 6, 6, 6);
+            lip.raycastTarget = false;
+            var top = UI.Panel(rim.transform, face, true, "Face");
+            UI.Stretch(top.rectTransform, 6, 6, 6, 14);
+            top.raycastTarget = false;
+            var gloss = UI.Panel(top.transform, new Color(1, 1, 1, 0.22f), true, "Gloss");
+            UI.Anchor(gloss.rectTransform, 0, 0.52f, 1, 1);
+            gloss.rectTransform.offsetMin = new Vector2(6, 0); gloss.rectTransform.offsetMax = new Vector2(-6, -4);
+            gloss.raycastTarget = false;
+            if (caption != null)
+            {
+                var l = UI.Label(rim.transform, caption, fontSize, Color.white, TextAnchor.MiddleCenter, true, "Caption");
+                UI.Stretch(l.rectTransform, 14, 14, 8, 16);
+                Outlined(l, Darker(face, 0.6f), Mathf.Clamp(fontSize / 18f, 2f, 4f));
+            }
+            if (onClick != null) b.onClick.AddListener(() => { UI.Click(); onClick(); });
+            rim.gameObject.AddComponent<PressScale>();
+            return b;
+        }
+
+        /// <summary>Big square-ish cartoon tile: icon on top, caption at the bottom (home Supplies/Character/Crafting).</summary>
+        public static Button CartoonTile(Transform parent, string icon, string caption, Color face, Action onClick, int fontSize = 44)
+        {
+            var b = CartoonButton(parent, null, face, onClick, fontSize, "Tile " + caption);
+            var tile = IconTile(Box(b.transform, 0.14f, 0.3f, 0.86f, 0.95f), icon, caption, Color.Lerp(face, Color.white, 0.3f), false);
+            Square(tile);
+            var l = UI.Label(b.transform, caption, fontSize, Color.white, TextAnchor.MiddleCenter, true, "Caption");
+            UI.Anchor(l.rectTransform, 0.04f, 0.05f, 0.96f, 0.32f);
+            Outlined(l, Darker(face, 0.6f), 3f);
+            return b;
+        }
+
+        /// <summary>Round icon button with a thick rim and a small outlined caption under it (home side icons).</summary>
+        public static Button RoundIcon(Transform parent, string icon, string caption, Color face, Action onClick, float size = 96)
+        {
+            var b = CartoonButton(parent, null, face, onClick, 30, "Round " + caption);
+            foreach (var img in b.GetComponentsInChildren<Image>()) { img.sprite = UI.Circle; img.type = Image.Type.Simple; }
+            var rt = (RectTransform)b.transform;
+            rt.sizeDelta = new Vector2(size, size);
+            var tile = IconTile(Box(b.transform, 0.16f, 0.18f, 0.84f, 0.86f), icon, caption, Color.Lerp(face, Color.white, 0.3f), false);
+            Square(tile);
+            if (!string.IsNullOrEmpty(caption))
+            {
+                var l = UI.Label(b.transform, caption, 26, Color.white, TextAnchor.UpperCenter, true, "Caption");
+                l.rectTransform.anchorMin = new Vector2(-0.4f, 0); l.rectTransform.anchorMax = new Vector2(1.4f, 0);
+                l.rectTransform.pivot = new Vector2(0.5f, 1);
+                l.rectTransform.sizeDelta = new Vector2(0, 32);
+                l.rectTransform.anchoredPosition = new Vector2(0, -2);
+                Outlined(l, new Color32(14, 50, 104, 255), 2.5f);
+            }
+            return b;
         }
 
         /// <summary>A labelled progress bar; returns the fill image.</summary>
