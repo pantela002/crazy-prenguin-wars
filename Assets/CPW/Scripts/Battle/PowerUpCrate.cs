@@ -26,6 +26,7 @@ namespace CPW
         Rigidbody2D rb;
         BattleController ctrl;
         GameObject chute;
+        Sprite icon;
         bool used;
         float age;
 
@@ -79,6 +80,17 @@ namespace CPW
                 : type == "Treasure" ? Theme.Coin : new Color(0.55f, 0.4f, 0.22f);
             var model = ModelLibrary.Spawn("Props/" + type, go.transform, PrimitiveType.Cube, 1.3f, col);
             model.transform.localPosition = Vector3.zero;
+            c.icon = DropIcon(type);
+            if (c.icon != null)
+            {
+                // the original power_ups.swf crates are lost: label the 3D crate with the original drop/item icon
+                var ic = new GameObject("Icon").AddComponent<SpriteRenderer>();
+                ic.transform.SetParent(go.transform, false);
+                ic.transform.localPosition = new Vector3(0, 0, -0.75f);
+                ic.transform.localScale = Vector3.one * IconScale(c.icon, 0.95f);
+                ic.sprite = c.icon;
+                ic.sortingOrder = 9;
+            }
             if (parachute)
             {
                 c.chute = ModelLibrary.Spawn("Props/Parachute", go.transform, PrimitiveType.Sphere, 2.6f, new Color(1f, 1f, 1f));
@@ -88,6 +100,28 @@ namespace CPW
             BattleWorld.Objects.Add(c);
             AudioManager.Sfx(type);
             return c;
+        }
+
+        /// <summary>Original icon for a crate type: Treasure = drop_coins, PointsCrate = drop_exp, HealthCrate = the
+        /// Bandage booster icon, AmmoCrate = the Grenade weapon icon (null when the art is missing).</summary>
+        static Sprite DropIcon(string type)
+        {
+            switch (type)
+            {
+                case "Treasure": return OriginalArt.Sprite("icons/icons_drops/drop_coins");
+                case "PointsCrate": return OriginalArt.Sprite("icons/icons_drops/drop_exp");
+                case "HealthCrate": return OriginalArt.Icon("Bandage");
+                case "AmmoCrate": return OriginalArt.Icon("Grenade") ?? OriginalArt.Icon("BasicNuke");
+            }
+            return null;
+        }
+
+        /// <summary>Uniform scale that makes the sprite's longer side `size` world units.</summary>
+        static float IconScale(Sprite s, float size)
+        {
+            var b = s.bounds.size;
+            float m = Mathf.Max(b.x, b.y);
+            return m > 0.01f ? size / m : 1f;
         }
 
         void FixedUpdate()
@@ -118,6 +152,7 @@ namespace CPW
             if (p == null || !p.Alive) return;
             used = true;
             Fx.Sparks(Position, Theme.Primary, 18);
+            if (icon != null) Fx.IconPop(icon, Position + Vector2.up * 0.5f, IconScale(icon, 1.3f));
             ctrl?.OnCratePicked(this, p);
             Remove();
         }
