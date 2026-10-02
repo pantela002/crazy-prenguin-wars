@@ -576,12 +576,31 @@ namespace CPW
                         AudioManager.Sfx("Respawn");
                         return;
                     }
+                    if (TutorialRescue(pos)) return;
                     Die(true); return;
                 }
                 var lvl = t.Level;
                 if (lvl != null && (pos.x < -15f || pos.x > lvl.size.x + 15f || pos.y < Mathf.Min(-15f, t.WaterY - 10f)))
-                { Die(false); return; }
+                {
+                    if (TutorialRescue(pos)) return;
+                    Die(false); return;
+                }
             }
+        }
+
+        /// <summary>Tutorial: back on land instead of drowning, the turn goes on (BattleController.TryTutorialRescue).</summary>
+        bool TutorialRescue(Vector2 pos)
+        {
+            var ctrl = BattleController.I;
+            if (ctrl == null || !ctrl.TryTutorialRescue(this, out var at)) return false;
+            Fx.Splash(pos, 1.2f);
+            Walk(0);
+            Teleport(at);
+            Fx.Glow(at, 1.6f, TeamColor);
+            Fx.Sparks(at, TeamColor, 14);
+            AudioManager.Sfx("Respawn");
+            ctrl.Tutorial.OnRescued(this);
+            return true;
         }
 
         void Update()

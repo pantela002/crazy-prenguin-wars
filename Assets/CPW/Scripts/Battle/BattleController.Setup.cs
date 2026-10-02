@@ -373,8 +373,12 @@ namespace CPW
             {
                 if (p.Alive || p.Left) continue;
                 // online every device must agree, so there it is simply the next turn start
-                if (p == a || net != null || Time.time - p.DiedAt >= BattleRules.TimeToRespawn) p.Respawn(FindRespawnPoint(p));
+                // ...and right away when the new active penguin would otherwise have nobody to shoot at (2 players:
+                // the AI found no target and never fired while the only enemy waited out its respawn time)
+                if (p == a || net != null || Time.time - p.DiedAt >= BattleRules.TimeToRespawn || !HasLivingEnemy(a))
+                    p.Respawn(FindRespawnPoint(p));
             }
+            turnStartPos = a.Position;
 
             WeaponSystem.OnTurnStart(index);
             a.TickEffects();
@@ -510,6 +514,30 @@ namespace CPW
 
         /// <summary>Safe land for a penguin that fell in the water/lava (Innertube rescue); same rules as a respawn.</summary>
         public Vector2 SafeLandPoint(Penguin who) => FindRespawnPoint(who);
+
+        bool HasLivingEnemy(Penguin who)
+        {
+            if (who == null) return false;
+            foreach (var o in Penguins) if (o.Alive && AreEnemies(who, o)) return true;
+            return false;
+        }
+
+        Vector2 turnStartPos;
+
+        /// <summary>
+        /// Tutorial only: the player's penguin that falls in the water/lava (or off the level) is put back on land
+        /// instead of dying, so a stray walk doesn't end the turn and skip the step being taught. Back where the
+        /// turn started when that ground is still there, else a safe spawn point. INVENTED (not in the original).
+        /// </summary>
+        public bool TryTutorialRescue(Penguin p, out Vector2 at)
+        {
+            at = default;
+            if (Tutorial == null || net != null || p == null || !IsLocalHuman(p.PlayerIndex)) return false;
+            bool startOk = p == Active && Terrain != null && Terrain.GroundBelow(turnStartPos.x, turnStartPos.y + 2f, out var g)
+                           && g.y > Terrain.WaterY + 0.5f;
+            at = startOk ? GroundPoint(turnStartPos) : FindRespawnPoint(p);
+            return true;
+        }
 
         Vector2 FindRespawnPoint(Penguin who)
         {
