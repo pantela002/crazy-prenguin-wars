@@ -56,6 +56,7 @@ namespace CPW
         const float PollInterval = 0.5f, PlayersInterval = 2f, HeartbeatInterval = 3f, BatchInterval = 0.2f;
         const float DisconnectAfter = 15f;
         const long PlayerTimeoutMs = 25000;
+        const float CleanupDelay = 60f;   // longer than the rematch countdown + grace (FirebaseService.Rematch.cs)
 
         readonly FirebaseClient fb;
         readonly string localUid;
@@ -399,12 +400,18 @@ namespace CPW
             closed = true;
             fb.Updated -= Pump;
             BattleEvents.BattleEnded -= OnBattleEnded;
-            // The host removes a finished (or abandoned) match a little later, after everyone had time to read the
-            // last snapshot. If the host quits mid-match the others keep playing, so nothing is deleted then.
-            if (IsHost && (matchOver || left.Count >= uids.Length - 1))
+            // The lowest slot still there removes a finished (or abandoned) match a little later, after everyone had
+            // time to read the last snapshot and the rematch votes (matches/{id}/rematch). The rules let any player of
+            // a "finished" match delete it, so it is marked finished first (a no-op when the last turn already did).
+            // If we quit mid-match the others keep playing, so nothing is deleted then; matches nobody cleaned up
+            // are swept after 3 hours (FirebaseService.SweepAbandoned).
+            if (IsAuthority && (matchOver || left.Count >= uids.Length - 1))
             {
                 var path = root;
-                fb.After(20f, () => fb.Delete(path));
+                fb.After(CleanupDelay, () => fb.Patch(path, new Dictionary<string, object> { { "state", "finished" } }, r =>
+                {
+                    if (r.ok) fb.Delete(path);
+                }));
             }
         }
 
@@ -440,6 +447,7 @@ namespace CPW
             };
         }
 
-        static double Round(float v) => Math.Round(v, 4);
+        /// <summary>4 decimals; NaN / infinity become 0 (they are not valid JSON, the database would refuse the whole batch).</summary>
+        static double Round(float v) => float.IsNaN(v) || float.IsInfinity(v) ? 0 : Math.Round(v, 4);
     }
 }
