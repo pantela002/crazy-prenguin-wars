@@ -288,7 +288,7 @@ namespace CPW
         static string BankIcon(Record r, bool coins)
         {
             var own = "Ui/" + r.Str("Export", "");
-            return ModelLibrary.Icon(own) != null ? own : (coins ? "Ui/coin" : "Ui/cash");
+            return UI.Skin.Icon(own) != null ? own : (coins ? "Ui/coin" : "Ui/cash");
         }
 
         void Pack(Record r, int index)

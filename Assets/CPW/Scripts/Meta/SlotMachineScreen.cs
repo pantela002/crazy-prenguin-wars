@@ -201,7 +201,7 @@ namespace CPW
             {
                 if (s == sym) return;
                 sym = s;
-                var sp = ModelLibrary.Icon("Slot/" + s);
+                var sp = UI.Skin.Icon("Slot/" + s);
                 icon.sprite = sp ?? UI.Circle;
                 icon.color = sp != null ? Color.white : SlotMachineLogic.SymbolColor(s);
                 label.text = sp != null ? "" : (s == "Coin" ? "$" : s == "Cash" ? "F" : s == "Xp" ? "XP" : s == "Ammo" ? "A" : s == "Bolt" ? "B" : s == "Lemon" ? "L" : "?");
@@ -229,7 +229,9 @@ namespace CPW
             UI.Stretch(reelsRow, 14, 14, 14, 14);
             var h = UI.HBox(reelsRow, 14, TextAnchor.MiddleCenter);
             h.childForceExpandWidth = true; h.childForceExpandHeight = true;
-            for (int k = 0; k < 3; k++) BuildReel(reelsRow, reels[k], k);
+            var art = UI.Skin.Bitmap("slot_machine", 4);   // the original PING WIN machine
+            if (art != null) window.color = new Color(0, 0, 0, 0);
+            for (int k = 0; k < 3; k++) BuildReel(reelsRow, reels[k], k, art != null);
             // center line marker
             var marker = UI.Panel(window.transform, new Color(1, 0.85f, 0.2f, 0.25f), false, "Payline");
             marker.raycastTarget = false;
@@ -242,6 +244,7 @@ namespace CPW
             UI.Anchor((RectTransform)spinBtn.transform, 0.25f, 0.02f, 0.75f, 0.14f);
             spinLabel = spinBtn.GetComponentInChildren<Text>();
             spinBtn.gameObject.AddComponent<UIPulse>().amount = 0.03f;
+            if (art != null) MachineArt(machine, art, top, window.rectTransform);
 
             // pay table
             var pay = MetaUI.CardPanel(Content, MetaUI.Card, "Paytable");
@@ -255,9 +258,40 @@ namespace CPW
             for (int k = 0; k < 3; k++) { reels[k].pos = Random.Range(0, SlotMachineLogic.Positions); Draw(k); }
         }
 
-        void BuildReel(RectTransform parent, Reel reel, int k)
+        /// <summary>
+        /// Put the reels, title, result and Spin button onto the original slot machine bitmap (746x749): reels in its
+        /// three white windows, the title in its top screen, the result and Spin on its blue base.
+        /// </summary>
+        void MachineArt(Image machine, Sprite art, Text title, RectTransform window)
         {
-            var view = UI.Panel(parent, new Color(0.97f, 0.97f, 1f), true, "Reel " + k);
+            machine.color = new Color(0, 0, 0, 0);
+            foreach (var sh in machine.GetComponents<Shadow>()) Object.Destroy(sh);
+            var frame = UI.Rect(machine.transform, "Art");
+            UI.Stretch(frame);
+            var fit = frame.gameObject.AddComponent<AspectRatioFitter>();
+            fit.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            fit.aspectRatio = art.rect.width / Mathf.Max(1f, art.rect.height);
+            frame.SetAsFirstSibling();
+            var img = UI.Image(frame, art, Color.white, false, "Machine");
+            UI.Stretch(img.rectTransform);
+            window.SetParent(frame, false);
+            UI.Anchor(window, 0.235f, 0.312f, 0.777f, 0.583f);
+            title.rectTransform.SetParent(frame, false);
+            UI.Anchor(title.rectTransform, 0.27f, 0.71f, 0.725f, 0.82f);
+            title.text = "PING WIN";
+            UI.StyleText(title, new Color32(90, 40, 0, 255), 2.5f, MetaUI.Gold);
+            resultText.rectTransform.SetParent(frame, false);
+            UI.Anchor(resultText.rectTransform, 0.08f, 0.19f, 0.92f, 0.3f);
+            var sb = (RectTransform)spinBtn.transform;
+            sb.SetParent(frame, false);
+            UI.Anchor(sb, 0.24f, 0.03f, 0.76f, 0.18f);
+            if (UI.Skin.Apply(spinBtn.GetComponent<Image>(), "button.spin"))
+                UI.StyleText(spinLabel, new Color32(122, 36, 0, 255), 3f, Color.white);
+        }
+
+        void BuildReel(RectTransform parent, Reel reel, int k, bool art = false)
+        {
+            var view = UI.Panel(parent, art ? new Color(1, 1, 1, 0) : new Color(0.97f, 0.97f, 1f), true, "Reel " + k);
             view.gameObject.AddComponent<RectMask2D>();
             for (int j = 0; j < 5; j++)
             {
@@ -265,6 +299,7 @@ namespace CPW
                 c.rt = UI.Rect(view.transform, "Cell");
                 c.rt.anchorMin = c.rt.anchorMax = new Vector2(0.5f, 0.5f);
                 c.rt.sizeDelta = new Vector2(190, CellH - 10);
+                if (art) c.rt.localScale = new Vector3(0.62f, 0.62f, 1);   // the machine's reel windows are narrow: one symbol each
                 c.bg = UI.Image(c.rt, UI.Rounded, new Color(1, 1, 1, 0), false, "Bg");
                 c.bg.type = Image.Type.Sliced;
                 UI.Stretch(c.bg.rectTransform);
@@ -284,7 +319,7 @@ namespace CPW
             for (int i = 1; i <= n; i++)
             {
                 var sym = SlotMachineLogic.WinSymbol(w, i);
-                var sp = ModelLibrary.Icon("Slot/" + sym);
+                var sp = UI.Skin.Icon("Slot/" + sym);
                 var ic = UI.Image(row, sp ?? UI.Circle, sp != null ? Color.white : SlotMachineLogic.SymbolColor(sym), true);
                 UI.Place(ic.rectTransform, new Vector2(0, 0.5f), new Vector2(56, 56), new Vector2((i - 1) * 62, 0));
             }

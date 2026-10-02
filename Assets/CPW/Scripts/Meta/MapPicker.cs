@@ -77,7 +77,7 @@ namespace CPW
             {
                 int idx = i;
                 var b = UI.Button(chipRow, themes[i], () => SetTheme(idx), UI.ButtonStyle.Dark, 28, "Theme " + themes[i]);
-                b.GetComponent<Image>().color = ThemeColor(themes[i]);
+                UI.SkinColor(b.GetComponent<Image>(), ThemeColor(themes[i]), true);
                 UI.Layout(b, -1, -1, 1, 1);
                 chips.Add(b);
             }
@@ -115,9 +115,9 @@ namespace CPW
             for (int i = 0; i < chips.Count; i++)
             {
                 bool on = i == themeIndex;
-                chips[i].GetComponent<Image>().color = on ? Theme.Primary : ThemeColor(themes[i]);
+                UI.SkinColor(chips[i].GetComponent<Image>(), on ? Theme.Primary : ThemeColor(themes[i]), true);
                 var l = chips[i].GetComponentInChildren<Text>();
-                if (l) l.color = on ? Theme.PrimaryText : Color.white;
+                if (l) l.color = on && !UI.Skin.Enabled ? Theme.PrimaryText : Color.white;
             }
             UI.Clear(grid);
             shownIds.Clear();
@@ -141,7 +141,7 @@ namespace CPW
         {
             string cur = current?.Invoke() ?? "";
             for (int i = 0; i < shownFrames.Count; i++)
-                if (shownFrames[i]) shownFrames[i].color = shownIds[i] == cur ? Theme.Primary : Theme.PanelInner;
+                if (shownFrames[i]) UI.SkinColor(shownFrames[i], shownIds[i] == cur ? Theme.Primary : Theme.PanelInner);
         }
 
         /// <summary>Map thumbnail button ("" = random). Locked maps show the required level and can't be picked.</summary>

@@ -118,7 +118,8 @@ namespace CPW
         {
             weaponTab = tab;
             for (int i = 0; i < tabButtons.Count; i++)
-                tabButtons[i].GetComponent<Image>().color = BattleRules.WeaponTabs[i] == tab ? Theme.Primary : Theme.PanelInner;
+                if (!MetaUI.SkinTab(tabButtons[i], BattleRules.WeaponTabs[i] == tab))
+                    tabButtons[i].GetComponent<Image>().color = BattleRules.WeaponTabs[i] == tab ? Theme.Primary : Theme.PanelInner;
             UI.Clear(weaponGrid);
             var a = c.Active;
             if (a == null) return;

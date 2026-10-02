@@ -33,6 +33,9 @@
     "topbar":        { "path": "ui/hud_shared/_bitmaps/bitmap_47",    "border": [0, 0, 0, 0] },
     "strip":         { "path": "ui/home_screen/_bitmaps/bitmap_8",    "border": [90, 10, 90, 60],   "scale": 0.75 },
     "stats":         { "path": "ui/home_screen/_bitmaps/bitmap_166",  "border": [64, 30, 64, 30],   "scale": 1.0 },
+    "screen":        { "path": "ui/slot_machine/_bitmaps/bitmap_9",   "border": [40, 40, 40, 40],   "scale": 1.0 },
+    "button.spin":   { "path": "ui/slot_machine/_bitmaps/bitmap_14",  "border": [60, 56, 60, 56],   "scale": 0.8, "text": "#FFFFFF", "outline": "#7A2400" },
+    "pill.dark":     { "path": "ui/home_screen/_bitmaps/bitmap_171",  "border": [44, 44, 44, 44],   "scale": 1.0 },
     "input":         { "path": "ui/hud_shared/_bitmaps/bitmap_11",    "border": [18, 18, 18, 18],   "scale": 1.0 }
   }
 }

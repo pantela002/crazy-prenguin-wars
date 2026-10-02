@@ -153,7 +153,7 @@ namespace CPW
                 ItemInfo.ConfirmSpend(bundle.priceCoins, bundle.priceCash, bundle.name, () => { if (ItemCatalog.BuyBundle(bundle)) Fill(); }, true);
             };
             var btn = UI.Button(grid, null, buyIt, UI.ButtonStyle.Plain, 24, "Bundle " + b.id);
-            btn.GetComponent<Image>().color = MetaUI.Card;
+            UI.SkinColor(btn.GetComponent<Image>(), MetaUI.Card);
             var tile = MetaUI.IconTile(btn.transform, b.iconPath, b.name, MetaUI.Orange);
             UI.Anchor(tile, 0.03f, 0.3f, 0.33f, 0.95f);
             var t = UI.Label(btn.transform, b.name, 40, Theme.Secondary, TextAnchor.UpperLeft, true);

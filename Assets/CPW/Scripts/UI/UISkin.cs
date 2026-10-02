@@ -294,6 +294,28 @@ namespace CPW
             pad.SetAsFirstSibling();
         }
 
+        /// <summary>
+        /// Recolor an image that may carry the original art. Skinned images switch to the original piece nearest the
+        /// color (yellow selected card, light card, dark panel; for buttons the nearest original button) and keep
+        /// some of a saturated tint and the alpha; plain images just take the color.
+        /// </summary>
+        public static void SkinColor(UnityEngine.UI.Image img, Color c, bool button = false)
+        {
+            if (img == null) return;
+            var fit = img.GetComponent<SkinFit>();
+            if (fit == null || !fit.enabled || c.a < 0.35f) { img.color = c; return; }
+            Color.RGBToHSV(c, out float h, out float s, out float v);
+            string key;
+            if (button) key = Skin.KeyForColor(c);
+            else if (s > 0.4f && h > 0.08f && h < 0.18f) key = "card.selected";
+            else if (v < 0.5f) key = "panel.dark";
+            else key = "card";
+            if (!Skin.Apply(img, key)) { img.color = c; return; }
+            var tint = !button && key == "card" && s > 0.25f ? Color.Lerp(c, Color.white, 0.45f) : Color.white;
+            tint.a = c.a;
+            img.color = tint;
+        }
+
         /// <summary>Restyle a UI.Button after its style changed (selected tabs, toggles): skin or color, plus caption.</summary>
         public static void SetButtonStyle(Button b, ButtonStyle style)
         {

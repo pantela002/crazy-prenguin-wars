@@ -5,7 +5,8 @@ namespace CPW
 {
     /// <summary>
     /// Shared bar at the top of menu screens: level badge with XP bar, coins, Cash (green banknotes) with "+" to the bank,
-    /// VIP badge and settings. Shown when the current screen has ShowTopBar; values tick up smoothly.
+    /// VIP badge and settings. Shown when the current screen has ShowTopBar; values tick up smoothly. With the original
+    /// art: the hud top_bar band, level star, Saldo pills with the original coin / cash and the gear button.
     /// </summary>
     public class TopBar : MonoBehaviour
     {
@@ -48,16 +49,28 @@ namespace CPW
             var strip = UI.Panel(bar, new Color(0.04f, 0.14f, 0.32f, 0.82f), false, "Strip");
             UI.Stretch(strip.rectTransform, 0, 0, 0, 10);
             strip.raycastTarget = false;
+            var band = UI.Skin.Get("topbar");
+            if (band != null)
+            {
+                // the original top_bar band; extends up under the notch / status bar
+                strip.sprite = band; strip.color = Color.white;
+                UI.Stretch(strip.rectTransform, -300, -300, -200, 10);
+                var edge = UI.Image(strip.transform, UI.WhiteSprite, new Color32(8, 40, 86, 255), false, "Edge");
+                edge.rectTransform.anchorMin = new Vector2(0, 0); edge.rectTransform.anchorMax = new Vector2(1, 0);
+                edge.rectTransform.pivot = new Vector2(0.5f, 1); edge.rectTransform.sizeDelta = new Vector2(0, 5);
+            }
 
             // ---- level + xp (left) ----
             var lvl = UI.Button(bar, null, () => ScreenManager.Show(() => new ProfileScreen()), UI.ButtonStyle.Plain, 30, "Level");
             var lrt = (RectTransform)lvl.transform;
             UI.Place(lrt, new Vector2(0, 0.5f), new Vector2(560, 96), new Vector2(14, 4));
             lvl.GetComponent<Image>().color = new Color(1, 1, 1, 0.0f);
-            var star = UI.Image(lrt, UI.Circle, Theme.Xp, false, "Star");
+            var starArt = UI.Skin.OriginalIcon("Ui/star");
+            var star = UI.Image(lrt, starArt ?? UI.Circle, starArt != null ? Color.white : Theme.Xp, starArt != null, "Star");
             UI.Place(star.rectTransform, new Vector2(0, 0.5f), new Vector2(96, 96), Vector2.zero);
             levelText = UI.Label(star.transform, "1", 46, Color.white, TextAnchor.MiddleCenter, true);
             UI.Stretch(levelText.rectTransform, 4, 4, 4, 4);
+            if (starArt != null) { UI.Stretch(levelText.rectTransform, 14, 14, 22, 16); UI.StyleText(levelText, new Color32(110, 50, 140, 255), 3f); }
             nameText = UI.Label(lrt, "", 30, Color.white, TextAnchor.UpperLeft, true);
             UI.Anchor(nameText.rectTransform, 0.2f, 0.5f, 1, 1);
             nameText.rectTransform.offsetMin = new Vector2(0, 0);
@@ -65,6 +78,8 @@ namespace CPW
             UI.Anchor(barHost, 0.2f, 0.06f, 0.98f, 0.48f);
             xpFill = UI.Bar(barHost, Theme.Xp);
             UI.Stretch((RectTransform)xpFill.transform.parent);
+            var pink = UI.Skin.Get("bar.xp");
+            if (pink != null) { xpFill.sprite = pink; xpFill.color = Color.white; }   // the original pink XP fill
             xpText = UI.Label(barHost, "", 24, Color.white, TextAnchor.MiddleCenter, true);
             UI.Stretch(xpText.rectTransform, 4, 4, 2, 2);
 
@@ -73,9 +88,20 @@ namespace CPW
             cashText = Money(bar, "cash", new Vector2(250, 4), Theme.Cash);
 
             // ---- vip + settings (right) ----
-            var set = UI.IconButton(bar, ModelLibrary.Icon("Ui/settings"), null, () => ScreenManager.Show(() => new SettingsScreen()), UI.ButtonStyle.Secondary);
+            var gearArt = UI.Skin.OriginalIcon("Ui/settings");
+            var set = UI.IconButton(bar, gearArt ?? ModelLibrary.Icon("Ui/settings"), null, () => ScreenManager.Show(() => new SettingsScreen()), UI.ButtonStyle.Secondary);
             UI.Place((RectTransform)set.transform, new Vector2(1, 0.5f), new Vector2(96, 96), new Vector2(-14, 4));
-            if (ModelLibrary.Icon("Ui/settings") == null)
+            if (gearArt != null)
+            {
+                // the original square gear button is the whole button
+                var si = set.GetComponent<Image>();
+                si.color = new Color(1, 1, 1, 0);
+                var sf = set.GetComponent<SkinFit>();
+                if (sf != null) sf.enabled = false;
+                var ic = set.transform.Find("Image") as RectTransform;
+                if (ic) UI.Stretch(ic);
+            }
+            if (gearArt == null && ModelLibrary.Icon("Ui/settings") == null)
             {
                 var g = UI.Label(set.transform, "SET", 30, Color.white, TextAnchor.MiddleCenter, true);
                 UI.Stretch(g.rectTransform);
@@ -83,7 +109,7 @@ namespace CPW
             var vip = UI.Button(bar, null, () => ScreenManager.Show(() => new VipScreen()), UI.ButtonStyle.Dark, 30, "VIP");
             UI.Place((RectTransform)vip.transform, new Vector2(1, 0.5f), new Vector2(170, 86), new Vector2(-126, 4));
             vipBg = vip.GetComponent<Image>();
-            var vipIcon = ModelLibrary.Icon("Ui/vip");
+            var vipIcon = UI.Skin.Icon("Ui/vip");
             if (vipIcon != null)
             {
                 var vi = UI.Image(vip.transform, vipIcon);
@@ -101,6 +127,7 @@ namespace CPW
         {
             var bg = UI.Panel(parent, new Color(0, 0, 0, 0.35f), true, "Money " + kind);
             UI.Place(bg.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(330, 80), pos);
+            UI.Skin.Apply(bg, "pill.dark");   // the original Saldo pill
             var ic = MetaUI.CurrencyIcon(bg.transform, kind);
             UI.Place(ic, new Vector2(0, 0.5f), new Vector2(84, 84), new Vector2(-14, 0));
             var t = UI.Label(bg.transform, "0", 42, Color.white, TextAnchor.MiddleCenter, true);
@@ -135,8 +162,13 @@ namespace CPW
             if (vip != lastVip || snap)
             {
                 lastVip = vip;
-                vipBg.color = vip ? MetaUI.Gold : Theme.PanelDark;
-                vipText.color = vip ? Theme.PrimaryText : Color.white;
+                if (UI.Skin.Apply(vipBg, vip ? "button.yellow" : "button.dark"))
+                    UI.StyleText(vipText, vip ? new Color32(122, 74, 6, 255) : new Color32(6, 40, 78, 255), 2.5f, Color.white);
+                else
+                {
+                    vipBg.color = vip ? MetaUI.Gold : Theme.PanelDark;
+                    vipText.color = vip ? Theme.PrimaryText : Color.white;
+                }
                 vipText.text = vip ? "VIP" : "VIP?";
             }
             if (snap)

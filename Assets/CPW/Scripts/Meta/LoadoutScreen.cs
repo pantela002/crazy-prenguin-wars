@@ -13,7 +13,7 @@ namespace CPW
             Color? bg = null, string corner = null, Color? cornerColor = null)
         {
             var b = UI.Button(parent, null, onClick, UI.ButtonStyle.Plain, 24, "Card " + name);
-            b.GetComponent<Image>().color = bg ?? MetaUI.Card;
+            UI.SkinColor(b.GetComponent<Image>(), bg ?? MetaUI.Card);
             var tile = MetaUI.IconTile(MetaUI.Box(b.transform, 0.12f, 0.36f, 0.88f, 0.94f), iconPath, name);
             MetaUI.Square(tile);
             var l = UI.Label(b.transform, name, 28, Theme.Text, TextAnchor.MiddleCenter);
@@ -37,7 +37,7 @@ namespace CPW
             var o = UI.Panel(card, MetaUI.Locked, true, "Lock");
             UI.Stretch(o.rectTransform);
             o.raycastTarget = false;
-            var lockIcon = ModelLibrary.Icon("Ui/lock");
+            var lockIcon = UI.Skin.Icon("Ui/lock");
             if (lockIcon != null)
             {
                 var i = UI.Image(o.transform, lockIcon);
