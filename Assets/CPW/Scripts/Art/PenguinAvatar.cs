@@ -6,9 +6,14 @@ namespace CPW
     public enum AvatarState { Idle, Walk, Jump, Fall, Aim, Fire, Hurt, Dead, Celebrate, Drown, Sad }
 
     /// <summary>
-    /// The 3D penguin (Blender model "Penguin/Penguin") with clothes, procedural animation and a held weapon.
+    /// The player's penguin with clothes, animation, a held weapon, emotes and a team colour.
     /// Used by battles (Battle/Penguin) and menus (customization preview, home screen).
     ///
+    /// Two looks behind one API: the ORIGINAL 2D Flash penguin (PenguinSprite: 46 sprite animations at 24 fps, clothes
+    /// rendered from the Blender models and the original weapon clips on the animation's slots, see
+    /// Docs/ORIGINAL_ART.md) whenever Resources/Original has the penguin; otherwise the 3D penguin described below.
+    ///
+    /// 3D fallback:
     /// Model contract (see Docs/ART.md): parts Body, Belly, Head, Beak, EyeL/R, PupilL/R, FlipperL/R, FootL/R, Scarf and
     /// empties HeadSocket, ChestSocket, FootSocketL/R, HandSocket, all exported as root objects with origins at their joints;
     /// the hierarchy is rebuilt here. The model is 2.6 units tall, feet at the origin, beak towards +X, belly towards -Z.
@@ -31,6 +36,21 @@ namespace CPW
         /// <summary>Aim angle in degrees relative to the facing direction (0 = forward, 90 = up).</summary>
         public float AimDegrees => aimTarget;
         public string HeldWeapon { get; private set; }
+        /// <summary>True when the original 2D sprite penguin is shown (false = 3D fallback model).</summary>
+        public bool IsSprite => sprite != null;
+        /// <summary>Play the original "spawn" animation whenever the avatar is re-enabled (respawn). Off in menus.</summary>
+        public bool PlaySpawnOnEnable = true;
+        /// <summary>Animate with unscaled time (menus).</summary>
+        public bool UnscaledTime;
+        /// <summary>Team colour ellipse under the feet (sprite penguin). Off in menus.</summary>
+        public bool ShowTeamRing
+        {
+            get => showRing;
+            set { showRing = value; if (sprite != null) sprite.ShowRing = value; }
+        }
+        bool showRing = true;
+        PenguinSprite sprite;
+        SpriteAnim emoteAnim;
 
         // ------------------------------------------------------------------ parts
         class Part
@@ -82,6 +102,7 @@ namespace CPW
         void Build(float height)
         {
             Height = Mathf.Max(0.1f, height);
+            if (PenguinSprite.Available) { BuildSprite(); return; }
             mpb = new MaterialPropertyBlock();
             facingNode = new GameObject("Facing").transform;
             facingNode.SetParent(transform, false);
@@ -113,6 +134,24 @@ namespace CPW
             UpdateMuzzle();
             RefreshRenderers();
             SetState(AvatarState.Idle);
+        }
+
+        void BuildSprite()
+        {
+            sprite = new PenguinSprite(this, Height);
+            sprite.ShowRing = showRing;
+            HeadTop = new GameObject("HeadTop").transform;
+            HeadTop.SetParent(transform, false);
+            HeadTop.localPosition = new Vector3(0, Height * 1.05f, 0);
+            Muzzle = new GameObject("Muzzle").transform;
+            Muzzle.SetParent(transform, false);
+            SetState(AvatarState.Idle);
+            UpdateMuzzle();
+        }
+
+        void OnEnable()
+        {
+            if (sprite != null && PlaySpawnOnEnable) sprite.PlaySpawn();
         }
 
         void ApplyFacingScale()
@@ -274,6 +313,7 @@ namespace CPW
         /// <summary>Wear clothes by Bonus id (e.g. "flannel_head"); empty/null removes that slot.</summary>
         public void SetClothes(string head, string chest, string feet)
         {
+            if (sprite != null) { sprite.SetClothes(head, chest, feet); return; }
             Wear(ref headWear, head, headSocket);
             Wear(ref chestWear, chest, chestSocket);
             Wear(ref feetWearL, feet, footSocketL);
@@ -299,6 +339,7 @@ namespace CPW
             prevState = State;
             State = s;
             stateTime = 0;
+            if (sprite != null) { sprite.SetState(s); return; }
             if ((prevState == AvatarState.Fall || prevState == AvatarState.Jump) && (s == AvatarState.Idle || s == AvatarState.Walk || s == AvatarState.Aim))
                 landSquash = 1f;
             if (s == AvatarState.Fire) fireKick = 1f;
@@ -310,17 +351,29 @@ namespace CPW
         public void SetFacing(int dir)
         {
             Facing = dir >= 0 ? 1 : -1;
+            if (sprite != null) sprite.ApplyFacing(Facing);
             if (facingNode != null) ApplyFacingScale();
         }
 
         /// <summary>Aim angle in degrees, 0 = forward (facing direction), 90 = up, -90 = down.</summary>
-        public void SetAim(float degrees) { aimTarget = Mathf.Clamp(degrees, -90f, 90f); }
+        public void SetAim(float degrees)
+        {
+            aimTarget = Mathf.Clamp(degrees, -90f, 90f);
+            if (sprite != null) { sprite.ApplyAim(aimTarget); UpdateMuzzle(); }
+        }
 
         /// <summary>Show a weapon model by WeaponGraphic id (null/empty = flippers empty).</summary>
         public void HoldWeapon(string weaponGraphicId)
         {
-            if (HeldWeapon == weaponGraphicId && (weapon != null || string.IsNullOrEmpty(weaponGraphicId))) return;
+            if (HeldWeapon == weaponGraphicId && (weapon != null || (sprite != null && sprite.HasWeapon) || string.IsNullOrEmpty(weaponGraphicId))) return;
             HeldWeapon = weaponGraphicId;
+            if (sprite != null)
+            {
+                sprite.HoldWeapon(weaponGraphicId);
+                sprite.ApplyAim(aimTarget);
+                UpdateMuzzle();
+                return;
+            }
             if (weapon != null) { Destroy(weapon); weapon = null; }
             tip.localPosition = new Vector3(0.25f, 0, 0);
             if (!string.IsNullOrEmpty(weaponGraphicId))
@@ -347,7 +400,11 @@ namespace CPW
         }
 
         /// <summary>Flash white when hit.</summary>
-        public void Flash() { flash = 1f; }
+        public void Flash()
+        {
+            flash = 1f;
+            if (sprite != null) sprite.Flash();
+        }
 
         /// <summary>End of match pose (won = celebrate, lost = sad).</summary>
         public void SetResultPose(bool won) { SetState(won ? AvatarState.Celebrate : AvatarState.Sad); }
@@ -360,6 +417,8 @@ namespace CPW
             var rec = GameData.Loaded ? GameData.Get("Emoticon", emoticonId) : null;
             if (rec != null) dur = Mathf.Clamp(Units.Ms(rec.Float("Duration", 3000)), 1f, 8f);
             if (bubble != null) Destroy(bubble);
+            if (emoteAnim != null) { Destroy(emoteAnim.gameObject); emoteAnim = null; }
+            if (ShowOriginalEmote(emoticonId)) return;
             bubble = new GameObject("EmoteBubble");
             bubble.transform.SetParent(transform, false);
             var bg = new GameObject("Bg").AddComponent<SpriteRenderer>();
@@ -382,9 +441,35 @@ namespace CPW
             UpdateBubble();
         }
 
+        /// <summary>
+        /// The original animated emote (labels Hidden, Hidden_To_Visible = the whole bubble pop-in/loop/pop-out,
+        /// Visible = empty) with its registration point (the bubble's tail) just above the head, not mirrored.
+        /// </summary>
+        bool ShowOriginalEmote(string emoticonId)
+        {
+            var set = OriginalArt.Emote(emoticonId);
+            if (set == null) return false;
+            var a = SpriteAnim.Create(transform, set, "Emote", EmoteSortingOrder, false);
+            a.UnscaledTime = UnscaledTime;
+            float k = sprite != null ? sprite.Scale : Height / PenguinSprite.NaturalHeight;
+            a.transform.localPosition = new Vector3(0.15f * k, Height * 0.97f, -0.2f);
+            a.transform.localScale = Vector3.one * (EmoteScale * k);
+            int from = set.Label("Hidden_To_Visible", 0), to = set.Label("Visible", set.Length) - 1;
+            var go = a.gameObject;
+            a.PlayRange(set, from, Mathf.Max(from, to), false, () => { if (go != null) Destroy(go); });
+            emoteAnim = a;
+            return true;
+        }
+
+        /// <summary>Emote bubbles draw above penguins, effects and water (see the sorting orders in PenguinSprite).</summary>
+        public const int EmoteSortingOrder = 60;
+        /// <summary>Emote size relative to the original (the original bubble is about as wide as two penguins).</summary>
+        public const float EmoteScale = 0.65f;
+
         public void SetTeamColor(Color c)
         {
             TeamColor = c;
+            if (sprite != null) { sprite.SetTeamColor(c); return; }
             ApplyBlocks(0);
         }
 
@@ -415,8 +500,18 @@ namespace CPW
 
         void LateUpdate()
         {
+            if (sprite != null)
+            {
+                float sdt = UnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+                stateTime += sdt;
+                sprite.Tick(Mathf.Min(sdt, 0.1f));
+                sprite.ApplyAim(aimTarget);
+                if (bubble != null) UpdateBubble();
+                UpdateMuzzle();
+                return;
+            }
             if (poseNode == null) return;
-            float dt = Mathf.Min(Time.deltaTime, 0.05f);
+            float dt = Mathf.Min(UnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime, 0.05f);
             t += dt;
             stateTime += dt;
 
@@ -613,14 +708,15 @@ namespace CPW
 
         void UpdateMuzzle()
         {
-            if (Muzzle == null || tip == null) return;
+            if (Muzzle == null || (tip == null && sprite == null)) return;
             Vector3 c = Center;
-            Vector3 d = tip.position - c;
+            Vector3 d = (sprite != null ? sprite.TipWorld() : tip.position) - c;
             d.z = 0;
             float max = MuzzleReach * Mathf.Max(0.5f, Height / ModelHeight);
             if (d.magnitude > max) d = d.normalized * max;
             Muzzle.position = new Vector3(c.x + d.x, c.y + d.y, transform.position.z);
-            Muzzle.rotation = tip.rotation;
+            if (sprite != null) Muzzle.rotation = Quaternion.Euler(0, 0, Facing > 0 ? aimTarget : 180f - aimTarget);
+            else Muzzle.rotation = tip.rotation;
         }
 
         static void Foot(Part f, float lift, float phase)
@@ -728,6 +824,8 @@ namespace CPW
         {
             if (ghost != null) Destroy(ghost);
             if (bubble != null) Destroy(bubble);
+            if (emoteAnim != null) Destroy(emoteAnim.gameObject);
+            sprite?.Destroy();
         }
     }
 }

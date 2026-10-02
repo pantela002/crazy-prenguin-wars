@@ -120,7 +120,8 @@ namespace CPW
             mount.localPosition = new Vector3(BattleRules.Radius * 0.8f, BattleRules.Radius * 0.2f, 0);
 
             float r = BattleRules.Radius;
-            Avatar = PenguinAvatar.Create(transform, r * 2.3f, TeamColor);
+            // the original sprite penguin is drawn at its Flash size (scale 1, like the original weapons, missiles and fx)
+            Avatar = PenguinAvatar.Create(transform, PenguinSprite.Available ? PenguinSprite.NaturalHeight : r * 2.3f, TeamColor);
             Avatar.transform.localPosition = new Vector3(0, -r, 0);
             Avatar.SetClothes(slot.head, slot.chest, slot.feet);
             Avatar.SetTeamColor(TeamColor);

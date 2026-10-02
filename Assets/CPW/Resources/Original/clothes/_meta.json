@@ -1,0 +1,944 @@
+{
+ "files": {
+  "RedHat": [
+   28.13,
+   39.76,
+   2.5
+  ],
+  "RedSweater": [
+   39.14,
+   38.42,
+   2.5
+  ],
+  "Skates_l": [
+   20.67,
+   19.02,
+   2.5
+  ],
+  "Skates_r": [
+   17.42,
+   22.02,
+   2.5
+  ],
+  "army_boots_blue_l": [
+   20.61,
+   18.65,
+   2.5
+  ],
+  "army_boots_blue_r": [
+   17.36,
+   22.65,
+   2.5
+  ],
+  "army_boots_red_l": [
+   20.61,
+   18.65,
+   2.5
+  ],
+  "army_boots_red_r": [
+   17.36,
+   22.65,
+   2.5
+  ],
+  "army_helmet_blue": [
+   28.72,
+   29.86,
+   2.5
+  ],
+  "army_helmet_red": [
+   28.72,
+   29.86,
+   2.5
+  ],
+  "army_jacket_blue": [
+   38.63,
+   35.81,
+   2.5
+  ],
+  "army_jacket_red": [
+   38.63,
+   35.81,
+   2.5
+  ],
+  "bunny_chest": [
+   38.63,
+   36.31,
+   2.5
+  ],
+  "bunny_feet_l": [
+   20.48,
+   19.25,
+   2.5
+  ],
+  "bunny_feet_r": [
+   17.23,
+   23.25,
+   2.5
+  ],
+  "bunny_head": [
+   20.68,
+   51.89,
+   2.5
+  ],
+  "clown_chest": [
+   40.23,
+   38.14,
+   2.5
+  ],
+  "clown_feet_l": [
+   23.07,
+   20.02,
+   2.5
+  ],
+  "clown_feet_r": [
+   16.82,
+   24.02,
+   2.5
+  ],
+  "clown_head": [
+   31.32,
+   39.18,
+   2.5
+  ],
+  "cowboy_chest": [
+   39.59,
+   36.54,
+   2.5
+  ],
+  "cowboy_feet_l": [
+   20.61,
+   28.4,
+   2.5
+  ],
+  "cowboy_feet_r": [
+   17.36,
+   31.4,
+   2.5
+  ],
+  "cowboy_head": [
+   28.68,
+   38.36,
+   2.5
+  ],
+  "dark_assassin_chest": [
+   40.71,
+   35.79,
+   2.5
+  ],
+  "dark_assassin_feet_l": [
+   20.81,
+   18.81,
+   2.5
+  ],
+  "dark_assassin_feet_r": [
+   16.56,
+   21.81,
+   2.5
+  ],
+  "dark_assassin_head": [
+   26.09,
+   32.38,
+   2.5
+  ],
+  "desert_chest": [
+   38.84,
+   37.72,
+   2.5
+  ],
+  "desert_feet_l": [
+   20.86,
+   16.81,
+   2.5
+  ],
+  "desert_feet_r": [
+   16.61,
+   16.81,
+   2.5
+  ],
+  "desert_head": [
+   30.1,
+   33.56,
+   2.5
+  ],
+  "elvis_chest": [
+   40.02,
+   38.3,
+   2.5
+  ],
+  "elvis_feet_l": [
+   20.1,
+   17.57,
+   2.5
+  ],
+  "elvis_feet_r": [
+   16.85,
+   21.57,
+   2.5
+  ],
+  "elvis_head": [
+   25.25,
+   32.34,
+   2.5
+  ],
+  "flannel_chest": [
+   39.28,
+   35.89,
+   2.5
+  ],
+  "flannel_feet_l": [
+   20.61,
+   18.65,
+   2.5
+  ],
+  "flannel_feet_r": [
+   17.36,
+   22.65,
+   2.5
+  ],
+  "flannel_head": [
+   25.95,
+   33.38,
+   2.5
+  ],
+  "football_chest": [
+   38.67,
+   38.64,
+   2.5
+  ],
+  "football_feet_l": [
+   20.46,
+   18.5,
+   2.5
+  ],
+  "football_feet_r": [
+   17.21,
+   21.5,
+   2.5
+  ],
+  "football_head": [
+   25.34,
+   35.1,
+   2.5
+  ],
+  "gladiator_chest": [
+   39.04,
+   31.96,
+   2.5
+  ],
+  "gladiator_feet_l": [
+   20.86,
+   16.31,
+   2.5
+  ],
+  "gladiator_feet_r": [
+   17.61,
+   15.31,
+   2.5
+  ],
+  "gladiator_head": [
+   25.07,
+   39.06,
+   2.5
+  ],
+  "hockey_chest": [
+   40.66,
+   37.92,
+   2.5
+  ],
+  "hockey_feet_l": [
+   20.67,
+   19.02,
+   2.5
+  ],
+  "hockey_feet_r": [
+   17.42,
+   22.02,
+   2.5
+  ],
+  "hockey_head": [
+   24.78,
+   34.92,
+   2.5
+  ],
+  "king_chest": [
+   47.27,
+   38.41,
+   2.5
+  ],
+  "king_feet_l": [
+   20.46,
+   25.9,
+   2.5
+  ],
+  "king_feet_r": [
+   17.21,
+   28.9,
+   2.5
+  ],
+  "king_head": [
+   21.67,
+   37.94,
+   2.5
+  ],
+  "paper_chest": [
+   52.25,
+   35.21,
+   2.5
+  ],
+  "paper_feet_l": [
+   20.46,
+   15.94,
+   2.5
+  ],
+  "paper_feet_r": [
+   17.21,
+   19.94,
+   2.5
+  ],
+  "paper_head": [
+   25.4,
+   40.67,
+   2.5
+  ],
+  "polar_chest": [
+   40.81,
+   38.6,
+   2.5
+  ],
+  "polar_feet_l": [
+   21.56,
+   19.11,
+   2.5
+  ],
+  "polar_feet_r": [
+   17.31,
+   22.11,
+   2.5
+  ],
+  "polar_head": [
+   28.94,
+   35.63,
+   2.5
+  ],
+  "rain_chest": [
+   40.02,
+   37.05,
+   2.5
+  ],
+  "rain_feet_l": [
+   20.61,
+   18.4,
+   2.5
+  ],
+  "rain_feet_r": [
+   17.36,
+   22.4,
+   2.5
+  ],
+  "rain_head": [
+   31.87,
+   30.2,
+   2.5
+  ],
+  "schoolgirl_chest": [
+   39.11,
+   38.79,
+   2.5
+  ],
+  "schoolgirl_feet_l": [
+   20.61,
+   17.27,
+   2.5
+  ],
+  "schoolgirl_feet_r": [
+   16.36,
+   21.27,
+   2.5
+  ],
+  "schoolgirl_head": [
+   19.23,
+   37.07,
+   2.5
+  ],
+  "sm_chest": [
+   49.0,
+   35.98,
+   2.5
+  ],
+  "sm_feet_l": [
+   20.61,
+   18.69,
+   2.5
+  ],
+  "sm_feet_r": [
+   17.36,
+   21.69,
+   2.5
+  ],
+  "sm_head": [
+   28.94,
+   26.23,
+   2.5
+  ],
+  "space_chest": [
+   43.39,
+   34.6,
+   2.5
+  ],
+  "space_feet_l": [
+   22.99,
+   20.48,
+   2.5
+  ],
+  "space_feet_r": [
+   17.74,
+   25.48,
+   2.5
+  ],
+  "space_head": [
+   28.15,
+   43.52,
+   2.5
+  ],
+  "specialforce_chest": [
+   40.38,
+   35.89,
+   2.5
+  ],
+  "specialforce_feet_l": [
+   20.67,
+   18.9,
+   2.5
+  ],
+  "specialforce_feet_r": [
+   17.42,
+   21.9,
+   2.5
+  ],
+  "specialforce_head": [
+   26.02,
+   30.5,
+   2.5
+  ],
+  "tuxedo_chest": [
+   38.63,
+   35.77,
+   2.5
+  ],
+  "tuxedo_feet_l": [
+   20.1,
+   17.57,
+   2.5
+  ],
+  "tuxedo_feet_r": [
+   16.85,
+   21.57,
+   2.5
+  ],
+  "tuxedo_head": [
+   21.75,
+   46.46,
+   2.5
+  ],
+  "welder_chest": [
+   38.18,
+   38.35,
+   2.5
+  ],
+  "welder_feet_l": [
+   21.67,
+   18.81,
+   2.5
+  ],
+  "welder_feet_r": [
+   17.42,
+   21.81,
+   2.5
+  ],
+  "welder_head": [
+   23.91,
+   38.54,
+   2.5
+  ],
+  "wizard_chest": [
+   42.1,
+   37.01,
+   2.5
+  ],
+  "wizard_feet_l": [
+   20.37,
+   42.82,
+   2.5
+  ],
+  "wizard_feet_r": [
+   16.12,
+   45.82,
+   2.5
+  ],
+  "wizard_head": [
+   30.37,
+   55.18,
+   2.5
+  ]
+ },
+ "items": {
+  "RedHat": {
+   "parts": {
+    "head_gear": "RedHat"
+   },
+   "slot": "head"
+  },
+  "RedSweater": {
+   "parts": {
+    "body_gear": "RedSweater"
+   },
+   "slot": "chest"
+  },
+  "Skates": {
+   "parts": {
+    "left_foot_gear": "Skates_l",
+    "right_foot_gear": "Skates_r"
+   },
+   "slot": "feet"
+  },
+  "army_boots_blue": {
+   "parts": {
+    "left_foot_gear": "army_boots_blue_l",
+    "right_foot_gear": "army_boots_blue_r"
+   },
+   "slot": "feet"
+  },
+  "army_boots_red": {
+   "parts": {
+    "left_foot_gear": "army_boots_red_l",
+    "right_foot_gear": "army_boots_red_r"
+   },
+   "slot": "feet"
+  },
+  "army_helmet_blue": {
+   "parts": {
+    "head_gear": "army_helmet_blue"
+   },
+   "slot": "head"
+  },
+  "army_helmet_red": {
+   "parts": {
+    "head_gear": "army_helmet_red"
+   },
+   "slot": "head"
+  },
+  "army_jacket_blue": {
+   "parts": {
+    "body_gear": "army_jacket_blue"
+   },
+   "slot": "chest"
+  },
+  "army_jacket_red": {
+   "parts": {
+    "body_gear": "army_jacket_red"
+   },
+   "slot": "chest"
+  },
+  "bunny_chest": {
+   "parts": {
+    "body_gear": "bunny_chest"
+   },
+   "slot": "chest"
+  },
+  "bunny_feet": {
+   "parts": {
+    "left_foot_gear": "bunny_feet_l",
+    "right_foot_gear": "bunny_feet_r"
+   },
+   "slot": "feet"
+  },
+  "bunny_head": {
+   "parts": {
+    "head_gear": "bunny_head"
+   },
+   "slot": "head"
+  },
+  "clown_chest": {
+   "parts": {
+    "body_gear": "clown_chest"
+   },
+   "slot": "chest"
+  },
+  "clown_feet": {
+   "parts": {
+    "left_foot_gear": "clown_feet_l",
+    "right_foot_gear": "clown_feet_r"
+   },
+   "slot": "feet"
+  },
+  "clown_head": {
+   "parts": {
+    "head_gear": "clown_head"
+   },
+   "slot": "head"
+  },
+  "cowboy_chest": {
+   "parts": {
+    "body_gear": "cowboy_chest"
+   },
+   "slot": "chest"
+  },
+  "cowboy_feet": {
+   "parts": {
+    "left_foot_gear": "cowboy_feet_l",
+    "right_foot_gear": "cowboy_feet_r"
+   },
+   "slot": "feet"
+  },
+  "cowboy_head": {
+   "parts": {
+    "head_gear": "cowboy_head"
+   },
+   "slot": "head"
+  },
+  "dark_assassin_chest": {
+   "parts": {
+    "body_gear": "dark_assassin_chest"
+   },
+   "slot": "chest"
+  },
+  "dark_assassin_feet": {
+   "parts": {
+    "left_foot_gear": "dark_assassin_feet_l",
+    "right_foot_gear": "dark_assassin_feet_r"
+   },
+   "slot": "feet"
+  },
+  "dark_assassin_head": {
+   "parts": {
+    "head_gear": "dark_assassin_head"
+   },
+   "slot": "head"
+  },
+  "desert_chest": {
+   "parts": {
+    "body_gear": "desert_chest"
+   },
+   "slot": "chest"
+  },
+  "desert_feet": {
+   "parts": {
+    "left_foot_gear": "desert_feet_l",
+    "right_foot_gear": "desert_feet_r"
+   },
+   "slot": "feet"
+  },
+  "desert_head": {
+   "parts": {
+    "head_gear": "desert_head"
+   },
+   "slot": "head"
+  },
+  "elvis_chest": {
+   "parts": {
+    "body_gear": "elvis_chest"
+   },
+   "slot": "chest"
+  },
+  "elvis_feet": {
+   "parts": {
+    "left_foot_gear": "elvis_feet_l",
+    "right_foot_gear": "elvis_feet_r"
+   },
+   "slot": "feet"
+  },
+  "elvis_head": {
+   "parts": {
+    "head_gear": "elvis_head"
+   },
+   "slot": "head"
+  },
+  "flannel_chest": {
+   "parts": {
+    "body_gear": "flannel_chest"
+   },
+   "slot": "chest"
+  },
+  "flannel_feet": {
+   "parts": {
+    "left_foot_gear": "flannel_feet_l",
+    "right_foot_gear": "flannel_feet_r"
+   },
+   "slot": "feet"
+  },
+  "flannel_head": {
+   "parts": {
+    "head_gear": "flannel_head"
+   },
+   "slot": "head"
+  },
+  "football_chest": {
+   "parts": {
+    "body_gear": "football_chest"
+   },
+   "slot": "chest"
+  },
+  "football_feet": {
+   "parts": {
+    "left_foot_gear": "football_feet_l",
+    "right_foot_gear": "football_feet_r"
+   },
+   "slot": "feet"
+  },
+  "football_head": {
+   "parts": {
+    "head_gear": "football_head"
+   },
+   "slot": "head"
+  },
+  "gladiator_chest": {
+   "parts": {
+    "body_gear": "gladiator_chest"
+   },
+   "slot": "chest"
+  },
+  "gladiator_feet": {
+   "parts": {
+    "left_foot_gear": "gladiator_feet_l",
+    "right_foot_gear": "gladiator_feet_r"
+   },
+   "slot": "feet"
+  },
+  "gladiator_head": {
+   "parts": {
+    "head_gear": "gladiator_head"
+   },
+   "slot": "head"
+  },
+  "hockey_chest": {
+   "parts": {
+    "body_gear": "hockey_chest"
+   },
+   "slot": "chest"
+  },
+  "hockey_feet": {
+   "parts": {
+    "left_foot_gear": "hockey_feet_l",
+    "right_foot_gear": "hockey_feet_r"
+   },
+   "slot": "feet"
+  },
+  "hockey_head": {
+   "parts": {
+    "head_gear": "hockey_head"
+   },
+   "slot": "head"
+  },
+  "king_chest": {
+   "parts": {
+    "body_gear": "king_chest"
+   },
+   "slot": "chest"
+  },
+  "king_feet": {
+   "parts": {
+    "left_foot_gear": "king_feet_l",
+    "right_foot_gear": "king_feet_r"
+   },
+   "slot": "feet"
+  },
+  "king_head": {
+   "parts": {
+    "head_gear": "king_head"
+   },
+   "slot": "head"
+  },
+  "paper_chest": {
+   "parts": {
+    "body_gear": "paper_chest"
+   },
+   "slot": "chest"
+  },
+  "paper_feet": {
+   "parts": {
+    "left_foot_gear": "paper_feet_l",
+    "right_foot_gear": "paper_feet_r"
+   },
+   "slot": "feet"
+  },
+  "paper_head": {
+   "parts": {
+    "head_gear": "paper_head"
+   },
+   "slot": "head"
+  },
+  "polar_chest": {
+   "parts": {
+    "body_gear": "polar_chest"
+   },
+   "slot": "chest"
+  },
+  "polar_feet": {
+   "parts": {
+    "left_foot_gear": "polar_feet_l",
+    "right_foot_gear": "polar_feet_r"
+   },
+   "slot": "feet"
+  },
+  "polar_head": {
+   "parts": {
+    "head_gear": "polar_head"
+   },
+   "slot": "head"
+  },
+  "rain_chest": {
+   "parts": {
+    "body_gear": "rain_chest"
+   },
+   "slot": "chest"
+  },
+  "rain_feet": {
+   "parts": {
+    "left_foot_gear": "rain_feet_l",
+    "right_foot_gear": "rain_feet_r"
+   },
+   "slot": "feet"
+  },
+  "rain_head": {
+   "parts": {
+    "head_gear": "rain_head"
+   },
+   "slot": "head"
+  },
+  "schoolgirl_chest": {
+   "parts": {
+    "body_gear": "schoolgirl_chest"
+   },
+   "slot": "chest"
+  },
+  "schoolgirl_feet": {
+   "parts": {
+    "left_foot_gear": "schoolgirl_feet_l",
+    "right_foot_gear": "schoolgirl_feet_r"
+   },
+   "slot": "feet"
+  },
+  "schoolgirl_head": {
+   "parts": {
+    "head_gear": "schoolgirl_head"
+   },
+   "slot": "head"
+  },
+  "sm_chest": {
+   "parts": {
+    "body_gear": "sm_chest"
+   },
+   "slot": "chest"
+  },
+  "sm_feet": {
+   "parts": {
+    "left_foot_gear": "sm_feet_l",
+    "right_foot_gear": "sm_feet_r"
+   },
+   "slot": "feet"
+  },
+  "sm_head": {
+   "parts": {
+    "head_gear": "sm_head"
+   },
+   "slot": "head"
+  },
+  "space_chest": {
+   "parts": {
+    "body_gear": "space_chest"
+   },
+   "slot": "chest"
+  },
+  "space_feet": {
+   "parts": {
+    "left_foot_gear": "space_feet_l",
+    "right_foot_gear": "space_feet_r"
+   },
+   "slot": "feet"
+  },
+  "space_head": {
+   "parts": {
+    "head_gear": "space_head"
+   },
+   "slot": "head"
+  },
+  "specialforce_chest": {
+   "parts": {
+    "body_gear": "specialforce_chest"
+   },
+   "slot": "chest"
+  },
+  "specialforce_feet": {
+   "parts": {
+    "left_foot_gear": "specialforce_feet_l",
+    "right_foot_gear": "specialforce_feet_r"
+   },
+   "slot": "feet"
+  },
+  "specialforce_head": {
+   "parts": {
+    "head_gear": "specialforce_head"
+   },
+   "slot": "head"
+  },
+  "tuxedo_chest": {
+   "parts": {
+    "body_gear": "tuxedo_chest"
+   },
+   "slot": "chest"
+  },
+  "tuxedo_feet": {
+   "parts": {
+    "left_foot_gear": "tuxedo_feet_l",
+    "right_foot_gear": "tuxedo_feet_r"
+   },
+   "slot": "feet"
+  },
+  "tuxedo_head": {
+   "parts": {
+    "head_gear": "tuxedo_head"
+   },
+   "slot": "head"
+  },
+  "welder_chest": {
+   "parts": {
+    "body_gear": "welder_chest"
+   },
+   "slot": "chest"
+  },
+  "welder_feet": {
+   "parts": {
+    "left_foot_gear": "welder_feet_l",
+    "right_foot_gear": "welder_feet_r"
+   },
+   "slot": "feet"
+  },
+  "welder_head": {
+   "parts": {
+    "head_gear": "welder_head"
+   },
+   "slot": "head"
+  },
+  "wizard_chest": {
+   "parts": {
+    "body_gear": "wizard_chest"
+   },
+   "slot": "chest"
+  },
+  "wizard_feet": {
+   "parts": {
+    "left_foot_gear": "wizard_feet_l",
+    "right_foot_gear": "wizard_feet_r"
+   },
+   "slot": "feet"
+  },
+  "wizard_head": {
+   "parts": {
+    "head_gear": "wizard_head"
+   },
+   "slot": "head"
+  }
+ },
+ "note": "Clothes rendered from the Blender models by Blender/scripts/clothes_sprites.py; files = [pivot px x, pivot px y (from the top-left), zoom]; the pivot is the clothing slot origin of the original rig rest pose (characters/penguin_rig.json, damagehit_small_weapon frame 0).",
+ "zoom": 2.5
+}

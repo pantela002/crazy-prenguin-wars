@@ -7,6 +7,8 @@ namespace CPW
     /// and ice blocks (the Blender Env/Props models, primitive fallbacks when missing), distant snowy peaks, clouds,
     /// a sun glow and falling snow, plus the player's penguin (PenguinAvatar) wearing their clothes on an ice floe. It sits in front of GameManager.MenuCamera
     /// and is hidden whenever a battle starts so battle cameras never see it.
+    /// The penguin is the original 2D sprite penguin when its art is imported (PenguinAvatar.IsSprite): a flat card
+    /// standing on the floe that turns around by mirroring instead of spinning in 3D.
     /// </summary>
     public class MenuScene3D : MonoBehaviour
     {
@@ -28,6 +30,7 @@ namespace CPW
             inst.targetPos = layout == Layout.Home ? new Vector3(0f, 0.47f, 0) : new Vector3(-3.1f, -1.55f, -0.8f);
             inst.pivot.localPosition = inst.targetPos;
             inst.targetSpin = 0;
+            if (inst.penguin != null && inst.penguin.IsSprite) inst.spin = 0;
             if (inst.penguin != null) inst.penguin.SetFacing(1);
             inst.RefreshClothes(true);
         }
@@ -87,7 +90,15 @@ namespace CPW
             shadow.transform.localRotation = Quaternion.Euler(90, 0, 0);
             shadow.transform.localScale = new Vector3(1.3f, 1.0f, 1f);
             inst.penguin = PenguinAvatar.Create(inst.pivot, 2.6f, Theme.PlayerColors[0]);
-            if (inst.penguin != null) inst.penguin.SetState(AvatarState.Idle);
+            if (inst.penguin != null)
+            {
+                inst.penguin.PlaySpawnOnEnable = false;   // not every time the home screen comes back
+                inst.penguin.UnscaledTime = true;
+                inst.penguin.ShowTeamRing = false;
+                inst.penguin.SetState(AvatarState.Idle);
+                // the sprite's toes reach a little below its feet line: stand it on the floe's snow, not in it
+                if (inst.penguin.IsSprite) inst.penguin.transform.localPosition = new Vector3(0, 0.06f, -0.05f);
+            }
             // The Blender model already faces the camera turned 40 degrees toward +X (Blender/scripts/penguin.py YAW),
             // which looks right for the menus: on home it turns toward the Play button.
         }
@@ -285,7 +296,14 @@ namespace CPW
             // ease rotation toward the target and drift back to facing the camera when idle
             spin = Mathf.Lerp(spin, targetSpin, 1 - Mathf.Exp(-8 * dt));
             targetSpin = Mathf.Lerp(targetSpin, Mathf.Sin(idleT * 0.4f) * 12f, 1 - Mathf.Exp(-0.6f * dt));
-            pivot.localRotation = Quaternion.Euler(0, spin, 0);
+            if (penguin != null && penguin.IsSprite)
+            {
+                // a flat sprite cannot spin: dragging past 90 degrees turns it around
+                pivot.localRotation = Quaternion.identity;
+                int f = Mathf.Cos(spin * Mathf.Deg2Rad) >= 0f ? 1 : -1;
+                if (f != penguin.Facing) penguin.SetFacing(f);
+            }
+            else pivot.localRotation = Quaternion.Euler(0, spin, 0);
             if (celebrateUntil > 0 && Time.unscaledTime > celebrateUntil)
             {
                 celebrateUntil = 0;

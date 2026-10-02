@@ -24,6 +24,54 @@ namespace CPW
             return ModelLibrary.Exists(p) ? p : DefaultWeapon;
         }
 
+        static Dictionary<string, Record> itemByGraphic;
+
+        /// <summary>The Item whose Graphics is #WeaponGraphic.{id} (the id is usually the item id too), or null.</summary>
+        static Record ItemForGraphic(string weaponGraphicId)
+        {
+            if (string.IsNullOrEmpty(weaponGraphicId) || !GameData.Loaded) return null;
+            if (itemByGraphic == null)
+            {
+                itemByGraphic = new Dictionary<string, Record>();
+                foreach (var kv in GameData.Section("Item"))
+                {
+                    string g = kv.Value.Str("Graphics");
+                    if (string.IsNullOrEmpty(g) || !g.StartsWith("#WeaponGraphic.")) continue;
+                    string gid = Strip(g);
+                    // prefer the item named like its graphic (MegaNuke over FeaturedMegaNuke)
+                    if (!itemByGraphic.ContainsKey(gid) || kv.Key == gid) itemByGraphic[gid] = kv.Value;
+                }
+            }
+            string id = Strip(weaponGraphicId);
+            return itemByGraphic.TryGetValue(id, out var r) ? r : GameData.Item(id);
+        }
+
+        /// <summary>
+        /// How the penguin holds an item (Item.AnimationType: small_weapon, large_weapon, small_object, large_object,
+        /// punch), picking the original "&lt;action&gt;_&lt;hold&gt;" penguin animations. Unknown -> large_weapon.
+        /// </summary>
+        public static string WeaponHoldType(string weaponGraphicId)
+        {
+            var r = ItemForGraphic(weaponGraphicId);
+            string t = r != null ? r.Str("AnimationType") : null;
+            switch (t)
+            {
+                case "small_weapon": case "large_weapon": case "small_object": case "large_object": case "punch": return t;
+                default: return "large_weapon";
+            }
+        }
+
+        /// <summary>Item.AllowRotation: whether the held clip turns with the aim (Weapon.aim). Default true.</summary>
+        public static bool WeaponAllowsRotation(string weaponGraphicId)
+        {
+            var r = ItemForGraphic(weaponGraphicId);
+            return r == null || !r.Has("AllowRotation") || r.Bool("AllowRotation", true);
+        }
+
+        /// <summary>Clothes sprite (rendered from the Blender model onto the original penguin's slots) for a Bonus id
+        /// and rig slot, or null when there is none (the item is then not drawn on the sprite penguin).</summary>
+        public static Sprite ClothesSprite(string bonusId, PenguinRigData.Slot slot) => PenguinRigData.ClothesSprite(bonusId, slot);
+
         /// <summary>Projectile model for a MissileGraphic id (falls back to null so callers can draw their own primitive).</summary>
         public static string MissileModel(string missileGraphicId)
         {
