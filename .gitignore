@@ -1,0 +1,27 @@
+# Unity
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+*.apk
+*.aab
+*.unitypackage
+.vs/
+.idea/
+.DS_Store
+# Blender backups
+*.blend1
+*.blend2
+# Your private Firebase keys (see Docs/FIREBASE.md)
+Assets/CPW/Resources/firebase_config.json
+Assets/CPW/Resources/firebase_config.json.meta
