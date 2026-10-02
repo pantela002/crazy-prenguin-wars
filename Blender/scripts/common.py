@@ -493,6 +493,10 @@ def _clean_meshes(objs):
         me = bpy.data.meshes.new(o.data.name + "__export")  # renamed back below so the FBX keeps the mesh name
         bm.to_mesh(me)
         bm.free()
+        if me.normals_domain == "POINT":
+            # fully smooth mesh: the exporter would write ByVertice+IndexToDirect normals, which Unity rejects
+            # ("has no normals"). Identical custom normals force per-corner normals without changing shading.
+            me.normals_split_custom_set_from_vertices([v.normal[:] for v in me.vertices])
         if not me.materials:
             for m in o.data.materials:
                 me.materials.append(m)
