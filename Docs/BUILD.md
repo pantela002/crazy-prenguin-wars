@@ -37,7 +37,7 @@ iPhone, either from your own computer or with GitHub Actions. No previous Unity 
 3. Click the project to open it. The first import takes a few minutes (Unity converts all models, sounds and textures).
 4. On first open, the editor script `Assets/CPW/Editor/ProjectSetup.cs` sets everything up automatically:
    company `pantela002`, product name *Crazy Penguin Wars*, bundle id `com.pantela002.crazypenguinwars`,
-   version 1.0.0, landscape only, IL2CPP + ARM64, Android 7.0 (API 24) minimum, iOS 13 minimum, the app icon,
+   version 1.0.0, landscape only, IL2CPP + ARM64, Android 7.0 (API 24) minimum, iOS 15 minimum, the app icon,
    and the scene `Assets/Scenes/Main.unity` in the build list.
    You can run it again any time with the menu **CPW > Apply Project Settings**.
    If Unity asks to restart because *Active Input Handling* changed, click **Yes**.

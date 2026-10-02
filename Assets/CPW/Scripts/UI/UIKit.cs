@@ -83,8 +83,10 @@ namespace CPW
             {
                 var es = new GameObject("EventSystem");
                 es.transform.SetParent(parent, false);
-                es.AddComponent<EventSystem>();
+                var sys = es.AddComponent<EventSystem>();
                 es.AddComponent<StandaloneInputModule>();
+                // default 10 px is under a millimetre on a 460 dpi phone: finger jitter would start a drag and cancel taps
+                sys.pixelDragThreshold = Mathf.Max(10, Mathf.RoundToInt((Screen.dpi > 0 ? Screen.dpi : 160) * 0.06f));
             }
         }
 

@@ -86,7 +86,7 @@ namespace CPW.EditorTools
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24;
             PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto; // highest installed
-            PlayerSettings.iOS.targetOSVersionString = "13.0";
+            PlayerSettings.iOS.targetOSVersionString = "15.0";   // Xcode 26+ rejects anything below 15
             PlayerSettings.iOS.requiresFullScreen = true;
 
 #if UNITY_6000_0_OR_NEWER

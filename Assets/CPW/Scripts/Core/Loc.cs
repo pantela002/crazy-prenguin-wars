@@ -25,7 +25,7 @@ namespace CPW
             Load();
             if (string.IsNullOrEmpty(key)) return "";
             var k = Strip(key);
-            if (strings.TryGetValue(k, out var s) && !string.IsNullOrEmpty(s)) return s.Replace(' ', ' ');
+            if (strings.TryGetValue(k, out var s) && !string.IsNullOrEmpty(s)) return s.Replace(' ', ' ').Replace("\\n", "\n");   // the original strings carry literal \n line breaks
             return Prettify(k);
         }
 
