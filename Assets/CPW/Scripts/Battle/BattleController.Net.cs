@@ -19,8 +19,16 @@ namespace CPW
         void OnNetTurnEnd(BattleSnapshot s) { if (s != null) lock (netLock) netSnapshots.Enqueue(s); }
         void OnNetPlayerLeft(int slot) { lock (netLock) netLeft.Enqueue(slot); }
 
+        bool netWasConnected = true;
+
         void DrainNet()
         {
+            DrainChat();
+            if (net.Connected != netWasConnected && CurrentPhase != Phase.Over)
+            {
+                netWasConnected = net.Connected;
+                SystemChat(netWasConnected ? "Connection restored." : "Connection lost. Trying to reconnect...");
+            }
             while (true)
             {
                 TurnAction a = null; BattleSnapshot s = null; int left = -1; bool any = false;
@@ -90,6 +98,8 @@ namespace CPW
             if (p.Body) p.Body.simulated = false;
             if (p.Avatar) p.Avatar.gameObject.SetActive(false);
             Hud.Banner(p.DisplayName + " left the match", Theme.Muted, 2f);
+            // original BattleManager: LocalChatMessage EXIT_CONFIRMED_INGAME ("has chickened out.")
+            SystemChat(p.DisplayName + " " + (Loc.Has("EXIT_CONFIRMED_INGAME") ? Loc.T("EXIT_CONFIRMED_INGAME") : "left the game."));
             // the AI host may have changed
             for (int i = 0; i < Penguins.Count; i++) if (!Penguins[i].Slot.isAI && !Penguins[i].Left) { hostSlot = i; break; }
             if (CurrentPhase == Phase.Over) return;

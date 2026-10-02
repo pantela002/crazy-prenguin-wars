@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace CPW
 {
@@ -15,6 +16,79 @@ namespace CPW
         public void OnPointerExit(PointerEventData e) { if (e.pointerId == pointer) Held = false; }
         public void OnPointerEnter(PointerEventData e) { if (e.pointerId == pointer && e.eligibleForClick) Held = true; }
         void OnDisable() { Held = false; pointer = int.MinValue; }
+    }
+
+    /// <summary>
+    /// Runs an action when a finger lifts inside the control (with some slop). Used for HUD buttons instead of
+    /// Button.onClick: uGUI drops the click when the press turns into a drag (finger jitter on high-dpi phones), when
+    /// a Pulse/PressScale scale change moves the edge out from under the finger, or when the release raycast hits a
+    /// panel the press itself just opened. The Button stays on the object for its tint/disabled look.
+    /// </summary>
+    public class TapAction : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    {
+        public System.Action action;
+        public float slop = 40f;          // local (canvas) units around the rect that still count as inside
+        Selectable sel;
+        int pointer = int.MinValue;
+        float downAt;
+
+        public static TapAction On(Component c, System.Action action)
+        {
+            var t = c.gameObject.GetComponent<TapAction>();
+            if (t == null) t = c.gameObject.AddComponent<TapAction>();
+            t.action = action;
+            return t;
+        }
+
+        void Awake() => sel = GetComponent<Selectable>();
+
+        public void OnPointerDown(PointerEventData e)
+        {
+            if (e.button != PointerEventData.InputButton.Left) return;
+            pointer = e.pointerId;
+            downAt = Time.unscaledTime;
+        }
+
+        public void OnPointerUp(PointerEventData e)
+        {
+            if (e.pointerId != pointer) return;
+            pointer = int.MinValue;
+            if (sel != null && !sel.IsInteractable()) return;
+            if (Time.unscaledTime - downAt > 2f) return;      // a long hold that wandered off is not a tap
+            var rt = (RectTransform)transform;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, e.position, e.pressEventCamera, out var lp)) return;
+            var r = rt.rect;
+            if (lp.x < r.xMin - slop || lp.x > r.xMax + slop || lp.y < r.yMin - slop || lp.y > r.yMax + slop) return;
+            UI.Click();
+            action?.Invoke();
+        }
+
+        void OnDisable() => pointer = int.MinValue;
+    }
+
+    /// <summary>
+    /// Tap-outside-to-close for a dim backdrop. Only a press that starts on the backdrop itself, a moment after it
+    /// appeared, closes it, so the touch that opened the panel can never close it again.
+    /// </summary>
+    public class BackdropCloser : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    {
+        public System.Action close;
+        float born;
+        int pointer = int.MinValue;
+
+        void Awake() => born = Time.unscaledTime;
+
+        public void OnPointerDown(PointerEventData e)
+        {
+            pointer = Time.unscaledTime - born > 0.2f ? e.pointerId : int.MinValue;
+        }
+
+        public void OnPointerUp(PointerEventData e)
+        {
+            if (e.pointerId != pointer) return;
+            pointer = int.MinValue;
+            close?.Invoke();
+        }
     }
 
     /// <summary>Gentle scale pulse to draw attention (tutorial highlights).</summary>

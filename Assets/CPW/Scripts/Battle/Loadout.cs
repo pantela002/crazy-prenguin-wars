@@ -66,6 +66,9 @@ namespace CPW
         public readonly List<string> Boosters = new List<string>();
         bool useProfile;
 
+        /// <summary>Ammo is the local profile's (Quick Match / Online for the local player).</summary>
+        public bool UsesProfile => useProfile;
+
         /// <summary>Build the loadout for a slot in a battle mode.</summary>
         public static Loadout For(PlayerSlot slot, BattleMode mode)
         {
@@ -187,6 +190,14 @@ namespace CPW
             bonus[id] = (bonus.TryGetValue(id, out var b) ? b : 0) + amount;
             earned[id] = (earned.TryGetValue(id, out var e) ? e : 0) + amount;
             Rebuild();
+        }
+
+        /// <summary>A weapon/booster just bought in battle: its profile ammo becomes usable in this loadout.</summary>
+        public void AddProfileItem(string id)
+        {
+            if (!useProfile || string.IsNullOrEmpty(id) || GameData.Item(id) == null) return;
+            if (counts.TryGetValue(id, out var c) && c == Infinite) return;
+            if (profileItems.Add(id)) Rebuild();
         }
 
         /// <summary>Overwrite counts from an online snapshot (fixed loadouts only).</summary>

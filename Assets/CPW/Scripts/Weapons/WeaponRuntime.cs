@@ -13,6 +13,7 @@ namespace CPW
         public int Attacker = -1;
         public float AttackPct;          // shooter's Attack stat snapshot (percent)
         public float AttackMult = 1f;    // shooter's attack multiplier snapshot (sushi boosters)
+        public List<StatMod> TypedAttack;  // shooter's typed Attack modifiers snapshot (null = none)
         public int Live;                 // live projectiles + pending scheduled emissions
         public float Started;
         public Projectile Camera;        // newest camera-followed projectile
@@ -23,7 +24,12 @@ namespace CPW
             if (shooter != null)
             {
                 s.Attacker = shooter.PlayerIndex;
-                if (shooter.Stats != null) { s.AttackPct = shooter.Stats.attack; s.AttackMult = shooter.Stats.attackMultiplier; }
+                if (shooter.Stats != null)
+                {
+                    s.AttackPct = shooter.Stats.attack;
+                    s.AttackMult = shooter.Stats.attackMultiplier;
+                    if (shooter.Stats.typedAttack.Count > 0) s.TypedAttack = new List<StatMod>(shooter.Stats.typedAttack);
+                }
             }
             return s;
         }
@@ -525,6 +531,8 @@ namespace CPW
         {
             float baseA = x.Attack * (shot != null ? shot.AttackMult : 1f);
             float pa = shot != null ? shot.AttackPct : 0f;
+            // typed Attack modifiers (FlameBadge +6 on Fire damage, CreativityMedal x1.5 against level objects)
+            if (shot != null && shot.TypedAttack != null) pa = StatBlock.ApplyTyped(pa, shot.TypedAttack, x.DamageType, target);
             pa = Mathf.Max(pa, Tuner("AttackStatMin", -51));
             float a = baseA + baseA / 135f * (125f * (pa / (pa + 100f)));
             float minPct = target is IPenguin ? Tuner("DamageMinScalingPlayer", 1) : Tuner("DamageMinScalingOther", 50);

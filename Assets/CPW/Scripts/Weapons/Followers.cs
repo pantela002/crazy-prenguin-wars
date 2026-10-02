@@ -304,6 +304,7 @@ namespace CPW
         IPenguin p;
         float attack, defence, impulse, mult = 1f;
         readonly List<string> flags = new List<string>();
+        readonly List<StatMod> typedAtk = new List<StatMod>(), typedDef = new List<StatMod>();
 
         public static StatChange Apply(IPenguin pen, Record bonus)
         {
@@ -314,8 +315,13 @@ namespace CPW
             {
                 if (kv.Key == "ID" || !(kv.Value is string str)) continue;
                 var m = StatMod.Parse(str);
-                // typed modifiers ("Add:-25:Ice") only apply to that damage type in the original: skipped here
-                if (!string.IsNullOrEmpty(m.Tag) && m.Tag != "Normal") continue;
+                // typed modifiers ("Add:-25:Ice") only count for hits matching the tag (StatBlock.TagMatches)
+                if (!string.IsNullOrEmpty(m.Tag) && m.Tag != "Normal")
+                {
+                    if (kv.Key == "Attack") { s.typedAttack.Add(m); c.typedAtk.Add(m); }
+                    else if (kv.Key == "Defence") { s.typedDefence.Add(m); c.typedDef.Add(m); }
+                    continue;
+                }
                 switch (kv.Key)
                 {
                     case "Attack":
@@ -342,6 +348,8 @@ namespace CPW
             s.impulseResistance -= impulse;
             if (mult != 0 && mult != 1f) s.attackMultiplier /= mult;
             foreach (var f in flags) s.flags.Remove(f);
+            foreach (var m in typedAtk) s.typedAttack.Remove(m);
+            foreach (var m in typedDef) s.typedDefence.Remove(m);
             p = null;
         }
     }
