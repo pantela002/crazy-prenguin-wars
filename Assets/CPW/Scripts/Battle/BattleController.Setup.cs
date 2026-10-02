@@ -40,6 +40,8 @@ namespace CPW
         public bool Online => net != null;
         /// <summary>Turn timer is held (tutorial explanations).</summary>
         public bool TimerHeld;
+        /// <summary>Seconds left before this turn's clock starts (BattleRules.TurnLeadIn: banner + camera handover).</summary>
+        public float TurnLeadInLeft { get; private set; }
         /// <summary>Weapon each penguin last chose (kept between turns).</summary>
         readonly Dictionary<int, string> selected = new Dictionary<int, string>();
 
@@ -304,7 +306,14 @@ namespace CPW
         {
             var a = Active;
             bool local = OwnedLocally(ActiveIndex);
-            if (!TimerHeld && (Tutorial == null || !Tutorial.HoldsTimer))
+            if (TurnLeadInLeft > 0)
+            {
+                // the turn clock waits for the turn banner and the camera handover; the match clock keeps going
+                // (it is the same on every device and the end-of-turn snapshot carries it anyway)
+                TurnLeadInLeft -= dt;
+                MatchTimeLeft -= dt;
+            }
+            else if (!TimerHeld && (Tutorial == null || !Tutorial.HoldsTimer))
             {
                 TurnTimeLeft -= dt;
                 MatchTimeLeft -= dt;
@@ -406,6 +415,7 @@ namespace CPW
         void StartPlaying()
         {
             CurrentPhase = Phase.Turn;
+            TurnLeadInLeft = BattleRules.TurnLeadIn;
             var a = Active;
             string name = a.DisplayName;
             if (IsLocalHuman(ActiveIndex))
@@ -621,6 +631,7 @@ namespace CPW
             Fired = true;
             // original practice simulation: after firing the turn has TimeAfterFiring left to retreat
             TurnTimeLeft = BattleRules.TimeAfterFiring;
+            TurnLeadInLeft = 0;
             Vector2 origin = ShotOrigin(a);
             CurrentShot = WeaponSystem.Fire(a, item, origin, angle, power, target);
             Cam.FollowShot(CurrentShot);

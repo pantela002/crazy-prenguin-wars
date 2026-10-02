@@ -181,8 +181,11 @@ namespace CPW
                 case Step.Fire:
                 case Step.Move:
                 case Step.Jump:
+                    // original order (TuxTutorial*SubState): Fire -> OpponentsTurn -> ChangeWeapon -> SelectWeapon ->
+                    // ATTACK_AP ("One Shot") before the second shot; nothing is shown between the first shot and the
+                    // opponent's turn
                     Current = Step.OpponentTurn;
-                    c.Hud.ShowHint(T("TUTORIAL_ATTACK_AP_TITLE", "One Shot"), T("TUTORIAL_ATTACK_AP", "You can only shoot ONCE every turn."));
+                    c.Hud.HideHint();
                     c.Hud.Highlight(null);
                     break;
                 case Step.FirePistol:

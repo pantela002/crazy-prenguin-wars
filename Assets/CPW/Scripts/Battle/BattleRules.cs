@@ -31,6 +31,11 @@ namespace CPW
         public static float TimeAfterFiring => BF("TimeAfterFiring", 5);
         /// <summary>Seconds a dead penguin waits before it can respawn (BattleOptions.TimeToRespawn, ms).</summary>
         public static float TimeToRespawn => Units.Ms(BF("TimeToRespawn", 5000));
+        /// <summary>Seconds at the start of every turn before the turn clock starts: the "Your turn" banner
+        /// (0.2 s fade in + 1.6 s hold) and the camera move to the active penguin (SmoothDamp 0.35 s) finish first.
+        /// A constant (not "until the camera arrives") so every device of an online match counts the same way.
+        /// INVENTED: not in the original config.</summary>
+        public const float TurnLeadIn = 2f;
         /// <summary>Upper bound for waiting on projectiles/physics after a turn ends.</summary>
         public const float MaxSettleTime = 12f;
 
