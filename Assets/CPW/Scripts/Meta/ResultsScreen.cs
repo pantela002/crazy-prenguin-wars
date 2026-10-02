@@ -42,7 +42,6 @@ namespace CPW
             title.rectTransform.anchoredPosition = new Vector2(0, -MetaUI.TopBarHeight);
             title.gameObject.AddComponent<UIPulse>().amount = 0.03f;
             Content.offsetMax = new Vector2(Content.offsetMax.x, -(MetaUI.TopBarHeight + 130));
-            AudioManager.Sfx(won ? "SplashVictory" : "SplashDefeat");
 
             // ---- podium + table (left) ----
             var left = MetaUI.CardPanel(Content, MetaUI.CardDark, "Ranking");

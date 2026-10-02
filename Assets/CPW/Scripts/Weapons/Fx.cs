@@ -441,7 +441,7 @@ namespace CPW
 
             Text CreateText()
             {
-                if (!font) font = Resources.Load<Font>("Fonts/LuckiestGuy") ?? Resources.GetBuiltinResource<Font>("Arial.ttf");
+                if (!font) font = Resources.Load<Font>("Fonts/LuckiestGuy") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
                 var root = new GameObject("Fx.Text").transform;
                 root.SetParent(transform, false);
                 TextMesh Make(string n, Vector3 local)

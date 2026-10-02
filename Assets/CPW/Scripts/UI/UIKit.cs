@@ -64,7 +64,7 @@ namespace CPW
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
             scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            scaler.matchWidthOrHeight = 0.6f;
+            scaler.matchWidthOrHeight = UI.ScalerMatch;
             go.AddComponent<GraphicRaycaster>();
             Root = (RectTransform)go.transform;
 
@@ -400,6 +400,9 @@ namespace CPW
             if (onChange != null) t.onValueChanged.AddListener(v => { Click(); onChange(v); });
             return t;
         }
+
+        /// <summary>CanvasScaler match: mostly height on phones; width on squarer screens (iPad 4:3) so wide rows still fit.</summary>
+        public static float ScalerMatch => (float)Screen.width / Mathf.Max(1, Screen.height) < 1.5f ? 0f : 0.6f;
 
         public static InputField Input(Transform parent, string value, string placeholder, Action<string> onEnd)
         {

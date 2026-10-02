@@ -113,6 +113,9 @@ namespace CPW
             I.Open(I.currentFactory);
         }
 
+        /// <summary>Frame on which Escape/Android back closed a popup, so the battle HUD doesn't also open its pause menu.</summary>
+        public static int EscapeUsedFrame = -1;
+
         void Update()
         {
             Current?.Tick(Time.unscaledDeltaTime);
@@ -124,7 +127,7 @@ namespace CPW
                     for (int i = UI.PopupLayer.childCount - 1; i >= 0; i--)
                     {
                         var c = UI.PopupLayer.GetChild(i);
-                        if (c.name.StartsWith("Popup")) { Destroy(c.gameObject); return; }
+                        if (c.name.StartsWith("Popup")) { Destroy(c.gameObject); EscapeUsedFrame = Time.frameCount; return; }
                     }
                 }
                 if (Current != null) Back();

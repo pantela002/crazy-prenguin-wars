@@ -81,7 +81,7 @@ namespace CPW
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
             scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            scaler.matchWidthOrHeight = 0.6f;
+            scaler.matchWidthOrHeight = UI.ScalerMatch;
             go.AddComponent<GraphicRaycaster>();
             var h = go.AddComponent<BattleHUD>();
             h.c = controller;
@@ -437,7 +437,8 @@ namespace CPW
 
         void UpdateInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && c.CurrentPhase != BattleController.Phase.Over)
+            if (Input.GetKeyDown(KeyCode.Escape) && c.CurrentPhase != BattleController.Phase.Over
+                && ScreenManager.EscapeUsedFrame != Time.frameCount)
             {
                 if (AnyPanelOpen) CloseAllPanels(); else OpenPause();
             }

@@ -222,7 +222,7 @@ namespace CPW
             if (a == null) return false;
             End(a);
             Fx.FloatText(p.Position + Vector2.up * 1.4f, "BLOCKED", new Color(0.5f, 0.85f, 1f), 0.8f);
-            AudioManager.Sfx("ShieldHit");
+            AudioManager.Sfx("Shield");
             return true;
         }
 

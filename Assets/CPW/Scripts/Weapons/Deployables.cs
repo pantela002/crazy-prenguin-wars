@@ -202,7 +202,7 @@ namespace CPW
             if (Type == Kind.Caltrops) { Remove(true); return; }
             triggered = true;
             fuse = delay;
-            if (delay > 0.1f) AudioManager.Sfx("MineBeep");
+            if (delay > 0.1f) AudioManager.Sfx("Mine");
         }
 
         void Detonate()

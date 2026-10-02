@@ -126,9 +126,9 @@ namespace CPW.EditorTools
                     // 0 = Input Manager (old), 1 = Input System (new), 2 = Both
                     if (prop != null && prop.intValue == 1)
                     {
-                        prop.intValue = 2;
+                        prop.intValue = 0;
                         so.ApplyModifiedProperties();
-                        Debug.LogWarning("CPW: 'Active Input Handling' set to Both. Restart Unity for it to take effect.");
+                        Debug.LogWarning("CPW: 'Active Input Handling' set to Input Manager (Old). Restart Unity for it to take effect.");
                     }
                 }
             }
