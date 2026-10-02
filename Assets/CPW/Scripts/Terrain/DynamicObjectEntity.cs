@@ -11,8 +11,21 @@ namespace CPW
     /// </summary>
     public class DynamicObjectEntity : MonoBehaviour, IDamageable
     {
-        /// <summary>Nape density → Rigidbody2D collider density (mass per world unit²). Water uses the same scale.</summary>
-        public static float DensityScale = 1f / 60f;
+        /// <summary>
+        /// Nape density → Rigidbody2D collider density (mass per world unit²). Water uses the same scale.
+        /// 1/250 keeps the original penguin : prop mass ratio (BattleRules.PenguinMass is density * px² / 100000 and
+        /// 1 unit² = 400 px²), so a small wood crate weighs ~0.1 against a 1.1 penguin and slides when walked into,
+        /// while a metal cube (density 100) stays heavy.
+        /// </summary>
+        public static float DensityScale = 1f / 250f;
+        /// <summary>Extra horizontal force a walking penguin adds to a prop it pushes, so light props get going
+        /// despite their friction (heavy ones need many times more than this).</summary>
+        public static float PushAssistForce = 14f;
+        /// <summary>Explosion knockback arrives as a velocity change for everything; props scale it by sqrt(KnockRefMass / mass)
+        /// (clamped to KnockScaleMin..Max) so light crates fly and heavy metal barely shifts.</summary>
+        public static float KnockRefMass = 1f, KnockScaleMin = 0.3f, KnockScaleMax = 1.35f;
+        /// <summary>Hit points per second a burnable prop (Wood, Ice, CustomObjects) loses while in lava.</summary>
+        public static float LavaBurnPerSecond = 70f;
         /// <summary>Relative speed above which a collision plays the material's collision sound.</summary>
         public static float CollisionSoundSpeed = 4f;
         /// <summary>Raised when an object breaks or falls out of the world (object, last attacker player index or -1, item id).</summary>
@@ -41,7 +54,7 @@ namespace CPW
         Renderer[] renderers;
         Color[] baseColors;
         MaterialPropertyBlock mpb;
-        float flash, soundCooldown;
+        float flash, soundCooldown, burnFx;
         Color materialColor;
         Mesh ownedMesh;
 
@@ -82,7 +95,7 @@ namespace CPW
             Body.useAutoMass = true;
             Body.interpolation = RigidbodyInterpolation2D.Interpolate;
             Body.sleepMode = p.sleep ? RigidbodySleepMode2D.StartAsleep : RigidbodySleepMode2D.StartAwake;
-            Body.SetDrag(0.05f, 0.1f);
+            Body.SetDrag(0.05f, 0.3f);   // a little angular drag so props settle instead of rocking
 
             var pm = PhysMat(def);
             float density = def.density * DensityScale;
@@ -120,6 +133,8 @@ namespace CPW
             }
             Area = Mathf.Max(0.01f, area);
             Size = max - min;
+            // small props are light and get flung fast: continuous collision so a blast can't tunnel them through the terrain edges
+            if (Mathf.Min(Size.x, Size.y) < 1.6f) Body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
             BuildVisual(def, (min + max) * 0.5f);
             Alive = true;
@@ -303,6 +318,8 @@ namespace CPW
             if (!Alive) return;
             if (Body != null && d.impulse.sqrMagnitude > 1e-6f)
             {
+                d.impulse *= KnockScale(Body.mass);
+                Body.WakeUp();
                 var b = Size.magnitude * 0.5f + 0.5f;
                 if ((d.point - Body.position).sqrMagnitude < b * b) Body.AddForceAtPosition(d.impulse, d.point, ForceMode2D.Impulse);
                 else Body.AddForce(d.impulse, ForceMode2D.Impulse);
@@ -321,6 +338,12 @@ namespace CPW
             }
             ApplyLook();
         }
+
+        /// <summary>Knockback multiplier for a prop of this mass (light props fly further, heavy ones barely move).</summary>
+        public static float KnockScale(float mass) => Mathf.Clamp(Mathf.Sqrt(KnockRefMass / Mathf.Max(0.01f, mass)), KnockScaleMin, KnockScaleMax);
+
+        /// <summary>Wood, ice and custom objects burn/melt in lava; stone and metal just sink.</summary>
+        public bool Burnable => Material == "Wood" || Material == "Ice" || Material == "CustomObjects";
 
         /// <summary>Destroy with debris, sound and the Destroyed event.</summary>
         public void Break()
@@ -370,11 +393,40 @@ namespace CPW
             var p = Body.position;
             // out of the world: deep under water or far outside the level
             var lvl = t.Level;
+            // lava: burnable props lose HP while their center is under the surface (unbreakable ones too: lava wins)
+            if (lvl != null && lvl.IsLava && Burnable && p.y < t.WaterY)
+            {
+                HP -= LavaBurnPerSecond * Time.fixedDeltaTime;
+                burnFx -= Time.fixedDeltaTime;
+                if (burnFx <= 0)
+                {
+                    burnFx = 0.35f;
+                    Fx.Smoke(new Vector2(p.x, t.WaterY + 0.3f), Mathf.Clamp(Size.magnitude * 0.35f, 0.5f, 2f));
+                    flash = 0.4f;
+                }
+                if (HP <= 0) { Break(); return; }
+                int stage = Mathf.Clamp(3 - Mathf.CeilToInt(HP / Mathf.Max(1f, Toughness)) + 1, 1, 3);
+                if (stage != DamageStage) { DamageStage = stage; ApplyLook(); }
+            }
             if (p.y < t.WaterY - 20f || p.x < lvl.cameraBounds.xMin - 30f || p.x > lvl.cameraBounds.xMax + 30f)
             {
                 Destroyed?.Invoke(this, LastAttacker, LastItem);
                 Remove();
             }
+        }
+
+        // A walking penguin pushing into the side of the prop: add a small assist force in the walk direction
+        // (contact physics already transfers the penguin's momentum; this only gets light props over static friction).
+        void OnCollisionStay2D(Collision2D c)
+        {
+            if (!Alive || Body == null || c.rigidbody == null || PushAssistForce <= 0 || c.contactCount == 0) return;
+            var pen = c.rigidbody.GetComponent<Penguin>();
+            if (pen == null || !pen.Alive || !pen.Walking || !pen.Grounded) return;
+            int dir = pen.WalkDir;
+            if (dir == 0 || (Body.position.x - c.rigidbody.position.x) * dir <= 0) return;   // only the prop in front
+            if (Mathf.Abs(c.GetContact(0).normal.x) < 0.6f) return;   // side contact, not standing on / under it
+            if (Body.Vel().x * dir > 4f) return;                        // already moving along
+            Body.AddForce(new Vector2(dir * PushAssistForce, 0));
         }
 
         void OnCollisionEnter2D(Collision2D c)
