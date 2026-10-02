@@ -141,6 +141,12 @@
             ".write": "auth != null && root.child('matches').child($matchId).child('players').child(auth.uid).exists()"
           }
         },
+        "chat": {
+          "$msg": {
+            ".write": "auth != null && !data.exists() && root.child('matches').child($matchId).child('players').child(auth.uid).exists()",
+            ".validate": "newData.child('p').isNumber() && newData.child('u').val() === auth.uid && (!newData.child('x').exists() || (newData.child('x').isString() && newData.child('x').val().length <= 80))"
+          }
+        },
         "rematch": {
           "$uid": {
             ".write": "auth != null && $uid === auth.uid && root.child('matches').child($matchId).child('players').child(auth.uid).exists()",
