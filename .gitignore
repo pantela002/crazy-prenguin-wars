@@ -25,3 +25,4 @@
 # Your private Firebase keys (see Docs/FIREBASE.md)
 Assets/CPW/Resources/firebase_config.json
 Assets/CPW/Resources/firebase_config.json.meta
+.claude/
