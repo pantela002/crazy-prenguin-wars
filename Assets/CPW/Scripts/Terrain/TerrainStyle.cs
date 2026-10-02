@@ -56,6 +56,68 @@ namespace CPW
         static readonly HashSet<string> paintedCaps = new HashSet<string>();   // cap textures with final colors (Blender-made)
         static readonly Dictionary<string, Material> capMats = new Dictionary<string, Material>();
 
+        // ------------------------------------------------------------------ original art manifest
+
+        static Dictionary<string, string[]> original;
+
+        /// <summary>
+        /// Entry of Resources/Textures/original_art.txt (Blender/scripts/original_art.py): the original pixel size of an
+        /// imported piece of the Flash game's art ("Parallax/Forest/parallax_1_5", "Terrain/Wood", "Water/Lava",
+        /// "Items/Wood/cube_large_1"...) plus extra fields. 20 px = 1 world unit. False when the art is not there.
+        /// </summary>
+        public static bool OriginalArt(string key, out Vector2 sizePx, out string[] fields)
+        {
+            if (original == null)
+            {
+                original = new Dictionary<string, string[]>();
+                var ta = Resources.Load<TextAsset>("Textures/original_art");
+                if (ta != null)
+                {
+                    foreach (var line in ta.text.Split('\n'))
+                    {
+                        var f = line.Trim().Split(' ');
+                        if (f.Length >= 3) original[f[0]] = f;
+                    }
+                }
+            }
+            if (original.TryGetValue(key, out fields))
+            {
+                float.TryParse(fields[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float w);
+                float.TryParse(fields[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float h);
+                sizePx = new Vector2(w, h);
+                return w > 0 && h > 0;
+            }
+            sizePx = Vector2.zero;
+            return false;
+        }
+
+        /// <summary>Hex color field ("rrggbb" or "rrggbbaa") of a manifest entry, or def.</summary>
+        public static Color OriginalColor(string[] fields, int index, Color def)
+        {
+            if (fields == null || index >= fields.Length) return def;
+            var s = fields[index];
+            if (s.Length < 6 || !int.TryParse(s.Substring(0, 6), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int v)) return def;
+            float a = 1;
+            if (s.Length >= 8 && int.TryParse(s.Substring(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int av)) a = av / 255f;
+            return new Color(((v >> 16) & 255) / 255f, ((v >> 8) & 255) / 255f, (v & 255) / 255f, a);
+        }
+
+        /// <summary>The look of a level: its "style" (Volcano, IceCave) when set, else its theme.</summary>
+        public static string Look(LevelData lvl) =>
+            lvl == null ? "Forest" : !string.IsNullOrEmpty(lvl.style) ? lvl.style : string.IsNullOrEmpty(lvl.theme) ? "Forest" : lvl.theme;
+
+        /// <summary>Original background art folder (Forest, Winter, Mountain, Desert) for a level theme or style.</summary>
+        public static string BackgroundTheme(string themeOrStyle)
+        {
+            switch (themeOrStyle)
+            {
+                case "Winter": case "Ice": case "IceCave": return "Winter";
+                case "Mountain": case "Stone": case "Volcano": case "Lava": return "Mountain";
+                case "Desert": case "Metal": case "OilRig": case "Mud": return "Desert";
+                default: return "Forest";
+            }
+        }
+
         /// <summary>Parse "0x5c2c36" / "#5c2c36" (invalid values such as "1xf4ec0a" give def).</summary>
         public static Color Hex(string s, Color def)
         {
@@ -81,6 +143,13 @@ namespace CPW
                 tex.wrapMode = TextureWrapMode.Repeat;
                 st.texture = tex;
                 st.texMean = AverageColor(tex, new Color(0.7f, 0.7f, 0.7f));
+                if (OriginalArt("Terrain/" + st.id, out var px, out var f))
+                {
+                    // the original landmass_bg_tile: 20 px per unit like the Flash game
+                    st.tileWorld = px.x / 20f;
+                    st.texMean = OriginalColor(f, 3, st.texMean);
+                }
+                else if (OriginalArt("TerrainMean/" + st.id, out _, out var fm)) st.texMean = OriginalColor(fm, 3, st.texMean);
             }
             else
             {
@@ -230,6 +299,8 @@ namespace CPW
         {
             switch (levelTheme)
             {
+                case "Volcano": case "Lava": top = new Color(0.20f, 0.10f, 0.14f); bottom = new Color(0.95f, 0.38f, 0.16f); break;
+                case "IceCave": top = new Color(0.10f, 0.20f, 0.34f); bottom = new Color(0.45f, 0.70f, 0.86f); break;
                 case "Winter": top = new Color(0.47f, 0.66f, 0.90f); bottom = new Color(0.90f, 0.95f, 1f); break;
                 case "Mountain": top = new Color(0.33f, 0.24f, 0.40f); bottom = new Color(0.98f, 0.62f, 0.36f); break;
                 case "Desert": top = new Color(0.36f, 0.62f, 0.93f); bottom = new Color(1f, 0.88f, 0.62f); break;
@@ -238,12 +309,29 @@ namespace CPW
         }
 
         /// <summary>Water body color (LevelTheme.WaterColor), surface/foam color and whether it glows (lava).</summary>
-        public static void WaterColors(string levelTheme, out Color body, out Color surface, out bool lava)
+        public static void WaterColors(string levelTheme, out Color body, out Color surface, out bool lava) =>
+            WaterColors(levelTheme, LiquidFor(levelTheme), out body, out surface, out lava);
+
+        /// <summary>Liquid of a level theme when the level does not say (Mountain = the original lava sea, Desert = mud).</summary>
+        public static string LiquidFor(string levelTheme)
+        {
+            switch (levelTheme)
+            {
+                case "Mountain": case "Volcano": case "Lava": return "Lava";
+                case "Desert": case "OilRig": case "Mud": return "Mud";
+                default: return "Water";
+            }
+        }
+
+        /// <summary>Colors for a level's liquid ("Water", "Lava", "Mud": LevelData.liquid).</summary>
+        public static void WaterColors(string levelTheme, string liquid, out Color body, out Color surface, out bool lava)
         {
             var rec = GameData.Get("LevelTheme", levelTheme) ?? GameData.Get("MaterialTheme", levelTheme);
-            lava = levelTheme == "Mountain";
-            body = Hex(rec?.Str("WaterColor"), lava ? new Color(0.56f, 0.07f, 0f) : new Color(0.07f, 0.30f, 0.59f));
-            if (levelTheme == "Desert")
+            lava = liquid == "Lava";
+            bool mud = liquid == "Mud";
+            body = lava ? new Color(0.56f, 0.07f, 0f) : mud ? new Color(0.20f, 0.15f, 0.10f) : new Color(0.07f, 0.30f, 0.59f);
+            if (rec != null && LiquidFor(levelTheme) == liquid) body = Hex(rec.Str("WaterColor"), body);
+            if (mud)
             {
                 // original mud is 0x1a1a1a; keep it dark but brownish so it reads as mud, not a hole
                 body = new Color(0.20f, 0.15f, 0.10f);
@@ -258,6 +346,8 @@ namespace CPW
         {
             switch (levelTheme)
             {
+                case "Volcano": case "Lava": return new Color(0.24f, 0.13f, 0.14f);
+                case "IceCave": return new Color(0.30f, 0.48f, 0.64f);
                 case "Winter": return new Color(0.55f, 0.70f, 0.85f);
                 case "Mountain": return new Color(0.38f, 0.24f, 0.26f);
                 case "Desert": return new Color(0.80f, 0.55f, 0.36f);

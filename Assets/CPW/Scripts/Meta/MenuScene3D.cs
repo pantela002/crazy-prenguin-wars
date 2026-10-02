@@ -25,7 +25,7 @@ namespace CPW
             if (GameManager.I == null || GameManager.I.MenuCamera == null) return;
             if (inst == null) Create();
             inst.gameObject.SetActive(true);
-            inst.targetPos = layout == Layout.Home ? new Vector3(-0.3f, -1.55f, 0) : new Vector3(-3.1f, -1.55f, -0.8f);
+            inst.targetPos = layout == Layout.Home ? new Vector3(0f, 0.47f, 0) : new Vector3(-3.1f, -1.55f, -0.8f);
             inst.pivot.localPosition = inst.targetPos;
             inst.targetSpin = 0;
             if (inst.penguin != null) inst.penguin.SetFacing(1);
@@ -72,20 +72,20 @@ namespace CPW
 
             inst.pivot = new GameObject("PenguinPivot").transform;
             inst.pivot.SetParent(go.transform, false);
-            // the penguin stands on a little ice floe with a soft contact shadow
+            // the penguin stands on a small ice disc with a soft contact shadow (HomeStage draws the podium around it)
             var floe = Prim(PrimitiveType.Cylinder, inst.pivot, Mats.Toon(new Color(0.8f, 0.93f, 1f)));
             floe.name = "Floe";
-            floe.transform.localPosition = new Vector3(0, -0.12f, 0);
-            floe.transform.localScale = new Vector3(2.4f, 0.12f, 1.9f);
+            floe.transform.localPosition = new Vector3(0, -0.1f, 0);
+            floe.transform.localScale = new Vector3(1.5f, 0.1f, 1.2f);
             var floeTop = Prim(PrimitiveType.Cylinder, inst.pivot, Mats.Toon(new Color(0.97f, 0.99f, 1f)));
             floeTop.name = "FloeSnow";
-            floeTop.transform.localPosition = new Vector3(0.05f, 0.0f, 0.02f);
-            floeTop.transform.localScale = new Vector3(2.15f, 0.03f, 1.7f);
+            floeTop.transform.localPosition = new Vector3(0.03f, 0.0f, 0.02f);
+            floeTop.transform.localScale = new Vector3(1.32f, 0.03f, 1.04f);
             var shadow = Prim(PrimitiveType.Quad, inst.pivot, Mats.TransparentTex(Mats.SoftCircle, new Color(0.15f, 0.25f, 0.4f, 0.45f)));
             shadow.name = "Shadow";
             shadow.transform.localPosition = new Vector3(0.1f, 0.04f, 0);
             shadow.transform.localRotation = Quaternion.Euler(90, 0, 0);
-            shadow.transform.localScale = new Vector3(1.9f, 1.4f, 1f);
+            shadow.transform.localScale = new Vector3(1.3f, 1.0f, 1f);
             inst.penguin = PenguinAvatar.Create(inst.pivot, 2.6f, Theme.PlayerColors[0]);
             if (inst.penguin != null) inst.penguin.SetState(AvatarState.Idle);
             // The Blender model already faces the camera turned 40 degrees toward +X (Blender/scripts/penguin.py YAW),

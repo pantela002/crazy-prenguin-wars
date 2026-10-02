@@ -38,6 +38,8 @@ namespace CPW
                 go = Object.Instantiate(prefab, parent, false);
                 go.name = path;
                 Mats.ApplyToon(go);
+                // level objects wear the original game's sprite (with its damage stages) when it was imported
+                PropSkin.Attach(go, path);
             }
             else
             {

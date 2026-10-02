@@ -50,6 +50,19 @@ namespace CPW
         const float Deep = 60f;
         float time;
 
+        // original water_tile art (Textures/Water/{liquid}): the surface band repeats every tileW units along x
+        Texture2D tile;
+        float tileW = 9.9f, bandTop = 0.4f, bandH = 5.45f;
+
+        // lava: rising bubbles that pop at the surface and embers drifting up (one additive mesh)
+        const int FxCount = 26;
+        Mesh fxMesh;
+        Vector3[] fxV;
+        Color[] fxC;
+        readonly float[] fxX = new float[FxCount], fxT = new float[FxCount], fxLife = new float[FxCount], fxSize = new float[FxCount];
+        Material glowMat;
+        Color glowBase;
+
         public void Init(LevelData lvl)
         {
             level = lvl;
@@ -58,9 +71,26 @@ namespace CPW
             linDrag = lvl.waterLinearDrag * DragScale;
             angDrag = lvl.waterAngularDrag * DragScale;
             flow = lvl.waterVelocity;
-            TerrainStyle.WaterColors(lvl.theme, out var body, out var surface, out bool lava);
+            string liquid = string.IsNullOrEmpty(lvl.liquid) ? TerrainStyle.LiquidFor(lvl.theme) : lvl.liquid;
+            TerrainStyle.WaterColors(lvl.theme, liquid, out var body, out var surface, out bool lava);
             IsLava = lava;
-            kind = lava ? "lava" : lvl.theme == "Desert" ? "mud" : "water";
+            kind = lava ? "lava" : liquid == "Mud" ? "mud" : "water";
+            if (TerrainStyle.OriginalArt("Water/" + liquid, out var tilePx, out var tileF))
+            {
+                tile = Resources.Load<Texture2D>("Textures/Water/" + liquid);
+                if (tile != null)
+                {
+                    tile.wrapModeU = TextureWrapMode.Repeat;
+                    tile.wrapModeV = TextureWrapMode.Clamp;
+                    tileW = tilePx.x / 20f;
+                    bandH = tilePx.y / 20f;
+                    // the tile's first fully covered row sits on the physics surface; the wave crests above it
+                    int row = 0;
+                    if (tileF.Length > 3) int.TryParse(tileF[3], out row);
+                    bandTop = row / 20f;
+                    body = TerrainStyle.OriginalColor(tileF, 4, body);
+                }
+            }
 
             float xMin = Mathf.Min(0, lvl.cameraBounds.xMin) - 40, xMax = Mathf.Max(lvl.size.x, lvl.cameraBounds.xMax) + 40;
             x0 = xMin;
@@ -82,15 +112,30 @@ namespace CPW
             Color bodyA = body; bodyA.a = lava ? 0.92f : 0.72f;
             Color deepA = Color.Lerp(body, Color.black, 0.45f); deepA.a = 0.95f;
             Color foam = surface; foam.a = lava ? 1f : 0.9f;
-            waterMat = new Material(Mats.TransparentShader) { mainTexture = BodyTexture(kind), color = new Color(1.16f, 1.16f, 1.16f, 1f), name = "Water_" + kind };
-            foamMat = new Material(Mats.TransparentShader) { mainTexture = FoamTexture(kind), color = Color.white, name = "WaterFoam_" + kind };
-            owned.Add(waterMat); owned.Add(foamMat);
-            back = BuildStrip("WaterBack", 0.9f, Color.Lerp(body, surface, 0.25f) * 0.8f, Color.Lerp(body, Color.black, 0.3f), Color.Lerp(body, Color.black, 0.5f), out bv, 0.18f);
-            // the front surface row is the water color brightened toward the foam; the painted foam strip sits on top
-            Color lip = Color.Lerp(bodyA, foam, lava ? 0.85f : 0.45f); lip.a = lava ? 1f : 0.85f;
-            front = BuildStrip("WaterFront", -0.7f, lip, bodyA, deepA, out fv, 0f);
-            Color foamC = lava ? new Color(1f, 0.85f, 0.35f, 1f) : kind == "mud" ? new Color(0.62f, 0.5f, 0.36f, 0.95f) : new Color(0.93f, 0.98f, 1f, 0.95f);
-            foamMesh = BuildFoam(foamC, out foamV);
+            if (tile != null)
+            {
+                // the original water tile: its own wave crest, highlights and body gradient; the back copy is darker
+                waterMat = new Material(Mats.TransparentShader) { mainTexture = tile, color = Color.white, name = "Water_" + kind };
+                var backMat = new Material(Mats.TransparentShader) { mainTexture = tile, color = new Color(0.62f, 0.62f, 0.7f, 1f), name = "WaterBack_" + kind };
+                owned.Add(waterMat); owned.Add(backMat);
+                back = BuildStrip("WaterBack", 0.9f, Color.white, Color.white, Color.white, out bv, 0.25f);
+                back.uv = TileUVs(tileW * 0.37f);
+                front = BuildStrip("WaterFront", -0.7f, Color.white, Color.white, Color.white, out fv, 0f);
+                front.uv = TileUVs(0f);
+                transform.Find("WaterBack").GetComponent<MeshRenderer>().sharedMaterial = backMat;
+            }
+            else
+            {
+                waterMat = new Material(Mats.TransparentShader) { mainTexture = BodyTexture(kind), color = new Color(1.16f, 1.16f, 1.16f, 1f), name = "Water_" + kind };
+                foamMat = new Material(Mats.TransparentShader) { mainTexture = FoamTexture(kind), color = Color.white, name = "WaterFoam_" + kind };
+                owned.Add(waterMat); owned.Add(foamMat);
+                back = BuildStrip("WaterBack", 0.9f, Color.Lerp(body, surface, 0.25f) * 0.8f, Color.Lerp(body, Color.black, 0.3f), Color.Lerp(body, Color.black, 0.5f), out bv, 0.18f);
+                // the front surface row is the water color brightened toward the foam; the painted foam strip sits on top
+                Color lip = Color.Lerp(bodyA, foam, lava ? 0.85f : 0.45f); lip.a = lava ? 1f : 0.85f;
+                front = BuildStrip("WaterFront", -0.7f, lip, bodyA, deepA, out fv, 0f);
+                Color foamC = lava ? new Color(1f, 0.85f, 0.35f, 1f) : kind == "mud" ? new Color(0.62f, 0.5f, 0.36f, 0.95f) : new Color(0.93f, 0.98f, 1f, 0.95f);
+                foamMesh = BuildFoam(foamC, out foamV);
+            }
             if (lava)
             {
                 // a soft additive glow above the lava
@@ -106,10 +151,114 @@ namespace CPW
                 m.uv = new[] { Vector2.zero, Vector2.right, Vector2.one, Vector2.up };
                 m.triangles = new[] { 0, 2, 1, 0, 3, 2 };
                 mf.sharedMesh = m;
-                mr.sharedMaterial = Mats.Additive(Color.white);
+                glowBase = Color.white;
+                glowMat = new Material(Mats.AdditiveShader) { color = glowBase, name = "LavaGlow" };
+                owned.Add(glowMat);
+                mr.sharedMaterial = glowMat;
                 mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                BuildLavaFx();
             }
             UpdateMeshes();
+        }
+
+        /// <summary>UVs of a strip for the original tile: u along x, v from the band top (1) to its bottom (0) and below.</summary>
+        Vector2[] TileUVs(float uOffset)
+        {
+            var uv = new Vector2[cols * 3];
+            for (int k = 0; k < cols; k++)
+            {
+                float u = (x0 + k * ColW + uOffset) / tileW;
+                uv[k * 3] = new Vector2(u, 1f);
+                uv[k * 3 + 1] = new Vector2(u, 0f);
+                uv[k * 3 + 2] = new Vector2(u, 0f);
+            }
+            return uv;
+        }
+
+        // ------------------------------------------------------------------ lava bubbles and embers
+
+        void BuildLavaFx()
+        {
+            var go = new GameObject("LavaFx");
+            go.transform.SetParent(transform, false);
+            var mf = go.AddComponent<MeshFilter>();
+            var mr = go.AddComponent<MeshRenderer>();
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            mr.receiveShadows = false;
+            var mat = new Material(Mats.AdditiveShader) { mainTexture = Mats.SoftCircle, color = Color.white, name = "LavaFx" };
+            owned.Add(mat);
+            mr.sharedMaterial = mat;
+            fxMesh = new Mesh { name = "LavaFx" };
+            fxMesh.MarkDynamic();
+            owned.Add(fxMesh);
+            fxV = new Vector3[FxCount * 4];
+            fxC = new Color[FxCount * 4];
+            var uv = new Vector2[FxCount * 4];
+            var tris = new int[FxCount * 6];
+            for (int i = 0; i < FxCount; i++)
+            {
+                uv[i * 4] = new Vector2(0, 0); uv[i * 4 + 1] = new Vector2(1, 0); uv[i * 4 + 2] = new Vector2(1, 1); uv[i * 4 + 3] = new Vector2(0, 1);
+                tris[i * 6] = i * 4; tris[i * 6 + 1] = i * 4 + 2; tris[i * 6 + 2] = i * 4 + 1;
+                tris[i * 6 + 3] = i * 4; tris[i * 6 + 4] = i * 4 + 3; tris[i * 6 + 5] = i * 4 + 2;
+                fxT[i] = -Random.value * 3f;   // staggered starts
+            }
+            fxMesh.vertices = fxV;
+            fxMesh.uv = uv;
+            fxMesh.colors = fxC;
+            fxMesh.triangles = tris;
+            fxMesh.bounds = new Bounds(new Vector3((x0 + x0 + cols * ColW) * 0.5f, SurfaceY, -0.8f), new Vector3(cols * ColW + 2, 12, 2));
+            mf.sharedMesh = fxMesh;
+        }
+
+        void UpdateLavaFx(float dt)
+        {
+            if (fxMesh == null) return;
+            var cam = Camera.main;
+            float cx = cam != null ? cam.transform.position.x : x0 + cols * ColW * 0.5f;
+            float half = cam != null && cam.orthographic ? cam.orthographicSize * cam.aspect + 2f : 22f;
+            for (int i = 0; i < FxCount; i++)
+            {
+                fxT[i] += dt;
+                bool ember = i % 3 == 0;
+                if (fxT[i] >= fxLife[i])
+                {
+                    // respawn somewhere on screen
+                    fxX[i] = cx + (Random.value * 2f - 1f) * half;
+                    fxLife[i] = ember ? Random.Range(1.6f, 2.8f) : Random.Range(0.7f, 1.4f);
+                    fxSize[i] = ember ? Random.Range(0.12f, 0.22f) : Random.Range(0.25f, 0.6f);
+                    fxT[i] = fxT[i] > 0 ? 0 : fxT[i];
+                }
+                float t = Mathf.Clamp01(fxT[i] / Mathf.Max(0.01f, fxLife[i]));
+                float x = fxX[i], y, r, a;
+                Color c;
+                if (fxT[i] < 0) { r = 0; y = SurfaceY; a = 0; c = Color.black; }
+                else if (ember)
+                {
+                    x += Mathf.Sin(fxT[i] * 3f + i) * 0.25f;
+                    y = SurfaceAt(fxX[i]) + t * 3.2f;
+                    r = fxSize[i] * (1f - t * 0.5f);
+                    a = Mathf.Sin(t * Mathf.PI);
+                    c = new Color(1f, 0.55f, 0.15f) * a;
+                }
+                else
+                {
+                    // a bubble swells on the surface, then pops in a quick bright flash
+                    y = SurfaceAt(fxX[i]) - 0.08f;
+                    float pop = Mathf.Clamp01((t - 0.8f) / 0.2f);
+                    r = fxSize[i] * (0.4f + 0.6f * Mathf.Sqrt(Mathf.Min(t / 0.8f, 1f))) * (1f + pop * 0.8f);
+                    a = (0.5f + pop * 0.5f) * (1f - pop);
+                    c = new Color(1f, 0.78f, 0.3f) * a;
+                }
+                int b = i * 4;
+                fxV[b] = new Vector3(x - r, y - r, -0.8f); fxV[b + 1] = new Vector3(x + r, y - r, -0.8f);
+                fxV[b + 2] = new Vector3(x + r, y + r, -0.8f); fxV[b + 3] = new Vector3(x - r, y + r, -0.8f);
+                c.a = 1f;
+                fxC[b] = fxC[b + 1] = fxC[b + 2] = fxC[b + 3] = c;
+            }
+            fxMesh.vertices = fxV;
+            fxMesh.colors = fxC;
+            // heat shimmer stand-in: the glow above the lava breathes
+            if (glowMat != null) glowMat.color = glowBase * (0.8f + 0.2f * Mathf.Sin(time * 2.1f) + 0.08f * Mathf.Sin(time * 5.3f));
         }
 
         /// <summary>A strip of columns: surface row (foam color), a row just below, and the deep bottom row.</summary>
@@ -301,6 +450,13 @@ namespace CPW
             UpdateMeshes();
             // drift the textures (no mesh upload): body glints slide slowly, the foam a bit faster
             float sp = IsLava ? 0.35f : 1f;
+            if (IsLava) UpdateLavaFx(Time.deltaTime);
+            if (tile != null)
+            {
+                // the original tile drifts sideways slowly (with the level's flow)
+                if (waterMat != null) waterMat.mainTextureOffset = new Vector2(time * 0.012f * sp + flow.x * time * 0.01f, 0f);
+                return;
+            }
             if (waterMat != null) waterMat.mainTextureOffset = new Vector2(time * 0.025f * sp + flow.x * time * 0.01f, Mathf.Sin(time * 0.5f) * 0.01f);
             if (foamMat != null) foamMat.mainTextureOffset = new Vector2(-time * 0.06f * sp, 0f);
         }
@@ -312,9 +468,18 @@ namespace CPW
             {
                 float x = x0 + k * ColW;
                 float y = SurfaceY + h[k] + Wave(x, 0);
+                float yb = SurfaceY + 0.18f + h[k] * 0.5f + Wave(x, 1.7f) * 1.3f;
+                if (tile != null)
+                {
+                    // original tile band: its crest above the surface, the body below, the bottom color further down
+                    fv[k * 3].y = y + bandTop;
+                    fv[k * 3 + 1].y = y + bandTop - bandH;
+                    bv[k * 3].y = yb + 0.25f + bandTop;
+                    bv[k * 3 + 1].y = yb + 0.25f + bandTop - bandH;
+                    continue;
+                }
                 fv[k * 3].y = y;
                 fv[k * 3 + 1].y = y - (IsLava ? 0.45f : 0.3f);
-                float yb = SurfaceY + 0.18f + h[k] * 0.5f + Wave(x, 1.7f) * 1.3f;
                 bv[k * 3].y = yb;
                 bv[k * 3 + 1].y = yb - 0.3f;
                 if (foamV != null)

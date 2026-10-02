@@ -62,13 +62,18 @@ Parallax/Winter/parallax_4_1 173 288
 Parallax/Winter/parallax_3_2 336 338
 Parallax/Winter/parallax_3_1 301 269
 Sky/Winter_Gradient 9 510
-Terrain/Wood 128 128
-Terrain/Forest 128 128
-Terrain/Stone 256 256
-Terrain/Mountain 256 256
-Terrain/Ice 256 256
-Terrain/Winter 256 256
-Terrain/Desert 256 256
+Terrain/Wood 128 128 9b5a61
+Terrain/Forest 128 128 9b5a61
+Terrain/Stone 256 256 635555
+Terrain/Mountain 256 256 635555
+Terrain/Ice 256 256 91e5f0
+Terrain/Winter 256 256 91e5f0
+Terrain/Desert 256 256 de8935
+TerrainMean/CustomObjects 1 1 ca8d4e
+TerrainMean/Lava 1 1 493227
+TerrainMean/Metal 1 1 99a1ae
+TerrainMean/Mud 1 1 49321f
+TerrainMean/OilRig 1 1 757b84
 Water/Water 198 109 19 224995ff
 Water/Lava 198 109 7 8c1200ff
 Water/Mud 198 118 7 1a1a1aff

@@ -37,7 +37,12 @@ namespace CPW
         Color silhouette;
         System.Random rnd;
         string theme;
+        string look;                  // level style (Volcano, IceCave) or theme
+        string bgTheme;               // original background art folder (Forest, Winter, Mountain, Desert)
+        Texture2D gradient;           // original background gradient (Textures/Sky/{bgTheme}_Gradient)
+        Material skyMat;
         Camera cam;
+        static readonly Dictionary<string, Texture2D> parallaxTex = new Dictionary<string, Texture2D>();
 
         // environment models available for this theme, by category
         readonly List<string> envNear = new List<string>(), envFar = new List<string>(), envSky = new List<string>();
@@ -47,22 +52,39 @@ namespace CPW
         {
             level = lvl;
             theme = string.IsNullOrEmpty(lvl.theme) ? "Forest" : lvl.theme;
+            look = TerrainStyle.Look(lvl);
+            bgTheme = TerrainStyle.BackgroundTheme(theme);
             rnd = new System.Random((lvl.name ?? "level").GetHashCode());
             cref = lvl.size * 0.5f;
-            TerrainStyle.SkyColors(theme, out skyTop, out skyBottom);
-            silhouette = TerrainStyle.SilhouetteColor(theme);
+            TerrainStyle.SkyColors(look, out skyTop, out skyBottom);
+            silhouette = TerrainStyle.SilhouetteColor(look);
+            gradient = Resources.Load<Texture2D>("Textures/Sky/" + bgTheme + "_Gradient");
+            if (gradient != null) gradient.wrapMode = TextureWrapMode.Clamp;
             FindEnvModels();
             BuildSky();
 
-            // far procedural ridges (always), then the level's own layers
+            // the level's own layers; far (high pan) first, and among equal pans the later layer behind (the original
+            // drew its layer list last to first)
             var ordered = new List<LevelData.ParallaxLayerData>(lvl.parallaxLayers);
-            ordered.Sort((a, b) => b.cameraXPan.CompareTo(a.cameraXPan));   // far (high pan) first
+            var index = new Dictionary<LevelData.ParallaxLayerData, int>();
+            for (int i = 0; i < ordered.Count; i++) index[ordered[i]] = i;
+            ordered.Sort((a, b) => a.cameraXPan != b.cameraXPan ? b.cameraXPan.CompareTo(a.cameraXPan) : index[b].CompareTo(index[a]));
+            bool originals = false;
+            foreach (var pl in ordered)
+                foreach (var e in pl.exports)
+                    if (ParallaxTexture(pl, e, out _) != null) originals = true;
             int rank = 0;
-            AddCloudBank(0.965f, rank++);
-            AddRidge(0.93f, 0.78f, rank++, 0);
-            AddRidge(0.82f, 0.62f, rank++, 1);
-            AddRidge(0.68f, 0.47f, rank++, 2);
+            if (!originals)
+            {
+                // no original art for this level: procedural clouds and ridges behind the layers
+                AddCloudBank(0.965f, rank++);
+                AddRidge(0.93f, 0.78f, rank++, 0);
+                AddRidge(0.82f, 0.62f, rank++, 1);
+                AddRidge(0.68f, 0.47f, rank++, 2);
+            }
+            else if (look == "IceCave") AddCaveBack(0.9f, rank++);
             foreach (var pl in ordered) AddLayer(pl, rank++);
+            if (look == "IceCave") AddCaveCeiling(0.75f, rank++);
             if (ordered.Count == 0)
             {
                 // levels without layers still get some near decoration
@@ -132,6 +154,17 @@ namespace CPW
                 float hgt = ortho ? orthoSize * 2f : 2f * dist * Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
                 sky.localPosition = new Vector3(cp.x, cp.y, zs);
                 sky.localScale = new Vector3(hgt * aspect * 1.3f, hgt * 1.3f, 1);
+                if (gradient != null && skyMat != null && level != null)
+                {
+                    // the original stretched its gradient over the whole level: map the quad's span at the playfield onto
+                    // the level height (v = 0 at the bottom of the level, 1 at its top), with a little parallax
+                    float view = ortho ? orthoSize * 2f : 2f * D * Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
+                    float lh = Mathf.Max(1f, level.size.y);
+                    float cy = Mathf.Lerp(cref.y, cp.y, 0.6f);
+                    float span = view * 1.3f * 0.8f;
+                    skyMat.mainTextureScale = new Vector2(1f, span / lh);
+                    skyMat.mainTextureOffset = new Vector2(0f, (cy - span * 0.5f) / lh);
+                }
                 // keep the glow round although the sky quad is stretched by the aspect ratio
                 if (sunGlow != null) sunGlow.localScale = new Vector3(0.55f / Mathf.Max(0.3f, aspect), 0.55f, 1);
             }
@@ -159,6 +192,12 @@ namespace CPW
                 Color.Lerp(skyBottom, skyTop, 0.12f), horizon, Color.Lerp(skyBottom, skyTop, 0.3f),
                 Color.Lerp(skyBottom, skyTop, 0.68f), Color.Lerp(skyTop, Color.black, 0.08f)
             };
+            if (gradient != null)
+            {
+                // original gradient texture; styles tint it (a redder, darker volcano sky, a dim ice cave)
+                var tint = look == "Volcano" ? new Color(1f, 0.82f, 0.76f) : look == "IceCave" ? new Color(0.5f, 0.64f, 0.8f) : Color.white;
+                for (int i = 0; i < cs.Length; i++) cs[i] = tint;
+            }
             var verts = new Vector3[ys.Length * 2];
             var cols = new Color[ys.Length * 2];
             var uvs = new Vector2[ys.Length * 2];
@@ -183,16 +222,19 @@ namespace CPW
             go.AddComponent<MeshFilter>().sharedMesh = m;
             var mr = go.AddComponent<MeshRenderer>();
             var mat = new Material(Mats.TransparentShader) { color = Color.white, name = "Sky", renderQueue = TerrainStyle.QueueSky };
+            if (gradient != null) mat.mainTexture = gradient;
+            skyMat = mat;
             owned.Add(mat);
             mr.sharedMaterial = mat;
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             mr.receiveShadows = false;
-            BuildSunGlow();
+            // the original backgrounds have their light painted in; only the volcano gets an extra glow
+            if (gradient == null || look == "Volcano") BuildSunGlow();
         }
 
         Color HorizonGlow()
         {
-            switch (theme)
+            switch (look == "Volcano" ? "Mountain" : look == "IceCave" ? "Winter" : theme)
             {
                 case "Mountain": return new Color(1f, 0.45f, 0.2f);
                 case "Desert": return new Color(1f, 0.93f, 0.7f);
@@ -206,7 +248,7 @@ namespace CPW
         {
             var go = new GameObject("SunGlow");
             go.transform.SetParent(sky, false);
-            bool volcano = theme == "Mountain";
+            bool volcano = theme == "Mountain" || look == "Volcano";
             go.transform.localPosition = volcano ? new Vector3(0.12f, -0.2f, -0.001f) : new Vector3(0.24f, 0.2f, -0.001f);
             sunGlow = go.transform;
             var m = new Mesh { name = "SunGlow" };
@@ -451,6 +493,7 @@ namespace CPW
         /// <summary>A layer from the level file: items every `gap` along x, tiled across the level if asked.</summary>
         void AddLayer(LevelData.ParallaxLayerData pl, int rank)
         {
+            if (AddOriginalLayer(pl, rank)) return;
             var L = NewLayer(pl.id, pl.cameraXPan, pl.cameraYPan, rank, out var mb);
             float pan = pl.cameraXPan;
             bool skyLayer = pan >= 0.95f;
@@ -484,6 +527,158 @@ namespace CPW
                 else ProceduralItem(mb, basePos, pan, skyLayer, nearLayer, hash);
             }
             Finish(L, mb, rank);
+        }
+
+        /// <summary>Original art of a layer graphic (Textures/Parallax/{Theme}/{export}) and its size in world units.</summary>
+        Texture2D ParallaxTexture(LevelData.ParallaxLayerData pl, string export, out Vector2 size)
+        {
+            size = Vector2.zero;
+            if (string.IsNullOrEmpty(export)) return null;
+            string folder = bgTheme;
+            // "level_graphics/level_bg_forest.swf" names the art set
+            if (!string.IsNullOrEmpty(pl.swf))
+            {
+                string s = pl.swf.ToLowerInvariant();
+                if (s.Contains("winter")) folder = "Winter";
+                else if (s.Contains("mountain")) folder = "Mountain";
+                else if (s.Contains("desert")) folder = "Desert";
+                else if (s.Contains("forest")) folder = "Forest";
+            }
+            string key = "Parallax/" + folder + "/" + export;
+            if (!TerrainStyle.OriginalArt(key, out var px, out _)) return null;
+            if (!parallaxTex.TryGetValue(key, out var t) || t == null)
+            {
+                t = Resources.Load<Texture2D>("Textures/" + key);
+                if (t != null) t.wrapMode = TextureWrapMode.Clamp;
+                parallaxTex[key] = t;
+            }
+            size = px / 20f;
+            return t;
+        }
+
+        /// <summary>
+        /// A level layer drawn with the original sprites, placed like ParallaxLayer.as: bottom-center registration at
+        /// (x + i * gap, y), scaled by zoom, graphic i = exports[i % count], repeated across the level when tiled.
+        /// One mesh (one draw call) per graphic of the layer. False when none of its graphics exist as original art.
+        /// </summary>
+        bool AddOriginalLayer(LevelData.ParallaxLayerData pl, int rank)
+        {
+            int n = pl.exports.Count;
+            if (n == 0) return false;
+            var tex = new Texture2D[n];
+            var size = new Vector2[n];
+            bool any = false;
+            for (int i = 0; i < n; i++) { tex[i] = ParallaxTexture(pl, pl.exports[i], out size[i]); any |= tex[i] != null; }
+            if (!any) return false;
+            var L = NewLayer(pl.id, pl.cameraXPan, pl.cameraYPan, rank, out _);
+            float zoom = pl.zoom > 0.01f ? pl.zoom : 1f;
+            var batches = new Dictionary<Texture2D, SpriteBatch>();
+            float gap = Mathf.Max(pl.gap, 0f);
+            void Put(int i, float x)
+            {
+                int e = ((i % n) + n) % n;
+                if (tex[e] == null) return;
+                if (!batches.TryGetValue(tex[e], out var b)) batches[tex[e]] = b = new SpriteBatch();
+                var s = size[e] * zoom;
+                b.Add(new Vector2(x - s.x * 0.5f, pl.position.y), new Vector2(x + s.x * 0.5f, pl.position.y + s.y));
+            }
+            if (pl.tileHorizontally && gap > 0.5f)
+            {
+                // cover everything the camera can see; the layer also slides by (1 - pan) of the camera travel
+                float slack = (1f - Mathf.Clamp01(pl.cameraXPan)) * level.cameraBounds.width * 0.5f + 30f;
+                float xMin = level.cameraBounds.xMin - slack, xMax = level.cameraBounds.xMax + slack;
+                int i0 = Mathf.FloorToInt((xMin - pl.position.x) / gap), i1 = Mathf.CeilToInt((xMax - pl.position.x) / gap);
+                for (int i = i0; i <= i1; i++) Put(i, pl.position.x + i * gap);
+            }
+            else for (int i = 0; i < n; i++) Put(i, pl.position.x + i * gap);
+            foreach (var kv in batches)
+            {
+                var go = new GameObject("Original_" + kv.Key.name);
+                go.transform.SetParent(L.root, false);
+                var mesh = kv.Value.ToMesh(kv.Key.name);
+                owned.Add(mesh);
+                go.AddComponent<MeshFilter>().sharedMesh = mesh;
+                var mr = go.AddComponent<MeshRenderer>();
+                var tint = look == "IceCave" ? Color.Lerp(Color.white, new Color(0.55f, 0.7f, 0.9f), Mathf.Clamp01(pl.cameraXPan)) :
+                           look == "Volcano" ? Color.Lerp(Color.white, new Color(1f, 0.72f, 0.62f), Mathf.Clamp01(pl.cameraXPan) * 0.8f) : Color.white;
+                var mat = new Material(Mats.TransparentShader) { mainTexture = kv.Key, color = tint, name = "Parallax_" + kv.Key.name, renderQueue = TerrainStyle.QueueParallax + rank * 2 };
+                owned.Add(mat);
+                mr.sharedMaterial = mat;
+                mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                mr.receiveShadows = false;
+            }
+            return true;
+        }
+
+        /// <summary>Dark ice wall behind an ice cave's layers: rows of big faceted blocks.</summary>
+        void AddCaveBack(float pan, int rank)
+        {
+            var L = NewLayer("CaveBack", pan, pan, rank, out var mb);
+            float xMin = level.cameraBounds.xMin - 60, xMax = level.cameraBounds.xMax + 60;
+            float y0 = level.waterY - 8f, y1 = level.size.y + 20f;
+            Color a = new Color(0.16f, 0.30f, 0.46f, 0.55f), b = new Color(0.30f, 0.50f, 0.68f, 0.45f);
+            for (float y = y0; y < y1; y += 5f)
+            {
+                float off = Rand(0f, 6f);
+                for (float x = xMin - off; x < xMax; x += Rand(5f, 9f))
+                {
+                    float w = Rand(4.5f, 8.5f), h = Rand(4f, 5.5f);
+                    var c = Color.Lerp(a, b, Rand(0f, 1f));
+                    var hl = Color.Lerp(c, new Color(0.7f, 0.88f, 1f, 0.5f), 0.4f);
+                    mb.Quad(new Vector2(x, y), new Vector2(x + w, y + 0.3f), new Vector2(x + w - 0.4f, y + h), new Vector2(x + 0.3f, y + h - 0.2f), c, c, hl, hl);
+                }
+            }
+            Finish(L, mb, rank);
+        }
+
+        /// <summary>Icicle ceiling of an ice cave: a dark ice band along the level top with hanging icicles.</summary>
+        void AddCaveCeiling(float pan, int rank)
+        {
+            var L = NewLayer("CaveCeiling", pan, Mathf.Lerp(pan, 1f, 0.5f), rank, out var mb);
+            float xMin = level.cameraBounds.xMin - 60, xMax = level.cameraBounds.xMax + 60;
+            float top = level.size.y + 30f, y = level.size.y + 1.5f;
+            Color body = new Color(0.20f, 0.36f, 0.55f), rim = new Color(0.55f, 0.80f, 0.95f), tip = new Color(0.85f, 0.96f, 1f, 0.9f);
+            mb.Rect(new Vector2(xMin, y), new Vector2(xMax, top), body, Color.Lerp(body, Color.black, 0.3f));
+            for (float x = xMin; x < xMax; x += Rand(1.2f, 3.2f))
+            {
+                float w = Rand(0.8f, 2.2f), h = Rand(1.5f, 6f);
+                mb.Tri(new Vector2(x, y + 0.2f), new Vector2(x + w * 0.5f, y - h), new Vector2(x + w, y + 0.2f), rim);
+                mb.Tri(new Vector2(x + w * 0.2f, y), new Vector2(x + w * 0.5f, y - h * 0.92f), new Vector2(x + w * 0.45f, y), tip);
+            }
+            mb.Rect(new Vector2(xMin, y - 0.3f), new Vector2(xMax, y + 0.5f), rim, body);
+            Finish(L, mb, rank);
+        }
+
+        /// <summary>Textured quads (uv 0..1 each, white vertex colors) for the original layer sprites.</summary>
+        class SpriteBatch
+        {
+            readonly List<Vector3> v = new List<Vector3>();
+            readonly List<Vector2> uv = new List<Vector2>();
+            readonly List<Color> c = new List<Color>();
+            readonly List<int> t = new List<int>();
+
+            public void Add(Vector2 min, Vector2 max)
+            {
+                int i = v.Count;
+                v.Add(new Vector3(min.x, min.y, 0)); v.Add(new Vector3(max.x, min.y, 0));
+                v.Add(new Vector3(max.x, max.y, 0)); v.Add(new Vector3(min.x, max.y, 0));
+                uv.Add(new Vector2(0, 0)); uv.Add(new Vector2(1, 0)); uv.Add(new Vector2(1, 1)); uv.Add(new Vector2(0, 1));
+                for (int k = 0; k < 4; k++) c.Add(Color.white);
+                t.Add(i); t.Add(i + 2); t.Add(i + 1);
+                t.Add(i); t.Add(i + 3); t.Add(i + 2);
+            }
+
+            public Mesh ToMesh(string name)
+            {
+                var m = new Mesh { name = name };
+                m.SetVertices(v);
+                m.SetUVs(0, uv);
+                m.SetColors(c);
+                m.SetTriangles(t, 0);
+                m.RecalculateBounds();
+                var b = m.bounds; b.Expand(new Vector3(400, 200, 10)); m.bounds = b;
+                return m;
+            }
         }
 
         void PlaceModel(string path, Transform parent, Vector2 basePos, float height, float pan, int rank)

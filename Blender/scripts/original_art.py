@@ -112,6 +112,11 @@ def cap_from_tile(tile, per_repeat=4, W=512, H=128):
     return bleed(canvas[:, W:2 * W])
 
 
+def hexmean(img):
+    m = img[..., :3].reshape(-1, 3).mean(axis=0)
+    return "%02x%02x%02x" % tuple(int(c * 255 + 0.5) for c in m)
+
+
 def water_surface_row(img):
     """First row (from the top) where every column is at least half as opaque as the bottom of the tile."""
     a = img[..., 3]
@@ -162,10 +167,17 @@ def run():
             img = load(bg)
             h, w = img.shape[:2]
             C.write_png(os.path.join(tex, "Terrain", mid + ".png"), resize(img, pot(w), pot(h)))
-            manifest.append("Terrain/%s %d %d" % (mid, w, h))
+            manifest.append("Terrain/%s %d %d %s" % (mid, w, h, hexmean(img)))
         tile = os.path.join(d, "landmass_tile.png")
         if os.path.exists(tile):
             C.write_png(os.path.join(tex, "Terrain", mid + "_Cap.png"), cap_from_tile(load(tile)))
+    # mean colors of the other (procedural) terrain textures: TerrainStyle divides the border colors by them
+    tdir = os.path.join(tex, "Terrain")
+    done = set(LANDMASS)
+    for fn in sorted(os.listdir(tdir)):
+        mid = fn[:-4]
+        if fn.endswith(".png") and "_" not in mid and mid not in done:
+            manifest.append("TerrainMean/%s 1 1 %s" % (mid, hexmean(load(os.path.join(tdir, fn)))))
     for liquid, th in LIQUIDS.items():
         f = os.path.join(src, "water", th, "water_tile.png")
         if not os.path.exists(f):
