@@ -54,6 +54,24 @@ namespace CPW
             return go;
         }
 
+        // ------------------------------------------------------------------ original 2D art (Resources/Original)
+
+        /// <summary>Original Flash sprite by path under Resources/Original (see OriginalArt), or null.</summary>
+        public static Sprite OriginalSprite(string path) => OriginalArt.Sprite(path);
+
+        /// <summary>Original Flash symbol as an animation (see OriginalArt), or null.</summary>
+        public static SpriteAnimSet OriginalAnim(string path) => OriginalArt.Anim(path);
+
+        /// <summary>
+        /// Original-art counterpart of Spawn: a child playing the set on a SpriteRenderer (looping when animated),
+        /// or null when set is null so the caller can fall back to Spawn (3D model / primitive).
+        /// </summary>
+        public static SpriteAnim SpawnSprite(SpriteAnimSet set, Transform parent, int sortingOrder = 0, bool loop = true)
+        {
+            if (set == null) return null;
+            return SpriteAnim.Create(parent, set, set.Path, sortingOrder, loop);
+        }
+
         /// <summary>Load an icon PNG rendered by Blender from Resources/Icons/{path}; returns null if missing.</summary>
         public static Sprite Icon(string path)
         {
