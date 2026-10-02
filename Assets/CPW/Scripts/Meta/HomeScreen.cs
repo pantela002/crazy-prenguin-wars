@@ -168,7 +168,6 @@ namespace CPW
             Mode(modes, Loc.T("PRACTICE"), Theme.Good, () => ScreenManager.Show(() => new LoadoutScreen(BattleFactory.PracticeMatch())));
             Mode(modes, Loc.T("BUTTON_CUSTOM_GAME"), MetaUI.Purple, () => ScreenManager.Show(() => new CustomGameScreen()));
             Mode(modes, "Online", MetaUI.Teal, PlayScreen.OpenOnline);
-            Mode(modes, "League", new Color32(205, 127, 50, 255), () => ScreenManager.Show(() => new TournamentScreen()));
             Mode(modes, "More >", Theme.PanelDark, () => ScreenManager.Show(() => new PlayScreen()));
         }
 
