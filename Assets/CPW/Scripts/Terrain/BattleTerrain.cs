@@ -286,7 +286,8 @@ namespace CPW
                     // the original's MissileExplosion{Material}: particle_1..5 of the landmass set; else colored chips
                     var pe = PaletteNear(center, radius + 0.5f);
                     int n = Mathf.Clamp(Mathf.RoundToInt(removed * 1.5f), 3, 16);
-                    if (pe == null || !SpriteDebris.Terrain(center, pe.style.id, Mathf.Clamp(n / 2 + 3, 5, 10), radius, pe.tint))
+                    if (!Fx.TerrainDebris(center, n) &&
+                        (pe == null || !SpriteDebris.Terrain(center, pe.style.id, Mathf.Clamp(n / 2 + 3, 5, 10), radius, pe.tint)))
                         Fx.Debris(center, MaterialColorAt(center, radius), n);
                 }
             }
