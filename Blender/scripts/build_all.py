@@ -6,6 +6,7 @@ Usage (from the repo root):
     python3 Blender/scripts/build_all.py penguin clothes # some steps
     python3 Blender/scripts/build_all.py icons:Weapons,Clothes   # some icon sections
 Steps: penguin clothes weapons missiles props env textures icons docs verify  (models = the first six)
+       clothes_sprites[:id,id] (not in "all": clothes on the original 2D penguin, see clothes_sprites.py)
 Env: CPW_SAMPLES=32 (Cycles samples for icons).
 """
 import os
@@ -48,6 +49,11 @@ def step(name, arg=None):
     elif name == "icons":
         import icons
         icons.run(arg.split(",") if arg else None)
+    elif name == "clothes_sprites":
+        import penguin_rig_fill
+        penguin_rig_fill.main()
+        import clothes_sprites
+        clothes_sprites.run(arg.split(",") if arg else None)
     elif name == "docs":
         write_docs()
     elif name == "verify":

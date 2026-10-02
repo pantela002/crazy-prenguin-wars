@@ -97,7 +97,7 @@ namespace CPW
                 inst.penguin.ShowTeamRing = false;
                 inst.penguin.SetState(AvatarState.Idle);
                 // the sprite's toes reach a little below its feet line: stand it on the floe's snow, not in it
-                if (inst.penguin.IsSprite) inst.penguin.transform.localPosition = new Vector3(0, 0.06f, -0.05f);
+                if (inst.penguin.IsSprite) inst.penguin.transform.localPosition = new Vector3(0, 0.1f, -0.05f);
             }
             // The Blender model already faces the camera turned 40 degrees toward +X (Blender/scripts/penguin.py YAW),
             // which looks right for the menus: on home it turns toward the Play button.
