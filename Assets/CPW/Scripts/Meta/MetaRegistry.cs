@@ -15,6 +15,8 @@ namespace CPW
             MetaHooks.ResultsScreen = r => new ResultsScreen(r);
             MetaHooks.ApplyRewards = RewardService.Apply;
             ChallengeTracker.Install();
+            PlayerStatsTracker.Install();   // leaderboard periods + weekly league points
+            Social.Install();               // presence, inbox badge, league settlement while online
             TopBar.Install();
         }
     }

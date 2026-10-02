@@ -6,13 +6,19 @@ namespace CPW
 {
     /// <summary>
     /// Online menu: Quick Match, host a public or private game (private games show a short code), join by code,
-    /// the list of open games, and the waiting room (players, Start for the host, Leave).
+    /// the list of open games, and the waiting room (players, Start for the host, invite friends, Leave).
+    /// The host's map picker shows maps above the player's level locked (Level.MinLevel, like LockedLevelButtonContainer).
     /// Opened by the menus by reflection ("CPW.OnlineLobbyScreen"), so it keeps a public parameterless constructor.
     /// Works with any IOnlineService; when online play is not available it explains how to switch it on.
     /// </summary>
     public class OnlineLobbyScreen : UIScreen
     {
         public override bool ShowTopBar => false;
+
+        /// <summary>Start a quick match as soon as the lobby is ready (the home screen's one-tap PLAY).</summary>
+        public static bool AutoQuickMatch;
+        /// <summary>Join this private game code as soon as the lobby is ready (accepted inbox invite).</summary>
+        public static string PendingJoinCode;
 
         enum Mode { Offline, Connecting, Lobby, Searching, Room }
 
@@ -53,11 +59,11 @@ namespace CPW
             body = UI.Rect(Root, "Body");
             UI.Anchor(body, 0.03f, 0.04f, 0.97f, 0.8f);
 
-            levels = new List<string>(GameData.Section("Level").Keys);
-            levels.Sort(string.CompareOrdinal);
+            levels = new List<string>();
+            foreach (var r in BattleFactory.Levels()) levels.Add(r.Id);
 
-            if (S.Room != null) { mode = Mode.Room; Rebuild(); return; }
-            if (S.Available) { mode = Mode.Lobby; Rebuild(); return; }
+            if (S.Room != null) { AutoQuickMatch = false; PendingJoinCode = null; mode = Mode.Room; Rebuild(); return; }
+            if (S.Available) { mode = Mode.Lobby; Rebuild(); RunPendingAction(); return; }
             mode = Mode.Connecting;
             Rebuild();
             S.Init(ok =>
@@ -65,7 +71,15 @@ namespace CPW
                 if (!alive) return;
                 mode = ok ? Mode.Lobby : Mode.Offline;
                 Rebuild();
+                if (ok) RunPendingAction();
+                else { AutoQuickMatch = false; PendingJoinCode = null; }
             });
+        }
+
+        void RunPendingAction()
+        {
+            if (AutoQuickMatch) { AutoQuickMatch = false; StartQuickMatch(); return; }
+            if (!string.IsNullOrEmpty(PendingJoinCode)) { var c = PendingJoinCode; PendingJoinCode = null; Join(c); }
         }
 
         public override void OnHide()
@@ -185,7 +199,7 @@ namespace CPW
             UI.HBox(setRow, 12, TextAnchor.MiddleCenter, 0, true);
             UI.Layout(setRow, -1, 90);
             Button mapB = null, turnB = null, timeB = null;
-            mapB = UI.Button(setRow, MapText(), () => { levelChoice = levelChoice + 1 >= levels.Count ? -1 : levelChoice + 1; mapB.GetComponentInChildren<Text>().text = MapText(); }, UI.ButtonStyle.Plain, 28);
+            mapB = UI.Button(setRow, MapText(), () => PickMap(() => { if (mapB) mapB.GetComponentInChildren<Text>().text = MapText(); }), UI.ButtonStyle.Plain, 28);
             UI.Layout(mapB, -1, 90, 1.6f);
             turnB = UI.Button(setRow, TurnText(), () => { turnChoice = (turnChoice + 1) % TurnTimes.Length; turnB.GetComponentInChildren<Text>().text = TurnText(); }, UI.ButtonStyle.Plain, 28);
             UI.Layout(turnB, -1, 90, 1);
@@ -221,7 +235,60 @@ namespace CPW
             RefreshList();
         }
 
-        string MapText() => "Map: " + (levelChoice < 0 || levelChoice >= levels.Count ? "Random" : Loc.Prettify(levels[levelChoice]));
+        string MapText() => "Map: " + (!ChoiceUnlocked() ? "Random" : BattleFactory.LevelDisplayName(levels[levelChoice]));
+
+        static int MinLevel(string levelId) => GameData.Get("Level", levelId)?.Int("MinLevel", 1) ?? 1;
+        static bool Unlocked(string levelId) => ProfileService.P.level >= MinLevel(levelId);
+        bool ChoiceUnlocked() => levelChoice >= 0 && levelChoice < levels.Count && Unlocked(levels[levelChoice]);
+
+        /// <summary>Map picker for hosted games: Random + every map; maps above the player's level are locked.</summary>
+        void PickMap(System.Action changed)
+        {
+            var win = MetaUI.Window("Choose a map", new Vector2(1500, 860), out var layer);
+            var host = UI.Rect(win, "Maps");
+            UI.Stretch(host, 20, 20, 120, 20);
+            UI.ScrollGrid(host, out var grid, new Vector2(270, 210), new Vector2(14, 14));
+            UI.Stretch((RectTransform)host.GetChild(0));
+            for (int i = -1; i < levels.Count; i++)
+            {
+                int idx = i;
+                string id = i < 0 ? null : levels[i];
+                bool locked = id != null && !Unlocked(id);
+                bool selected = i < 0 ? !ChoiceUnlocked() : levelChoice == i && !locked;
+                var b = UI.Button(grid, null, () =>
+                {
+                    if (locked) { UI.Toast("Reach level " + MinLevel(id) + " to host this map."); return; }
+                    levelChoice = idx;
+                    MetaUI.Close(layer);
+                    changed?.Invoke();
+                }, selected ? UI.ButtonStyle.Primary : UI.ButtonStyle.Plain, 24, "Map " + (id ?? "random"));
+                var thumb = id != null ? LevelThumbs.Get(id) : null;
+                if (thumb != null)
+                {
+                    var img = UI.Image(b.transform, thumb, null, false);
+                    UI.Anchor(img.rectTransform, 0.04f, 0.26f, 0.96f, 0.95f);
+                }
+                else
+                {
+                    var q = UI.Label(b.transform, "?", 90, Theme.Secondary, TextAnchor.MiddleCenter, true);
+                    UI.Anchor(q.rectTransform, 0.04f, 0.26f, 0.96f, 0.95f);
+                }
+                var name = UI.Label(b.transform, id == null ? "Random" : BattleFactory.LevelDisplayName(id), 26, selected ? Theme.PrimaryText : Theme.Text);
+                UI.Anchor(name.rectTransform, 0.03f, 0.02f, 0.97f, 0.25f);
+                if (!locked) continue;
+                var shade = UI.Panel(b.transform, MetaUI.Locked, true, "Locked");
+                UI.Stretch(shade.rectTransform);
+                shade.raycastTarget = false;
+                var lockIcon = ModelLibrary.Icon("Ui/lock");
+                if (lockIcon != null)
+                {
+                    var li = UI.Image(shade.transform, lockIcon);
+                    UI.Anchor(li.rectTransform, 0.35f, 0.42f, 0.65f, 0.85f);
+                }
+                var lv = UI.Label(shade.transform, "Level " + MinLevel(id), 34, Color.white, TextAnchor.MiddleCenter, true);
+                UI.Anchor(lv.rectTransform, 0.05f, lockIcon != null ? 0.18f : 0.3f, 0.95f, lockIcon != null ? 0.42f : 0.7f);
+            }
+        }
         string TurnText() => "Turn: " + TurnTimes[turnChoice] + "s";
         string TimeText() => "Time: " + MatchMinutes[timeChoice] + "m";
 
@@ -260,7 +327,7 @@ namespace CPW
         BattleConfig HostSettings()
         {
             var c = FirebaseService.DefaultSettings();
-            c.levelId = levelChoice >= 0 && levelChoice < levels.Count ? levels[levelChoice] : "";
+            c.levelId = ChoiceUnlocked() ? levels[levelChoice] : "";
             c.turnTime = TurnTimes[turnChoice];
             c.matchTime = MatchMinutes[timeChoice] * 60;
             return c;
@@ -400,6 +467,8 @@ namespace CPW
             UI.Anchor(buttons, 0.04f, 0.03f, 0.96f, 0.22f);
             UI.HBox(buttons, 30, TextAnchor.MiddleCenter, 0, true);
             UI.Layout(UI.Button(buttons, "Leave", LeaveRoom, UI.ButtonStyle.Danger, 40), -1, 115, 1);
+            if (!room.isQuickMatch && !string.IsNullOrEmpty(room.code) && room.players.Count < room.maxPlayers)
+                UI.Layout(UI.Button(buttons, "Invite", () => InviteFriends(room.code, room.matchId), UI.ButtonStyle.Secondary, 40), -1, 115, 1);
             if (room.isHost && !room.isQuickMatch)
             {
                 var start = UI.Button(buttons, room.players.Count < 2 ? "Need 2+ players" : "Start!", () => S.StartHostedMatch(), UI.ButtonStyle.Primary, 44);
@@ -411,6 +480,52 @@ namespace CPW
                 var wait = UI.Label(buttons, room.isQuickMatch ? "Starts automatically" : "Waiting for the host", 32, Theme.Muted);
                 UI.Layout(wait, -1, 115, 1.4f);
             }
+        }
+
+        /// <summary>Send friends an inbox invite carrying this room's join code (original FriendSelector invites).</summary>
+        void InviteFriends(string code, string matchId)
+        {
+            var win = MetaUI.Window("Invite friends", new Vector2(1100, 760), out var layer);
+            var host = UI.Rect(win, "List");
+            UI.Stretch(host, 24, 24, 124, 24);
+            UI.ScrollList(host, out var list, true, 10, 8);
+            UI.Stretch((RectTransform)host.GetChild(0));
+            var loading = UI.Label(list, "Loading friends...", 34, Theme.Muted);
+            UI.Layout(loading, -1, 90);
+            Social.LoadFriends((friends, err) =>
+            {
+                if (!layer || !list) return;
+                UI.Clear(list);
+                if (err != null || friends.Count == 0)
+                {
+                    var l = UI.Label(list, err != null ? "Could not load your friends.\n" + err : "No friends yet. Add friends with their friend code (Home > Friends), then invite them here.", 32, Theme.Muted);
+                    UI.Layout(l, -1, 160);
+                    return;
+                }
+                foreach (var f in friends)
+                {
+                    var fr = f;
+                    var row = UI.Panel(list, Theme.PanelInner, true, "Friend");
+                    UI.Layout(row, -1, 96);
+                    var dot = UI.Image(row.transform, UI.Circle, fr.online ? Theme.Good : Theme.Muted, false, "Online");
+                    UI.Place(dot.rectTransform, new Vector2(0, 0.5f), new Vector2(30, 30), new Vector2(24, 0));
+                    var n = UI.Label(row.transform, fr.name + "   Lv " + fr.level + (fr.online ? "" : "   (away)"), 34, Theme.Text, TextAnchor.MiddleLeft);
+                    UI.Anchor(n.rectTransform, 0.08f, 0, 0.7f, 1);
+                    Button b = null;
+                    b = UI.Button(row.transform, "Invite", () =>
+                    {
+                        b.interactable = false;
+                        Social.SendInvite(fr, code, matchId, e =>
+                        {
+                            if (!b) return;
+                            var t = b.GetComponentInChildren<Text>();
+                            if (e == null) { if (t) t.text = "Sent!"; }
+                            else { b.interactable = true; UI.Toast("Invite failed: " + e); }
+                        });
+                    }, UI.ButtonStyle.Good, 34);
+                    UI.Anchor((RectTransform)b.transform, 0.72f, 0.12f, 0.97f, 0.88f);
+                }
+            });
         }
     }
 }

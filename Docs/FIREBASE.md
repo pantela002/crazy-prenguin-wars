@@ -3,9 +3,15 @@
 The game works completely **offline** without any of this: practice, quick matches against computer penguins,
 local games, shop, wardrobe, crafting and everything else. Firebase adds:
 
-- **Online battles**: Quick Match, public games, private games with a short code, a list of open games.
+- **Online battles**: Quick Match (random 5-8 minute matches with 10-30 s turns, prefers hosts within 30 levels),
+  public games, private games with a short code, a list of open games, and a **rematch** offer after each match.
 - **Cloud save**: your profile is copied to the cloud and restored if the local copy is older.
-- **World leaderboard**: XP, level and wins of everybody who plays your build.
+- **Leaderboards**: this week, this month and all time, by XP, wins, games, knock-outs, damage or turns, for
+  everybody or just your friends.
+- **Friends**: add friends with the friend code on their profile, see who is online, send one free gift per friend
+  per day, invite friends to your private game; an **inbox** collects gifts, invites and "added you" notices.
+- **Weekly league**: points from Quick Match and online results, standings per tier, promotion / relegation and
+  rewards when the week (Monday 00:00 UTC) is over.
 
 You do this **once**. It takes about 15 minutes and costs nothing: the free **Spark** plan is plenty for a hobby game
 (see [Costs](#costs)). You don't need to install anything; the game talks to Firebase over plain HTTPS, so there are
@@ -41,6 +47,11 @@ Every player gets an invisible anonymous account, so nobody has to type a passwo
 
 The rules decide who may read and write what. Ours make sure players can only change their own save and
 leaderboard entry, and only people in a match can write its moves.
+
+> **Updating the game?** Do this step again whenever `database.rules.json` changed (it did for friends, inbox,
+> leaderboards per period, the league and rematch). Old clients keep working with the new rules except for the
+> leaderboard, which moved from `leaderboard/{uid}` to `leaderboard/all/{uid}`: you may delete the old
+> `leaderboard/<uid>` entries (the ones directly under `leaderboard` that are not `all` or a period) in the console.
 
 1. Still in **Realtime Database**, open the **Rules** tab.
 2. Delete everything in the editor.
@@ -129,8 +140,16 @@ The Unity Console also logs `CPW: ...` warnings with details.
 ```
 users/{uid}/profile        { json: "<PlayerProfile as JSON text>", name, updated }
 users/{uid}/lastSeen       server timestamp
-leaderboard/{uid}          { name, xp, level, wins, updated }
-lobby/{matchId}            { host, hostName, levelId, players, maxPlayers, quick, code, hb }   public waiting games
+users/{uid}/friends/{uid2} { name, added, gift: "yyyyMMdd" of the last gift sent }   only you can read it
+players/{uid}              { name, level, code, seen }      public card: friend code + "online" (seen < 2.5 min)
+friendCodes/{CODE}         { uid }                          6-letter friend codes
+inbox/{uid}/{id}           { type: gift|invite|friend, from, fromName, at, item, amount, code, match }
+                           ids: g_{from}_{yyyyMMdd} (one gift per sender per day), i_{from}_{code}, f_{from};
+                           anybody signed in may add a message, only the owner may read and delete
+leaderboard/{period}/{uid} { name, level, xp, wins, games, kills, deaths, damage, turns, suicides, shots, updated }
+                           period: "all", an ISO week "2026-W40" or a month "2026-10" (UTC)
+league/{week}/{tier}/{uid} { name, level, points, games, updated }   tier 0..4 (Bronze..Diamond)
+lobby/{matchId}            { host, hostName, level, levelId, players, maxPlayers, quick, code, hb }   public waiting games
 codes/{CODE}               { match: matchId, host, hb }                                        5-letter join codes
 matches/{matchId}
     host, hostName, isPrivate, quick, code, created, startedAt
@@ -141,7 +160,23 @@ matches/{matchId}
     turn                   { index, player, by, at } index = finished turns, player = whose turn
     actions/{turn}/aNNNNN  [ {p, t, k, x, y, px, py, s}, ... ]   batched TurnActions
     snapshots/{turn}       { from, json: "<BattleSnapshot JSON>" }
+    rematch/{uid}          { s: "ready" | "left", next: newMatchId }   after the match (see below)
 ```
+
+**Rematch.** After an online match every player has `BattleOptions.TimeToStartRematch` (10 s) to tap Rematch, which
+writes `rematch/{uid}`. When two or more are ready (everyone decided, or the countdown ended) the ready player with
+the lowest slot hosts a new private match with the same settings and writes its id as `next`; the others join it.
+The new match gets a new seed when it starts.
+
+**League.** The numbers are invented (the original League tables are empty): 5 tiers, points per place
+20/12/6/2 online and 10/6/3/1 against the computer (fewer for games with fewer than 4 penguins), at most 50 counted
+games a week, top 20% promoted, bottom 20% relegated (when 5+ played), rewards 500/300/200 coins (+5/3/2 fish) for
+the top 3, 100 for the top half, 50 for everyone else, x1.5 per tier above Bronze. Each player settles their own
+week the first time they are online after it ended. Old `league/<week>` nodes can be deleted now and then.
+
+**Gifts.** One per friend per day from the `Gift` config section (the shipped one has only a hidden placeholder,
+so basic ammo is used: Basic Nuke x3, Grenade x2, Pistol x3, Shotgun x2, Cluster Rocket x1). The receiver's game caps
+the amount, so a modified client can't send more.
 
 Finished matches are deleted by the host's device 20 s after the end; actions and snapshots older than two turns are
 removed as the match goes. Abandoned rooms disappear from the list after 30 s and may be removed by anybody after
