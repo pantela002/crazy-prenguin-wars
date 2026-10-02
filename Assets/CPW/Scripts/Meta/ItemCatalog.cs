@@ -110,6 +110,15 @@ namespace CPW
             return res;
         }
 
+        /// <summary>Shop weapons then boosters whose RequiredLevel is exactly this level (level-up loot).</summary>
+        public static List<Record> UnlockedAtLevel(int level)
+        {
+            var res = new List<Record>();
+            foreach (var r in ShopItems("Weapon")) if (RequiredLevel(r) == level) res.Add(r);
+            foreach (var r in ShopItems("Booster")) if (RequiredLevel(r) == level) res.Add(r);
+            return res;
+        }
+
         // ---------- lock state ----------
         public static bool IsUnlocked(Record item) => P.unlockedItems.Contains(item.Id) || P.level >= RequiredLevel(item);
         public static bool VipBlocked(Record item) => IsVipItem(item) && !Progression.IsVip;

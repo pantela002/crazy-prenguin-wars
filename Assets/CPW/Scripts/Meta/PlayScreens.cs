@@ -195,6 +195,7 @@ namespace CPW
                 seats = new List<Seat> { new Seat { name = ProfileService.P.displayName, type = 0 }, new Seat { name = "Player 2", type = 0 } };
                 matchTime = (int)(GameData.Battle?.Float("MatchTime", 240) ?? 240);
             }
+            if (MapLocked(levelId)) levelId = "";   // remembered map got locked again (progress reset)
 
             // ---- maps (left) ----
             var mapsPanel = MetaUI.CardPanel(Content, MetaUI.CardDark);
@@ -240,9 +241,24 @@ namespace CPW
         {
             int index = mapIds.Count;
             mapIds.Add(id);
-            var b = UI.Button(grid, null, () => { levelId = mapIds[index]; HighlightMap(); }, UI.ButtonStyle.Plain, 24, "Map " + name);
-            var frame = b.GetComponent<Image>();
-            mapFrames.Add(frame);
+            var b = MapButton(grid, id, name, () => { levelId = mapIds[index]; HighlightMap(); });
+            mapFrames.Add(b.GetComponent<Image>());
+        }
+
+        // ---------- map locks (original LockedLevelButtonContainer: Level.MinLevel above the player's level) ----------
+        public static int MapLevel(string id) => string.IsNullOrEmpty(id) ? 1 : (GameData.Get("Level", id)?.Int("MinLevel", 1) ?? 1);
+        public static bool MapLocked(string id) => MapLevel(id) > ProfileService.P.level;
+
+        /// <summary>Map thumbnail button ("" = random). Locked maps show the required level and can't be picked.</summary>
+        public static Button MapButton(Transform grid, string id, string name, Action pick)
+        {
+            bool locked = MapLocked(id);
+            int need = MapLevel(id);
+            var b = UI.Button(grid, null, () =>
+            {
+                if (locked) { AudioManager.Sfx("Nomoney"); UI.Toast("Reach level " + need + " to play this map."); return; }
+                pick();
+            }, UI.ButtonStyle.Plain, 24, "Map " + name);
             if (string.IsNullOrEmpty(id))
             {
                 var q = UI.Label(b.transform, "?", 110, Theme.Secondary, TextAnchor.MiddleCenter, true);
@@ -256,6 +272,26 @@ namespace CPW
             var l = UI.Label(b.transform, name, 26, Theme.Text, TextAnchor.MiddleCenter, true);
             NoOutline(l);
             UI.Anchor(l.rectTransform, 0.02f, 0.01f, 0.98f, 0.24f);
+            if (locked) ItemCards.LockOverlay(b.transform, "Lv " + need);
+            return b;
+        }
+
+        /// <summary>Popup map picker (used by Practice). pick gets the level id, "" for a random map.</summary>
+        public static void PickMap(string current, Action<string> pick)
+        {
+            var win = MetaUI.Window(Loc.T("GAME_SETTINGS_MAP"), new Vector2(1500, 860), out var layer);
+            var host = UI.Rect(win, "Maps");
+            UI.Stretch(host, 16, 16, 124, 16);
+            var sr = UI.ScrollGrid(host, out var grid, new Vector2(280, 200), new Vector2(14, 14));
+            UI.Stretch((RectTransform)sr.transform);
+            var ids = new List<string> { "" };
+            foreach (var r in BattleFactory.Levels()) ids.Add(r.Id);
+            foreach (var id in ids)
+            {
+                var chosen = id;
+                var b = MapButton(grid, id, string.IsNullOrEmpty(id) ? "Random" : BattleFactory.LevelDisplayName(id), () => { MetaUI.Close(layer); pick(chosen); });
+                b.GetComponent<Image>().color = id == (current ?? "") ? Theme.Primary : Theme.PanelInner;
+            }
         }
 
         public static void NoOutline(Text l) { var o = l.GetComponent<Outline>(); if (o) UnityEngine.Object.Destroy(o); }

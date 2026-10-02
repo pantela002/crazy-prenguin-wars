@@ -93,10 +93,28 @@ namespace CPW
         {
             var sr = UI.ScrollList(body, out var list, true, 10, 10);
             UI.Stretch((RectTransform)sr.transform);
+            int claimable = AchievementCatalog.Claimable();
+            if (claimable >= 2)
+            {
+                // one tap instead of a long scroll of Claim buttons
+                UI.Anchor((RectTransform)sr.transform, 0, 0, 1, 0.89f);
+                var claimAll = UI.Button(body, Loc.T("ACHIEVEMENTS_CLAIM") + " all (" + claimable + ")", ClaimAll, UI.ButtonStyle.Good, 34);
+                UI.Anchor((RectTransform)claimAll.transform, 0.68f, 0.9f, 1, 1);
+                claimAll.gameObject.AddComponent<UIPulse>();
+            }
             var all = new List<Record>(AchievementCatalog.All);
             // claimable first, then unfinished, then claimed
             all.Sort((x, y) => Rank(x).CompareTo(Rank(y)));
             foreach (var a in all) AchievementRow(list, a);
+        }
+
+        void ClaimAll()
+        {
+            int coins = 0;
+            foreach (var a in AchievementCatalog.All)
+                if (AchievementCatalog.Done(a) && !AchievementCatalog.Claimed(a)) { coins += a.Int("GCReward"); AchievementCatalog.Claim(a); }
+            if (coins > 0) UI.Toast("+" + coins + " coins", Theme.Coin);
+            Fill();
         }
 
         static int Rank(Record a)
