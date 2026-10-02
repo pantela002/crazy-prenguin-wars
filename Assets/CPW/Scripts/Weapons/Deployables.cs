@@ -75,6 +75,7 @@ namespace CPW
         {
             visual = new GameObject("Visual").transform;
             visual.SetParent(transform, false);
+            if (BuildSpriteVisual()) return;
             switch (Type)
             {
                 case Kind.Mine:
@@ -118,6 +119,23 @@ namespace CPW
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Original 2D art when it exists: caltrops = missiles/ammo/ammo_caltrops; mines and mushrooms only if a
+        /// Missile row of that name has art (their level_items.swf graphics are lost, so they keep the 3D model).
+        /// The sprite is fitted to the body (about 2.6 x Radius wide) and drawn just in front of the terrain.
+        /// </summary>
+        bool BuildSpriteVisual()
+        {
+            var set = Type == Kind.Caltrops ? OriginalArt.Anim("missiles/ammo/ammo_caltrops") : OriginalArt.MissileAnim(Type.ToString());
+            if (set == null) return false;
+            var size = set.SizeUnits;
+            float fit = Mathf.Max(size.x, size.y) > 0.01f ? Radius * 2.6f / Mathf.Max(size.x, size.y) : 1f;
+            visual.localPosition = new Vector3(0, 0, -0.1f);
+            visual.localScale = Vector3.one * Mathf.Clamp(fit, 0.2f, 2f);
+            SpriteAnim.Create(visual, set, "Sprite", 8, loop: true);
+            return true;
         }
 
         // ------------------------------------------------------------------ behaviour

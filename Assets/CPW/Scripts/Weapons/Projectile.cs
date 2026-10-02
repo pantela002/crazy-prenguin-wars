@@ -33,6 +33,7 @@ namespace CPW
         IDamageable stuckTo;
         Vector2 stuckOffset;
         Transform visual;
+        bool spriteVisual;
         TrailRenderer trail;
         readonly List<Collider2D> shooterCols = new List<Collider2D>();
 
@@ -369,7 +370,13 @@ namespace CPW
             if (!Alive) return;
             var pos = Pos;
             var v = lastVel;
-            if (visual)
+            if (visual && spriteVisual)
+            {
+                // the original: body rotation when the body may rotate, else the art's "up" turned to the velocity
+                if (!Def.FixedRotation) visual.localRotation = Quaternion.identity;
+                else if (v.sqrMagnitude > 0.01f) visual.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg - 90f);
+            }
+            else if (visual)
             {
                 if (rocketLike || Def.Bullet)
                 {
@@ -409,6 +416,7 @@ namespace CPW
             holder.SetParent(transform, false);
             holder.localPosition = new Vector3(0, 0, 0);
             visual = holder;
+            if (BuildSpriteVisual(holder, color)) { AddTrail(color); return; }
             string path = string.IsNullOrEmpty(Def.GraphicId) ? null : "Missiles/" + Def.GraphicId;
             var model = ModelLibrary.Spawn(path, holder, capsule ? PrimitiveType.Capsule : PrimitiveType.Sphere, size, color);
             if (!ModelLibrary.Exists(path))
@@ -424,6 +432,50 @@ namespace CPW
                 if (Def.Type == "Enviroment" && string.IsNullOrEmpty(Def.Tail)) model.SetActive(false);   // invisible nodes
             }
             AddTrail(color);
+        }
+
+        /// <summary>sortingOrder of missile sprites (above penguins and props, below effects).</summary>
+        public const int SpriteOrder = 40;
+        const float SpriteZ = -0.3f;
+        static Sprite glowSprite;
+
+        /// <summary>
+        /// The original ammo art (OriginalArt.MissileAnim: missiles/ammo, Flash size, registration point = pivot):
+        /// animated ammo loops, ammo clips with weapon labels hold their "launch" frame. Ammo whose original graphic
+        /// is an empty placeholder (molotovshard: plasma, laser, flame bits) gets a small glow so the tail particles
+        /// have a core. False = no original art (OrbitalLaser, mines, remake-only Grey Goo): use the 3D model.
+        /// </summary>
+        bool BuildSpriteVisual(Transform holder, Color color)
+        {
+            if (Def.Script == "Crawl" || Def.Id.Contains("GreyGoo")) return false;   // remake-only: the rock art would be wrong
+            var set = OriginalArt.MissileAnim(Def.Id);
+            if (set == null) return false;
+            holder.localPosition = new Vector3(0, 0, SpriteZ);
+            spriteVisual = true;
+            if (set.CanvasPx.x <= 2f && set.CanvasPx.y <= 2f)
+            {
+                string t = Def.Tail ?? "";
+                bool glow = t.Contains("Plasma") || t.Contains("Laser") || t.Contains("Molotov") || t.Contains("Flaregun") || t.Contains("Railgun") || t.Contains("Acid");
+                if (!glow || (Def.Type == "Enviroment" && !t.Contains("Plasma"))) return true;   // invisible node / burning patch: particles only
+                if (!glowSprite)
+                {
+                    var tex = Mats.SoftCircle;
+                    glowSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), tex.width);
+                }
+                var go = new GameObject("Glow");
+                go.transform.SetParent(holder, false);
+                var sr = go.AddComponent<SpriteRenderer>();
+                sr.sprite = glowSprite;
+                sr.sharedMaterial = Mats.Additive(Color.white);
+                sr.color = Color.Lerp(color, Color.white, 0.35f);
+                sr.sortingOrder = SpriteOrder;
+                go.transform.localScale = Vector3.one * Mathf.Max(Def.RadiusU * 3f, 0.45f);
+                return true;
+            }
+            var anim = SpriteAnim.Create(holder, set, "Sprite", SpriteOrder, loop: true);
+            if (set.HasLabel("launch")) anim.Hold("launch");
+            if (Def.FixedRotation && lastVel.sqrMagnitude > 0.01f) holder.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(lastVel.y, lastVel.x) * Mathf.Rad2Deg - 90f);
+            return true;
         }
 
         void AddTrail(Color color)
@@ -473,7 +525,7 @@ namespace CPW
             if (id.Contains("Cat")) return new Color(1f, 0.6f, 0.2f);
             if (id.Contains("Wind")) return new Color(0.85f, 0.95f, 1f);
             if (id.Contains("Void")) return new Color(0.4f, 0.1f, 0.7f);
-            if (id.Contains("Fireworks")) return Color.HSVToRGB(Random.value, 0.7f, 1f);
+            if (id.Contains("Fireworks")) return Color.HSVToRGB(VisualRandom.Value, 0.7f, 1f);
             if (id.Contains("Artillery")) return new Color(0.35f, 0.38f, 0.3f);
             if (id.Contains("Flame")) return new Color(1f, 0.55f, 0.15f);
             if (id.Contains("Lemon")) return new Color(0.95f, 0.9f, 0.2f);
@@ -483,7 +535,7 @@ namespace CPW
             if (id.Contains("Teleport")) return new Color(0.6f, 0.4f, 1f);
             if (id.Contains("ShieldWall")) return new Color(0.4f, 0.7f, 1f);
             if (id.Contains("Snowball")) return new Color(0.95f, 0.97f, 1f);
-            if (id.Contains("EasterEgg")) return Color.HSVToRGB(Random.value, 0.45f, 1f);
+            if (id.Contains("EasterEgg")) return Color.HSVToRGB(VisualRandom.Value, 0.45f, 1f);
             if (id.Contains("Cannon")) return new Color(0.4f, 0.24f, 0.12f);
             if (id.Contains("HeatSeeker")) return new Color(0.85f, 0.3f, 0.2f);
             if (m.Bullet) return new Color(1f, 0.85f, 0.4f);
