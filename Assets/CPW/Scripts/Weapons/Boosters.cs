@@ -31,6 +31,13 @@ namespace CPW
         /// <summary>Apply booster itemId to user. False = can't be used now (already active, full HP...).</summary>
         public static bool Use(IPenguin p, string id)
         {
+            if (!UseCore(p, id)) return false;
+            if (id != "Banner" && Live(p)) Fx.BoosterStart(p.Position);   // original booster_start rings
+            return true;
+        }
+
+        static bool UseCore(IPenguin p, string id)
+        {
             if (p == null || !p.Alive || string.IsNullOrEmpty(id)) return false;
             var rt = WeaponRuntime.I;
             var pos = p.Position;
@@ -271,6 +278,15 @@ namespace CPW
 
                 switch (a.Id)
                 {
+                    case "Shield":
+                        // original shimmer twinkles on the bubble (cosmetic timer, no simulation state)
+                        a.Tick -= dt;
+                        if (a.Tick <= 0)
+                        {
+                            a.Tick = 0.35f;
+                            Fx.Shimmer(pos + VisualRandom.OnUnitCircle * Tuning.PenguinRadius * 1.2f, 0.6f);
+                        }
+                        break;
                     case "Umbrella":
                         var rb = a.P.Body;
                         if (rb)
@@ -286,7 +302,7 @@ namespace CPW
                         if (a.Tick <= 0)
                         {
                             a.Tick = 0.35f;
-                            Fx.Smoke(pos + Random.insideUnitCircle * WeaponTuning.GasRadius * 0.6f, 1.6f, new Color(0.55f, 0.75f, 0.2f, 0.45f));
+                            Fx.Smoke(pos + VisualRandom.InsideUnitCircle * WeaponTuning.GasRadius * 0.6f, 1.6f, new Color(0.55f, 0.75f, 0.2f, 0.45f));
                             var poison = WeaponDefs.Follower("Status_Poison");
                             foreach (var e in BattleWorld.Penguins)
                             {

@@ -25,6 +25,9 @@ namespace CPW
         /// <summary>Raised when a body enters the water (body, entry point, downward speed).</summary>
         public static event System.Action<Rigidbody2D, Vector2, float> Entered;
 
+        /// <summary>Sorting order of the front surface (foam, lava glow and embers just above it).</summary>
+        public const int FrontSortingOrder = 40;
+
         public float SurfaceY { get; private set; }
         public bool IsLava { get; private set; }
 
@@ -53,6 +56,8 @@ namespace CPW
         // original water_tile art (Textures/Water/{liquid}): the surface band repeats every tileW units along x
         Texture2D tile;
         float tileW = 9.9f, bandTop = 0.4f, bandH = 5.45f;
+        Vector4 tileSpan;                       // original tiles: u span repeated by the TileX shader (y = 0: whole texture)
+        const float OriginalTileInsetPx = 1f, OriginalTilePeriodPx = 197f;   // Flash px
 
         // lava: rising bubbles that pop at the surface and embers drifting up (one additive mesh)
         const int FxCount = 26;
@@ -75,8 +80,27 @@ namespace CPW
             TerrainStyle.WaterColors(lvl.theme, liquid, out var body, out var surface, out bool lava);
             IsLava = lava;
             kind = lava ? "lava" : liquid == "Mud" ? "mud" : "water";
-            if (TerrainStyle.OriginalArt("Water/" + liquid, out var tilePx, out var tileF))
+            bool manifest = TerrainStyle.OriginalArt("Water/" + liquid, out var tilePx, out var tileF);
+            var os = OriginalArt.LiquidTile(LiquidTheme(liquid));
+            if (TerrainStyle.RepeatableTexture(os) && Mats.TileXShader != null)
             {
+                // the original tile symbol (Resources/Original/liquids). WaterGraphics put one every 198 px with its
+                // registration point on the fluid's surface (water_line + 74.2 px), the theme's WaterColor below.
+                // The PNGs repeat every 197 Flash px from their 2nd px on (the rest is the overlap with the next
+                // tile): the TileX shader repeats only that span, so the scrolling strip has no seams.
+                tile = os.texture;
+                tile.wrapMode = TextureWrapMode.Clamp;
+                float zoom = os.pixelsPerUnit / Units.PX;
+                float w = Mathf.Max(1f, os.texture.width);
+                tileSpan = new Vector4(OriginalTileInsetPx * zoom / w, Mathf.Min(OriginalTilePeriodPx * zoom, os.rect.width - OriginalTileInsetPx * zoom) / w, 0, 0);
+                tileW = tileSpan.y * w / os.pixelsPerUnit;
+                bandH = os.rect.height / os.pixelsPerUnit;
+                bandTop = (os.rect.height - os.pivot.y) / os.pixelsPerUnit;   // tile top relative to the surface
+                if (manifest) body = TerrainStyle.OriginalColor(tileF, 4, body);
+            }
+            else if (manifest)
+            {
+                // the map-editor copy in Resources/Textures/Water
                 tile = Resources.Load<Texture2D>("Textures/Water/" + liquid);
                 if (tile != null)
                 {
@@ -115,8 +139,10 @@ namespace CPW
             if (tile != null)
             {
                 // the original water tile: its own wave crest, highlights and body gradient; the back copy is darker
-                waterMat = new Material(Mats.TransparentShader) { mainTexture = tile, color = Color.white, name = "Water_" + kind };
-                var backMat = new Material(Mats.TransparentShader) { mainTexture = tile, color = new Color(0.62f, 0.62f, 0.7f, 1f), name = "WaterBack_" + kind };
+                var sh = tileSpan.y > 0 ? Mats.TileXShader : Mats.TransparentShader;
+                waterMat = new Material(sh) { mainTexture = tile, color = Color.white, name = "Water_" + kind };
+                var backMat = new Material(sh) { mainTexture = tile, color = new Color(0.62f, 0.62f, 0.7f, 1f), name = "WaterBack_" + kind };
+                if (tileSpan.y > 0) { waterMat.SetVector(TileXId, tileSpan); backMat.SetVector(TileXId, tileSpan); }
                 owned.Add(waterMat); owned.Add(backMat);
                 back = BuildStrip("WaterBack", 0.9f, Color.white, Color.white, Color.white, out bv, 0.25f);
                 back.uv = TileUVs(tileW * 0.37f);
@@ -155,11 +181,17 @@ namespace CPW
                 glowMat = new Material(Mats.AdditiveShader) { color = glowBase, name = "LavaGlow" };
                 owned.Add(glowMat);
                 mr.sharedMaterial = glowMat;
+                mr.sortingOrder = FrontSortingOrder + 2;
                 mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 BuildLavaFx();
             }
             UpdateMeshes();
         }
+
+        static readonly int TileXId = Shader.PropertyToID("_TileX");
+
+        /// <summary>LevelTheme whose WaterSWF holds a liquid's original tile (water: winter, lava: mountain, mud: desert).</summary>
+        static string LiquidTheme(string liquid) => liquid == "Lava" ? "Mountain" : liquid == "Mud" ? "Desert" : "Winter";
 
         /// <summary>UVs of a strip for the original tile: u along x, v from the band top (1) to its bottom (0) and below.</summary>
         Vector2[] TileUVs(float uOffset)
@@ -185,6 +217,7 @@ namespace CPW
             var mr = go.AddComponent<MeshRenderer>();
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             mr.receiveShadows = false;
+            mr.sortingOrder = FrontSortingOrder + 3;
             var mat = new Material(Mats.AdditiveShader) { mainTexture = Mats.SoftCircle, color = Color.white, name = "LavaFx" };
             owned.Add(mat);
             mr.sharedMaterial = mat;
@@ -271,6 +304,8 @@ namespace CPW
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             mr.receiveShadows = false;
             mr.sharedMaterial = waterMat;
+            // sprites (level objects, penguins, debris) sort by order: the original drew the water over everything
+            mr.sortingOrder = z < 0 ? FrontSortingOrder : -1;
             var m = new Mesh { name = name };
             owned.Add(m);
             m.MarkDynamic();
@@ -313,6 +348,7 @@ namespace CPW
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             mr.receiveShadows = false;
             mr.sharedMaterial = foamMat;
+            mr.sortingOrder = FrontSortingOrder + 1;
             var m = new Mesh { name = "WaterFoam" };
             owned.Add(m);
             m.MarkDynamic();

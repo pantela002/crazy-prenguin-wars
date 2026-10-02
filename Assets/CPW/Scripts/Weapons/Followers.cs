@@ -276,16 +276,8 @@ namespace CPW
             fxTimer -= dt;
             if (fxTimer > 0) return;
             fxTimer = 0.22f;
-            var p = Host.Position;
-            switch (Def.StatusId)
-            {
-                case "Fire": Fx.Fire(p + Vector2.up * 0.2f, 0.45f); break;
-                case "Poison": Fx.Bubbles(p + Vector2.up * 0.8f, new Color(0.45f, 0.95f, 0.25f, 0.9f), 2); break;
-                case "Acid": Fx.Bubbles(p + Vector2.up * 0.5f, new Color(0.8f, 1f, 0.2f, 0.9f), 2); break;
-                case "SlowGoo": Fx.Bubbles(p, new Color(0.3f, 0.85f, 0.2f, 0.8f), 1); break;
-                case "Ice": Fx.Sparks(p + Random.insideUnitCircle * 0.6f, new Color(0.7f, 0.9f, 1f), 2); break;
-                case "Regeneration": if (Random.value < 0.3f) Fx.Sparks(p + Vector2.up, new Color(0.5f, 1f, 0.5f), 2); break;
-            }
+            // original StatusEffect* particles (flames, poison clouds, acid spit, stars); visual randomness only
+            Fx.Status(Def.StatusId, Host.Position);
         }
 
         public void Kill()

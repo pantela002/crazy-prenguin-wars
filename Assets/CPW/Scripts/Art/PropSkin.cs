@@ -9,6 +9,7 @@ namespace CPW
     /// projected along the view axis through the model's planar UV0 (Unity object-space x/y baked by the Blender
     /// export), so the camera sees the original 2D art on the front face and the sides carry its edge colors.
     /// Follows the object's damage: DynamicObjectEntity.DamageStage 1..3 selects the original _1/_2/_3 sprite.
+    /// Only used for the 3D fallback: objects with an original sprite are drawn flat by DynamicObjectEntity.
     /// </summary>
     public class PropSkin : MonoBehaviour
     {
@@ -76,7 +77,12 @@ namespace CPW
         {
             string p = k + "_" + stage;
             if (textures.TryGetValue(p, out var t)) return t;
-            t = TerrainStyle.OriginalArt(p, out _, out _) ? Resources.Load<Texture2D>("Textures/" + p) : null;
+            // the original bitmap (Resources/Original/level_objects/level_obstacles_{material}/_bitmaps/{shape}_{size}_{n})
+            // when it is a whole texture, else the map-editor copy in Resources/Textures/Items
+            var parts = p.Split('/');   // Items, Material, shape_size_n
+            var s = parts.Length == 3 ? OriginalArt.Sprite("level_objects/level_obstacles_" + parts[1].ToLowerInvariant() + "/_bitmaps/" + parts[2]) : null;
+            if (TerrainStyle.RepeatableTexture(s)) t = s.texture;
+            else t = TerrainStyle.OriginalArt(p, out _, out _) ? Resources.Load<Texture2D>("Textures/" + p) : null;
             if (t != null) t.wrapMode = TextureWrapMode.Clamp;
             textures[p] = t;
             return t;
