@@ -25,7 +25,7 @@ P
   (cd uiproj && dotnet build -nologo -v q -o ../uiout >/dev/null)
   touch ok
 fi
-OUT="${TMPDIR:-/tmp}/cpw-compile"
+OUT="${CPW_OUT:-$(mktemp -d)}"
 mkdir -p "$OUT/rt" "$OUT/ed"
 cat > "$OUT/rt/rt.csproj" <<P
 <Project Sdk="Microsoft.NET.Sdk">
