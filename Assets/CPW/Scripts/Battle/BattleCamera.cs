@@ -63,6 +63,7 @@ namespace CPW
             follow = p != null ? p.transform : null;
             shot = null;
             manualUntil = 0;
+            explosionUntil = 0;   // a new turn's penguin wins over the last turn's explosion
         }
 
         public void FollowShot(FireHandle h)

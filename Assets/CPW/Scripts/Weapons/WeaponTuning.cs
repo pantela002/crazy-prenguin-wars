@@ -63,6 +63,17 @@ namespace CPW
         public static float ArtilleryHeight = 40f;
         public static float ArtilleryShellSpeed = 30f;
 
+        /// <summary>Orbital Plasma Attack: the bolt starts this far above the level top and falls this fast (units/s). INVENTED.</summary>
+        public static float OrbitalStartAbove = 4f;
+        public static float OrbitalSpeed = 90f;
+        /// <summary>Homing followers (Heat Seeking Missile): the original Homing impulse is multiplied by this because
+        /// player rockets fly PrimarySpeedScale times faster than in Flash, so the same pull would hardly bend them. INVENTED.</summary>
+        public static float HomingScale = 2.4f;
+        /// <summary>Grey Goo ("Crawl" missiles): sideways creep speed (units/s) after each bite. INVENTED.</summary>
+        public static float GooCrawlSpeed = 1.4f;
+        /// <summary>Spring Mine: the blast is centred this far below the mine so it throws penguins upward. INVENTED.</summary>
+        public static float SpringMineDepth = 0.7f;
+
         /// <summary>Mines/flame mines: seconds until armed, trigger radius (units) and fuse (s).</summary>
         public static float MineArmSec = 2.5f;
         public static float MineTriggerRadius = 2.0f;

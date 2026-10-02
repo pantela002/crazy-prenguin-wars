@@ -43,6 +43,8 @@ namespace CPW
         public bool powerUps = true;          // drop power-up crates
         public string betId = "1NoBet";       // Bet section id
         public int seed;
+        /// <summary>Pass-and-play without the "pass the phone" curtain between local players (lobby test preset).</summary>
+        public bool skipPassCurtain;
         [NonSerialized] public IBattleNetwork network;   // only for Online battles
 
         public int LocalPlayerIndex

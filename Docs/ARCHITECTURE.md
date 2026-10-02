@@ -13,6 +13,7 @@ The original Crazy Penguin Wars (Tuxwars) repos from github.com/Crazy-Penguin-Wa
 - `cpw-battleserver/*.py`: turn/match server (turn order, respawn queue, rewards, ranking).
 
 `Tools/build_data.py` copies the config (merged), English strings, levels and audio into `Assets/CPW/Resources`.
+`Tools/lost_items.py` (called by build_data) adds the original weapons/supplies the shipped Item table lacked (Orbital Laser, Heat Seeker, Gas/Sticky/Lemon/Teleport grenades, Point Teleport, Flamethrower, Grey Goo, Shield Wall, Easter Egg, Choco-Cannon, Snowball, Broom, Scythe, Spring Mine, Innertube) as glue rows over the leftover original data; invented numbers are marked `INV`. Remake-only kinds: missile type `Sticky`, SimpleScripts `Crawl` and `Orbital`, explosion script `BuildWall`.
 
 ## Units
 1 Unity unit = `Units.PX` (20) Flash pixels. Levels: x in [0, width/PX], y in [0, height/PX] (y flipped).

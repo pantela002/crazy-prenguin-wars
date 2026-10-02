@@ -40,6 +40,8 @@ namespace CPW
         public bool Online => net != null;
         /// <summary>Turn timer is held (tutorial explanations).</summary>
         public bool TimerHeld;
+        /// <summary>Seconds left before this turn's clock starts (BattleRules.TurnLeadIn: banner + camera handover).</summary>
+        public float TurnLeadInLeft { get; private set; }
         /// <summary>Weapon each penguin last chose (kept between turns).</summary>
         readonly Dictionary<int, string> selected = new Dictionary<int, string>();
 
@@ -304,7 +306,14 @@ namespace CPW
         {
             var a = Active;
             bool local = OwnedLocally(ActiveIndex);
-            if (!TimerHeld && (Tutorial == null || !Tutorial.HoldsTimer))
+            if (TurnLeadInLeft > 0)
+            {
+                // the turn clock waits for the turn banner and the camera handover; the match clock keeps going
+                // (it is the same on every device and the end-of-turn snapshot carries it anyway)
+                TurnLeadInLeft -= dt;
+                MatchTimeLeft -= dt;
+            }
+            else if (!TimerHeld && (Tutorial == null || !Tutorial.HoldsTimer))
             {
                 TurnTimeLeft -= dt;
                 MatchTimeLeft -= dt;
@@ -389,7 +398,7 @@ namespace CPW
             if (human) AudioManager.Sfx("PlayerStartTurn");
             else AudioManager.Sfx("SplashOpponentsTurn", 0.6f);
 
-            if (PassAndPlay && human)
+            if (PassAndPlay && human && !Config.skipPassCurtain)
             {
                 CurrentPhase = Phase.Curtain;
                 Hud.ShowCurtain(a);
@@ -406,11 +415,14 @@ namespace CPW
         void StartPlaying()
         {
             CurrentPhase = Phase.Turn;
+            TurnLeadInLeft = BattleRules.TurnLeadIn;
             var a = Active;
             string name = a.DisplayName;
             if (IsLocalHuman(ActiveIndex))
             {
-                Hud.Banner(Loc.Has("TID_YOUR_TURN") ? Loc.T("TID_YOUR_TURN") : "Your turn!", a.TeamColor, 1.6f);
+                // pass-and-play: every local player is "you", so name whose turn it is
+                if (PassAndPlay) Hud.Banner(name + "'s turn!", a.TeamColor, 1.6f);
+                else Hud.Banner(Loc.Has("TID_YOUR_TURN") ? Loc.T("TID_YOUR_TURN") : "Your turn!", a.TeamColor, 1.6f);
                 AudioManager.Sfx("SplashYourTurn", 0.7f);
                 // the held weapon is shown when the turn starts so the player can aim right away
                 var w = SelectedItem(ActiveIndex);
@@ -496,20 +508,28 @@ namespace CPW
             return from;
         }
 
+        /// <summary>Safe land for a penguin that fell in the water/lava (Innertube rescue); same rules as a respawn.</summary>
+        public Vector2 SafeLandPoint(Penguin who) => FindRespawnPoint(who);
+
         Vector2 FindRespawnPoint(Penguin who)
         {
-            // a random spawn point away from the others (original SpawnPointFinder), seeded so devices agree
+            // a random spawn point away from the others (original SpawnPointFinder), seeded so devices agree.
+            // Points whose ground is gone (blown away, or under the water/lava line) and points next to an enemy
+            // are pushed to the back, so a drowned/burned penguin comes back on safe land.
             var r = new System.Random((Config.seed + 7919) * 31 + TurnNumber * 101 + who.PlayerIndex);
             var pts = Level.spawnPoints;
             if (pts.Count == 0) return GroundPoint(new Vector2(Level.size.x * 0.5f, Level.size.y * 0.7f));
             Vector2 best = pts[r.Next(pts.Count)];
-            float bestScore = -1;
+            float bestScore = float.MinValue;
             for (int t = 0; t < pts.Count; t++)
             {
                 var sp = pts[(t + r.Next(pts.Count)) % pts.Count];
                 float minD = 999f;
                 foreach (var o in Penguins) if (o != who && o.Alive) minD = Mathf.Min(minD, Vector2.Distance(o.Position, sp));
                 float s = minD + (float)r.NextDouble() * 4f;
+                bool land = Terrain == null || (Terrain.GroundBelow(sp.x, sp.y + 2f, out var g) && g.y > Terrain.WaterY + 0.5f);
+                if (!land) s -= 1000f;                       // would drop straight back into the liquid
+                if (minD < BattleRules.SafeRespawnDistance) s -= 500f;   // INV: never right next to an enemy
                 if (s > bestScore) { bestScore = s; best = sp; }
             }
             return GroundPoint(best);
@@ -621,6 +641,7 @@ namespace CPW
             Fired = true;
             // original practice simulation: after firing the turn has TimeAfterFiring left to retreat
             TurnTimeLeft = BattleRules.TimeAfterFiring;
+            TurnLeadInLeft = 0;
             Vector2 origin = ShotOrigin(a);
             CurrentShot = WeaponSystem.Fire(a, item, origin, angle, power, target);
             Cam.FollowShot(CurrentShot);
@@ -867,7 +888,8 @@ namespace CPW
 
         // ================================================================ events
 
-        void OnExplosion(Vector2 pos, float radius) { if (Cam) Cam.LookAtExplosion(pos, radius); }
+        // tiny repeated blasts (acid drops, goo bites) would make the camera jump around: only real explosions
+        void OnExplosion(Vector2 pos, float radius) { if (Cam && radius >= 1.25f) Cam.LookAtExplosion(pos, radius); }
 
         void OnPenguinDamaged(int victim, int attacker, float amount, string item) => Ai?.OnDamaged(victim, attacker, amount);
 

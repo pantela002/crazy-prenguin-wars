@@ -15,6 +15,7 @@ namespace CPW
 
         const string ChallengesOpenPref = "cpw.hud.challengesOpen";
         RectTransform challengeBox, challengeRows;
+        CanvasGroup challengeGroup;
         Text challengeToggle;
         readonly List<ChallengeRow> challengeList = new List<ChallengeRow>();
         readonly List<ChallengeDef> challengeTmp = new List<ChallengeDef>(4);
@@ -33,6 +34,7 @@ namespace CPW
 
             challengeBox = UI.Rect(safe, "Challenges");
             UI.Place(challengeBox, new Vector2(1, 1), new Vector2(400, 56 + n * 58 + 10), new Vector2(-20, -146));
+            challengeGroup = challengeBox.gameObject.AddComponent<CanvasGroup>();
             var header = TapButton(challengeBox, null, ToggleChallenges, UI.ButtonStyle.Dark);
             UI.Place((RectTransform)header.transform, new Vector2(1, 1), new Vector2(400, 56), Vector2.zero);
             var title = UI.Label(header.transform, Loc.Has("CHALLENGES") ? Loc.T("CHALLENGES") : "Challenges", 30, Color.white, TextAnchor.MiddleLeft, true);
@@ -87,6 +89,13 @@ namespace CPW
         void UpdateChallenges(float dt)
         {
             if (challengeBox == null) return;
+            // the big turn/intro banners run across the top: fade the box out of their way while one shows
+            if (challengeGroup != null)
+            {
+                float want = bannerRt != null && bannerRt.gameObject.activeSelf ? 0.1f : 1f;
+                if (challengeGroup.alpha != want) challengeGroup.alpha = Mathf.MoveTowards(challengeGroup.alpha, want, dt * 5f);
+                challengeGroup.blocksRaycasts = want > 0.5f;
+            }
             challengeTimer -= dt;
             if (challengeTimer > 0) return;
             challengeTimer = 0.3f;

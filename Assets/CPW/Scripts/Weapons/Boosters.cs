@@ -158,12 +158,25 @@ namespace CPW
                 }
                 case "Mine":
                 case "FlameMine":
+                case "SpringMine":
                 case "Mushroom":
                 {
-                    var kind = id == "Mine" ? Deployable.Kind.Mine : id == "FlameMine" ? Deployable.Kind.FlameMine : Deployable.Kind.Mushroom;
+                    var kind = id == "Mine" ? Deployable.Kind.Mine : id == "FlameMine" ? Deployable.Kind.FlameMine
+                        : id == "SpringMine" ? Deployable.Kind.SpringMine : Deployable.Kind.Mushroom;
                     var d = Deployable.Spawn(kind, pos + new Vector2(face * (Tuning.PenguinRadius + 0.5f), 0.1f), p, id);
                     d.Body.SetVel(new Vector2(face * 1.5f, 1.5f));
                     AudioManager.Sfx(id);
+                    return true;
+                }
+                case "Innertube":
+                {
+                    // remake supply: saves the penguin from drowning once (Penguin washes it ashore) until the end of
+                    // its next turn (effect turns tick at the owner's turn starts)
+                    if (p.HasEffect("Innertube")) return false;
+                    p.AddEffect("Innertube", 2);
+                    Fx.Sparks(pos + Vector2.up * 0.5f, new Color(1f, 0.55f, 0.2f), 12);
+                    Fx.FloatText(pos + Vector2.up * 1.6f, "INNERTUBE", new Color(1f, 0.7f, 0.3f), 0.8f);
+                    AudioManager.Sfx("Umbrella");
                     return true;
                 }
                 case "Confetti":

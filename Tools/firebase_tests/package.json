@@ -1,0 +1,11 @@
+{
+  "name": "cpw-firebase-tests",
+  "private": true,
+  "description": "Replays every Firebase REST call the game makes against the local emulators with Docs/firebase/database.rules.json (see Docs/FIREBASE.md, Testing the rules locally).",
+  "scripts": {
+    "test": "firebase emulators:exec --project demo-cpw --only auth,database \"node rules_test.js\""
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.0.0"
+  }
+}

@@ -1053,5 +1053,15 @@
 "BUTTON_SHOP": "Shop",
 "FLOATER_SUICIDE": "Suicide",
 "FLOATER_POINTS": "%+d Points!",
-"TAB_CUSTOMIZATION": "Customize"
+"TAB_CUSTOMIZATION": "Customize",
+"SNOWBALL": "Snowball",
+"SNOWBALLDESC": "A hard-packed snowball. Freezes whoever it hits: slower and weaker against ice.",
+"BROOM": "Broom",
+"BROOMDESC": "Ride the witch's broom! Aim to fly off and ram every enemy on the way.",
+"SCYTHE": "Scythe",
+"SCYTHEDESC": "Swing a spooky scythe from overhead. Only reaches penguins standing right next to you.",
+"SPRINGMINE": "Spring Mine",
+"SPRINGMINEDESC": "A mine with a spring in it. Throws whoever steps on it high into the air.",
+"INNERTUBE": "Innertube",
+"INNERTUBEDESC": "Saves you from drowning once: you wash up on dry land instead. Lasts until the end of your next turn."
 }

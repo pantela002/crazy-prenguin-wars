@@ -112,9 +112,11 @@
     },
 
     "matches": {
+      ".read": "auth != null && query.orderByChild === 'created' && query.limitToFirst <= 3 && query.endAt != null",
+      ".indexOn": ["created"],
       "$matchId": {
         ".read": "auth != null",
-        ".write": "auth != null && (data.exists() ? data.child('host').val() === auth.uid : newData.child('host').val() === auth.uid)",
+        ".write": "auth != null && ((data.exists() ? data.child('host').val() === auth.uid : newData.child('host').val() === auth.uid) || (!newData.exists() && ((data.child('state').val() === 'finished' && data.child('players').child(auth.uid).exists()) || data.child('created').val() < now - 10800000)))",
         ".validate": "newData.hasChildren(['host', 'state'])",
 
         "host": { ".validate": "!data.exists() || data.val() === newData.val()" },

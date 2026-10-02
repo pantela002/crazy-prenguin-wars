@@ -45,6 +45,10 @@ namespace CPW
         }
 
         public static int SortPriority(string id) => GameData.Item(id)?.Int("SortPriority", 99) ?? 99;
+
+        /// <summary>Weapons/boosters offered in Practice: all real items (not the shop's Featured* copies or the
+        /// placeholder Banner).</summary>
+        public static bool InPractice(Record r) => r != null && !r.Id.StartsWith("Featured") && r.Id != "Banner";
         public static int RequiredLevel(string id) => GameData.Item(id)?.Int("RequiredLevel", 1) ?? 1;
     }
 
@@ -75,13 +79,13 @@ namespace CPW
             var l = new Loadout();
             if (mode == BattleMode.Practice || mode == BattleMode.Tutorial)
             {
-                // Free practice ammo (Item.Category "Practice"; the tutorial uses "Tutorial1")
-                string cat = mode == BattleMode.Tutorial ? "Tutorial1" : "Practice";
+                // Free ammo: Practice gives every weapon and booster (the original "Practice" category only had a
+                // handful; the remake's practice is the place to try everything); the tutorial uses "Tutorial1"
                 foreach (var r in GameData.Section("Item").Values)
                 {
                     var type = r.Str("Type");
                     if (type != "Weapon" && type != "Booster") continue;
-                    if (BattleItems.InCategory(r.Id, cat)) l.counts[r.Id] = Infinite;
+                    if (mode == BattleMode.Tutorial ? BattleItems.InCategory(r.Id, "Tutorial1") : BattleItems.InPractice(r)) l.counts[r.Id] = Infinite;
                 }
                 if (mode == BattleMode.Tutorial) l.counts["Punch"] = Infinite;
             }

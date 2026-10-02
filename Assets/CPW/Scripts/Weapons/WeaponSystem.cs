@@ -222,6 +222,24 @@ namespace CPW
             return found;
         }
 
+        /// <summary>Reach (units) of a melee item (only explosions in front of the user, no missile: Punch, Scythe,
+        /// Wand of Wind); 0 for everything that fires a missile.</summary>
+        public static float MeleeReach(string itemId)
+        {
+            var item = WeaponDefs.Item(itemId);
+            if (item == null || !item.IsWeapon || FirstMissile(item) != null) return 0f;
+            bool any = false;
+            foreach (var e in item.Emitters) any |= e.IsExplosion;
+            return any ? ExplosionReach(item) : 0f;
+        }
+
+        /// <summary>True when the item's first missile drops from the sky onto the target (Orbital Plasma Attack).</summary>
+        public static bool FromSky(string itemId)
+        {
+            var e = FirstMissile(WeaponDefs.Item(itemId));
+            return e != null && e.Missile.Script == "Orbital";
+        }
+
         /// <summary>Distance in front of the origin where an explosion-only item's last blast lands.</summary>
         static float ExplosionReach(ItemDef item)
         {

@@ -259,7 +259,7 @@ namespace CPW
             {
                 var to = tpos - Proj.Pos;
                 if (to.sqrMagnitude < 1e-4f) return;
-                float dv = Units.W(s / Proj.Def.NapeMass) * WeaponTuning.SubSpeedScale;
+                float dv = Units.W(s / Proj.Def.NapeMass) * WeaponTuning.SubSpeedScale * WeaponTuning.HomingScale;
                 Proj.Body.SetVel(Proj.Body.Vel() + to.normalized * dv);
             }
             else if (s < 0 && target is Projectile tp && tp)

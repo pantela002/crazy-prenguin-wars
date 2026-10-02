@@ -40,6 +40,10 @@ namespace CPW
         readonly List<Vector2> pts = new List<Vector2>(256);
         readonly List<string> options = new List<string>(32);
 
+        /// <summary>Utility items the AI cannot judge (where to teleport, where a wall helps, riding a broom over
+        /// water): never chosen.</summary>
+        static readonly HashSet<string> NeverUse = new HashSet<string> { "PointTeleport", "TeleportationGrenade", "ShieldWall", "Broom" };
+
         static readonly string[] HappyEmotes = { "EmoticonLaugh", "EmoticonWoot", "EmoticonTaunt", "EmoticonNice", "EmoticonTrollface" };
         static readonly string[] HurtEmotes = { "EmoticonOuch", "EmoticonAngry", "EmoticonCrying", "EmoticonWtf", "EmoticonScream" };
 
@@ -235,7 +239,8 @@ namespace CPW
             string w = weapon != null && me.Ammo.Has(weapon) && WeaponSystem.Targeting(weapon) != TargetingMode.Activation ? weapon : null;
             if (w == null)
                 foreach (var id in me.Ammo.Weapons)
-                    if (me.Ammo.Has(id) && id != "Punch" && WeaponSystem.Targeting(id) != TargetingMode.Activation) { w = id; break; }
+                    if (me.Ammo.Has(id) && id != "Punch" && !NeverUse.Contains(id) && WeaponSystem.MeleeReach(id) <= 0f
+                        && WeaponSystem.Targeting(id) != TargetingMode.Activation) { w = id; break; }
             if (w == null) w = me.Ammo.DefaultWeapon();
             if (w == null) { step = Step.Done; timer = 0; return false; }
             weapon = w;
@@ -302,6 +307,15 @@ namespace CPW
 
         Vector2 Origin() => BattleController.ShotOrigin(me);   // same clamped origin DoFire uses
 
+        /// <summary>Nothing solid between the top of the level and the target (orbital strikes hit the first thing).</summary>
+        static bool SkyClear(Vector2 p)
+        {
+            var t = BattleTerrain.I;
+            if (t == null || t.Level == null) return true;
+            var top = new Vector2(p.x, Mathf.Max(t.Level.size.y, p.y) + 2f);
+            return !t.Raycast(top, p + Vector2.up * 1.2f, out _);
+        }
+
         string ChooseWeapon()
         {
             options.Clear();
@@ -313,7 +327,11 @@ namespace CPW
                 var rec = GameData.Item(w);
                 float range = rec != null ? Units.W(rec.Float("SimulationDistance", 2000)) : 100f;
                 if (w == "Punch") { if (dist < 3f) return w; continue; }
+                if (NeverUse.Contains(w)) continue;
                 if (tm == TargetingMode.Activation) continue;          // dropped in place: not useful from range
+                float melee = WeaponSystem.MeleeReach(w);
+                if (melee > 0f) { if (dist <= melee + 1.5f) options.Add(w); continue; }   // Scythe, Wand of Wind: only up close
+                if (tm == TargetingMode.Point && WeaponSystem.FromSky(w) && !SkyClear(target.Position)) continue;
                 if (tm == TargetingMode.Aiming && range > 1f && dist > range * 1.2f) continue;
                 options.Add(w);
             }

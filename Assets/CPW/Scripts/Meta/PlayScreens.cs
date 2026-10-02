@@ -268,11 +268,14 @@ namespace CPW
         }
 
         /// <summary>Testing preset: 4 human seats (you + Player 2-4), all controlled on this phone.</summary>
+        bool soloTest;   // "all me" preset: one person plays every seat, so no pass-the-phone curtain
+
         void FillTestSeats()
         {
             seats = new List<Seat> { new Seat { name = MyName, type = 0 } };
             while (seats.Count < MaxSeats) seats.Add(new Seat { name = "Player " + (seats.Count + 1), type = 0 });
             BuildSeats();
+            soloTest = true;
             UI.Toast(seats.Count + " human players: you control every penguin.");
         }
 
@@ -422,6 +425,7 @@ namespace CPW
                 slot.boosters.Clear();
                 c.players.Add(slot);
             }
+            c.skipPassCurtain = soloTest && seats.TrueForAll(x => x.type == 0);
             BattleFactory.Launch(c);
         }
     }

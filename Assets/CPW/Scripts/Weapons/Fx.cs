@@ -39,6 +39,12 @@ namespace CPW
             if (Has(id, "Confetti")) { Confetti(pos, 50); return; }
             if (Has(id, "Broom")) { Smoke(pos, 0.6f, new Color(0.8f, 0.72f, 0.55f, 0.6f)); return; }
             if (Has(id, "Void")) { VoidImplosion(pos, radius); return; }
+            // remake weapons (Lemon Grenade, Orbital Plasma Attack, Grey Goo, Scythe, Choco-Cannon / Easter Eggs)
+            if (Has(id, "Acid")) { Gas(pos, radius * 0.7f, new Color(0.85f, 1f, 0.2f)); Burst(sys.spark, pos, 10, 1f, 4f, 0.2f, 0.5f, 0.05f, 0.12f, new Color(0.9f, 1f, 0.3f), new Color(1f, 0.95f, 0.5f)); return; }
+            if (Has(id, "Orbital")) { Colored(pos, radius, new Color(1f, 0.4f, 0.95f), new Color(0.5f, 0.9f, 1f)); Glow(pos, radius * 2.5f + 1f, new Color(1f, 0.6f, 1f)); return; }
+            if (Has(id, "GreyGoo")) { Burst(sys.smoke, pos, Has(id, "Bite") ? 2 : 8, 0.3f, 1.5f, 0.3f, 0.7f, 0.15f, 0.4f, new Color(0.55f, 0.57f, 0.6f, 0.8f), new Color(0.75f, 0.77f, 0.8f, 0.6f)); return; }
+            if (Has(id, "Scythe")) { Burst(sys.spark, pos, 8, 2f, 6f, 0.12f, 0.3f, 0.06f, 0.14f, new Color(0.85f, 0.9f, 1f), Color.white); return; }
+            if (Has(id, "Chocolate")) { Fireball(pos, radius * 0.6f); Debris(pos, new Color(0.38f, 0.22f, 0.1f), Mathf.Clamp((int)(radius * 4), 6, 24)); Smoke(pos, radius * 0.6f + 0.5f, new Color(0.45f, 0.3f, 0.18f, 0.7f)); return; }
             // Basic*/Dynamite/MegaNuke/Chocolate/default: fireball + smoke + debris + flash
             Fireball(pos, radius);
             if (Has(id, "MegaNuke")) { Glow(pos, radius * 2.2f, new Color(1f, 0.95f, 0.8f)); Smoke(pos + Vector2.up * radius * 0.5f, radius * 1.2f, new Color(0.3f, 0.28f, 0.26f, 0.8f)); }
@@ -258,6 +264,12 @@ namespace CPW
                 EmitOne(sys.smoke, pos + Random.insideUnitCircle * 0.6f, back + Random.insideUnitCircle, Random.Range(0.4f, 0.8f), 0.6f, new Color(1, 1, 1, 0.35f));
             else if (Has(tail, "Grenade"))
                 EmitOne(sys.smoke, pos, Random.insideUnitCircle * 0.2f, Random.Range(0.15f, 0.25f), 0.5f, new Color(0.85f, 0.85f, 0.85f, 0.45f));
+            else if (Has(tail, "Acid"))
+                EmitOne(sys.smoke, pos, Vector2.up * 0.6f + Random.insideUnitCircle * 0.3f, Random.Range(0.2f, 0.35f), 0.5f, new Color(0.85f, 1f, 0.25f, 0.6f));
+            else if (Has(tail, "Poison"))
+                EmitOne(sys.smoke, pos + Random.insideUnitCircle * 0.8f, Random.insideUnitCircle * 0.4f, Random.Range(1.2f, 2f), 1.1f, new Color(0.5f, 0.9f, 0.25f, 0.35f));
+            else if (Has(tail, "GreyGoo"))
+                EmitOne(sys.smoke, pos, Random.insideUnitCircle * 0.3f, Random.Range(0.25f, 0.4f), 0.6f, new Color(0.6f, 0.62f, 0.66f, 0.7f));
         }
 
         // ------------------------------------------------------------------ internals
