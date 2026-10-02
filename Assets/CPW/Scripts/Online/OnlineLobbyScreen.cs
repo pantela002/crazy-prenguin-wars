@@ -7,7 +7,8 @@ namespace CPW
     /// <summary>
     /// Online menu: Quick Match, host a public or private game (private games show a short code), join by code,
     /// the list of open games, and the waiting room (players, Start for the host, invite friends, Leave).
-    /// The host's map picker shows maps above the player's level locked (Level.MinLevel, like LockedLevelButtonContainer).
+    /// The host's map picker shows maps above the player's level locked (MapLocks: Level.MinLevel, like LockedLevelButtonContainer,
+    /// unless Settings > "Unlock all maps (testing)" is on). The waiting room always shows 4 seats.
     /// Opened by the menus by reflection ("CPW.OnlineLobbyScreen"), so it keeps a public parameterless constructor.
     /// Works with any IOnlineService; when online play is not available it explains how to switch it on.
     /// </summary>
@@ -237,57 +238,18 @@ namespace CPW
 
         string MapText() => "Map: " + (!ChoiceUnlocked() ? "Random" : BattleFactory.LevelDisplayName(levels[levelChoice]));
 
-        static int MinLevel(string levelId) => GameData.Get("Level", levelId)?.Int("MinLevel", 1) ?? 1;
-        static bool Unlocked(string levelId) => ProfileService.P.level >= MinLevel(levelId);
+        static bool Unlocked(string levelId) => !MapLocks.Locked(levelId);
         bool ChoiceUnlocked() => levelChoice >= 0 && levelChoice < levels.Count && Unlocked(levels[levelChoice]);
 
-        /// <summary>Map picker for hosted games: Random + every map; maps above the player's level are locked.</summary>
+        /// <summary>Map picker for hosted games (MapPicker: Random + every map by theme; locked maps per MapLocks).</summary>
         void PickMap(System.Action changed)
         {
-            var win = MetaUI.Window("Choose a map", new Vector2(1500, 860), out var layer);
-            var host = UI.Rect(win, "Maps");
-            UI.Stretch(host, 20, 20, 120, 20);
-            UI.ScrollGrid(host, out var grid, new Vector2(270, 210), new Vector2(14, 14));
-            UI.Stretch((RectTransform)host.GetChild(0));
-            for (int i = -1; i < levels.Count; i++)
+            string cur = ChoiceUnlocked() ? levels[levelChoice] : "";
+            MapPicker.Popup("Choose a map", cur, id =>
             {
-                int idx = i;
-                string id = i < 0 ? null : levels[i];
-                bool locked = id != null && !Unlocked(id);
-                bool selected = i < 0 ? !ChoiceUnlocked() : levelChoice == i && !locked;
-                var b = UI.Button(grid, null, () =>
-                {
-                    if (locked) { UI.Toast("Reach level " + MinLevel(id) + " to host this map."); return; }
-                    levelChoice = idx;
-                    MetaUI.Close(layer);
-                    changed?.Invoke();
-                }, selected ? UI.ButtonStyle.Primary : UI.ButtonStyle.Plain, 24, "Map " + (id ?? "random"));
-                var thumb = id != null ? LevelThumbs.Get(id) : null;
-                if (thumb != null)
-                {
-                    var img = UI.Image(b.transform, thumb, null, false);
-                    UI.Anchor(img.rectTransform, 0.04f, 0.26f, 0.96f, 0.95f);
-                }
-                else
-                {
-                    var q = UI.Label(b.transform, "?", 90, Theme.Secondary, TextAnchor.MiddleCenter, true);
-                    UI.Anchor(q.rectTransform, 0.04f, 0.26f, 0.96f, 0.95f);
-                }
-                var name = UI.Label(b.transform, id == null ? "Random" : BattleFactory.LevelDisplayName(id), 26, selected ? Theme.PrimaryText : Theme.Text);
-                UI.Anchor(name.rectTransform, 0.03f, 0.02f, 0.97f, 0.25f);
-                if (!locked) continue;
-                var shade = UI.Panel(b.transform, MetaUI.Locked, true, "Locked");
-                UI.Stretch(shade.rectTransform);
-                shade.raycastTarget = false;
-                var lockIcon = ModelLibrary.Icon("Ui/lock");
-                if (lockIcon != null)
-                {
-                    var li = UI.Image(shade.transform, lockIcon);
-                    UI.Anchor(li.rectTransform, 0.35f, 0.42f, 0.65f, 0.85f);
-                }
-                var lv = UI.Label(shade.transform, "Level " + MinLevel(id), 34, Color.white, TextAnchor.MiddleCenter, true);
-                UI.Anchor(lv.rectTransform, 0.05f, lockIcon != null ? 0.18f : 0.3f, 0.95f, lockIcon != null ? 0.42f : 0.7f);
-            }
+                levelChoice = string.IsNullOrEmpty(id) ? -1 : levels.IndexOf(id);
+                changed?.Invoke();
+            });
         }
         string TurnText() => "Turn: " + TurnTimes[turnChoice] + "s";
         string TimeText() => "Time: " + MatchMinutes[timeChoice] + "m";
@@ -316,7 +278,7 @@ namespace CPW
             var name = UI.Label(row.transform, m.hostName + "'s game", 36, Theme.Text, TextAnchor.MiddleLeft, false);
             UI.Anchor(name.rectTransform, 0.03f, 0.45f, 0.62f, 0.95f);
             var info = UI.Label(row.transform,
-                (string.IsNullOrEmpty(m.levelId) ? "Random map" : Loc.Prettify(m.levelId)) + "   " + m.players + "/" + m.maxPlayers + " players",
+                BattleFactory.LevelDisplayName(m.levelId) + "   " + m.players + "/" + m.maxPlayers + " players",
                 28, Theme.Muted, TextAnchor.MiddleLeft);
             UI.Anchor(info.rectTransform, 0.03f, 0.05f, 0.62f, 0.5f);
             var id = m.matchId;
@@ -432,42 +394,56 @@ namespace CPW
                 var share = UI.Label(left.transform, "Friends can join with this code\n(Online > Join).", 30, Theme.TextLight);
                 UI.Anchor(share.rectTransform, 0.05f, 0.27f, 0.95f, 0.44f);
             }
-            var map = UI.Label(left.transform, "Map: " + (string.IsNullOrEmpty(room.levelId) ? "Random" : Loc.Prettify(room.levelId)), 32, Theme.Xp);
+            var map = UI.Label(left.transform, "Map: " + BattleFactory.LevelDisplayName(room.levelId), 32, Theme.Xp);
             UI.Anchor(map.rectTransform, 0.05f, 0.08f, 0.95f, 0.25f);
+            if (string.IsNullOrEmpty(room.code) && !string.IsNullOrEmpty(room.levelId))
+            {
+                // no code to show: use the space for the map thumbnail
+                var thumb = UI.Image(left.transform, LevelThumbs.Get(room.levelId), Color.white, true, "MapThumb");
+                UI.Anchor(thumb.rectTransform, 0.1f, 0.27f, 0.9f, 0.8f);
+            }
 
-            // Right: players and buttons
+            // Right: 4 seats and buttons
+            int seatCount = Mathf.Clamp(room.maxPlayers > 0 ? room.maxPlayers : 4, 2, 4);
             var right = UI.Panel(body, Theme.Panel, true, "Players");
             UI.Anchor(right.rectTransform, 0.42f, 0, 1, 1, 6);
-            var head = UI.Label(right.transform, "Players " + room.players.Count + "/" + room.maxPlayers, 48, Theme.Secondary, TextAnchor.MiddleLeft, true);
+            var head = UI.Label(right.transform, "Players " + room.players.Count + "/" + seatCount, 48, Theme.Secondary, TextAnchor.MiddleLeft, true);
             UI.Anchor(head.rectTransform, 0.04f, 0.86f, 0.96f, 0.98f);
             var listRt = UI.Rect(right.transform, "List");
-            UI.Anchor(listRt, 0.04f, 0.26f, 0.96f, 0.85f);
-            UI.VBox(listRt, 12, TextAnchor.UpperCenter);
-            for (int i = 0; i < room.maxPlayers; i++)
+            UI.Anchor(listRt, 0.04f, 0.25f, 0.96f, 0.85f);
+            float gap = 0.03f, hEach = (1f - gap * (seatCount - 1)) / seatCount;
+            for (int i = 0; i < seatCount; i++)
             {
-                var row = UI.Panel(listRt, i < room.players.Count ? Theme.PanelInner : new Color(1, 1, 1, 0.35f), true, "Slot");
-                UI.Layout(row, -1, 92);
-                if (i >= room.players.Count)
+                float top = 1f - i * (hEach + gap);
+                bool filled = i < room.players.Count;
+                Color team = Theme.PlayerColors[i % Theme.PlayerColors.Length];
+                var row = UI.Panel(listRt, filled ? Theme.PanelInner : new Color(1, 1, 1, 0.35f), true, "Seat " + (i + 1));
+                UI.Anchor(row.rectTransform, 0, top - hEach, 1, top);
+                var strip = UI.Panel(row.transform, filled ? team : Theme.Muted, true, "Color");
+                UI.Anchor(strip.rectTransform, 0, 0, 0.018f, 1);
+                var seatNo = UI.Label(row.transform, "P" + (i + 1), 34, filled ? team : Theme.Muted, TextAnchor.MiddleCenter, true);
+                UI.Anchor(seatNo.rectTransform, 0.025f, 0, 0.1f, 1);
+                if (!filled)
                 {
-                    var w = UI.Label(row.transform, "waiting for a penguin...", 30, Theme.Muted);
-                    UI.Stretch(w.rectTransform, 30, 30, 4, 4);
+                    var w = UI.Label(row.transform, "waiting for a penguin...", 30, Theme.Muted, TextAnchor.MiddleLeft);
+                    UI.Anchor(w.rectTransform, 0.12f, 0, 0.96f, 1);
                     continue;
                 }
                 var p = room.players[i];
-                var dot = UI.Image(row.transform, UI.Circle, Theme.PlayerColors[i % Theme.PlayerColors.Length], false, "Color");
-                UI.Place(dot.rectTransform, new Vector2(0, 0.5f), new Vector2(56, 56), new Vector2(22, 0));
+                var pic = MetaUI.Box(row.transform, 0.1f, 0.06f, 0.2f, 0.94f);
+                PenguinGlyph.Create(pic, team);
                 string tag = (p.isHost ? "  (host)" : "") + (p.isLocal ? "  (you)" : "");
                 var n = UI.Label(row.transform, p.name + tag, 36, Theme.Text, TextAnchor.MiddleLeft);
-                UI.Anchor(n.rectTransform, 0.12f, 0, 0.78f, 1);
+                UI.Anchor(n.rectTransform, 0.22f, 0, 0.8f, 1);
                 var lv = UI.Label(row.transform, "Lv " + p.level, 32, Theme.Secondary, TextAnchor.MiddleRight, true);
-                UI.Anchor(lv.rectTransform, 0.78f, 0, 0.96f, 1);
+                UI.Anchor(lv.rectTransform, 0.8f, 0, 0.97f, 1);
             }
 
             var buttons = UI.Rect(right.transform, "Buttons");
             UI.Anchor(buttons, 0.04f, 0.03f, 0.96f, 0.22f);
             UI.HBox(buttons, 30, TextAnchor.MiddleCenter, 0, true);
             UI.Layout(UI.Button(buttons, "Leave", LeaveRoom, UI.ButtonStyle.Danger, 40), -1, 115, 1);
-            if (!room.isQuickMatch && !string.IsNullOrEmpty(room.code) && room.players.Count < room.maxPlayers)
+            if (!room.isQuickMatch && !string.IsNullOrEmpty(room.code) && room.players.Count < seatCount)
                 UI.Layout(UI.Button(buttons, "Invite", () => InviteFriends(room.code, room.matchId), UI.ButtonStyle.Secondary, 40), -1, 115, 1);
             if (room.isHost && !room.isQuickMatch)
             {
