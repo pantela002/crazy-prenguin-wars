@@ -591,7 +591,8 @@ namespace CPW
             if (!rb || rb.bodyType != RigidbodyType2D.Dynamic) return;
             if (t is IPenguin p && p.Stats != null) dv *= Mathf.Clamp01(1f - p.Stats.impulseResistance / 100f);
             rb.WakeUp();
-            rb.AddForce(dv * rb.mass, ForceMode2D.Impulse);
+            // props: same mass-based knock scale as their damage path (light crates fly, heavy metal barely shifts)
+            rb.AddForce(dv * rb.mass * (t is DynamicObjectEntity ? DynamicObjectEntity.KnockScale(rb.mass) : 1f), ForceMode2D.Impulse);
         }
 
         /// <summary>DamageUtil.damageRecieved without the target defence (the Penguin applies its own defence).</summary>

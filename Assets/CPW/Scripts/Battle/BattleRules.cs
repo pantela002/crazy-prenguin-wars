@@ -69,6 +69,8 @@ namespace CPW
         public static float JumpSpeedPx(float jumpPower) => jumpPower / Mathf.Max(1f, Density * Mathf.PI * RadiusPx * RadiusPx / 1000f);
 
         // ---------- scoring (Tuner, PlayerGameObject) ----------
+        /// <summary>INV: a respawn / Innertube rescue avoids spawn points closer than this to an enemy (units).</summary>
+        public const float SafeRespawnDistance = 4f;
         public static int KillBonus => Mathf.RoundToInt(TF("KillOpponentBonus", 25));
         public static int SuicidePenalty => Mathf.RoundToInt(TF("SuicidePenalty", -25));
         public static float DamageSingleHitMax => TF("DamageSingleHitMax", 300);

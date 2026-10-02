@@ -389,13 +389,24 @@ namespace CPW
 
         // ================= score =================
 
-        /// <summary>Add (or remove) score with the original floaters. kill = kill bonus.</summary>
-        public void AddScore(int amount, bool kill = false)
+        /// <summary>Add (or remove) score with the original floaters. kill = kill bonus. shownElsewhere: the caller
+        /// already drew the "+N" (over the penguin that was hit), so no floater over this one.</summary>
+        public void AddScore(int amount, bool kill = false, bool shownElsewhere = false)
         {
             if (amount == 0) return;
             Score += amount;
+            if (shownElsewhere) return;
             if (kill) pendingKillScore += amount; else pendingScore += amount;
             scoreTimer = 0.25f;
+        }
+
+        /// <summary>"+N" points for the attacker, drawn over the penguin that was hit in the attacker's colour.</summary>
+        void ShowPointsFor(Penguin attacker, int points, bool kill)
+        {
+            if (attacker == null || points <= 0) return;
+            var c = attacker.TeamColor;
+            c = Color.Lerp(c, Color.white, 0.15f);
+            Fx.FloatText(Position + new Vector2(0.9f, kill ? 3.0f : 2.4f), "+" + points, c, kill ? 1.4f : 1.1f);
         }
 
         /// <summary>Overwrite everything from an online snapshot.</summary>
@@ -427,11 +438,19 @@ namespace CPW
             if (killer >= 0 && killer != PlayerIndex)
             {
                 var k = BattleController.I != null ? BattleController.I.PenguinAt(killer) : null;
-                if (k != null) { k.Kills++; k.AddScore(BattleRules.KillBonus, true); }
+                if (k != null) { k.Kills++; k.AddScore(BattleRules.KillBonus, true, true); ShowPointsFor(k, BattleRules.KillBonus, true); }
                 PendingSuicide = false;
             }
             else PendingSuicide = true;     // original wasSuicide(): no other player tagged us last
-            if (water)
+            var lvl = BattleTerrain.I != null ? BattleTerrain.I.Level : null;
+            if (water && lvl != null && lvl.IsLava)
+            {
+                // lava level: burn up instead of the drowning splash (respawns the same way as a water fall)
+                Fx.Fire(Position, 1.4f);
+                Fx.Smoke(Position + Vector2.up * 0.6f, 1.4f);
+                AudioManager.Sfx("StatusFire");
+            }
+            else if (water)
             {
                 Fx.Splash(Position, 1.5f);
                 AudioManager.Sfx("Drown");
@@ -481,6 +500,7 @@ namespace CPW
                 }
             }
             PendingSuicide = false;
+            Fx.Glow(pos, 1.8f, TeamColor);
             Fx.Sparks(pos, TeamColor, 16);
             AudioManager.Sfx("Respawn");
         }
@@ -541,7 +561,23 @@ namespace CPW
             var t = BattleTerrain.I;
             if (t != null)
             {
-                if (pos.y < t.WaterY - r * 0.3f) { Die(true); return; }
+                if (pos.y < t.WaterY - r * 0.3f)
+                {
+                    // Innertube booster: fished out of the liquid onto safe land instead of drowning (one use)
+                    if (HasEffect("Innertube") && BattleController.I != null)
+                    {
+                        RemoveEffect("Innertube");
+                        var safe = BattleController.I.SafeLandPoint(this);
+                        Fx.Splash(pos, 1.2f);
+                        Teleport(safe);
+                        rb.SetVel(Vector2.zero);
+                        Fx.Glow(safe, 1.6f, TeamColor);
+                        Fx.Sparks(safe, TeamColor, 14);
+                        AudioManager.Sfx("Respawn");
+                        return;
+                    }
+                    Die(true); return;
+                }
                 var lvl = t.Level;
                 if (lvl != null && (pos.x < -15f || pos.x > lvl.size.x + 15f || pos.y < Mathf.Min(-15f, t.WaterY - 10f)))
                 { Die(false); return; }
@@ -636,7 +672,10 @@ namespace CPW
                 {
                     var a = ctrl != null ? ctrl.PenguinAt(attacker) : null;
                     if (a == null) continue;
-                    a.AddScore(BattleRules.ScoreFromDamage(amount));
+                    // CumulativeDamage: attacker scores damage*(100/(90+damage/3)), shown over the hit penguin
+                    int pts = BattleRules.ScoreFromDamage(amount);
+                    a.AddScore(pts, false, true);
+                    ShowPointsFor(a, pts, false);
                     a.DamageDealt += amount;
                     ctrl.GiveDamageRewards(a, amount, killed, Position);
                 }

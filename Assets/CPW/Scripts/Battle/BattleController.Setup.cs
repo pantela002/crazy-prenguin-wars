@@ -508,20 +508,28 @@ namespace CPW
             return from;
         }
 
+        /// <summary>Safe land for a penguin that fell in the water/lava (Innertube rescue); same rules as a respawn.</summary>
+        public Vector2 SafeLandPoint(Penguin who) => FindRespawnPoint(who);
+
         Vector2 FindRespawnPoint(Penguin who)
         {
-            // a random spawn point away from the others (original SpawnPointFinder), seeded so devices agree
+            // a random spawn point away from the others (original SpawnPointFinder), seeded so devices agree.
+            // Points whose ground is gone (blown away, or under the water/lava line) and points next to an enemy
+            // are pushed to the back, so a drowned/burned penguin comes back on safe land.
             var r = new System.Random((Config.seed + 7919) * 31 + TurnNumber * 101 + who.PlayerIndex);
             var pts = Level.spawnPoints;
             if (pts.Count == 0) return GroundPoint(new Vector2(Level.size.x * 0.5f, Level.size.y * 0.7f));
             Vector2 best = pts[r.Next(pts.Count)];
-            float bestScore = -1;
+            float bestScore = float.MinValue;
             for (int t = 0; t < pts.Count; t++)
             {
                 var sp = pts[(t + r.Next(pts.Count)) % pts.Count];
                 float minD = 999f;
                 foreach (var o in Penguins) if (o != who && o.Alive) minD = Mathf.Min(minD, Vector2.Distance(o.Position, sp));
                 float s = minD + (float)r.NextDouble() * 4f;
+                bool land = Terrain == null || (Terrain.GroundBelow(sp.x, sp.y + 2f, out var g) && g.y > Terrain.WaterY + 0.5f);
+                if (!land) s -= 1000f;                       // would drop straight back into the liquid
+                if (minD < BattleRules.SafeRespawnDistance) s -= 500f;   // INV: never right next to an enemy
                 if (s > bestScore) { bestScore = s; best = sp; }
             }
             return GroundPoint(best);

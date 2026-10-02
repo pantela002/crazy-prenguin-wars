@@ -33,7 +33,7 @@ namespace CPW
         {
             pickupLayer = UI.Stretch(UI.Rect(safe, "Pickups"));
             if (!c.RewardsEnabled || c.PassAndPlay) return;
-            float boardH = 20 + c.Penguins.Count * 62;
+            float boardH = 20 + c.Penguins.Count * RowPitch;   // under the players panel
             var bg = UI.Panel(safe, new Color(0, 0, 0, 0.45f), true, "Earnings");
             bg.raycastTarget = false;
             earnings = bg.rectTransform;

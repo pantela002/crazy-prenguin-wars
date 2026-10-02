@@ -23,7 +23,11 @@ namespace CPW
         // top
         Text matchClock, turnSeconds, turnName;
         Image turnRing;
-        class Row { public Image bg; public Text name, score; public int shownScore = int.MinValue; }
+        class Row
+        {
+            public Image bg, ring, hp, hpTrail; public Text name, score, turnMark; public CanvasGroup group;
+            public float shownScore = float.NaN, shownHp = -1f, trailHp = -1f;
+        }
         readonly List<Row> rows = new List<Row>();
         int shownMatchSec = -1, shownTurnSec = -1, shownActive = -2;
 
@@ -45,7 +49,7 @@ namespace CPW
         Text hintTitle, hintBody;
 
         // overhead name tags
-        class Tag { public RectTransform rt; public Text name; public Image hp; public Text arrow; public GameObject go; }
+        class Tag { public RectTransform rt; public Text name; public Image hp, hpTrail; public Text arrow; public GameObject go; public float shownHp = -1f, trailHp = -1f; }
         readonly List<Tag> tags = new List<Tag>();
 
         // aim visuals (world space)
@@ -137,24 +141,48 @@ namespace CPW
 
         void BuildTop()
         {
-            // scoreboard (top-left)
-            var board = UI.Panel(safe, new Color(0, 0, 0, 0.45f), true, "Scoreboard");
+            // players panel (top-left, left of the match clock, above the earnings counter; the challenges hang on
+            // the right): one compact row per penguin (up to 4) with a team-colour portrait, name, points and an
+            // HP bar; the penguin whose turn it is gets a team-colour row, a white portrait ring and a marker
+            var board = UI.Panel(safe, new Color(0, 0, 0, 0.45f), true, "Players");
             int n = c.Penguins.Count;
-            UI.Place(board.rectTransform, new Vector2(0, 1), new Vector2(440, 20 + n * 62), new Vector2(20, -20));
+            UI.Place(board.rectTransform, new Vector2(0, 1), new Vector2(PlayersW, 20 + n * RowPitch), new Vector2(20, -20));
             board.raycastTarget = false;
+            var face = ModelLibrary.Icon("Emoticons/EmoticonNice");
             for (int i = 0; i < n; i++)
             {
                 var p = c.Penguins[i];
                 var row = new Row();
                 row.bg = UI.Panel(board.transform, new Color(1, 1, 1, 0f), true, "Row" + i);
-                row.bg.raycastTarget = false;
-                UI.Place(row.bg.rectTransform, new Vector2(0, 1), new Vector2(420, 56), new Vector2(10, -10 - i * 62));
-                var dot = UI.Image(row.bg.transform, UI.Circle, p.TeamColor, false, "Dot");
-                UI.Place(dot.rectTransform, new Vector2(0, 0.5f), new Vector2(36, 36), new Vector2(10, 0));
-                row.name = UI.Label(row.bg.transform, p.DisplayName, 32, Color.white, TextAnchor.MiddleLeft);
-                UI.Anchor(row.name.rectTransform, 0.14f, 0, 0.75f, 1);
-                row.score = UI.Label(row.bg.transform, "0", 36, Theme.Primary, TextAnchor.MiddleRight, true);
+                UI.Place(row.bg.rectTransform, new Vector2(0, 1), new Vector2(PlayersW - 20, RowPitch - 6), new Vector2(10, -10 - i * RowPitch));
+                row.group = row.bg.gameObject.AddComponent<CanvasGroup>();
+                // portrait: team-colour disc (its ring doubles as the turn highlight) with the penguin face on top
+                row.ring = UI.Image(row.bg.transform, UI.Circle, p.TeamColor, false, "Portrait");
+                UI.Place(row.ring.rectTransform, new Vector2(0, 0.5f), new Vector2(50, 50), new Vector2(4, 0));
+                var disc = UI.Image(row.ring.transform, UI.Circle, Color.Lerp(p.TeamColor, Color.black, 0.35f), false, "Disc");
+                UI.Stretch(disc.rectTransform, 4, 4, 4, 4);
+                if (face != null)
+                {
+                    var fi = UI.Image(disc.transform, face, Color.white, true, "Face");
+                    UI.Stretch(fi.rectTransform, 2, 2, 2, 2);
+                }
+                else
+                {
+                    var init = UI.Label(disc.transform, string.IsNullOrEmpty(p.DisplayName) ? "?" : p.DisplayName.Substring(0, 1).ToUpperInvariant(), 28, Color.white, TextAnchor.MiddleCenter, true);
+                    UI.Stretch(init.rectTransform);
+                }
+                row.name = UI.Label(row.bg.transform, p.DisplayName, 28, Color.white, TextAnchor.MiddleLeft, true);
+                UI.Anchor(row.name.rectTransform, 0.15f, 0.42f, 0.72f, 1f);
+                row.name.resizeTextForBestFit = true; row.name.resizeTextMinSize = 16; row.name.resizeTextMaxSize = 28;
+                row.hp = UI.Bar(row.bg.transform, Theme.Good);
+                UI.Anchor((RectTransform)row.hp.transform.parent, 0.15f, 0.1f, 0.72f, 0.4f);
+                row.hpTrail = TrailUnder(row.hp, 3);
+                row.score = UI.Label(row.bg.transform, "0", 34, Theme.Primary, TextAnchor.MiddleRight, true);
                 UI.Anchor(row.score.rectTransform, 0.72f, 0, 0.97f, 1);
+                row.turnMark = UI.Label(row.bg.transform, ">", 30, Color.white, TextAnchor.MiddleCenter, true);
+                UI.Place(row.turnMark.rectTransform, new Vector2(0, 0.5f), new Vector2(24, 40), new Vector2(-22, 0));
+                row.turnMark.gameObject.SetActive(false);
+                foreach (var g in row.bg.GetComponentsInChildren<Graphic>(true)) g.raycastTarget = false;
                 rows.Add(row);
             }
 
@@ -286,6 +314,10 @@ namespace CPW
                 UI.Anchor(t.name.rectTransform, 0, 0.4f, 1, 1);
                 t.hp = UI.Bar(t.rt, Theme.Good);
                 UI.Anchor((RectTransform)t.hp.transform.parent, 0.15f, 0.08f, 0.85f, 0.36f);
+                t.hpTrail = TrailUnder(t.hp, 6);
+                // team-colour frame around the bar so the bar itself says whose penguin this is
+                var frame = t.hp.transform.parent.GetComponent<Image>();
+                if (frame != null) frame.color = new Color(p.TeamColor.r * 0.5f, p.TeamColor.g * 0.5f, p.TeamColor.b * 0.5f, 0.85f);
                 t.arrow = UI.Label(t.rt, "v", 48, Theme.Primary, TextAnchor.MiddleCenter, true);
                 UI.Place(t.arrow.rectTransform, new Vector2(0.5f, 1), new Vector2(60, 60), new Vector2(0, 56));
                 foreach (var g in t.go.GetComponentsInChildren<Graphic>(true)) g.raycastTarget = false;
@@ -407,17 +439,40 @@ namespace CPW
             float frac = c.Fired ? c.TurnTimeLeft / Mathf.Max(0.1f, BattleRules.TimeAfterFiring) : c.TurnTimeLeft / Mathf.Max(0.1f, c.TurnDuration);
             turnRing.fillAmount = turnRunning ? Mathf.Clamp01(frac) : 0f;
 
+            float dt = Time.unscaledDeltaTime;
             for (int i = 0; i < rows.Count; i++)
             {
                 var p = c.Penguins[i];
                 var r = rows[i];
-                if (p.Score != r.shownScore) { r.shownScore = p.Score; r.score.text = Num(p.Score); }
+                // points tick up (or down) towards the real score instead of jumping
+                if (float.IsNaN(r.shownScore)) { r.shownScore = p.Score; r.score.text = Num(p.Score); }
+                else if (Mathf.RoundToInt(r.shownScore) != p.Score)
+                {
+                    float step = Mathf.Max(12f, Mathf.Abs(p.Score - r.shownScore) * 4f) * dt;
+                    r.shownScore = Mathf.MoveTowards(r.shownScore, p.Score, step);
+                    r.score.text = Num(Mathf.RoundToInt(r.shownScore));
+                    r.score.color = Color.white;
+                }
+                else if (r.score.color != Theme.Primary) r.score.color = Theme.Primary;
+                float f = p.Alive ? Mathf.Clamp01(p.HP / Mathf.Max(1f, p.MaxHP)) : 0f;
+                AnimateHp(r.hp, r.hpTrail, ref r.shownHp, ref r.trailHp, f, dt);
+                float alpha = p.Alive && !p.Left ? 1f : 0.45f;
+                if (r.group.alpha != alpha) r.group.alpha = alpha;
             }
             if (c.ActiveIndex != shownActive)
             {
                 shownActive = c.ActiveIndex;
-                for (int i = 0; i < rows.Count; i++) rows[i].bg.color = i == shownActive ? new Color(1, 1, 1, 0.22f) : new Color(1, 1, 1, 0f);
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    bool on = i == shownActive;
+                    var tc = c.Penguins[i].TeamColor;
+                    rows[i].bg.color = on ? new Color(tc.r, tc.g, tc.b, 0.35f) : new Color(1, 1, 1, 0f);
+                    rows[i].ring.color = on ? Color.white : tc;
+                    rows[i].turnMark.gameObject.SetActive(on);
+                }
             }
+            if (shownActive >= 0 && shownActive < rows.Count)
+                rows[shownActive].turnMark.rectTransform.anchoredPosition = new Vector2(-22 + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 4f)) * 6f, 0);
         }
 
         void UpdateControls()
@@ -449,6 +504,35 @@ namespace CPW
             emoteBtn.interactable = c.ViewPenguin != null && c.ViewPenguin.CanEmote && c.CurrentPhase != BattleController.Phase.Over;
         }
 
+        const float PlayersW = 440f, RowPitch = 62f;   // the earnings counter (BattleHUD.Rewards) sits below
+
+        /// <summary>A pale "damage taken" bar behind an HP fill; it trails the fill down after a hit.</summary>
+        static Image TrailUnder(Image fill, float inset)
+        {
+            var trail = UI.Image(fill.transform.parent, UI.WhiteSprite, new Color(1f, 0.95f, 0.8f, 0.85f), false, "Trail");
+            trail.type = Image.Type.Filled;
+            trail.fillMethod = Image.FillMethod.Horizontal;
+            trail.fillAmount = 1;
+            UI.Stretch(trail.rectTransform, inset, inset, inset, inset);
+            trail.raycastTarget = false;
+            trail.transform.SetSiblingIndex(fill.transform.GetSiblingIndex());
+            return trail;
+        }
+
+        /// <summary>Smooth HP: the fill slides to the new value, the pale trail lags behind and follows; heals grow
+        /// the fill smoothly. Display only (no effect on the simulation).</summary>
+        static void AnimateHp(Image fill, Image trail, ref float shown, ref float trailed, float target, float dt)
+        {
+            if (shown < 0) { shown = trailed = target; }
+            shown = Mathf.MoveTowards(shown, target, Mathf.Max(0.6f, Mathf.Abs(target - shown) * 6f) * dt);
+            if (trailed < shown) trailed = shown;
+            else trailed = Mathf.MoveTowards(trailed, shown, (trailed - shown > 0.02f ? 0.35f : 1f) * dt);
+            fill.fillAmount = shown;
+            if (trail != null) trail.fillAmount = trailed;
+            var hc = shown > 0.5f ? Theme.Good : (shown > 0.25f ? Theme.Primary : Theme.Danger);
+            if (fill.color != hc) fill.color = hc;
+        }
+
         void UpdateTags()
         {
             if (cam == null) cam = c.Cam;
@@ -463,10 +547,8 @@ namespace CPW
                 if (!show) continue;
                 Vector2 sp = cam.WorldToScreen((Vector2)p.transform.position + Vector2.up * lift);
                 t.rt.position = new Vector3(sp.x, sp.y, 0);
-                float f = Mathf.Clamp01(p.HP / Mathf.Max(1, p.MaxHP));
-                t.hp.fillAmount = f;
-                var hc = f > 0.5f ? Theme.Good : (f > 0.25f ? Theme.Primary : Theme.Danger);
-                if (t.hp.color != hc) t.hp.color = hc;
+                float f = Mathf.Clamp01(p.HP / Mathf.Max(1f, p.MaxHP));
+                AnimateHp(t.hp, t.hpTrail, ref t.shownHp, ref t.trailHp, f, Time.unscaledDeltaTime);
                 bool act = turn && i == c.ActiveIndex;
                 if (t.arrow.gameObject.activeSelf != act) t.arrow.gameObject.SetActive(act);
                 if (act) t.arrow.rectTransform.anchoredPosition = new Vector2(0, 56 + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 4f)) * 14f);
