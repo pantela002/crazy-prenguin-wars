@@ -178,9 +178,14 @@ def main():
     ap.add_argument('--jobs', type=int, default=os.cpu_count() or 2)
     a = ap.parse_args()
     if not a.dry_run:
+        # clear everything this script made, but keep folders generated elsewhere (clothes: Blender/scripts/clothes_sprites.py)
+        keep = {'clothes'}
         if os.path.isdir(a.dst):
-            shutil.rmtree(a.dst)
-        os.makedirs(a.dst)
+            for name in os.listdir(a.dst):
+                if name in keep: continue
+                p = os.path.join(a.dst, name)
+                shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
+        os.makedirs(a.dst, exist_ok=True)
     catalog = {'swf': {}, 'folders': []}
     total = shared = 0
     jobs = [(a.src, a.dst, a.dry_run, rel, sc, bm) for rel, sc, bm in GROUPS]
