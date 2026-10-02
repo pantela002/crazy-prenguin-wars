@@ -106,7 +106,7 @@ namespace CPW
         {
             var s = "";
             if (g.coins > 0) s += g.coins + " coins";
-            if (g.cash > 0) s += (s.Length > 0 ? " + " : "") + g.cash + " fish";
+            if (g.cash > 0) s += (s.Length > 0 ? " + " : "") + g.cash + " cash";
             if (!string.IsNullOrEmpty(g.item)) s += (s.Length > 0 ? " + " : "") + (g.item == "@rare" ? "rare ingredient" : g.amount + "x " + Progression.NameOf(g.item));
             return s;
         }
@@ -162,7 +162,7 @@ namespace CPW
             int coins = Mathf.CeilToInt(ItemCatalog.PriceCoins(item) * 0.75f), cash = Mathf.CeilToInt(ItemCatalog.PriceCash(item) * 0.75f);
             string key = "deal." + MetaUI.Today;
             bool bought = ProfileService.P.Counter(key) > 0;
-            var b = UI.Button(card.transform, bought ? "Sold out" : Loc.T("BUY") + "  " + (cash > 0 ? cash + " fish" : coins + " coins"), () =>
+            var b = UI.Button(card.transform, bought ? "Sold out" : Loc.T("BUY") + "  " + (cash > 0 ? cash + " cash" : coins + " coins"), () =>
             {
                 if (ProfileService.P.Counter(key) > 0) return;
                 if (!Progression.Spend(coins, cash)) { Progression.NotEnough(cash > 0); return; }
@@ -257,10 +257,10 @@ namespace CPW
         {
             var row = UI.Rect(Content, "Tabs");
             UI.Anchor(row, 0, 0.89f, 1, 1);
-            tabs = MetaUI.Tabs(row, new[] { Loc.T("MONEY_SCREEN_COINS_TITLE"), Loc.T("MONEY_SCREEN_FISH_TITLE") }, tab, i => { tab = i; MetaUI.SetTabSelected(tabs, i); Fill(); }, 36);
+            tabs = MetaUI.Tabs(row, new[] { Loc.T("MONEY_SCREEN_COINS_TITLE"), "Cash" }, tab, i => { tab = i; MetaUI.SetTabSelected(tabs, i); Fill(); }, 36);
             body = UI.Rect(Content, "Body");
             UI.Anchor(body, 0, 0.1f, 1, 0.87f);
-            var tip = UI.Label(Content, "Tip: you earn fish every time you level up, at the slot machine and from daily gifts.", 30, Color.white, TextAnchor.MiddleCenter);
+            var tip = UI.Label(Content, "Tip: you earn cash every time you level up, at the slot machine and from daily gifts.", 30, Color.white, TextAnchor.MiddleCenter);
             UI.Anchor(tip.rectTransform, 0, 0, 1, 0.09f);
             Fill();
         }
@@ -297,9 +297,9 @@ namespace CPW
             int amount = r.Int("Amount"), extra = r.Int("ExtraAmount");
             var card = MetaUI.CardPanel(body, MetaUI.Card);
             string titleKey = coins ? "COINS_PACKAGE_" + (index + 1) + "_TITLE" : "FISH_PACKAGE_" + (index + 1) + "_TITLE";
-            var t = UI.Label(card.transform, MetaUI.TOr(titleKey, MetaUI.TOr(r.Str("Name"), coins ? "Coins" : "Fish")), 32, Theme.Secondary, TextAnchor.MiddleCenter, true);
+            var t = UI.Label(card.transform, MetaUI.TOr(titleKey, MetaUI.TOr(r.Str("Name"), coins ? "Coins" : "Cash")), 32, Theme.Secondary, TextAnchor.MiddleCenter, true);
             UI.Anchor(t.rectTransform, 0.04f, 0.84f, 0.96f, 0.98f);
-            var tile = MetaUI.IconTile(MetaUI.Box(card.transform, 0.18f, 0.46f, 0.82f, 0.82f), BankIcon(r, coins), coins ? "Coins" : "Fish", coins ? Theme.Coin : Theme.Cash);
+            var tile = MetaUI.IconTile(MetaUI.Box(card.transform, 0.18f, 0.46f, 0.82f, 0.82f), BankIcon(r, coins), coins ? "Coins" : "Cash", coins ? Theme.Coin : Theme.Cash);
             MetaUI.Square(tile);
             var a = UI.Rect(card.transform, "Amount");
             UI.Anchor(a, 0, 0.34f, 1, 0.46f);
@@ -313,7 +313,7 @@ namespace CPW
             if (coins)
             {
                 int cost = r.Int("PCCost");
-                var b = UI.Button(card.transform, cost + " fish", () =>
+                var b = UI.Button(card.transform, cost + " cash", () =>
                 {
                     if (!Progression.Spend(0, cost)) { Progression.NotEnough(true); return; }
                     Progression.AddCoins(amount + extra);
@@ -327,7 +327,7 @@ namespace CPW
             {
                 float usd = r.Int("USDCentCost") / 100f;
                 var b = UI.Button(card.transform, "$" + usd.ToString("0.00"), () =>
-                    UI.Message("Store not connected", "This fan remake has no in-app purchases.\nEarn fish by levelling up, the slot machine, challenges and daily gifts!"), UI.ButtonStyle.Secondary, 36);
+                    UI.Message("Store not connected", "This fan remake has no in-app purchases.\nEarn cash by levelling up, the slot machine, challenges and daily gifts!"), UI.ButtonStyle.Secondary, 36);
                 UI.Anchor((RectTransform)b.transform, 0.08f, 0.04f, 0.92f, 0.22f);
             }
         }
