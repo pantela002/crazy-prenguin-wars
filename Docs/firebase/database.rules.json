@@ -11,16 +11,82 @@
           ".validate": "newData.hasChildren(['json', 'updated']) && newData.child('json').isString() && newData.child('json').val().length < 200000"
         },
         "lastSeen": { ".validate": "newData.isNumber()" },
+        "friends": {
+          "$friendUid": {
+            ".validate": "newData.hasChildren(['name']) && newData.child('name').isString() && newData.child('name').val().length <= 32",
+            "name": { ".validate": "newData.isString()" },
+            "added": { ".validate": "newData.isNumber()" },
+            "gift": { ".validate": "newData.isString() && newData.val().length <= 8" },
+            "$other": { ".validate": false }
+          }
+        },
         "$other": { ".validate": false }
+      }
+    },
+
+    "players": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['name', 'level', 'code'])",
+        "name": { ".validate": "newData.isString() && newData.val().length <= 32" },
+        "level": { ".validate": "newData.isNumber()" },
+        "code": { ".validate": "newData.isString() && newData.val().length <= 8 && root.child('friendCodes').child(newData.val()).child('uid').val() === auth.uid" },
+        "seen": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "friendCodes": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null && (!data.exists() || data.child('uid').val() === auth.uid)",
+        ".validate": "$code.length <= 8 && newData.hasChildren(['uid']) && newData.child('uid').val() === auth.uid",
+        "uid": { ".validate": "newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "inbox": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$id": {
+          ".write": "auth != null && ((auth.uid === $uid && !newData.exists()) || (!data.exists() && newData.child('from').val() === auth.uid && $id.length <= 80 && (newData.child('type').val() !== 'gift' || $id.beginsWith('g_' + auth.uid + '_'))))",
+          ".validate": "newData.hasChildren(['type', 'from', 'fromName', 'at'])",
+          "type": { ".validate": "newData.isString() && newData.val().matches(/^(gift|invite|friend)$/)" },
+          "from": { ".validate": "newData.isString()" },
+          "fromName": { ".validate": "newData.isString() && newData.val().length <= 32" },
+          "at": { ".validate": "newData.isNumber() && newData.val() <= now" },
+          "item": { ".validate": "newData.isString() && newData.val().length <= 40" },
+          "amount": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 10" },
+          "code": { ".validate": "newData.isString() && newData.val().length <= 6" },
+          "match": { ".validate": "newData.isString() && newData.val().length <= 40" },
+          "$other": { ".validate": false }
+        }
       }
     },
 
     "leaderboard": {
       ".read": "auth != null",
-      ".indexOn": ["xp"],
-      "$uid": {
-        ".write": "auth != null && auth.uid === $uid",
-        ".validate": "newData.hasChildren(['name', 'xp', 'level', 'wins']) && newData.child('name').isString() && newData.child('name').val().length <= 32 && newData.child('xp').isNumber() && newData.child('level').isNumber() && newData.child('wins').isNumber()"
+      "$period": {
+        ".indexOn": ["xp", "wins", "games", "kills", "damage", "turns"],
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && ($period === 'all' || $period.matches(/^[0-9][0-9][0-9][0-9]-W?[0-9][0-9]$/))",
+          ".validate": "newData.hasChildren(['name', 'xp', 'level', 'wins']) && newData.child('name').isString() && newData.child('name').val().length <= 32 && newData.child('xp').isNumber() && newData.child('level').isNumber() && newData.child('wins').isNumber()"
+        }
+      }
+    },
+
+    "league": {
+      ".read": "auth != null",
+      "$week": {
+        "$tier": {
+          ".indexOn": ["points"],
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && $week.matches(/^[0-9][0-9][0-9][0-9]-W[0-9][0-9]$/) && $tier.matches(/^[0-4]$/)",
+            ".validate": "newData.hasChildren(['name', 'points', 'games']) && newData.child('name').isString() && newData.child('name').val().length <= 32 && newData.child('points').isNumber() && newData.child('points').val() >= 0 && newData.child('points').val() <= 1000 && newData.child('games').isNumber() && newData.child('games').val() <= 50"
+          }
+        }
       }
     },
 
@@ -73,6 +139,19 @@
         "actions": {
           "$turn": {
             ".write": "auth != null && root.child('matches').child($matchId).child('players').child(auth.uid).exists()"
+          }
+        },
+        "chat": {
+          "$msg": {
+            ".write": "auth != null && !data.exists() && root.child('matches').child($matchId).child('players').child(auth.uid).exists()",
+            ".validate": "newData.child('p').isNumber() && newData.child('u').val() === auth.uid && (!newData.child('x').exists() || (newData.child('x').isString() && newData.child('x').val().length <= 80))"
+          }
+        },
+        "rematch": {
+          "$uid": {
+            ".write": "auth != null && $uid === auth.uid && root.child('matches').child($matchId).child('players').child(auth.uid).exists()",
+            ".validate": "newData.hasChildren(['s']) && newData.child('s').isString() && newData.child('s').val().matches(/^(ready|left)$/)",
+            "next": { ".validate": "newData.isString() && newData.val().length <= 40" }
           }
         },
         "snapshots": {

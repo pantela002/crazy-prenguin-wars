@@ -5,7 +5,9 @@ namespace CPW
     /// <summary>
     /// The guided first battle (original TuxTutorial*SubState flow, adapted to touch): move to a crate, jump,
     /// aim, fire, watch the opponent's turn, change weapon to the pistol and fire it, then play on.
-    /// The turn timer is held while the player is learning. Uses the original TUTORIAL_* strings.
+    /// The turn and match clocks are held while a step waits for the player (HoldsTimer, checked every frame by the
+    /// controller); a step that a turn change interrupted is shown again on the player's next turn.
+    /// Uses the original TUTORIAL_* strings.
     /// </summary>
     public class BattleTutorial
     {
@@ -19,6 +21,25 @@ namespace CPW
 
         /// <summary>Ends the match after a couple of free shots so the tutorial stays short.</summary>
         public bool WantsEnd => Current == Step.Free && freeShots >= 2;
+
+        /// <summary>A step is waiting for the player to act on their own turn: the clocks stop.</summary>
+        public bool HoldsTimer
+        {
+            get
+            {
+                if (!Mine || c.Fired) return false;
+                switch (Current)
+                {
+                    case Step.Move: case Step.Jump: case Step.Aim: case Step.Fire:
+                    case Step.ChangeWeapon: case Step.SelectPistol: case Step.FirePistol:
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>The weapon the current step asks for (the weapon menu opens on its tab and pulses it).</summary>
+        public string WantedWeapon => Current == Step.ChangeWeapon || Current == Step.SelectPistol ? "Pistol" : null;
 
         public BattleTutorial(BattleController controller)
         {
@@ -46,12 +67,12 @@ namespace CPW
             {
                 if (Current == Step.Intro) Go(Step.Move);
                 else if (Current == Step.OpponentTurn) Go(Step.ChangeWeapon);
+                // the weapon menu closes between turns: ask to open it again
+                else if (Current == Step.SelectPistol) Go(Step.ChangeWeapon);
                 else ShowStep();
-                c.TimerHeld = Current != Step.Free;
             }
             else
             {
-                c.TimerHeld = false;
                 if (Current == Step.OpponentTurn) c.Hud.ShowHint(T("TUTORIAL_OPPONENTS_TURN_TITLE", "Opponent's Turn"),
                     T("TUTORIAL_OPPONENTS_TURN", "It is now your opponent's TURN. Wait for it to end."));
                 else c.Hud.HideHint();
@@ -140,16 +161,15 @@ namespace CPW
         public void OnAimed() { if (Current == Step.Aim && Mine) aimTime += Time.deltaTime + 0.05f; }
         public void OnBooster() { }
 
-        public void OnWeaponPanelOpened() { if (Current == Step.ChangeWeapon) Go(Step.SelectPistol); }
+        public void OnWeaponPanelOpened() { if (Current == Step.ChangeWeapon && Mine) Go(Step.SelectPistol); }
+
+        /// <summary>Closed without picking the pistol: back to "open the weapon menu".</summary>
+        public void OnWeaponPanelClosed() { if (Current == Step.SelectPistol && Mine) Go(Step.ChangeWeapon); }
 
         public void OnWeaponSelected(string id)
         {
             if (!Mine) return;
-            if ((Current == Step.SelectPistol || Current == Step.ChangeWeapon) && id == "Pistol")
-            {
-                Go(Step.FirePistol);
-                c.TimerHeld = true;
-            }
+            if ((Current == Step.SelectPistol || Current == Step.ChangeWeapon) && id == "Pistol") Go(Step.FirePistol);
         }
 
         public void OnFired(string item)
@@ -161,7 +181,6 @@ namespace CPW
                 case Step.Fire:
                 case Step.Move:
                 case Step.Jump:
-                    c.TimerHeld = false;
                     Current = Step.OpponentTurn;
                     c.Hud.ShowHint(T("TUTORIAL_ATTACK_AP_TITLE", "One Shot"), T("TUTORIAL_ATTACK_AP", "You can only shoot ONCE every turn."));
                     c.Hud.Highlight(null);
@@ -169,7 +188,6 @@ namespace CPW
                 case Step.FirePistol:
                 case Step.ChangeWeapon:
                 case Step.SelectPistol:
-                    c.TimerHeld = false;
                     Go(Step.Free);
                     break;
                 case Step.Free:

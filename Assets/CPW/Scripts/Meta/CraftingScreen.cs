@@ -198,7 +198,16 @@ namespace CPW
             {
                 bool k = P.knownRecipes.Contains(r.id);
                 if (k) known++;
-                var row = UI.Panel(recipeList, k ? new Color(1, 1, 1, 0.9f) : new Color(0, 0, 0, 0.06f), true, "Recipe");
+                Image row;
+                if (k)
+                {
+                    // like the original recipe-based research: tap a known recipe to load its ingredients
+                    var rec = r;
+                    var rb = UI.Button(recipeList, null, () => UseRecipe(rec), UI.ButtonStyle.Plain, 24, "Recipe");
+                    row = rb.GetComponent<Image>();
+                    row.color = new Color(1, 1, 1, 0.9f);
+                }
+                else row = UI.Panel(recipeList, new Color(0, 0, 0, 0.06f), true, "Recipe");
                 UI.Layout(row, -1, 120);
                 var name = UI.Label(row.transform, k ? r.name + "  =  " + r.resultAmount + "x " + Progression.NameOf(r.resultId) : "??? undiscovered", 28, k ? Theme.Text : Theme.Muted, TextAnchor.UpperLeft, k);
                 UI.Anchor(name.rectTransform, 0.04f, 0.5f, 0.98f, 0.95f);
@@ -208,9 +217,37 @@ namespace CPW
                 var il = UI.Label(row.transform, ing, 24, Theme.Muted, TextAnchor.MiddleLeft);
                 UI.Anchor(il.rectTransform, 0.04f, 0.05f, 0.98f, 0.5f);
             }
-            var head = UI.Label(recipeList, known + " / " + CraftingCatalog.Recipes.Count + " discovered", 28, MetaUI.Orange, TextAnchor.MiddleCenter, true);
-            UI.Layout(head, -1, 50);
+            var head = UI.Label(recipeList, known + " / " + CraftingCatalog.Recipes.Count + " discovered" + (known > 0 ? "\nTap a recipe to load it" : ""), 28, MetaUI.Orange, TextAnchor.MiddleCenter, true);
+            UI.Layout(head, -1, known > 0 ? 80 : 50);
             head.transform.SetAsFirstSibling();
+        }
+
+        /// <summary>Put a known recipe's ingredients in the selected (or first idle) research slot.</summary>
+        void UseRecipe(RecipeDef r)
+        {
+            int lab = -1;
+            if (!CraftingCatalog.LabBusy(selectedLab)) lab = selectedLab;
+            else for (int i = 0; i < CraftingCatalog.Labs; i++) if (!CraftingCatalog.LabBusy(i)) { lab = i; break; }
+            if (lab < 0) { UI.Toast("All research slots are busy."); return; }
+            var old = new List<string>(pending[lab]);
+            pending[lab].Clear();   // its ingredients go back to the shelf first
+            var missing = new List<string>();
+            var need = new Dictionary<string, int>();
+            foreach (var x in r.ingredients) need[x] = (need.TryGetValue(x, out var n) ? n : 0) + 1;
+            foreach (var kv in need)
+                if (Available(kv.Key) < kv.Value) missing.Add((kv.Value - Mathf.Max(0, Available(kv.Key))) + "x " + CraftingCatalog.Ingredient(kv.Key).name);
+            if (missing.Count > 0)
+            {
+                pending[lab].AddRange(old);
+                AudioManager.Sfx("Nomoney");
+                UI.Toast("Missing " + string.Join(", ", missing.ToArray()));
+                return;
+            }
+            pending[lab].AddRange(r.ingredients);
+            selectedLab = lab;
+            AudioManager.Sfx("ButtonClick");
+            FillInventory();
+            for (int i = 0; i < CraftingCatalog.Labs; i++) BuildLab(i);
         }
 
         public override void Tick(float dt)

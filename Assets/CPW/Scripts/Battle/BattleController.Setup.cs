@@ -138,6 +138,7 @@ namespace CPW
                 net.ActionReceived += OnNetAction;
                 net.TurnEndReceived += OnNetTurnEnd;
                 net.PlayerLeft += OnNetPlayerLeft;
+                HookChat(true);
             }
             BattleEvents.Explosion += OnExplosion;
             BattleEvents.PenguinDamaged += OnPenguinDamaged;
@@ -303,7 +304,7 @@ namespace CPW
         {
             var a = Active;
             bool local = OwnedLocally(ActiveIndex);
-            if (!TimerHeld)
+            if (!TimerHeld && (Tutorial == null || !Tutorial.HoldsTimer))
             {
                 TurnTimeLeft -= dt;
                 MatchTimeLeft -= dt;
@@ -413,7 +414,12 @@ namespace CPW
                 AudioManager.Sfx("SplashYourTurn", 0.7f);
                 // the held weapon is shown when the turn starts so the player can aim right away
                 var w = SelectedItem(ActiveIndex);
-                if (!string.IsNullOrEmpty(w)) DoSelectWeapon(ActiveIndex, w);
+                if (!string.IsNullOrEmpty(w))
+                {
+                    DoSelectWeapon(ActiveIndex, w);
+                    // other devices may not know this weapon (bought mid-battle from our profile): tell them what we hold
+                    Record("weapon", s: w);
+                }
             }
             else Hud.Banner(Loc.T("PLAYER_TURN_CHANGE_1").Replace("%U", name), a.TeamColor, 1.6f);
 
@@ -763,6 +769,7 @@ namespace CPW
                 case "Treasure":
                     if (RewardsEnabled) p.Coins += PowerUpCrate.TreasureCoins;
                     Fx.FloatText((Vector2)pos + Vector2.up, "+" + PowerUpCrate.TreasureCoins, Theme.Coin, 1.1f);
+                    if (IsRewardViewer(p)) Hud.ShowRewardPickups(pos, PowerUpCrate.TreasureCoins, 0);
                     AudioManager.Sfx("GetCoins");
                     break;
                 default:
@@ -783,14 +790,21 @@ namespace CPW
         // ================================================================ rewards
 
         /// <summary>Original RewardsHandler.damageDoneToTarget: coins/XP for damage to opponents (+kill bonus).</summary>
-        public void GiveDamageRewards(Penguin attacker, int damage, bool killed)
+        /// <summary>from = where the damaged target is (the original popped the pickups out of it).</summary>
+        public void GiveDamageRewards(Penguin attacker, int damage, bool killed, Vector2 from)
         {
             if (!RewardsEnabled || attacker == null || damage <= 0) return;
             float gold = damage * BattleRules.DamageToGold, exp = damage * BattleRules.DamageToExperience;
             if (killed) { gold += BattleRules.PenguinKillBonusGoldExp; exp += BattleRules.PenguinKillBonusGoldExp; }
-            attacker.Coins += Mathf.FloorToInt(gold * attacker.CoinsBonus);
-            attacker.Xp += Mathf.FloorToInt(exp * attacker.ExpBonus);
+            int coins = Mathf.FloorToInt(gold * attacker.CoinsBonus), xp = Mathf.FloorToInt(exp * attacker.ExpBonus);
+            attacker.Coins += coins;
+            attacker.Xp += xp;
+            // RewardsHandler.generateGraphicsToPickUp: only the local player's own rewards are drawn
+            if (IsRewardViewer(attacker)) Hud.ShowRewardPickups(from, coins, xp);
         }
+
+        /// <summary>The penguin whose coins/XP the HUD counts (the one human on this device).</summary>
+        public bool IsRewardViewer(Penguin p) => p != null && RewardsEnabled && !PassAndPlay && IsLocalHuman(p.PlayerIndex);
 
         BattleResult BuildResult(bool aborted)
         {
@@ -881,6 +895,7 @@ namespace CPW
                 net.ActionReceived -= OnNetAction;
                 net.TurnEndReceived -= OnNetTurnEnd;
                 net.PlayerLeft -= OnNetPlayerLeft;
+                HookChat(false);
             }
             BattleEvents.Explosion -= OnExplosion;
             BattleEvents.PenguinDamaged -= OnPenguinDamaged;

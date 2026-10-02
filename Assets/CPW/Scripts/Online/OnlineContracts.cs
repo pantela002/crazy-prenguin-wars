@@ -12,6 +12,8 @@ namespace CPW
         public int level;
         public int wins;
         public int rank;
+        public int value;      // the value of the category the board is sorted by (Leaderboards.Get)
+        public bool online;    // friends board: seen in the last few minutes
     }
 
     /// <summary>Summary of an online match in the lobby list.</summary>
@@ -20,6 +22,7 @@ namespace CPW
     {
         public string matchId;
         public string hostName;
+        public int hostLevel;  // 0 = unknown (older clients)
         public string levelId;
         public int players, maxPlayers;
         public string state;   // "waiting", "playing", "finished"

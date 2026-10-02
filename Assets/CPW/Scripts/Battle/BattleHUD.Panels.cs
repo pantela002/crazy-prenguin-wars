@@ -13,13 +13,15 @@ namespace CPW
         RectTransform weaponGrid;
         readonly List<Button> tabButtons = new List<Button>();
 
-        bool AnyPanelOpen => weaponPanel || boosterPanel || emotePanel || pausePanel || curtain;
+        bool AnyPanelOpen => weaponPanel || boosterPanel || emotePanel || pausePanel || curtain || chatPanel;
 
         void CloseTransientPanels()
         {
+            bool hadWeapons = weaponPanel;
             if (weaponPanel) Destroy(weaponPanel);
             if (boosterPanel) Destroy(boosterPanel);
             weaponPanel = null; boosterPanel = null;
+            if (hadWeapons) c.Tutorial?.OnWeaponPanelClosed();
         }
 
         void CloseAllPanels()
@@ -27,6 +29,7 @@ namespace CPW
             CloseTransientPanels();
             if (emotePanel) Destroy(emotePanel);
             emotePanel = null;
+            CloseChatPanel();
             if (pausePanel) ClosePause();
         }
 
@@ -36,14 +39,13 @@ namespace CPW
             var layer = UI.Stretch(UI.Rect(panelLayer, "Panel " + title));
             layerGo = layer.gameObject;
             var block = UI.Blocker(layer, 0.45f);
-            var closeBtn = block.gameObject.AddComponent<Button>();
-            closeBtn.transition = Selectable.Transition.None;
-            closeBtn.onClick.AddListener(() => onClose());
+            // not a Button: the touch that opened the panel must never close it again (BackdropCloser)
+            block.gameObject.AddComponent<BackdropCloser>().close = onClose;
             var win = UI.Panel(layer, Theme.PanelDark, true, "Window");
             UI.Place(win.rectTransform, new Vector2(0.5f, 0.5f), size, Vector2.zero);
             var t = UI.Label(win.transform, title, 56, Theme.Primary, TextAnchor.MiddleCenter, true);
             UI.Place(t.rectTransform, new Vector2(0.5f, 1), new Vector2(size.x - 240, 90), new Vector2(0, -10));
-            var x = UI.Button(win.transform, "X", onClose, UI.ButtonStyle.Danger, 48);
+            var x = TapButton(win.transform, "X", onClose, UI.ButtonStyle.Danger, 48);
             UI.Place((RectTransform)x.transform, new Vector2(1, 1), new Vector2(100, 100), new Vector2(-14, -14));
             layer.gameObject.AddComponent<PopIn>().target = win.rectTransform;
             return win.rectTransform;
@@ -90,7 +92,7 @@ namespace CPW
             foreach (var cat in BattleRules.WeaponTabs)
             {
                 string tab = cat;
-                var b = UI.Button(tabs, Loc.Has(cat.ToUpperInvariant()) ? Loc.T(cat.ToUpperInvariant()) : cat, () => ShowWeaponTab(tab), UI.ButtonStyle.Plain, 38);
+                var b = TapButton(tabs, Loc.Has(cat.ToUpperInvariant()) ? Loc.T(cat.ToUpperInvariant()) : cat, () => ShowWeaponTab(tab), UI.ButtonStyle.Plain, 38);
                 UI.Layout(b, 320, 90);
                 tabButtons.Add(b);
             }
@@ -99,8 +101,8 @@ namespace CPW
             UI.ScrollGrid(area, out weaponGrid, new Vector2(230, 240), new Vector2(18, 18));
             UI.Stretch((RectTransform)area.GetChild(0));
 
-            // open on the tab of the current weapon
-            string cur = CurrentItem;
+            // open on the tab of the current weapon (or of the weapon the tutorial asks for)
+            string cur = c.Tutorial?.WantedWeapon ?? CurrentItem;
             weaponTab = BattleRules.WeaponTabs[0];
             if (cur != null) foreach (var t in BattleRules.WeaponTabs) if (BattleItems.InCategory(cur, t)) { weaponTab = t; break; }
             ShowWeaponTab(weaponTab);
@@ -116,19 +118,25 @@ namespace CPW
             var a = c.Active;
             if (a == null) return;
             string cur = CurrentItem;
+            string wanted = c.Tutorial?.WantedWeapon;
+            bool shop = CanBuyInBattle(a);
             int shown = 0;
             foreach (var w in a.Ammo.Weapons)
             {
                 if (!BattleItems.InCategory(w, tab)) continue;
                 string id = w;
                 int n = a.Ammo.Count(w);
-                ItemCell(weaponGrid, id, BattleItems.Icon(id), CountText(n), id == cur, n != 0, () =>
+                shown++;
+                if (n == 0 && shop && ShopRecord(id) != null) { BuyCell(weaponGrid, a, id); continue; }
+                var cell = ItemCell(weaponGrid, id, BattleItems.Icon(id), CountText(n), id == cur, n != 0, () =>
                 {
                     c.ActSelectWeapon(id);
                     CloseTransientPanels();
                 });
-                shown++;
+                if (id == wanted) cell.gameObject.AddComponent<Pulse>().on = true;
             }
+            // original in-battle weapon list: shop weapons you don't have yet, greyed with a price (BattleHUD.Shop)
+            if (shop) shown += AddShopCells(weaponGrid, a, tab);
             if (shown == 0)
             {
                 var l = UI.Label(weaponGrid, "No weapons here", 36, Theme.Muted);

@@ -93,6 +93,16 @@ namespace CPW
         public static float BonusCoinsModifier => BF("BonusCoinsModifier", 1);
         public static float RankMultiplier(int rank) => BF("RankMultiplier" + Mathf.Clamp(rank, 1, 4), 1);
 
+        /// <summary>
+        /// Reward pickup timing (BattleRewardDropOption AppearTime 2, WaitTime 6, FlyTime 2). FeedbackItem counted these
+        /// against millisecond ticks, which can't be what shipped; the remake reads them as quarter seconds
+        /// (0.5 s pop, 1.5 s wait, 0.5 s flight), so a pickup is gone in about 2.5 s.
+        /// </summary>
+        public const float PickupTimeUnit = 0.25f;
+        public static float PickupAppear => (Reward != null ? Reward.Float("AppearTime", 2) : 2) * PickupTimeUnit;
+        public static float PickupWait => (Reward != null ? Reward.Float("WaitTime", 6) : 6) * PickupTimeUnit;
+        public static float PickupFly => (Reward != null ? Reward.Float("FlyTime", 2) : 2) * PickupTimeUnit;
+
         // ---------- camera ----------
         public static float CameraZoomMin => BF("CameraZoomMin", 0.5f);
         public static float CameraZoomMax => BF("CameraZoomMax", 1.1f);
@@ -101,6 +111,8 @@ namespace CPW
 
         // ---------- misc ----------
         public static float IdleTimeForHints => Units.Ms(BF("IdleTimeForHints", 10000));
+        /// <summary>Seconds the booster button shows its cooldown after use (BattleOptions.BoosterCooldown, seconds).</summary>
+        public static float BoosterCooldown => Mathf.Max(0.5f, BF("BoosterCooldown", 10));
 
         /// <summary>Weapon categories shown as tabs in the HUD (original Item.Category values).</summary>
         public static readonly string[] WeaponTabs = { "Rockets", "Grenades", "Guns", "Special" };

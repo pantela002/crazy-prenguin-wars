@@ -59,6 +59,7 @@ namespace CPW
         PlayerSlot me;
         RectTransform weaponGrid, boosterGrid;
         int weaponTab;
+        bool ammoWarned;
         List<Button> tabs;
         protected override string Title => config.mode == BattleMode.Practice ? Loc.T("PRACTICE") : Loc.T("POPUP_CHOOSEWEAPON");
 
@@ -104,6 +105,17 @@ namespace CPW
             vl.childForceExpandHeight = false;
             var map = UI.Label(vs.transform, "Map: " + BattleFactory.LevelDisplayName(config.levelId), 30, Theme.Secondary, TextAnchor.MiddleLeft, true);
             UI.Layout(map, -1, 42);
+            if (config.mode == BattleMode.Practice)
+            {
+                // practice lets you pick the map (locked maps stay locked, like the original private game map list)
+                var change = UI.Button(vs.transform, "Map...", () => CustomGameScreen.PickMap(config.levelId, id =>
+                {
+                    config.levelId = string.IsNullOrEmpty(id) ? BattleFactory.RandomLevelFor(ProfileService.P.level) : id;
+                    if (map) map.text = "Map: " + BattleFactory.LevelDisplayName(config.levelId);
+                }), UI.ButtonStyle.Secondary, 30);
+                UI.Layout(change).ignoreLayout = true;
+                UI.Place((RectTransform)change.transform, new Vector2(1, 1), new Vector2(180, 70), new Vector2(-12, -12));
+            }
             for (int i = 0; i < config.players.Count; i++)
             {
                 if (i == config.LocalPlayerIndex) continue;
@@ -117,12 +129,29 @@ namespace CPW
                 UI.Layout(b, -1, 40);
             }
 
-            var fight = UI.Button(Content, "FIGHT!", () => BattleFactory.Launch(config), UI.ButtonStyle.Primary, 64);
+            var fight = UI.Button(Content, "FIGHT!", Fight, UI.ButtonStyle.Primary, 64);
             UI.Place((RectTransform)fight.transform, new Vector2(1, 0), new Vector2(480, 120), Vector2.zero);
             fight.gameObject.AddComponent<UIPulse>().amount = 0.03f;
             var shop = UI.Button(Content, Loc.T("BUTTON_SUPPLIES"), () => ScreenManager.Show(() => new ShopScreen()), UI.ButtonStyle.Secondary, 44);
             UI.Place((RectTransform)shop.transform, new Vector2(0, 0), new Vector2(300, 110), Vector2.zero);
             if (Free) shop.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Like the original NotEnoughAmmo popup before a match, warn once when the arsenal is nearly empty
+        /// (fists still work, so the player may fight anyway) and offer the shop.
+        /// </summary>
+        void Fight()
+        {
+            if (!Free && !ammoWarned && FreeAmmoPack.TotalAmmo() < FreeAmmoPack.MinAmmo)
+            {
+                ammoWarned = true;
+                UI.Popup("Low on ammo", "You only have " + FreeAmmoPack.TotalAmmo() + " shots left. Stock up in the shop, or fight with your fists?",
+                    new UI.PopupButton(Loc.T("BUTTON_SUPPLIES"), () => ScreenManager.Show(() => new ShopScreen(2)), UI.ButtonStyle.Secondary),
+                    new UI.PopupButton("Fight!", () => BattleFactory.Launch(config)));
+                return;
+            }
+            BattleFactory.Launch(config);
         }
 
         void FillWeapons()

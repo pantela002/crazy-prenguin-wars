@@ -27,6 +27,23 @@ namespace CPW
         public long finishUnixMs;    // when it completes
     }
 
+    /// <summary>
+    /// Battle statistics for one leaderboard period (like the original PlayerReport weekly / monthly / all-time data).
+    /// key names the period ("2026-W40", "2026-10" or "all"); a different key means the counters belong to an old period.
+    /// </summary>
+    [Serializable]
+    public class PeriodStats
+    {
+        public string key = "";
+        public int games, wins, xp, kills, deaths, suicides, turns, damage, shots, boosters, explosions;
+
+        public void Reset(string newKey)
+        {
+            key = newKey ?? "";
+            games = wins = xp = kills = deaths = suicides = turns = damage = shots = boosters = explosions = 0;
+        }
+    }
+
     /// <summary>Everything saved about the local player. Serialized with JsonUtility (PlayerPrefs, and Firebase when connected).</summary>
     [Serializable]
     public class PlayerProfile
@@ -43,7 +60,7 @@ namespace CPW
         public List<ItemStack> items = new List<ItemStack>();     // weapons and boosters with ammo counts
         public List<string> unlockedItems = new List<string>();   // permanently unlocked items (e.g. via premium unlock)
         public List<string> ownedClothes = new List<string>();    // Bonus ids for clothes (flannel_head ...)
-        public string wornHead = "";
+        public string wornHead = "";      // "" = bare (new profiles start with nothing worn)
         public string wornChest = "";
         public string wornFeet = "";
         public List<string> trophies = new List<string>();        // trophy Bonus ids (BandaidBadge ...)
@@ -71,6 +88,20 @@ namespace CPW
         public long totalDamage;
         public int bestScore;
         public long lastSavedUnixMs;
+
+        // leaderboard periods (Meta/PlayerStatsTracker.cs keeps them current; ISO week / month in UTC)
+        public PeriodStats statsWeek = new PeriodStats();
+        public PeriodStats statsMonth = new PeriodStats();
+        public PeriodStats statsAll = new PeriodStats { key = "all" };
+
+        // weekly league (Online/League.cs): tier 0 = lowest; points of the week in leagueWeek ("2026-W40").
+        // A finished week waits in leaguePending* until it is settled online (promotion/relegation + rewards).
+        public int leagueTier;
+        public string leagueWeek = "";
+        public int leaguePoints, leagueGames;
+        public string leaguePendingWeek = "";
+        public int leaguePendingTier, leaguePendingPoints, leaguePendingGames;
+        public string leagueLastResult = "";   // shown on the tournament screen ("Week 39: 3rd in Silver, promoted!")
 
         public int Ammo(string itemId)
         {
@@ -107,6 +138,10 @@ namespace CPW
             p.items.Add(new ItemStack("Punch", 5));
             p.items.Add(new ItemStack("Pistol", 5));
             p.items.Add(new ItemStack("Grenade", 5));
+            // Like the original (worn_items: [], no starter clothes) the penguin starts bare: nothing owned,
+            // nothing worn. The player dresses it on the Character screen (Meta/WardrobeScreen).
+            p.ownedClothes.Clear();
+            p.wornHead = p.wornChest = p.wornFeet = p.wornTrophy = "";
             return p;
         }
     }

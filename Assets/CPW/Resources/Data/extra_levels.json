@@ -1,0 +1,6 @@
+{
+ "Level": {
+  "mountain_volcano_01": {"ID": "mountain_volcano_01", "LevelFile": "Data/Levels/mountain_volcano_01", "MinLevel": 1, "MaxLevel": 666, "MinRequired": 1},
+  "winter_icecave_01": {"ID": "winter_icecave_01", "LevelFile": "Data/Levels/winter_icecave_01", "MinLevel": 1, "MaxLevel": 666, "MinRequired": 1}
+ }
+}

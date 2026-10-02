@@ -67,90 +67,154 @@ namespace CPW
         }
     }
 
+
     /// <summary>
-    /// The home screen: the player's 3D penguin on a snowy hill, the big Play button and every menu feature.
-    /// First launch offers the tutorial; the daily gift pops up once per day.
+    /// One-tap PLAY from the home screen: an online quick match when Firebase is connected, otherwise a quick match
+    /// against AI penguins with the player's own arsenal (no setup or loadout screens in between).
+    /// </summary>
+    public static class QuickPlay
+    {
+        public static bool Online => CPW.Online.Service.Available;
+        public static string Caption => Online ? "Online quick match" : "vs computer penguins";
+
+        public static void Start()
+        {
+            if (Online)
+            {
+                OnlineLobbyScreen.AutoQuickMatch = true;
+                ScreenManager.Show(() => new OnlineLobbyScreen());
+                return;
+            }
+            // Same defaults as the Quick Match screen: one normal opponent, no bet.
+            BattleFactory.Launch(BattleFactory.QuickMatch(1, 1, "1NoBet"));
+        }
+    }
+
+    /// <summary>
+    /// The home screen: the player's 3D penguin on a snowy hill with the big PLAY button in front of it, a row of
+    /// play modes under it, social / reward tiles on the left and shopping on the right. First launch offers the
+    /// tutorial; the daily gift pops up once per day.
+    ///
+    /// Layout works in the safe area from 4:3 (iPad, canvas ~1920x1440) to 21:9 (canvas ~2260x970): the side columns
+    /// are fixed-width and start below the title + tip, the centre keeps PLAY and the mode row.
     /// </summary>
     public class HomeScreen : UIScreen
     {
         static bool offeredThisRun, dailyShownThisRun;
         /// <summary>Forget per-session flags (after a progress reset).</summary>
         public static void ResetSession() { offeredThisRun = false; dailyShownThisRun = false; }
-        Text tipText;
+
+        const float ColumnWidth = 236, Margin = 24, TitleTop = 6, TitleHeight = 86, TipHeight = 48;
+        const float ColumnsTop = MetaUI.TopBarHeight + TitleTop + TitleHeight + TipHeight + 14;
+
+        Text tipText, playCaption;
         float tipTimer;
         readonly List<KeyValuePair<Text, Func<int>>> badges = new List<KeyValuePair<Text, Func<int>>>();
         float badgeTimer;
 
         public override void Build()
         {
-            // Title (top-left under the bar)
-            var title = UI.Label(Root, "CRAZY PENGUIN WARS", 78, new Color(1f, 0.86f, 0.2f), TextAnchor.UpperLeft, true);
-            title.rectTransform.anchorMin = new Vector2(0, 1); title.rectTransform.anchorMax = new Vector2(0.6f, 1);
-            title.rectTransform.pivot = new Vector2(0, 1);
-            title.rectTransform.sizeDelta = new Vector2(0, 100);
-            title.rectTransform.anchoredPosition = new Vector2(30, -MetaUI.TopBarHeight - 10);
+            // ---- title + tip (top-left, above the side column so they never overlap) ----
+            var title = UI.Label(Root, "CRAZY PENGUIN WARS", 72, new Color(1f, 0.86f, 0.2f), TextAnchor.MiddleLeft, true);
+            var trt = title.rectTransform;
+            trt.anchorMin = new Vector2(0, 1); trt.anchorMax = new Vector2(0.62f, 1); trt.pivot = new Vector2(0, 1);
+            trt.offsetMin = new Vector2(Margin + 6, -(MetaUI.TopBarHeight + TitleTop + TitleHeight));
+            trt.offsetMax = new Vector2(0, -(MetaUI.TopBarHeight + TitleTop));
+            tipText = UI.Label(Root, Tips.Random(), 28, new Color(1, 1, 1, 0.9f), TextAnchor.MiddleLeft);
+            var tip = tipText.rectTransform;
+            tip.anchorMin = new Vector2(0, 1); tip.anchorMax = new Vector2(0.62f, 1); tip.pivot = new Vector2(0, 1);
+            tip.offsetMin = new Vector2(Margin + 6, -(MetaUI.TopBarHeight + TitleTop + TitleHeight + TipHeight));
+            tip.offsetMax = new Vector2(0, -(MetaUI.TopBarHeight + TitleTop + TitleHeight));
 
-            // ---- left column: social / rewards ----
-            var left = UI.Rect(Root, "Left");
-            UI.Anchor(left, 0, 0.12f, 0, 0.8f);
-            left.sizeDelta = new Vector2(230, left.sizeDelta.y);
-            left.anchoredPosition = new Vector2(140, left.anchoredPosition.y);
-            var lv = UI.VBox(left, 16, TextAnchor.UpperCenter);
-            lv.childForceExpandHeight = true;
+            // ---- left column: rewards + social ----
+            var left = Column(true);
             Side(left, "Ui/gift", "Daily", MetaUI.Pink, () => ScreenManager.Show(() => new DailyScreen()), () => DailyScreen.CanClaim ? 1 : 0);
             Side(left, "Ui/slot", "Slots", MetaUI.Purple, () => ScreenManager.Show(() => new SlotMachineScreen()), SlotMachineLogic.FreeSpinsLeft);
             Side(left, "Ui/trophy", "Awards", MetaUI.Orange, () => ScreenManager.Show(() => new AchievementsScreen()), AchievementCatalog.Claimable);
             Side(left, "Ui/leaderboard", "Ranks", MetaUI.Teal, () => ScreenManager.Show(() => new LeaderboardScreen()), null);
+            Side(left, "Ui/online", Loc.T("BUTTON_NEIGHBORS"), Theme.Secondary, () => ScreenManager.Show(() => new FriendsScreen()), () => Social.InboxCount);
+            Side(left, "Ui/star", "League", new Color32(205, 127, 50, 255), () => ScreenManager.Show(() => new TournamentScreen()),
+                () => string.IsNullOrEmpty(ProfileService.P.leaguePendingWeek) ? 0 : 1);
 
-            // ---- right column: play + shopping ----
-            var play = UI.Button(Root, Loc.T("BUTTON_PLAY").ToUpperInvariant(), () => ScreenManager.Show(() => new PlayScreen()), UI.ButtonStyle.Primary, 96, "Play");
-            UI.Place((RectTransform)play.transform, new Vector2(1, 0.5f), new Vector2(520, 220), new Vector2(-40, 120));
+            // ---- right column: shopping + help ----
+            var right = Column(false);
+            Side(right, "Ui/shop", Loc.T("BUTTON_SUPPLIES"), Theme.Secondary, () => ScreenManager.Show(() => new ShopScreen()), null);
+            Side(right, "Ui/wardrobe", "Wardrobe", MetaUI.Pink, () => ScreenManager.Show(() => new WardrobeScreen()), null);
+            Side(right, "Ui/crafting", Loc.T("BUTTON_CRAFTING"), MetaUI.Teal, () => ScreenManager.Show(() => new CraftingScreen()), CraftingCatalog.ReadyCount);
+            Side(right, null, "Help ?", MetaUI.CardDark, () => ScreenManager.Show(() => new HelpScreen()), null);
+
+            // ---- centre: PLAY (one tap) and the other modes ----
+            var center = UI.Rect(Root, "Center");
+            center.anchorMin = new Vector2(0, 0); center.anchorMax = new Vector2(1, 0); center.pivot = new Vector2(0.5f, 0);
+            center.offsetMin = new Vector2(ColumnWidth + Margin * 2, Margin);
+            center.offsetMax = new Vector2(-(ColumnWidth + Margin * 2), Margin + 290);
+
+            var play = UI.Button(center, Loc.T("BUTTON_PLAY").ToUpperInvariant(), QuickPlay.Start, UI.ButtonStyle.Primary, 104, "Play");
+            var prt = (RectTransform)play.transform;
+            prt.anchorMin = new Vector2(0.5f, 1); prt.anchorMax = new Vector2(0.5f, 1); prt.pivot = new Vector2(0.5f, 1);
+            prt.sizeDelta = new Vector2(620, 180);
+            prt.anchoredPosition = Vector2.zero;
+            var pl = play.GetComponentInChildren<Text>();
+            if (pl) UI.Stretch(pl.rectTransform, 16, 16, 6, 46);
+            playCaption = UI.Label(play.transform, QuickPlay.Caption, 28, Theme.PrimaryText, TextAnchor.MiddleCenter);
+            UI.Anchor(playCaption.rectTransform, 0.05f, 0.04f, 0.95f, 0.28f);
             play.gameObject.AddComponent<UIPulse>().amount = 0.03f;
-            var row = UI.Rect(Root, "Right");
-            UI.Place(row, new Vector2(1, 0.5f), new Vector2(560, 210), new Vector2(-20, -140));
-            var h = UI.HBox(row, 16, TextAnchor.MiddleRight);
-            h.childForceExpandWidth = true;
-            Big(row, "Ui/shop", Loc.T("BUTTON_SUPPLIES"), Theme.Secondary, () => ScreenManager.Show(() => new ShopScreen()), null);
-            Big(row, "Ui/wardrobe", "Wardrobe", MetaUI.Pink, () => ScreenManager.Show(() => new WardrobeScreen()), null);
-            Big(row, "Ui/crafting", Loc.T("BUTTON_CRAFTING"), MetaUI.Teal, () => ScreenManager.Show(() => new CraftingScreen()), CraftingCatalog.ReadyCount);
 
-            // ---- bottom: help + tips ----
-            var help = UI.Button(Root, "?", () => ScreenManager.Show(() => new HelpScreen()), UI.ButtonStyle.Secondary, 60, "Help");
-            UI.Place((RectTransform)help.transform, new Vector2(1, 0), new Vector2(100, 100), new Vector2(-30, 24));
-            var tipBg = UI.Panel(Root, new Color(0, 0, 0, 0.45f), true, "Tip");
-            UI.Place(tipBg.rectTransform, new Vector2(0.5f, 0), new Vector2(1100, 84), new Vector2(-40, 24));
-            tipBg.raycastTarget = false;
-            tipText = UI.Label(tipBg.transform, Tips.Random(), 32, Color.white);
-            UI.Stretch(tipText.rectTransform, 24, 24, 4, 4);
+            var modes = UI.Rect(center, "Modes");
+            modes.anchorMin = new Vector2(0, 0); modes.anchorMax = new Vector2(1, 0); modes.pivot = new Vector2(0.5f, 0);
+            modes.offsetMin = new Vector2(0, 0); modes.offsetMax = new Vector2(0, 88);
+            var mh = UI.HBox(modes, 12, TextAnchor.MiddleCenter);
+            mh.childForceExpandWidth = false;
+            Mode(modes, Loc.T("PRACTICE"), Theme.Good, () => ScreenManager.Show(() => new LoadoutScreen(BattleFactory.PracticeMatch())));
+            Mode(modes, Loc.T("BUTTON_CUSTOM_GAME"), MetaUI.Purple, () => ScreenManager.Show(() => new CustomGameScreen()));
+            Mode(modes, "Online", MetaUI.Teal, PlayScreen.OpenOnline);
+            Mode(modes, "More >", Theme.PanelDark, () => ScreenManager.Show(() => new PlayScreen()));
+        }
+
+        /// <summary>A fixed-width column on the left or right, from under the title to the bottom of the safe area.</summary>
+        RectTransform Column(bool leftSide)
+        {
+            var col = UI.Rect(Root, leftSide ? "Left" : "Right");
+            float x = leftSide ? 0 : 1;
+            col.anchorMin = new Vector2(x, 0); col.anchorMax = new Vector2(x, 1); col.pivot = new Vector2(x, 1);
+            col.sizeDelta = new Vector2(ColumnWidth, -(ColumnsTop + Margin));
+            col.anchoredPosition = new Vector2(leftSide ? Margin : -Margin, -ColumnsTop);
+            var v = UI.VBox(col, 10, TextAnchor.UpperCenter);
+            v.childForceExpandHeight = false;
+            return col;
         }
 
         void Side(RectTransform parent, string icon, string caption, Color color, Action onClick, Func<int> badge)
         {
             var b = UI.Button(parent, null, onClick, UI.ButtonStyle.Dark, 30, "Btn " + caption);
             b.GetComponent<Image>().color = color;
-            var tile = MetaUI.IconTile(b.transform, icon, caption, Color.Lerp(color, Color.white, 0.25f), false);
-            UI.Anchor(tile, 0.08f, 0.1f, 0.48f, 0.9f);
-            var l = UI.Label(b.transform, caption, 36, Color.white, TextAnchor.MiddleLeft, true);
-            UI.Anchor(l.rectTransform, 0.5f, 0, 0.98f, 1);
+            // shrinks evenly on short screens (VBox lerps between min and preferred height)
+            var le = UI.Layout(b, -1, 118);
+            le.minHeight = 60;
+            float textLeft = 0.06f;
+            if (icon != null)
+            {
+                var tile = MetaUI.IconTile(MetaUI.Box(b.transform, 0.04f, 0.08f, 0.4f, 0.92f), icon, caption, Color.Lerp(color, Color.white, 0.25f), false);
+                MetaUI.Square(tile);
+                textLeft = 0.42f;
+            }
+            var l = UI.Label(b.transform, caption, 36, Color.white, icon != null ? TextAnchor.MiddleLeft : TextAnchor.MiddleCenter, true);
+            UI.Anchor(l.rectTransform, textLeft, 0, 0.97f, 1);
             AddBadge(b.transform, badge);
         }
 
-        void Big(RectTransform parent, string icon, string caption, Color color, Action onClick, Func<int> badge)
+        static void Mode(RectTransform parent, string caption, Color color, Action onClick)
         {
-            var b = UI.Button(parent, null, onClick, UI.ButtonStyle.Dark, 30, "Btn " + caption);
+            var b = UI.Button(parent, caption, onClick, UI.ButtonStyle.Dark, 30, "Mode " + caption);
             b.GetComponent<Image>().color = color;
-            UI.Layout(b, 170, 200, 1, 1);
-            var tile = MetaUI.IconTile(b.transform, icon, caption, Color.Lerp(color, Color.white, 0.25f), false);
-            UI.Anchor(tile, 0.12f, 0.3f, 0.88f, 0.94f);
-            var l = UI.Label(b.transform, caption, 32, Color.white, TextAnchor.MiddleCenter, true);
-            UI.Anchor(l.rectTransform, 0.02f, 0.02f, 0.98f, 0.3f);
-            AddBadge(b.transform, badge);
+            var le = UI.Layout(b, 210, 84);
+            le.minWidth = 120;
         }
 
         void AddBadge(Transform parent, Func<int> count)
         {
             if (count == null) return;
-            var t = MetaUI.Badge(parent, "", Theme.Danger, 54);
+            var t = MetaUI.Badge(parent, "", Theme.Danger, 50);
             var rt = (RectTransform)t.transform.parent;
             rt.anchorMin = rt.anchorMax = new Vector2(1, 1);
             rt.anchoredPosition = new Vector2(-6, -6);
@@ -173,6 +237,7 @@ namespace CPW
         {
             MenuScene3D.Show(MenuScene3D.Layout.Home);
             UpdateBadges();
+            Social.RefreshInboxCount(null);
             var P = ProfileService.P;
             if (!P.tutorialDone && !offeredThisRun && P.Counter("flag.tutorialOffered") == 0)
             {
@@ -183,6 +248,7 @@ namespace CPW
                 return;
             }
             Progression.ShowPendingLevelUps();
+            League.TrySettle();
             if (!dailyShownThisRun && DailyScreen.CanClaim)
             {
                 dailyShownThisRun = true;
@@ -197,7 +263,12 @@ namespace CPW
             tipTimer += dt;
             if (tipTimer > 9f) { tipTimer = 0; tipText.text = Tips.Random(); }
             badgeTimer += dt;
-            if (badgeTimer > 1f) { badgeTimer = 0; UpdateBadges(); }
+            if (badgeTimer > 1f)
+            {
+                badgeTimer = 0;
+                UpdateBadges();
+                playCaption.text = QuickPlay.Caption;   // the connection may come up after the screen was built
+            }
         }
 
         public override bool OnBack()

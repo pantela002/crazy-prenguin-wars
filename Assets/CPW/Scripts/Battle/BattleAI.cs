@@ -8,6 +8,9 @@ namespace CPW
     /// search angle/power with the weapon's trajectory prediction (spread over frames), add skill-based error,
     /// aim visibly, fire, then retreat from its own blast. Skill = PlayerSlot.aiSkill (0 easy, 1 normal, 2 hard).
     /// All actions go through BattleController.Act* like a human's (so online hosts record them).
+    /// Safety rules: walking only in the first WalkBudget seconds and never toward water, the level edge or a drop;
+    /// after ThinkBudget seconds (or when the turn clock gets short) it shoots from where it stands with the best
+    /// shot found so far, and if a shot can't be made it falls back to any weapon it has, so every turn has a shot.
     /// </summary>
     public class BattleAI
     {
@@ -16,8 +19,13 @@ namespace CPW
         readonly BattleController c;
         Penguin me, target;
         Step step;
-        float timer, stuckTimer, lastX, emoteCooldown;
+        float timer, stuckTimer, lastX, emoteCooldown, turnClock, planWait;
         int skill, walkDir, replans;
+        bool fallbackTried;
+
+        const float WalkBudget = 4.5f;     // seconds of the turn in which the AI may still walk
+        const float ThinkBudget = 7f;      // after this, shoot from where it stands
+        const float HurryTime = 3.5f;      // turn seconds left that force the shot (search + aim fit in this)
         string weapon;
         TargetingMode mode;
         Vector2 targetPos, impactGuess;
@@ -48,6 +56,9 @@ namespace CPW
             timer = Random.Range(0.7f, 1.3f);
             replans = 0;
             target = null;
+            turnClock = 0;
+            planWait = 0;
+            fallbackTried = false;
         }
 
         public void EndTurn()
@@ -60,7 +71,9 @@ namespace CPW
         {
             if (me == null || !me.Alive || step == Step.Idle) return;
             if (emoteCooldown > 0) emoteCooldown -= dt;
-            bool hurry = c.TurnTimeLeft < 2.2f && !c.Fired;
+            turnClock += dt;
+            bool hurry = !c.Fired && (c.TurnTimeLeft < HurryTime || turnClock > ThinkBudget);
+            bool mayWalk = !hurry && turnClock < WalkBudget;
 
             switch (step)
             {
@@ -70,7 +83,7 @@ namespace CPW
                     MaybeBooster();
                     target = PickTarget();
                     if (target == null) { step = Step.Done; break; }
-                    StartWalkIfUseful();
+                    if (mayWalk) StartWalkIfUseful(); else { step = Step.Plan; timer = 0f; planWait = 0; }
                     break;
 
                 case Step.Walk:
@@ -78,26 +91,30 @@ namespace CPW
                     c.ActWalk(walkDir);
                     if (Mathf.Abs(me.Position.x - lastX) < 0.02f) stuckTimer += dt; else stuckTimer = 0;
                     lastX = me.Position.x;
-                    if (stuckTimer > 0.25f && me.Grounded) { c.ActJump(walkDir); stuckTimer = -0.6f; }
-                    bool close = Mathf.Abs(target.Position.x - me.Position.x) < 9f;
-                    if (timer <= 0 || me.ActionPoints <= 0 || close || hurry || DangerAhead())
+                    bool danger = DangerAhead(walkDir);
+                    if (stuckTimer > 0.25f && me.Grounded && !danger) { c.ActJump(walkDir); stuckTimer = -0.6f; }
+                    bool close = target == null || Mathf.Abs(target.Position.x - me.Position.x) < 9f;
+                    if (timer <= 0 || me.ActionPoints <= 0 || close || !mayWalk || danger)
                     {
                         c.ActWalk(0);
                         step = Step.Plan;
                         timer = 0.35f;
+                        planWait = 0;
                     }
                     break;
 
                 case Step.Plan:
                     timer -= dt;
-                    if ((timer > 0 || !me.Grounded || me.Body.Vel().sqrMagnitude > 0.5f) && !hurry) break;
+                    planWait += dt;
+                    // wait to land/settle before simulating shots, but never longer than a second
+                    if ((timer > 0 || !me.Grounded || me.Body.Vel().sqrMagnitude > 0.5f) && !hurry && planWait < 1f) break;
                     if (!target.Alive) target = PickTarget();
                     if (target == null) { step = Step.Done; break; }
                     PrepareShot();
                     break;
 
                 case Step.Search:
-                    int budget = 6;   // simulations per frame (mobile budget)
+                    int budget = hurry ? 12 : 6;   // simulations per frame (mobile budget)
                     while (budget-- > 0 && step == Step.Search) SearchStep();
                     if (hurry && step == Step.Search) FinishSearch();
                     break;
@@ -106,11 +123,11 @@ namespace CPW
                     aimT += dt / aimDuration;
                     float k = Mathf.SmoothStep(0, 1, Mathf.Clamp01(aimT));
                     c.ActAim(Mathf.LerpAngle(aimFromAngle, goalAngle, k), Mathf.Lerp(aimFromPower, goalPower, k));
-                    if (aimT >= 1f || c.TurnTimeLeft < 0.6f)
+                    if (aimT >= 1f || c.TurnTimeLeft < 0.8f)
                     {
                         c.ActAim(goalAngle, goalPower);
                         if (c.ActFire(targetPos)) AfterFire();
-                        else step = Step.Done;
+                        else if (!FallbackFire()) step = Step.Done;
                     }
                     break;
 
@@ -119,9 +136,10 @@ namespace CPW
                     if (timer > 0) break;
                     // walk away from where the shot lands if it lands close
                     float dx = me.Position.x - impactGuess.x;
-                    if (Mathf.Abs(dx) < 5f && me.ActionPoints > 40 && !hurry)
+                    int away = dx >= 0 ? 1 : -1;
+                    if (Mathf.Abs(dx) < 5f && me.ActionPoints > 40 && c.TurnTimeLeft > 1.2f && !DangerAhead(away))
                     {
-                        c.ActWalk(dx >= 0 ? 1 : -1);
+                        c.ActWalk(away);
                         timer = 1.0f;
                         step = Step.Done;
                     }
@@ -130,7 +148,9 @@ namespace CPW
 
                 case Step.Done:
                     timer -= dt;
-                    if (timer <= 0 && me.Walking) c.ActWalk(0);
+                    if (me.Walking && (timer <= 0 || DangerAhead(me.WalkDir))) c.ActWalk(0);
+                    // nothing was fired (no target found yet, no usable weapon, a failed shot): still take a shot
+                    if (!c.Fired && c.AttacksLeft > 0 && !fallbackTried && (hurry || timer <= -1f)) FallbackFire();
                     break;
             }
         }
@@ -169,25 +189,68 @@ namespace CPW
         {
             float dist = Mathf.Abs(target.Position.x - me.Position.x);
             float walkChance = skill == 0 ? 0.35f : 0.5f;
-            if ((dist > 22f || Random.value < walkChance * 0.4f) && me.ActionPoints > 100 && replans == 0)
+            int dir = target.Position.x > me.Position.x ? 1 : -1;
+            if (dist < 8f) dir = -dir;      // too close: back off a little
+            if ((dist > 22f || Random.value < walkChance * 0.4f) && me.ActionPoints > 100 && replans == 0 && !DangerAhead(dir))
             {
-                walkDir = target.Position.x > me.Position.x ? 1 : -1;
-                if (dist < 8f) walkDir = -walkDir;      // too close: back off a little
+                walkDir = dir;
                 timer = Random.Range(0.6f, 1.6f);
                 lastX = me.Position.x;
                 stuckTimer = 0;
                 step = Step.Walk;
             }
-            else { step = Step.Plan; timer = 0.1f; }
+            else { step = Step.Plan; timer = 0.1f; planWait = 0; }
         }
 
-        bool DangerAhead()
+        /// <summary>Walking this way soon reaches water, the level edge or a drop of more than a few metres.</summary>
+        bool DangerAhead(int dir)
         {
-            // don't walk off into water
             var t = BattleTerrain.I;
-            if (t == null) return false;
-            float ax = me.Position.x + walkDir * 2.5f;
-            return !t.GroundBelow(ax, me.Position.y + 2f, out var g) || g.y < t.WaterY + 0.5f;
+            if (t == null || me == null || dir == 0) return false;
+            var pos = me.Position;
+            float feet = pos.y - BattleRules.Radius;
+            var lvl = t.Level;
+            for (float d = 1f; d <= 3.01f; d += 1f)
+            {
+                float ax = pos.x + dir * d;
+                if (lvl != null && (ax < 1f || ax > lvl.size.x - 1f)) return true;
+                if (!t.GroundBelow(ax, pos.y + 2f, out var g)) return true;     // nothing below: void or open water
+                if (g.y < t.WaterY + 1f) return true;                           // shore too close to the water
+                if (feet - g.y > 4f) return true;                               // a ledge we would fall from
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Last resort when the planned shot didn't happen: any weapon with ammo, aimed straight at the target (or at
+        /// 45 degrees toward it for lobbed weapons) from where the penguin stands. Once per turn.
+        /// </summary>
+        bool FallbackFire()
+        {
+            if (fallbackTried || c.Fired || c.AttacksLeft <= 0) return false;
+            fallbackTried = true;
+            if (target == null || !target.Alive) target = PickTarget();
+            if (target == null) return false;   // nobody to shoot at
+            Vector2 tp = target.Position;
+            string w = weapon != null && me.Ammo.Has(weapon) && WeaponSystem.Targeting(weapon) != TargetingMode.Activation ? weapon : null;
+            if (w == null)
+                foreach (var id in me.Ammo.Weapons)
+                    if (me.Ammo.Has(id) && id != "Punch" && WeaponSystem.Targeting(id) != TargetingMode.Activation) { w = id; break; }
+            if (w == null) w = me.Ammo.DefaultWeapon();
+            if (w == null) { step = Step.Done; timer = 0; return false; }
+            weapon = w;
+            mode = WeaponSystem.Targeting(w);
+            c.ActSelectWeapon(w);
+            var d = tp - Origin();
+            float ang = mode == TargetingMode.PowerBar ? (d.x >= 0 ? 45f : 135f) : Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+            float pow = mode == TargetingMode.PowerBar ? Mathf.Clamp(0.35f + Mathf.Abs(d.x) / 60f, 0.35f, 1f) : 1f;
+            c.ActAim(ang, pow);
+            targetPos = tp;
+            impactGuess = tp;
+            if (c.ActFire(tp)) { AfterFire(); return true; }
+            step = Step.Done;
+            timer = 0;
+            return false;
         }
 
         void PrepareShot()
@@ -328,11 +391,13 @@ namespace CPW
         void FinishSearch()
         {
             bool reachable = bestErr < 6f;
-            if (!reachable && replans == 0 && me.ActionPoints > 150 && c.TurnTimeLeft > 5f)
+            int toward = target.Position.x > me.Position.x ? 1 : -1;
+            if (!reachable && replans == 0 && me.ActionPoints > 150 && c.TurnTimeLeft > HurryTime + 2.5f
+                && turnClock < WalkBudget - 1f && !DangerAhead(toward))
             {
                 // can't reach from here: walk toward the target and try again
                 replans++;
-                walkDir = target.Position.x > me.Position.x ? 1 : -1;
+                walkDir = toward;
                 timer = Random.Range(0.8f, 1.4f);
                 lastX = me.Position.x;
                 step = Step.Walk;
@@ -356,7 +421,8 @@ namespace CPW
             goalAngle = bestAngle;
             goalPower = bestPower;
             aimT = 0;
-            aimDuration = Random.Range(0.8f, 1.3f);
+            // the visible aim never eats the time the shot needs
+            aimDuration = Mathf.Clamp(Mathf.Min(Random.Range(0.8f, 1.3f), c.TurnTimeLeft - 1.2f), 0.2f, 1.3f);
             step = Step.Aim;
         }
 
