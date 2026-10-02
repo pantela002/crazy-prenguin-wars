@@ -1,6 +1,7 @@
 """Projectile models (MissileGraphic ids), centered at the origin, nose pointing +X.
 Variants share one mesh: each shape is exported once and copied to every id that uses it."""
 import bpy  # noqa: F401  (bpy must be imported before mathutils/bmesh)
+import math
 import os
 
 from mathutils import Matrix
@@ -41,6 +42,10 @@ SHAPES = {
     "plasma_small": lambda n: S.orb(n, "plasma", 0.09),
     "plasma_bomb": lambda n: S.orb(n, "plasma", 0.18, cage="grey_dark"),
     "cannonball": lambda n: S.cannonball(n, 0.16),
+    "choco_ball": lambda n: [C.sphere(n + "_b", (0, 0, 0), 0.16, C.mat("choco"), 14, 9),
+                             C.sphere(n + "_f", (0.02, 0, 0.06), (0.13, 0.13, 0.1), C.mat("cream"), 12, 6)] +
+                            [C.box(n + "_s%d" % i, (0.13 * math.cos(i * 1.3), -0.12, 0.13 * math.sin(i * 1.3) * 0.6),
+                                   (0.04, 0.015, 0.015), C.mat(("yellow", "pink", "cyan", "lime")[i % 4])) for i in range(5)],
     "impact_ball": lambda n: S.cannonball(n, 0.2, "orange_dark"),
     "flare": lambda n: S.bullet(n, "orange", 0.3, 0.08) + [C.sphere(n + "_g", (0.05, 0, 0), 0.06, C.mat("yellow"), 8, 5)],
     "grenade": lambda n: S.grenade(n, "olive"),
@@ -51,8 +56,8 @@ SHAPES = {
     "lemon_shard": lambda n: [C.sphere(n + "_s", (0, 0, 0), (0.09, 0.06, 0.03), C.mat("lemon"), 8, 5)],
     "gas_can": lambda n: S.canister(n, "green", "gun", label="yellow"),
     "gas_cloud": lambda n: S.blob(n, "slime", 0.2, 6, 5),
-    "cinder": lambda n: S.rock(n, 0.17, 5, "rock_dark") + [C.sphere(n + "_e", (0.0, -0.08, 0.05), 0.07, C.mat("fire"), 8, 5)],
-    "cinder2": lambda n: S.rock(n, 0.12, 6, "rock_dark") + [C.sphere(n + "_e", (0.0, -0.06, 0.03), 0.05, C.mat("fire"), 8, 5)],
+    "cinder": lambda n: S.rock(n, 0.17, 5, "rock_dark") + [C.sphere(n + "_e", (0.0, -0.08, 0.05), 0.07, S.G("fire"), 8, 5)],
+    "cinder2": lambda n: S.rock(n, 0.12, 6, "rock_dark") + [C.sphere(n + "_e", (0.0, -0.06, 0.03), 0.05, S.G("fire"), 8, 5)],
     "sticky": lambda n: S.blob(n, "slime", 0.15),
     "sticky_blob": lambda n: S.blob(n, "slime", 0.09, 7, 2),
     "goo": lambda n: S.blob(n, "grey", 0.14, 8, 4),
@@ -118,6 +123,9 @@ MAP = {
     "WandWind": "wind", "Scythe": "scythe", "Cat": "cat", "Broom": "broom", "Mushroom": "mushroom", "Snowball": "snowball",
     "Fireworks": "rocket_firework", "Caltrops": "caltrops",
 }
+# missiles without a MissileGraphic record (restored original weapons)
+EXTRA = {"ChocoCannon": "choco_ball"}
+MAP.update(EXTRA)
 
 
 def _scythe_spin(n):
@@ -151,6 +159,7 @@ def build(mid, col):
 def run():
     C.reset()
     ids = C.ids("MissileGraphic")
+    ids += [m for m in EXTRA if m not in ids]
     by_shape = {}
     for mid in ids:
         by_shape.setdefault(shape_for(mid), []).append(mid)

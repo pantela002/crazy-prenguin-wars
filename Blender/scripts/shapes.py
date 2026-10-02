@@ -9,7 +9,19 @@ from mathutils import Matrix, Vector
 import common as C
 
 V = Vector
-M = C.mat
+GLOWING = ("fire", "plasma")
+
+
+def M(name, hexcol=None, emission=0.0):
+    """Palette material; fire/plasma become "Glow_*" materials (drawn bright and unoutlined in Unity)."""
+    if name in GLOWING and hexcol is None:
+        return G(name)
+    return C.mat(name, hexcol, emission)
+
+
+def G(name):
+    """Self-lit material for energy/fire (Unity: Mats.ApplyToon detects the Glow prefix)."""
+    return C.mat(C.GLOW_PREFIX + "_" + name, C.PALETTE.get(name, "#ffffff"))
 X = (1, 0, 0)
 
 
@@ -190,8 +202,8 @@ def _lighter(name):
 
 def bolt(n, mat, length=0.5, r=0.06):
     """Energy bolt / laser projectile (capsule)."""
-    return [C.sphere(n + "_b", (0, 0, 0), (length / 2, r, r), M(mat), 12, 6),
-            C.sphere(n + "_c", (length * 0.05, 0, 0), (length * 0.35, r * 0.55, r * 0.55), M("white"), 10, 5)]
+    return [C.sphere(n + "_b", (0, 0, 0), (length / 2, r, r), G(mat), 12, 6),
+            C.sphere(n + "_c", (length * 0.05, 0, 0), (length * 0.35, r * 0.55, r * 0.55), G("white"), 10, 5)]
 
 
 def bullet(n, mat="gold", length=0.22, r=0.045):
@@ -225,7 +237,7 @@ def blob(n, mat, r=0.16, seed=4, lumps=4):
 
 def flame(n, r=0.16):
     return [C.lathe(n + "_o", [(0.0, -r), (r * 0.9, -r * 0.6), (r, 0), (r * 0.6, r * 0.9), (0.0, r * 1.9)], M("fire"), 12),
-            C.lathe(n + "_i", [(0.0, -r * 0.75), (r * 0.6, -r * 0.4), (r * 0.55, r * 0.3), (0.0, r * 1.3)], M("yellow"), 10,
+            C.lathe(n + "_i", [(0.0, -r * 0.75), (r * 0.6, -r * 0.4), (r * 0.55, r * 0.3), (0.0, r * 1.3)], G("yellow"), 10,
                     center=(0, -r * 0.35, 0))]
 
 

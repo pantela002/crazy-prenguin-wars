@@ -53,6 +53,7 @@ namespace CPW
 
         static readonly Dictionary<string, MaterialStyle> styles = new Dictionary<string, MaterialStyle>();
         static readonly Dictionary<string, Texture2D> capTextures = new Dictionary<string, Texture2D>();
+        static readonly HashSet<string> paintedCaps = new HashSet<string>();   // cap textures with final colors (Blender-made)
         static readonly Dictionary<string, Material> capMats = new Dictionary<string, Material>();
 
         /// <summary>Parse "0x5c2c36" / "#5c2c36" (invalid values such as "1xf4ec0a" give def).</summary>
@@ -157,11 +158,15 @@ namespace CPW
 
         // ------------------------------------------------------------------ grass / snow cap
 
-        /// <summary>White fringe texture for the cap strip: solid at the bottom, blades/lumps on top (alpha).</summary>
+        /// <summary>
+        /// Cap strip texture: Resources/Textures/Terrain/{id}_Cap.png (painted grass/moss/snow/sand with an ink edge, see
+        /// Blender/scripts/textures.py) or a procedural white fringe that the vertex color tints.
+        /// </summary>
         public static Texture2D CapTexture(string id)
         {
             if (capTextures.TryGetValue(id, out var t) && t) return t;
             t = Resources.Load<Texture2D>("Textures/Terrain/" + id + "_Cap");
+            if (t != null) paintedCaps.Add(id);
             if (t == null)
             {
                 const int W = 128, H = 32;
@@ -204,7 +209,16 @@ namespace CPW
         {
             var key = id + (decor ? "/d" : "/s");
             if (capMats.TryGetValue(key, out var m) && m) return m;
-            m = new Material(Mats.TransparentShader) { mainTexture = CapTexture(id), color = Color.white, name = "Cap_" + key };
+            var tex = CapTexture(id);
+            var col = Color.white;
+            if (paintedCaps.Contains(id))
+            {
+                // painted textures carry their own colors: cancel the theme cap color the terrain mesh puts in the vertex
+                // colors (only the polygon tint's darkening stays)
+                var cc = Info(id).capColor;
+                col = new Color(1f / Mathf.Max(0.05f, cc.r), 1f / Mathf.Max(0.05f, cc.g), 1f / Mathf.Max(0.05f, cc.b), 1f);
+            }
+            m = new Material(Mats.TransparentShader) { mainTexture = tex, color = col, name = "Cap_" + key };
             if (decor) m.renderQueue = QueueDecor + 1;
             capMats[key] = m;
             return m;

@@ -110,6 +110,11 @@ PALETTE = {
     "pine": "#2e7a52", "pine_dark": "#1e5a3c", "hill": "#6cc04a", "hill_dark": "#4a9a3a", "rope": "#d8c08a",
     "canvas": "#f0f0e6", "rubber": "#30333a", "sky": "#8fd0ff", "cat": "#f0a040", "cat_dark": "#b8702a",
     "bone": "#f0e8d8", "rose": "#ff6a8a", "violet": "#b07ae8", "mint": "#7ae8c0", "peach": "#ffb08a",
+    # penguin (original art: dark teal feathers, yellow-orange duck bill)
+    "wood_light": "#d89c5a", "wood_mid": "#b57a40", "stone_light": "#b0b0a6", "stone_mid": "#86867e",
+    "metal_light": "#bcc4ce", "ice_light": "#e2f6fd", "ice_mid": "#a6dcf0",
+    "choco": "#6b3a20", "choco_dark": "#4a2412",
+    "penguin": "#1d3542", "penguin_light": "#3d6676", "beak": "#ffb424", "beak_dark": "#e57d17",
 }
 
 _mats = {}
@@ -510,6 +515,112 @@ def _clean_meshes(objs):
     return swapped
 
 
+GLOW_PREFIX = "Glow"   # materials named Glow* are drawn unshaded and without outline in Unity (Mats.ApplyToon)
+
+
+def _hemisphere_dirs(n=20):
+    """Cosine-weighted directions around +Z (Fibonacci spiral, deterministic)."""
+    out = []
+    ga = math.pi * (3 - math.sqrt(5))
+    for i in range(n):
+        r = math.sqrt((i + 0.5) / n)
+        a = i * ga
+        out.append(Vector((r * math.cos(a), r * math.sin(a), math.sqrt(max(0.0, 1 - r * r)))))
+    return out
+
+
+_HEMI = _hemisphere_dirs()
+
+
+def to_unity_dir(v):
+    """Direction in the (already 180-degree turned) export frame -> Unity object space (Unity mirrors X)."""
+    return (-v[0], v[2], -v[1])
+
+
+def _bake_vertex_data(objs):
+    """Per-corner data for the Unity toon shader, computed on the cleaned export meshes:
+    - color attribute 'Col' (linear floats): ambient occlusion from the whole collection (contact shadows between
+      parts, darker creases) times a soft top-to-bottom gradient. Multiplies the material color in CPW/Toon.
+    - UV0 'UVMap': Unity object-space x/y (planar, used for small surface noise), UV1/UV2 'OutlineN': the smoothed
+      vertex normal in Unity object space (uv1 = xy, uv2 = z, 1) so CPW/ToonOutline can push an unbroken hull even
+      where the mesh has hard edges (split normals)."""
+    from mathutils.bvhtree import BVHTree
+    meshes = [o for o in objs if o.type == "MESH" and len(o.data.polygons)]
+    if not meshes:
+        return
+    verts, polys = [], []
+    for o in meshes:
+        off = world_loc(o)
+        base = len(verts)
+        verts += [v.co + off for v in o.data.vertices]
+        polys += [[base + i for i in p.vertices] for p in o.data.polygons]
+    bvh = BVHTree.FromPolygons(verts, polys, epsilon=0.0)
+    lo = Vector((min(v.x for v in verts), min(v.y for v in verts), min(v.z for v in verts)))
+    hi = Vector((max(v.x for v in verts), max(v.y for v in verts), max(v.z for v in verts)))
+    diag = (hi - lo).length
+    maxd = min(1.0, max(0.12, diag * 0.22))
+    eps = max(1e-4, diag * 0.0015)
+    # ignore hits closer than this: decals/trim pieces sit a hair in front of big faces whose few corner vertices
+    # would otherwise all read as fully occluded
+    near = min(0.035, diag * 0.02)
+    zspan = max(1e-4, hi.z - lo.z)
+    for o in meshes:
+        me = o.data
+        off = world_loc(o)
+        glow = [bool(m and m.name.startswith(GLOW_PREFIX)) for m in me.materials]
+        for name in [a.name for a in me.color_attributes]:
+            me.color_attributes.remove(me.color_attributes[name])
+        while me.uv_layers:
+            me.uv_layers.remove(me.uv_layers[0])
+        for nm in ("UVMap", "OutlineN", "OutlineZ"):
+            me.uv_layers.new(name=nm)
+        me.color_attributes.new("Col", "FLOAT_COLOR", "CORNER")
+        cn = me.corner_normals
+        cache = {}
+        loop_poly = [0] * len(me.loops)
+        for p in me.polygons:
+            for li in p.loop_indices:
+                loop_poly[li] = p.index
+        cvals = [0.0] * (len(me.loops) * 4)
+        u0 = [0.0] * (len(me.loops) * 2)
+        u1 = [0.0] * (len(me.loops) * 2)
+        u2 = [0.0] * (len(me.loops) * 2)
+        for li, lp in enumerate(me.loops):
+            vi = lp.vertex_index
+            v = me.vertices[vi]
+            p = v.co + off
+            n = Vector(cn[li].vector)
+            pg = glow[me.polygons[loop_poly[li]].material_index] if glow else False
+            key = (vi, round(n.x, 2), round(n.y, 2), round(n.z, 2), pg)
+            ao = cache.get(key)
+            if ao is None:
+                if pg:
+                    ao = 1.0
+                else:
+                    rot = Vector((0, 0, 1)).rotation_difference(n).to_matrix()
+                    start = p + n * eps
+                    occ = 0.0
+                    for d in _HEMI:
+                        hit = bvh.ray_cast(start + rot @ d * near, rot @ d, maxd - near)
+                        if hit[0] is not None:
+                            occ += 1.0 - ((hit[3] + near) / maxd) ** 1.5
+                    occ /= len(_HEMI)
+                    ao = max(0.42, 1.0 - 1.15 * occ)
+                    t = (p.z - lo.z) / zspan
+                    ao *= 0.86 + 0.14 * min(1.0, t * 1.4)
+                cache[key] = ao
+            cvals[li * 4:li * 4 + 4] = (ao, ao, ao, 1.0)
+            uco = to_unity_dir(v.co)
+            u0[li * 2:li * 2 + 2] = (uco[0], uco[1])
+            sn = to_unity_dir(v.normal)
+            u1[li * 2:li * 2 + 2] = (sn[0], sn[1])
+            u2[li * 2:li * 2 + 2] = (sn[2], 1.0)
+        me.color_attributes["Col"].data.foreach_set("color", cvals)
+        me.uv_layers["UVMap"].data.foreach_set("uv", u0)
+        me.uv_layers["OutlineN"].data.foreach_set("uv", u1)
+        me.uv_layers["OutlineZ"].data.foreach_set("uv", u2)
+
+
 def _restore_meshes(swapped):
     for o, data, vis in reversed(swapped):  # reversed: undoes the renames of shared meshes in order
         tmp = o.data
@@ -540,6 +651,7 @@ def export_collection(col, path, aliases=()):
     set_color_mode("srgb")
     swapped = _clean_meshes(objs)
     try:
+        _bake_vertex_data(objs)
         lc = _find_layer_collection(bpy.context.view_layer.layer_collection, col.name)
         bpy.context.view_layer.active_layer_collection = lc
         bpy.ops.export_scene.fbx(
@@ -547,7 +659,8 @@ def export_collection(col, path, aliases=()):
             object_types={"MESH", "EMPTY"}, apply_scale_options="FBX_SCALE_ALL",
             axis_forward="-Z", axis_up="Y", bake_space_transform=True, use_mesh_modifiers=True,
             mesh_smooth_type="FACE", add_leaf_bones=False, bake_anim=False, use_custom_props=False,
-            path_mode="AUTO", embed_textures=False, use_tspace=False)
+            path_mode="AUTO", embed_textures=False, use_tspace=False,
+            colors_type="LINEAR", prioritize_active_color=False)
     finally:
         _restore_meshes(swapped)
         set_color_mode("linear")

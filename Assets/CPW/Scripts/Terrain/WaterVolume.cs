@@ -42,9 +42,11 @@ namespace CPW
         int cols;
         float x0;
         float[] h, v;
-        Mesh front, back;
-        readonly List<Object> owned = new List<Object>();   // meshes created here, destroyed with the water
-        Vector3[] fv, bv;
+        Mesh front, back, foamMesh;
+        readonly List<Object> owned = new List<Object>();   // meshes/materials/textures created here, destroyed with the water
+        Vector3[] fv, bv, foamV;
+        Material waterMat, foamMat;
+        string kind = "water";   // water, lava, mud
         const float Deep = 60f;
         float time;
 
@@ -58,6 +60,7 @@ namespace CPW
             flow = lvl.waterVelocity;
             TerrainStyle.WaterColors(lvl.theme, out var body, out var surface, out bool lava);
             IsLava = lava;
+            kind = lava ? "lava" : lvl.theme == "Desert" ? "mud" : "water";
 
             float xMin = Mathf.Min(0, lvl.cameraBounds.xMin) - 40, xMax = Mathf.Max(lvl.size.x, lvl.cameraBounds.xMax) + 40;
             x0 = xMin;
@@ -79,8 +82,15 @@ namespace CPW
             Color bodyA = body; bodyA.a = lava ? 0.92f : 0.72f;
             Color deepA = Color.Lerp(body, Color.black, 0.45f); deepA.a = 0.95f;
             Color foam = surface; foam.a = lava ? 1f : 0.9f;
+            waterMat = new Material(Mats.TransparentShader) { mainTexture = BodyTexture(kind), color = new Color(1.16f, 1.16f, 1.16f, 1f), name = "Water_" + kind };
+            foamMat = new Material(Mats.TransparentShader) { mainTexture = FoamTexture(kind), color = Color.white, name = "WaterFoam_" + kind };
+            owned.Add(waterMat); owned.Add(foamMat);
             back = BuildStrip("WaterBack", 0.9f, Color.Lerp(body, surface, 0.25f) * 0.8f, Color.Lerp(body, Color.black, 0.3f), Color.Lerp(body, Color.black, 0.5f), out bv, 0.18f);
-            front = BuildStrip("WaterFront", -0.7f, foam, bodyA, deepA, out fv, 0f);
+            // the front surface row is the water color brightened toward the foam; the painted foam strip sits on top
+            Color lip = Color.Lerp(bodyA, foam, lava ? 0.85f : 0.45f); lip.a = lava ? 1f : 0.85f;
+            front = BuildStrip("WaterFront", -0.7f, lip, bodyA, deepA, out fv, 0f);
+            Color foamC = lava ? new Color(1f, 0.85f, 0.35f, 1f) : kind == "mud" ? new Color(0.62f, 0.5f, 0.36f, 0.95f) : new Color(0.93f, 0.98f, 1f, 0.95f);
+            foamMesh = BuildFoam(foamC, out foamV);
             if (lava)
             {
                 // a soft additive glow above the lava
@@ -111,7 +121,7 @@ namespace CPW
             var mr = go.AddComponent<MeshRenderer>();
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             mr.receiveShadows = false;
-            mr.sharedMaterial = Mats.Transparent(Color.white);
+            mr.sharedMaterial = waterMat;
             var m = new Mesh { name = name };
             owned.Add(m);
             m.MarkDynamic();
@@ -126,7 +136,8 @@ namespace CPW
                 verts[k * 3 + 1] = new Vector3(x, SurfaceY + lift - 0.3f, z);
                 verts[k * 3 + 2] = new Vector3(x, SurfaceY - Deep, z);
                 colors[k * 3] = top; colors[k * 3 + 1] = mid; colors[k * 3 + 2] = bottom;
-                uv[k * 3] = new Vector2(0.5f, 0.5f); uv[k * 3 + 1] = uv[k * 3]; uv[k * 3 + 2] = uv[k * 3];
+                // world-space UVs (the body texture repeats every 6 units; v follows depth)
+                uv[k * 3] = new Vector2(x / 6f, 0f); uv[k * 3 + 1] = new Vector2(x / 6f, -0.3f / 6f); uv[k * 3 + 2] = new Vector2(x / 6f, -Deep / 6f);
                 if (k == cols - 1) continue;
                 int t = k * 12, a = k * 3, b = (k + 1) * 3;
                 tris[t] = a; tris[t + 1] = b; tris[t + 2] = a + 1;
@@ -141,6 +152,121 @@ namespace CPW
             m.bounds = new Bounds(new Vector3((x0 + x0 + cols * ColW) * 0.5f, SurfaceY - Deep * 0.5f, z), new Vector3(cols * ColW + 2, Deep + 4, 1));
             mf.sharedMesh = m;
             return m;
+        }
+
+        /// <summary>Foam/crust strip that rides on the front surface (scalloped bubbles with an ink edge).</summary>
+        Mesh BuildFoam(Color c, out Vector3[] verts)
+        {
+            var go = new GameObject("WaterFoam");
+            go.transform.SetParent(transform, false);
+            var mf = go.AddComponent<MeshFilter>();
+            var mr = go.AddComponent<MeshRenderer>();
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            mr.receiveShadows = false;
+            mr.sharedMaterial = foamMat;
+            var m = new Mesh { name = "WaterFoam" };
+            owned.Add(m);
+            m.MarkDynamic();
+            verts = new Vector3[cols * 2];
+            var colors = new Color[cols * 2];
+            var uv = new Vector2[cols * 2];
+            var tris = new int[(cols - 1) * 6];
+            for (int k = 0; k < cols; k++)
+            {
+                float x = x0 + k * ColW;
+                verts[k * 2] = new Vector3(x, SurfaceY + FoamUp, -0.72f);
+                verts[k * 2 + 1] = new Vector3(x, SurfaceY - FoamDown, -0.72f);
+                colors[k * 2] = colors[k * 2 + 1] = c;
+                uv[k * 2] = new Vector2(x / 3.2f, 1f);
+                uv[k * 2 + 1] = new Vector2(x / 3.2f, 0f);
+                if (k == cols - 1) continue;
+                int t = k * 6, a = k * 2, b = (k + 1) * 2;
+                tris[t] = a; tris[t + 1] = b; tris[t + 2] = a + 1;
+                tris[t + 3] = b; tris[t + 4] = b + 1; tris[t + 5] = a + 1;
+            }
+            m.vertices = verts;
+            m.colors = colors;
+            m.uv = uv;
+            m.triangles = tris;
+            m.bounds = new Bounds(new Vector3((x0 + x0 + cols * ColW) * 0.5f, SurfaceY, -0.72f), new Vector3(cols * ColW + 2, 6, 1));
+            mf.sharedMesh = m;
+            return m;
+        }
+
+        const float FoamUp = 0.16f, FoamDown = 0.34f;
+
+        /// <summary>64x64 tileable body texture: soft light streaks/caustics (water), crust cells (lava), bubbles (mud).</summary>
+        Texture2D BodyTexture(string k)
+        {
+            const int n = 64;
+            var t = new Texture2D(n, n, TextureFormat.RGBA32, true) { wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear, name = "WaterBody_" + k };
+            owned.Add(t);
+            var px = new Color32[n * n];
+            for (int y = 0; y < n; y++)
+            for (int x = 0; x < n; x++)
+            {
+                float u = x / (float)n, v = y / (float)n;
+                float w1 = Mathf.Sin((u * 2f + Mathf.Sin(v * Mathf.PI * 2f * 2f) * 0.12f) * Mathf.PI * 2f * 2f);
+                float w2 = Mathf.Sin((u * 3f - v * 1f + Mathf.Sin(u * Mathf.PI * 2f) * 0.2f) * Mathf.PI * 2f * 2f);
+                float g;
+                if (k == "lava")
+                {
+                    // dark crust plates with glowing seams
+                    float seam = Mathf.Abs(w1 * 0.6f + w2 * 0.4f);
+                    g = seam < 0.18f ? 1.15f : Mathf.Lerp(0.72f, 0.9f, Mathf.PerlinNoise(u * 6f, v * 6f));
+                }
+                else if (k == "mud")
+                {
+                    float b = Mathf.PerlinNoise(u * 8f + 3f, v * 8f + 1f);
+                    g = 0.85f + 0.12f * b + (b > 0.72f ? 0.12f : 0f);
+                }
+                else
+                {
+                    // long horizontal glints that read as gentle waves
+                    float glint = Mathf.Clamp01((w1 * 0.55f + w2 * 0.45f - 0.72f) * 4f);
+                    g = 0.86f + 0.08f * Mathf.PerlinNoise(u * 5f, v * 5f) + glint * 0.32f;
+                }
+                byte gb = (byte)Mathf.Clamp(g * 220f, 0, 255);   // 220 = 1.0 (headroom for highlights is in the vertex color)
+                px[y * n + x] = new Color32(gb, gb, gb, 255);
+            }
+            t.SetPixels32(px);
+            t.Apply(true, true);
+            return t;
+        }
+
+        /// <summary>128x32 foam strip: solid at the top, scalloped bubbly lower edge with a darker ink line (alpha).</summary>
+        Texture2D FoamTexture(string k)
+        {
+            const int W = 128, H = 32;
+            var t = new Texture2D(W, H, TextureFormat.RGBA32, true) { wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear, name = "WaterFoam_" + k };
+            owned.Add(t);
+            var px = new Color32[W * H];
+            float surf = FoamDown / (FoamUp + FoamDown);           // v of the water line
+            for (int x = 0; x < W; x++)
+            {
+                float u = x / (float)W;
+                // scallops: bubbles of a few sizes hanging below the line
+                float sc = Mathf.Abs(Mathf.Sin(u * Mathf.PI * 7f)) * 0.55f + Mathf.Abs(Mathf.Sin(u * Mathf.PI * 11f + 1.3f)) * 0.45f;
+                float lower = surf - 0.18f - sc * 0.32f;
+                float upper = surf + 0.22f + 0.12f * Mathf.Sin(u * Mathf.PI * 2f * 3f) + 0.06f * Mathf.Sin(u * Mathf.PI * 2f * 8f + 2f);
+                for (int y = 0; y < H; y++)
+                {
+                    float v = (y + 0.5f) / H;
+                    float a = Mathf.Clamp01(Mathf.Min(v - lower, upper - v) * H * 0.8f + 0.5f);
+                    float shade = Mathf.Lerp(0.78f, 1f, Mathf.Clamp01((v - lower) / Mathf.Max(0.01f, upper - lower) * 1.6f));
+                    // ink along the scalloped lower edge
+                    if (v - lower < 2.2f / H) shade *= k == "lava" ? 0.75f : 0.62f;
+                    // small bubble holes
+                    float bx = u * 24f, by = v * 6f;
+                    float bd = Mathf.Abs(bx - Mathf.Round(bx)) + Mathf.Abs(by - Mathf.Round(by) - 0.1f);
+                    if (bd < 0.18f && v < upper - 0.15f && v > lower + 0.12f && ((int)Mathf.Round(bx) * 7 + (int)Mathf.Round(by) * 3) % 5 == 0) shade *= 0.82f;
+                    byte s8 = (byte)Mathf.Clamp(shade * 255f, 0, 255);
+                    px[y * W + x] = new Color32(s8, s8, s8, (byte)(a * 255f));
+                }
+            }
+            t.SetPixels32(px);
+            t.Apply(true, true);
+            return t;
         }
 
         /// <summary>Visual surface height at x (waves + ripples).</summary>
@@ -173,6 +299,10 @@ namespace CPW
         {
             time += Time.deltaTime;
             UpdateMeshes();
+            // drift the textures (no mesh upload): body glints slide slowly, the foam a bit faster
+            float sp = IsLava ? 0.35f : 1f;
+            if (waterMat != null) waterMat.mainTextureOffset = new Vector2(time * 0.025f * sp + flow.x * time * 0.01f, Mathf.Sin(time * 0.5f) * 0.01f);
+            if (foamMat != null) foamMat.mainTextureOffset = new Vector2(-time * 0.06f * sp, 0f);
         }
 
         void UpdateMeshes()
@@ -187,9 +317,15 @@ namespace CPW
                 float yb = SurfaceY + 0.18f + h[k] * 0.5f + Wave(x, 1.7f) * 1.3f;
                 bv[k * 3].y = yb;
                 bv[k * 3 + 1].y = yb - 0.3f;
+                if (foamV != null)
+                {
+                    foamV[k * 2].y = y + FoamUp;
+                    foamV[k * 2 + 1].y = y - FoamDown;
+                }
             }
             front.vertices = fv;
             back.vertices = bv;
+            if (foamMesh != null) foamMesh.vertices = foamV;
         }
 
         void FixedUpdate()

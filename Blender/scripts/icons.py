@@ -50,7 +50,8 @@ def weapons_icons(only=None):
     import weapons
     _start()
     n = 0
-    for wid in C.ids("WeaponIcon"):
+    for wid in C.ids("WeaponIcon") + [w for w in ("HeatSeeker", "GreyGoo", "ShieldWall", "ChocoCannon")
+                                       if w not in C.ids("WeaponIcon")]:
         if only and wid not in only:
             continue
         gid = wid if wid in weapons.WEAPONS else wid

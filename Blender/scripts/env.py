@@ -28,6 +28,11 @@ def round_tree(n, h=4.0, seed=1, leaf="leaf", leaf2="leaf_dark"):
         c = (math.cos(a) * h * 0.2, math.sin(a) * h * 0.08, h * (0.68 + 0.08 * math.sin(a)))
         o.append(blob(n + "_l%d" % i, c, h * rnd.uniform(0.2, 0.26), leaf if i % 2 else leaf2, seed * 10 + i))
     o.append(blob(n + "_lt", (0, 0, h * 0.85), h * 0.25, leaf, seed * 10 + 9))
+    for i, (dx, dz, r) in enumerate(((-0.12, 0.95, 0.12), (-0.26, 0.78, 0.09), (0.1, 0.9, 0.08))):
+        o.append(blob(n + "_hl%d" % i, (dx * h, -h * 0.12, dz * h), h * r, "leaf_light", seed * 10 + 20 + i, subdiv=1))
+    for i in range(3):
+        a = 0.6 + i * 1.7
+        o.append(C.sphere(n + "_fr%d" % i, (math.cos(a) * h * 0.2, -h * 0.2, h * (0.62 + 0.06 * i)), h * 0.035, M("red"), 8, 5))
     return o
 
 
@@ -225,6 +230,84 @@ def sun(n, r=2.0):
     return o
 
 
+def mushroom_big(n, h=1.6):
+    o = [C.cyl(n + "_st", (0, 0, 0), (0, 0, h * 0.55), h * 0.13, h * 0.1, M("cream"), 12),
+         C.lathe(n + "_cap", [(0.0, h * 0.45), (h * 0.48, h * 0.45), (h * 0.46, h * 0.58), (h * 0.3, h * 0.82), (0.0, h * 0.9)],
+                 M("red"), 18)]
+    for i, (a, z) in enumerate(((0.3, 0.7), (1.6, 0.62), (2.8, 0.75), (4.4, 0.6), (5.4, 0.72), (0.9, 0.84))):
+        rr = h * (0.43 if z < 0.7 else 0.27)
+        o.append(C.sphere(n + "_d%d" % i, (rr * math.cos(a), rr * math.sin(a) * 0.6 - h * 0.12, h * z), (h * 0.07, h * 0.05, h * 0.06),
+                          M("white"), 8, 4))
+    return o
+
+
+def stump(n, h=1.2):
+    o = [C.cyl(n + "_s", (0, 0, 0), (0, 0, h), h * 0.45, h * 0.4, M("bark"), 14),
+         C.cyl(n + "_top", (0, 0, h), (0, 0, h + 0.02), h * 0.38, h * 0.38, M("wood"), 14)]
+    for i in range(2):
+        o.append(C.torus(n + "_ring%d" % i, (0, 0, h + 0.025), h * (0.12 + 0.12 * i), 0.012, M("wood_dark"), 14, 3))
+    for i in range(3):
+        a = i * 2.1
+        o.append(C.cyl(n + "_root%d" % i, (math.cos(a) * h * 0.3, math.sin(a) * h * 0.3, h * 0.15),
+                       (math.cos(a) * h * 0.65, math.sin(a) * h * 0.65, 0.0), h * 0.12, h * 0.05, M("bark"), 8))
+    o.append(blob(n + "_moss", (-h * 0.2, -h * 0.25, h * 0.2), h * 0.18, "leaf", 3, subdiv=1))
+    return o
+
+
+def igloo(n, r=1.6):
+    import bmesh
+    dome = C.sphere(n + "_d", (0, 0, 0), r, M("snow"), 18, 12)
+    bm = bmesh.new()
+    bm.from_mesh(dome.data)
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.z < -1e-4], context="VERTS")
+    bm.to_mesh(dome.data)
+    bm.free()
+    o = [dome]
+    # block lines
+    for i, z in enumerate((0.3, 0.6, 0.85)):
+        rr = r * math.sqrt(max(0.0, 1 - z * z))
+        o.append(C.torus(n + "_l%d" % i, (0, 0, z * r), rr + 0.01, 0.025, M("ice"), 20, 3))
+    o.append(C.cyl(n + "_door", (0, -r * 0.7, 0), (0, -r * 1.2, 0), r * 0.38, r * 0.38, M("snow"), 12))
+    o.append(C.cyl(n + "_hole", (0, -r * 1.19, r * 0.02), (0, -r * 1.22, r * 0.02), r * 0.27, r * 0.27, M("navy"), 12))
+    return _cut_below(o)
+
+
+def pyramid(n, w=10.0, h=6.0):
+    pts = [(-w / 2, 0), (0, h), (w / 2, 0)]
+    o = [C.extrude(n + "_p", pts, w * 0.5, M("sand"))]
+    o.append(C.extrude(n + "_sd", [(0, h), (w / 2, 0), (w * 0.12, 0)], w * 0.5 + 0.05, M("sand_dark")))
+    for i in range(1, 6):
+        z = h * i / 6
+        hw = w / 2 * (1 - i / 6)
+        o.append(C.box(n + "_c%d" % i, (0, -w * 0.25 - 0.03, z), (hw * 2, 0.05, 0.08), M("sand_dark")))
+    o.append(C.extrude(n + "_door", [(-0.4, 0), (0.4, 0), (0.4, 1.0), (0, 1.3), (-0.4, 1.0)], 0.1, M("brown_dark"),
+                       y0=-w * 0.25 - 0.08))
+    for ob in o:
+        C.flat(ob)
+    return o
+
+
+def volcano(n, h=8.0, w=14.0):
+    pts = [(-w / 2, 0), (-w * 0.12, h), (w * 0.1, h), (w / 2, 0)]
+    o = [C.extrude(n + "_v", pts, w * 0.3, M("rock_dark"))]
+    o.append(C.extrude(n + "_sd", [(w * 0.1, h), (w / 2, 0), (w * 0.2, 0)], w * 0.3 + 0.05, M("rock")))
+    o.append(C.extrude(n + "_crater", [(-w * 0.12, h), (w * 0.1, h), (w * 0.06, h * 0.92), (-w * 0.08, h * 0.92)], w * 0.3 + 0.1,
+                       S_GLOW("fire")))
+    # lava rivers
+    for i, (x0, x1) in enumerate(((-0.02, -0.18), (0.04, 0.16))):
+        o.append(C.extrude(n + "_lv%d" % i, [(w * x0 - 0.2, h * 0.93), (w * x0 + 0.2, h * 0.93), (w * x1 + 0.3, h * 0.25),
+                                             (w * x1 - 0.1, h * 0.2)], 0.1, S_GLOW("orange"), y0=-w * 0.15 - 0.12))
+    for i, (dx, dz, r) in enumerate(((0.0, 1.0, 1.1), (0.9, 1.9, 1.3), (2.0, 2.9, 1.5))):
+        o.append(blob(n + "_smoke%d" % i, (dx, 0, h + dz), r, "grey" if i else "grey_dark", 31 + i, scale=(1.3, 0.6, 1)))
+    for ob in o:
+        C.flat(ob)
+    return o
+
+
+def S_GLOW(name):
+    return C.mat(C.GLOW_PREFIX + "_" + name, C.PALETTE[name])
+
+
 ENV = {
     "Forest_Tree1": lambda n: round_tree(n, 4.5, 1),
     "Forest_Tree2": lambda n: tall_tree(n, 5.5, 2),
@@ -250,6 +333,11 @@ ENV = {
     "Desert_Palm1": lambda n: palm(n, 5.5),
     "Desert_Rock1": lambda n: rock(n, 2.0, 23, "sand_dark"),
     "Desert_Sun1": lambda n: sun(n, 2.0),
+    "Forest_Mushroom1": lambda n: mushroom_big(n, 1.8),
+    "Forest_Stump1": lambda n: stump(n, 1.2),
+    "Winter_Igloo1": lambda n: igloo(n, 1.6),
+    "Desert_Pyramid1": lambda n: pyramid(n, 10, 6),
+    "Mountain_Volcano1": lambda n: volcano(n, 8, 14),
 }
 
 

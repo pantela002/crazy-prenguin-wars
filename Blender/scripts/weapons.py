@@ -9,7 +9,7 @@ from mathutils import Matrix, Vector
 import common as C
 import shapes as S
 
-M = C.mat
+M = S.M   # palette materials; fire/plasma map to self-lit Glow_* materials
 V = Vector
 
 
@@ -28,6 +28,14 @@ def launcher(n, tube="olive", accent="olive_dark", length=1.35, r=0.13, z=0.2, w
     if sight:
         o.append(C.box(n + "_sg", (0.15, 0, z + r + 0.05), (0.18, 0.05, 0.1), M(accent), bevel=0.01))
     o.append(C.box(n + "_pad", (-0.12, 0, z), (0.35, r * 2.25, r * 1.6), M(accent), bevel=0.03))
+    # bolts on the shoulder pad, hazard bands near the muzzle, a lens on the sight
+    for i, (bx, bz) in enumerate(((-0.24, 0.5), (0.0, 0.5), (-0.24, -0.5), (0.0, -0.5))):
+        o.append(C.sphere(n + "_bt%d" % i, (bx, -r * 1.13, z + bz * r * 1.2), (0.022, 0.012, 0.022), M("steel"), 6, 3))
+    for i in range(3):
+        hx = x1 - 0.12 - i * 0.045
+        o.append(S.tube(n + "_hz%d" % i, hx, hx + 0.045, r * 1.04, M("yellow" if i % 2 == 0 else "gun_dark"), z=z, segs=16))
+    if sight:
+        o.append(C.cyl(n + "_sl", (0.24, 0, z + r + 0.07), (0.25, 0, z + r + 0.07), 0.03, 0.03, M("glass"), 8))
     tip = x1
     if warhead:
         body, nose = warhead
@@ -44,6 +52,10 @@ def pistol(n, body="gun", grip_c="brown_dark", length=0.5, barrel_r=0.04, z=0.1,
     o += S.grip(n, M(grip_c), x=0.0, z=z - 0.02, h=0.26, angle=-18)
     o += S.trigger(n, M(body), x=0.08, z=z - 0.02)
     o.append(C.box(n + "_fs", (length - 0.17, 0, z + 0.075), (0.03, 0.02, 0.04), M(body)))
+    # slide serrations and grip screws
+    for i in range(3):
+        o.append(C.box(n + "_sr%d" % i, (-0.06 + i * 0.03, -0.042, z + 0.01), (0.012, 0.01, 0.08), M("gun_dark")))
+    o.append(C.sphere(n + "_gs", (-0.04, -0.048, z - 0.12), (0.016, 0.008, 0.016), M("steel"), 6, 3))
     return o, V((length + (0.1 if wide else -0.02), 0, z + 0.01))
 
 
@@ -67,6 +79,12 @@ def rifle(n, body="gun", wood="wood", length=1.2, barrel_r=0.035, z=0.1, scope=F
     if mag:
         o.append(C.box(n + "_mg", (0.22, 0, z - 0.13), (0.09, 0.06, 0.18), M(body), bevel=0.01,
                        rot=Matrix.Rotation(0.15, 4, "Y")))
+    # barrel bands, receiver screws, ejection port
+    for i, bx in enumerate((x0 + length - 0.12, 0.72)):
+        o.append(S.tube(n + "_bb%d" % i, bx, bx + 0.03, barrel_r * 1.35, M("steel"), z=z + 0.03, segs=10))
+    for i, sx in enumerate((-0.1, 0.18)):
+        o.append(C.sphere(n + "_sc%d" % i, (sx, -0.048, z - 0.03), (0.016, 0.008, 0.016), M("steel"), 6, 3))
+    o.append(C.box(n + "_ej", (0.08, -0.046, z + 0.035), (0.12, 0.01, 0.035), M("gun_dark")))
     if pump:
         o.append(S.tube(n + "_pump", 0.4, 0.62, barrel_r * 1.9, M(wood), z=z - 0.03))
     else:
@@ -125,7 +143,7 @@ def flamethrower(n):
          S.tube(n + "_n", 0.75, 0.9, 0.05, M("gun_dark"), z=z, r1=0.08),
          C.cyl(n + "_tank", (-0.25, 0.02, z - 0.08), (0.25, 0.02, z - 0.08), 0.1, 0.1, M("red"), 14),
          S.ring_x(n + "_tr", 0.0, 0.1, 0.02, M("gun_dark"), y=0.02, z=z - 0.08),
-         C.sphere(n + "_pl", (0.92, 0, z - 0.06), 0.035, M("fire"), 8, 5),
+         C.sphere(n + "_pl", (0.92, 0, z - 0.06), 0.035, S.G("fire"), 8, 5),
          C.box(n + "_hs", (0.5, 0, z - 0.05), (0.06, 0.05, 0.12), M("gun_dark"))]
     o += S.grip(n, M("gun_dark"), x=0.0, z=z - 0.05, h=0.22)
     return o, V((0.92, 0, z))
@@ -210,6 +228,51 @@ def hand_cannon(n):
          C.sphere(n + "_kn", (-0.23, 0, z), 0.05, M("gun_dark"), 8, 5)]
     o += S.grip(n, M("wood_dark"), x=0.0, z=z - 0.08, h=0.2)
     return o, V((0.52, 0, z))
+
+
+def choco_cannon(n):
+    """Easter chocolate cannon: chocolate barrel with frosting drips, sprinkles and a candy fuse."""
+    z = 0.16
+    o = [S.xlathe(n + "_b", [(0.0, 0), (0.13, 0), (0.16, 0.08), (0.13, 0.2), (0.1, 0.62), (0.125, 0.66), (0.125, 0.74),
+                            (0.08, 0.74), (0.0, 0.74)], M("choco"), 16, x0=-0.2, z=z),
+         S.ring_x(n + "_r", 0.15, 0.115, 0.022, M("pink"), z=z),
+         S.ring_x(n + "_r2", 0.5, 0.106, 0.018, M("pink"), z=z),
+         C.sphere(n + "_kn", (-0.24, 0, z), 0.055, M("choco_dark"), 8, 5),
+         C.cyl(n + "_fuse", (-0.12, 0, z + 0.12), (-0.18, 0, z + 0.24), 0.018, 0.014, M("red"), 6),
+         C.sphere(n + "_spark", (-0.185, 0, z + 0.25), 0.03, S.G("yellow"), 6, 4)]
+    # white frosting drips along the top of the barrel
+    for i, x in enumerate((0.0, 0.14, 0.3, 0.44)):
+        o.append(C.sphere(n + "_fr%d" % i, (x, -0.02, z + 0.105 - 0.01 * i), (0.045, 0.06, 0.03 + 0.012 * (i % 2)), M("cream"), 8, 4))
+    import random
+    rnd = random.Random(5)
+    for i in range(8):
+        x = rnd.uniform(-0.1, 0.5)
+        o.append(C.box(n + "_sp%d" % i, (x, -0.11, z + rnd.uniform(-0.05, 0.08)), (0.035, 0.012, 0.012),
+                       M(("yellow", "pink", "cyan", "lime")[i % 4]), rot=Matrix.Rotation(rnd.uniform(0, 3), 4, "Y")))
+    o += S.grip(n, M("choco_dark"), x=0.0, z=z - 0.08, h=0.2)
+    return o, V((0.54, 0, z))
+
+
+def seeker_launcher(n):
+    """Heat-seeking missile launcher: white tube with a red sensor dome, targeting screen and handle."""
+    o, tip = launcher(n, "white", "red", length=1.25, r=0.12, warhead=("white", "red"))
+    z = tip.z
+    o.append(C.box(n + "_scr", (0.1, -0.15, z + 0.17), (0.2, 0.03, 0.13), M("gun_dark"), bevel=0.01))
+    o.append(C.box(n + "_scg", (0.1, -0.168, z + 0.17), (0.15, 0.01, 0.08), S.G("lime")))
+    o.append(C.sphere(n + "_eye", (tip.x - 0.12, -0.08, z + 0.07), (0.04, 0.03, 0.04), S.G("red"), 8, 5))
+    return o, tip
+
+
+def goo_gun(n):
+    """Grey Goo: a canister gun with a glass tank of grey nanite goo."""
+    o, tip = scifi(n, "steel", "grey", "gun_dark", 0.9, r=0.09, coils=2)
+    z = tip.z
+    o.append(C.cyl(n + "_tank", (-0.2, 0, z + 0.2), (0.15, 0, z + 0.2), 0.08, 0.08, M("glass"), 14))
+    for i, x in enumerate((-0.12, 0.0, 0.1)):
+        o.append(C.sphere(n + "_g%d" % i, (x, -0.02, z + 0.18), 0.05, M("grey_dark"), 8, 5))
+    for x in (-0.21, 0.16):
+        o.append(S.ring_x(n + "_tr%d" % (x > 0), x, 0.085, 0.015, M("gun_dark"), z=z + 0.2))
+    return o, tip
 
 
 def grenade_launcher(n):
@@ -364,7 +427,12 @@ WEAPONS = {
     "Broom": broom,
     "Snowball": _held(S.snowball),
     "Fireworks": fireworks_launcher,
+    # weapons without a WeaponGraphic record in the config (added for the restored original weapons)
+    "HeatSeeker": seeker_launcher,
+    "GreyGoo": goo_gun,
+    "ChocoCannon": choco_cannon,
 }
+EXTRA_IDS = ["HeatSeeker", "GreyGoo", "ChocoCannon"]
 
 
 def _drill_launcher(n):
@@ -398,6 +466,7 @@ def build(wid, col):
 def run():
     C.reset()
     ids = C.ids("WeaponGraphic")
+    ids += [w for w in EXTRA_IDS if w not in ids]
     cols = {}
     stats = {}
     for wid in ids:

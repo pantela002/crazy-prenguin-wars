@@ -71,6 +71,13 @@ def verify():
     mz = parts.get("Muzzle")
     print("[verify] MiniBazooka.fbx x range %.2f..%.2f, Muzzle at x=%.2f: %s" % (
         lo.x, hi.x, mz[0].x if mz else float("nan"), "OK" if mz and mz[0].x > 0.4 else "FAILED"))
+    for wid in ("HeatSeeker", "GreyGoo", "ChocoCannon"):
+        lo, hi, parts = verify_fbx.verify(os.path.join(C.MODELS, "Weapons", wid + ".fbx"), verbose=False)
+        mz = parts.get("Muzzle")
+        good = bool(mz) and mz[0].x > 0.3 and abs(mz[0].x - hi.x) < 0.25
+        print("[verify] %s.fbx x range %.2f..%.2f, Muzzle at x=%.2f: %s" % (
+            wid, lo.x, hi.x, mz[0].x if mz else float("nan"), "OK" if good else "FAILED"))
+        ok = ok and good
     if not ok:
         raise SystemExit(1)
 

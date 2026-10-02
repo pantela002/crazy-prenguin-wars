@@ -9,6 +9,10 @@ namespace CPW
     /// and are filled with the Blender environment models "Env/{Theme}_{Name}" when they exist, otherwise with
     /// procedural silhouettes (trees, pines, peaks, cacti, clouds). A few procedural ridges are always added far back.
     ///
+    /// Look: a five-stop sky with a sun (or volcano) glow, a cloud bank, three ridges whose facets are lit from the
+    /// top-left (light slopes face the sun) with theme features (tree lines, snow caps, mesa strata, volcano glow)
+    /// and a mist band at their feet, then the level's layers. Env models in far layers drop the ink outline.
+    ///
     /// Everything here renders before the terrain (render queues below 2000, see TerrainStyle) so it can never
     /// cover the playfield. Updates itself from the active camera (Camera.main or the highest-depth enabled one) after other scripts' LateUpdate; call
     /// <see cref="ParallaxUpdate(Camera)"/> yourself and set <see cref="SelfUpdate"/> false to drive it manually.
@@ -28,7 +32,7 @@ namespace CPW
         readonly List<Object> owned = new List<Object>();   // meshes/materials created here
         LevelData level;
         Vector2 cref;                 // camera position at which layers sit at their nominal level coordinates
-        Transform sky;
+        Transform sky, sunGlow;
         Color skyTop, skyBottom;
         Color silhouette;
         System.Random rnd;
@@ -54,6 +58,7 @@ namespace CPW
             var ordered = new List<LevelData.ParallaxLayerData>(lvl.parallaxLayers);
             ordered.Sort((a, b) => b.cameraXPan.CompareTo(a.cameraXPan));   // far (high pan) first
             int rank = 0;
+            AddCloudBank(0.965f, rank++);
             AddRidge(0.93f, 0.78f, rank++, 0);
             AddRidge(0.82f, 0.62f, rank++, 1);
             AddRidge(0.68f, 0.47f, rank++, 2);
@@ -127,6 +132,8 @@ namespace CPW
                 float hgt = ortho ? orthoSize * 2f : 2f * dist * Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
                 sky.localPosition = new Vector3(cp.x, cp.y, zs);
                 sky.localScale = new Vector3(hgt * aspect * 1.3f, hgt * 1.3f, 1);
+                // keep the glow round although the sky quad is stretched by the aspect ratio
+                if (sunGlow != null) sunGlow.localScale = new Vector3(0.55f / Mathf.Max(0.3f, aspect), 0.55f, 1);
             }
         }
 
@@ -144,21 +151,75 @@ namespace CPW
             sky = go.transform;
             var m = new Mesh { name = "Sky" };
             owned.Add(m);
-            // 3 rows so the horizon color sits a bit below the middle
-            m.vertices = new[]
+            // five rows: a warm glow just below the middle (horizon), then a deeper zenith
+            float[] ys = { -0.5f, -0.22f, -0.05f, 0.18f, 0.5f };
+            var horizon = Color.Lerp(skyBottom, HorizonGlow(), 0.45f);
+            Color[] cs =
             {
-                new Vector3(-0.5f, -0.5f, 0), new Vector3(0.5f, -0.5f, 0),
-                new Vector3(-0.5f, -0.1f, 0), new Vector3(0.5f, -0.1f, 0),
-                new Vector3(-0.5f, 0.5f, 0), new Vector3(0.5f, 0.5f, 0)
+                Color.Lerp(skyBottom, skyTop, 0.12f), horizon, Color.Lerp(skyBottom, skyTop, 0.3f),
+                Color.Lerp(skyBottom, skyTop, 0.68f), Color.Lerp(skyTop, Color.black, 0.08f)
             };
-            var mid = Color.Lerp(skyBottom, skyTop, 0.25f);
-            m.colors = new[] { skyBottom, skyBottom, mid, mid, skyTop, skyTop };
-            m.uv = new[] { Vector2.zero, Vector2.right, Vector2.zero, Vector2.right, Vector2.up, Vector2.one };
-            m.triangles = new[] { 0, 2, 1, 1, 2, 3, 2, 4, 3, 3, 4, 5 };
+            var verts = new Vector3[ys.Length * 2];
+            var cols = new Color[ys.Length * 2];
+            var uvs = new Vector2[ys.Length * 2];
+            var tris = new int[(ys.Length - 1) * 6];
+            for (int r = 0; r < ys.Length; r++)
+            {
+                verts[r * 2] = new Vector3(-0.5f, ys[r], 0); verts[r * 2 + 1] = new Vector3(0.5f, ys[r], 0);
+                cols[r * 2] = cols[r * 2 + 1] = cs[r];
+                uvs[r * 2] = new Vector2(0, ys[r] + 0.5f); uvs[r * 2 + 1] = new Vector2(1, ys[r] + 0.5f);
+                if (r > 0)
+                {
+                    int b = (r - 1) * 2, t = (r - 1) * 6;
+                    tris[t] = b; tris[t + 1] = b + 2; tris[t + 2] = b + 1;
+                    tris[t + 3] = b + 1; tris[t + 4] = b + 2; tris[t + 5] = b + 3;
+                }
+            }
+            m.vertices = verts;
+            m.colors = cols;
+            m.uv = uvs;
+            m.triangles = tris;
             m.bounds = new Bounds(Vector3.zero, new Vector3(1, 1, 1) * 10000f);
             go.AddComponent<MeshFilter>().sharedMesh = m;
             var mr = go.AddComponent<MeshRenderer>();
             var mat = new Material(Mats.TransparentShader) { color = Color.white, name = "Sky", renderQueue = TerrainStyle.QueueSky };
+            owned.Add(mat);
+            mr.sharedMaterial = mat;
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            mr.receiveShadows = false;
+            BuildSunGlow();
+        }
+
+        Color HorizonGlow()
+        {
+            switch (theme)
+            {
+                case "Mountain": return new Color(1f, 0.45f, 0.2f);
+                case "Desert": return new Color(1f, 0.93f, 0.7f);
+                case "Winter": return new Color(1f, 0.96f, 0.92f);
+                default: return new Color(1f, 0.97f, 0.85f);
+            }
+        }
+
+        /// <summary>Soft additive sun (or volcano) glow, a child of the sky quad.</summary>
+        void BuildSunGlow()
+        {
+            var go = new GameObject("SunGlow");
+            go.transform.SetParent(sky, false);
+            bool volcano = theme == "Mountain";
+            go.transform.localPosition = volcano ? new Vector3(0.12f, -0.2f, -0.001f) : new Vector3(0.24f, 0.2f, -0.001f);
+            sunGlow = go.transform;
+            var m = new Mesh { name = "SunGlow" };
+            owned.Add(m);
+            m.vertices = new[] { new Vector3(-0.5f, -0.5f, 0), new Vector3(0.5f, -0.5f, 0), new Vector3(-0.5f, 0.5f, 0), new Vector3(0.5f, 0.5f, 0) };
+            m.uv = new[] { Vector2.zero, Vector2.right, Vector2.up, Vector2.one };
+            m.colors = new[] { Color.white, Color.white, Color.white, Color.white };
+            m.triangles = new[] { 0, 2, 1, 1, 2, 3 };
+            m.bounds = new Bounds(Vector3.zero, Vector3.one * 10000f);
+            go.AddComponent<MeshFilter>().sharedMesh = m;
+            var mr = go.AddComponent<MeshRenderer>();
+            var c = volcano ? new Color(1f, 0.35f, 0.1f, 0.55f) : theme == "Desert" ? new Color(1f, 0.95f, 0.7f, 0.55f) : new Color(1f, 0.97f, 0.85f, 0.42f);
+            var mat = new Material(Mats.AdditiveShader) { mainTexture = Mats.SoftCircle, color = c, name = "SunGlow", renderQueue = TerrainStyle.QueueSky + 1 };
             owned.Add(mat);
             mr.sharedMaterial = mat;
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -212,6 +273,10 @@ namespace CPW
             float step = theme == "Mountain" ? 3.5f : 1.5f;
             Vector2 prev = Vector2.zero;
             bool first = true;
+            // facet lighting: slopes rising to the right face the light (top-left) and get lighter
+            Color bodyLit = Faded(Color.Lerp(silhouette, Color.white, 0.22f), pan), bodyDark = Faded(Color.Lerp(silhouette, Color.black, 0.3f + 0.1f * idx), pan);
+            Color topLit = Color.Lerp(top, Color.white, 0.35f), topDark = Color.Lerp(top, bodyDark, 0.5f);
+            var profile = new List<Vector2>();
             for (float x = xMin; x <= xMax + step; x += step)
             {
                 float y;
@@ -229,23 +294,155 @@ namespace CPW
                         break;
                 }
                 var cur = new Vector2(x, y);
+                profile.Add(cur);
                 if (!first)
                 {
-                    // column quad from the base up to the profile, with a lighter band on top
-                    float band = theme == "Mountain" ? 1.4f : 0.8f;
-                    mb.Quad(new Vector2(prev.x, baseY), new Vector2(cur.x, baseY), new Vector2(cur.x, cur.y - band), new Vector2(prev.x, prev.y - band), body, body, body, body);
-                    mb.Quad(new Vector2(prev.x, prev.y - band), new Vector2(cur.x, cur.y - band), cur, prev, body, body, top, top);
+                    float lit = Mathf.Clamp((cur.y - prev.y) / step * 0.45f, -1f, 1f);
+                    Color b = lit > 0 ? Color.Lerp(body, bodyLit, lit * 0.6f) : Color.Lerp(body, bodyDark, -lit * 0.6f);
+                    Color tp = lit > 0 ? Color.Lerp(top, topLit, lit) : Color.Lerp(top, topDark, -lit * 0.7f);
+                    // column quad from the base up to the profile (darker at the foot), with a lighter band on top
+                    float band = theme == "Mountain" ? 1.4f : theme == "Winter" ? 1.6f : 0.8f;
+                    Color foot = Color.Lerp(b, bodyDark, 0.35f);
+                    mb.Quad(new Vector2(prev.x, baseY), new Vector2(cur.x, baseY), new Vector2(cur.x, cur.y - band), new Vector2(prev.x, prev.y - band), foot, foot, b, b);
+                    mb.Quad(new Vector2(prev.x, prev.y - band), new Vector2(cur.x, cur.y - band), cur, prev, b, b, tp, tp);
                 }
                 prev = cur;
                 first = false;
             }
-            // forest: a tree line on the nearest ridge
-            if (theme == "Forest" && idx == 2)
+            RidgeFeatures(mb, profile, pan, idx, body, topY, amp);
+            // mist at the ridge's feet (depth between the layers)
+            float mist0 = lvl.waterY - 6f, mist1 = Mathf.Lerp(lvl.waterY, topY - amp, 0.55f);
+            var mistC = skyBottom; mistC.a = 0.5f; var mistT = skyBottom; mistT.a = 0f;
+            mb.Quad(new Vector2(xMin, mist0), new Vector2(xMax, mist0), new Vector2(xMax, mist1), new Vector2(xMin, mist1), mistC, mistC, mistT, mistT);
+            Finish(L, mb, rank);
+        }
+
+        static float ProfileY(List<Vector2> pr, float x)
+        {
+            if (pr.Count == 0) return 0;
+            if (x <= pr[0].x) return pr[0].y;
+            for (int i = 1; i < pr.Count; i++)
+                if (x <= pr[i].x) return Mathf.Lerp(pr[i - 1].y, pr[i].y, (x - pr[i - 1].x) / Mathf.Max(1e-4f, pr[i].x - pr[i - 1].x));
+            return pr[pr.Count - 1].y;
+        }
+
+        /// <summary>Theme details along a ridge profile: tree lines, snow caps, mesa strata, volcano glow.</summary>
+        void RidgeFeatures(MeshBuilder mb, List<Vector2> pr, float pan, int idx, Color body, float topY, float amp)
+        {
+            if (pr.Count < 2) return;
+            float x0 = pr[0].x, x1 = pr[pr.Count - 1].x;
+            switch (theme)
             {
-                for (float x = xMin; x < xMax; x += Rand(1.2f, 2.4f))
+                case "Forest":
                 {
-                    float y = topY - amp * 0.6f + amp * 0.6f * Mathf.Sin((x + phase) * 0.07f) + amp * 0.3f * Mathf.Sin((x + phase * 2) * 0.19f);
-                    mb.Circle(new Vector2(x, y), Rand(0.8f, 1.6f), body, 10);
+                    if (idx == 0) break;
+                    // tree line: dark canopy, lighter lit side, trunks for the nearest ridge
+                    var dark = Color.Lerp(body, Color.black, 0.12f);
+                    var lit = Faded(Color.Lerp(silhouette, new Color(0.65f, 0.85f, 0.35f), 0.35f), pan);
+                    var trunk = Faded(new Color(0.3f, 0.2f, 0.14f), pan);
+                    for (float x = x0; x < x1; x += Rand(1.1f, 2.2f) * (idx == 1 ? 1.4f : 1f))
+                    {
+                        float y = ProfileY(pr, x);
+                        float r = Rand(0.8f, 1.6f) * (idx == 1 ? 0.8f : 1f);
+                        if (idx == 2) mb.Rect(new Vector2(x - r * 0.12f, y - 0.5f), new Vector2(x + r * 0.12f, y + r * 0.6f), trunk, trunk);
+                        bool conifer = Rand(0, 1) < 0.35f;
+                        if (conifer)
+                        {
+                            mb.Tri(new Vector2(x - r * 0.8f, y + r * 0.2f), new Vector2(x + r * 0.8f, y + r * 0.2f), new Vector2(x, y + r * 2.6f), dark);
+                            mb.Tri(new Vector2(x - r * 0.8f, y + r * 0.2f), new Vector2(x, y + r * 0.2f), new Vector2(x, y + r * 2.6f), Color.Lerp(dark, lit, 0.45f));
+                        }
+                        else
+                        {
+                            mb.Circle(new Vector2(x, y + r * 0.9f), r, dark, 12);
+                            mb.Circle(new Vector2(x - r * 0.25f, y + r * 1.15f), r * 0.62f, Color.Lerp(dark, lit, 0.55f), 10);
+                        }
+                    }
+                    break;
+                }
+                case "Winter":
+                {
+                    // snow caps on the high points and sparse snowy pines on the nearer ridges
+                    var snow = Faded(new Color(0.97f, 0.99f, 1f), pan);
+                    var snowShade = Faded(new Color(0.8f, 0.88f, 0.98f), pan);
+                    for (int i = 1; i < pr.Count - 1; i++)
+                    {
+                        if (pr[i].y < pr[i - 1].y || pr[i].y < pr[i + 1].y) continue;
+                        float w = Rand(1.2f, 2.4f);
+                        mb.Tri(new Vector2(pr[i].x - w, pr[i].y - w * 0.55f), new Vector2(pr[i].x + w, pr[i].y - w * 0.55f), pr[i] + new Vector2(0, 0.05f), snow);
+                        mb.Tri(new Vector2(pr[i].x, pr[i].y - w * 0.55f), new Vector2(pr[i].x + w, pr[i].y - w * 0.55f), pr[i] + new Vector2(0, 0.05f), snowShade);
+                    }
+                    if (idx >= 1)
+                        for (float x = x0; x < x1; x += Rand(2.5f, 6f))
+                            Pine(mb, new Vector2(x, ProfileY(pr, x) - 0.3f), pan, Rand(2.5f, 4.5f) * (idx == 1 ? 0.8f : 1f), true);
+                    break;
+                }
+                case "Desert":
+                {
+                    // horizontal strata on the mesas: lighter and darker bands just under the top
+                    var light = Faded(new Color(0.95f, 0.72f, 0.5f), pan);
+                    var dark = Faded(new Color(0.66f, 0.38f, 0.24f), pan);
+                    float baseY = Mathf.Min(level.waterY, 0) - 30f;
+                    for (int k = 1; k <= 3; k++)
+                    {
+                        float off = k * 1.1f + 0.3f;
+                        var c = k % 2 == 0 ? light : dark;
+                        c.a = 0.55f;
+                        var c2 = c; c2.a = 0f;
+                        for (int i = 1; i < pr.Count; i++)
+                        {
+                            Vector2 a = pr[i - 1] - new Vector2(0, off), b = pr[i] - new Vector2(0, off);
+                            if (a.y < baseY || b.y < baseY) continue;
+                            mb.Quad(a - new Vector2(0, 0.35f), b - new Vector2(0, 0.35f), b, a, c2, c2, c, c);
+                        }
+                    }
+                    if (idx == 2)
+                        for (float x = x0; x < x1; x += Rand(4f, 9f))
+                            Cactus(mb, new Vector2(x, ProfileY(pr, x) - 0.2f), pan, Rand(2f, 3.4f));
+                    break;
+                }
+                case "Mountain":
+                {
+                    // glowing lava seams on the far ridge, ember-lit edges on the nearer ones
+                    var glow = Faded(new Color(1f, 0.45f, 0.12f), pan * 0.6f);
+                    for (int i = 1; i < pr.Count - 1; i++)
+                    {
+                        if (pr[i].y < pr[i - 1].y || pr[i].y < pr[i + 1].y) continue;
+                        if (idx == 0 && Rand(0, 1) < 0.5f)
+                        {
+                            var g2 = glow; g2.a = 0f;
+                            mb.Quad(pr[i] + new Vector2(-0.4f, 0), pr[i] + new Vector2(0.4f, 0), pr[i] + new Vector2(1.2f, -amp * 0.8f), pr[i] + new Vector2(-0.9f, -amp * 0.8f), glow, glow, g2, g2);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        /// <summary>A far cloud bank (smoke over the volcano) across the level: puffy two-tone clouds.</summary>
+        void AddCloudBank(float pan, int rank)
+        {
+            var L = NewLayer("Clouds", pan, pan, rank, out var mb);
+            bool smoke = theme == "Mountain";
+            Color c = smoke ? new Color(0.36f, 0.26f, 0.3f, 0.7f) : new Color(1f, 1f, 1f, 0.9f);
+            Color shade = smoke ? new Color(0.24f, 0.17f, 0.2f, 0.7f) : Color.Lerp(skyBottom, new Color(0.78f, 0.85f, 0.96f), 0.6f);
+            shade.a = c.a;
+            Color hl = smoke ? new Color(0.55f, 0.32f, 0.28f, 0.6f) : new Color(1f, 1f, 1f, 1f);
+            float xMin = level.cameraBounds.xMin - 60, xMax = level.cameraBounds.xMax + 60;
+            float y0 = Mathf.Lerp(level.waterY, level.size.y, 0.62f);
+            for (float x = xMin; x < xMax; x += Rand(14f, 26f))
+            {
+                float w = Rand(6f, 11f);
+                var p = new Vector2(x, y0 + Rand(-2f, 6f));
+                mb.Rect(new Vector2(p.x - w * 0.5f, p.y - 0.7f), new Vector2(p.x + w * 0.5f, p.y + 0.2f), shade, shade);
+                int n = 4 + (int)Rand(0, 3);
+                for (int i = 0; i < n; i++)
+                {
+                    float t = i / (float)(n - 1);
+                    float r = Rand(1.0f, 1.8f) * (1f - Mathf.Abs(t - 0.5f) * 0.7f);
+                    var cpos = new Vector2(p.x - w * 0.5f + w * t, p.y + r * 0.35f);
+                    mb.Circle(cpos + new Vector2(0.12f, -0.18f), r, shade, 14);
+                    mb.Circle(cpos, r * 0.94f, c, 14);
+                    mb.Circle(cpos + new Vector2(-r * 0.3f, r * 0.3f), r * 0.45f, hl, 10);
                 }
             }
             Finish(L, mb, rank);
@@ -324,9 +521,14 @@ namespace CPW
             if (src == null) return null;
             long key = ((long)src.GetInstanceID() << 16) ^ (rank * 977L) ^ (long)(pan * 1000);
             if (fadedMats.TryGetValue(key, out var m) && m) return m;
-            m = new Material(src) { renderQueue = TerrainStyle.QueueParallax + rank * 2 + 1 };
+            m = new Material(src);
+            // far layers: drop the outline pass (one draw per material); near layers keep a sky-faded ink line
+            if (pan > 0.6f && m.shader == Mats.ToonOutlineShader) m.shader = Mats.ToonShader;
+            m.renderQueue = TerrainStyle.QueueParallax + rank * 2 + 1;
             if (m.HasProperty("_Color")) m.color = Faded(m.color, pan);
             if (m.HasProperty("_RimColor")) m.SetColor("_RimColor", new Color(1, 1, 1, 0.15f));
+            if (m.HasProperty("_OutlineColor")) m.SetColor("_OutlineColor", Faded(m.GetColor("_OutlineColor"), pan));
+            if (m.HasProperty("_Gloss")) m.SetColor("_Gloss", new Color(1, 1, 1, 0.12f));
             fadedMats[key] = m;
             return m;
         }
@@ -382,9 +584,12 @@ namespace CPW
             float tw = h * 0.09f;
             mb.Rect(new Vector2(p.x - tw, p.y), new Vector2(p.x + tw, p.y + h * 0.55f), trunk, trunk);
             float r = h * 0.3f;
+            var lit = Faded(new Color(0.48f, 0.75f, 0.32f), pan);
             mb.Circle(new Vector2(p.x - r * 0.55f, p.y + h * 0.6f), r * 0.8f, leaf, 14);
             mb.Circle(new Vector2(p.x + r * 0.55f, p.y + h * 0.62f), r * 0.75f, leaf, 14);
             mb.Circle(new Vector2(p.x, p.y + h * 0.75f), r, leaf2, 16);
+            mb.Circle(new Vector2(p.x - r * 0.3f, p.y + h * 0.82f), r * 0.55f, lit, 12);
+            mb.Circle(new Vector2(p.x - r * 0.75f, p.y + h * 0.64f), r * 0.35f, lit, 10);
         }
 
         void Pine(MeshBuilder mb, Vector2 p, float pan, float h, bool snowy)
@@ -398,6 +603,7 @@ namespace CPW
             {
                 float y0 = p.y + h * (0.18f + i * 0.24f), w = h * (0.34f - i * 0.08f), th = h * 0.36f;
                 mb.Tri(new Vector2(p.x - w, y0), new Vector2(p.x + w, y0), new Vector2(p.x, y0 + th), green);
+                mb.Tri(new Vector2(p.x - w, y0), new Vector2(p.x - w * 0.1f, y0), new Vector2(p.x, y0 + th), Color.Lerp(green, Color.white, 0.18f));
                 if (snowy) mb.Tri(new Vector2(p.x - w * 0.35f, y0 + th * 0.65f), new Vector2(p.x + w * 0.35f, y0 + th * 0.65f), new Vector2(p.x, y0 + th), snow);
             }
         }
@@ -484,7 +690,8 @@ namespace CPW
                 string n = go.name.Substring(prefix.Length).ToLowerInvariant();
                 if (n.Contains("cloud") || n.Contains("sun") || n.Contains("moon") || n.Contains("smoke") || n.Contains("bird")) envSky.Add(path);
                 else if (n.Contains("peak") || n.Contains("mountain") || n.Contains("hill") || n.Contains("mesa") || n.Contains("dune") ||
-                         n.Contains("volcano") || n.Contains("glacier") || n.Contains("range") || n.Contains("cliff") || n.Contains("berg")) envFar.Add(path);
+                         n.Contains("volcano") || n.Contains("glacier") || n.Contains("range") || n.Contains("cliff") || n.Contains("berg") ||
+                         n.Contains("pyramid") || n.Contains("castle")) envFar.Add(path);
                 else envNear.Add(path);
             }
             envNear.Sort(); envFar.Sort(); envSky.Sort();

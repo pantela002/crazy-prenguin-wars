@@ -99,45 +99,196 @@ def slab(name, pts, depth, face, rim, bevel):
     return ob
 
 
-def details(name, material, pts, depth, w, h, cx, cz, kind):
+def plate(name, x0, z0, x1, z1, fy, mat, t=0.04, rot=0.0, tilt=None):
+    """Thin box on the front face (fy = front face y) from (x0, z0) to (x1, z1); its own outline reads as a groove.
+    tilt = (about x, about z) radians tips the plate so each block catches the light differently."""
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    r = Matrix.Rotation(rot, 4, "Y") if rot else None
+    if tilt:
+        r = Matrix.Rotation(tilt[0], 4, "X") @ Matrix.Rotation(tilt[1], 4, "Z") @ (r or Matrix.Identity(4))
+    return C.box(name, (cx, fy - t / 2 + 0.005, cz), (abs(x1 - x0), t, abs(z1 - z0)), mat, rot=r)
+
+
+def nail(name, x, z, fy, mat="gun", r=0.055):
+    return C.sphere(name, (x, fy, z), (r, r * 0.5, r), M(mat), 6, 3)
+
+
+def _wood_box(name, w, h, cx, cz, fy, rnd):
     o = []
-    fy = -depth / 2 - 0.01
+    long_x = w >= h
+    L, S = (w, h) if long_x else (h, w)
+    m = min(0.14, S * 0.12)
+    n = max(1, int(round((S - 2 * m) / 0.5)))
+    bw = (S - 2 * m) / n
+    gap = min(0.05, bw * 0.12)
+    cols = ["wood", "wood_light", "wood_mid"]
+    for i in range(n):
+        s0 = -S / 2 + m + i * bw + gap / 2
+        s1 = s0 + bw - gap
+        c = cols[(i + rnd.randint(0, 2)) % 3]
+        if long_x:
+            o.append(plate(name + "_bd%d" % i, cx - L / 2 + m, cz + s0, cx + L / 2 - m, cz + s1, fy, M(c), 0.04))
+        else:
+            o.append(plate(name + "_bd%d" % i, cx + s0, cz - L / 2 + m, cx + s1, cz + L / 2 - m, fy, M(c), 0.04))
+        # grain: a few thin darker streaks of random length along the board
+        for g in range(2 if L > 1.5 else 1):
+            gl = rnd.uniform(0.25, 0.6) * (L - 2 * m)
+            ga = rnd.uniform(-L / 2 + m, L / 2 - m - gl)
+            gs = rnd.uniform(s0 + (s1 - s0) * 0.25, s0 + (s1 - s0) * 0.75)
+            if long_x:
+                o.append(plate(name + "_gr%d%d" % (i, g), cx + ga, cz + gs - 0.012, cx + ga + gl, cz + gs + 0.012, fy - 0.035,
+                               M("wood_dark"), 0.012))
+            else:
+                o.append(plate(name + "_gr%d%d" % (i, g), cx + gs - 0.012, cz + ga, cx + gs + 0.012, cz + ga + gl, fy - 0.035,
+                               M("wood_dark"), 0.012))
+        # nails at the board ends (and every ~4 units on long planks)
+        k = max(1, int(L / 4))
+        for j in range(k + 1):
+            a = -L / 2 + m + 0.15 + (L - 2 * m - 0.3) * j / k
+            b = (s0 + s1) / 2
+            x, z = (cx + a, cz + b) if long_x else (cx + b, cz + a)
+            o.append(nail(name + "_n%d%d" % (i, j), x, z, fy - 0.04))
+    return o
+
+
+def _stone_box(name, w, h, cx, cz, fy, rnd):
+    """Rows of staggered stone blocks; each block's ink outline doubles as the mortar line."""
+    o = []
+    m = min(0.16, min(w, h) * 0.1)
+    rows = max(1, int(round((h - 2 * m) / 0.85)))
+    rh = (h - 2 * m) / rows
+    gap = min(0.07, rh * 0.1)
+    cols = ["stone", "stone_light", "stone_mid", "stone"]
+    k = 0
+    for r in range(rows):
+        z0 = cz - h / 2 + m + r * rh + gap / 2
+        z1 = z0 + rh - gap
+        x = cx - w / 2 + m + (rnd.uniform(0.2, 0.6) if r % 2 else 0.0)
+        xs = [cx - w / 2 + m]
+        if r % 2:
+            xs.append(x)
+        while True:
+            x += rnd.uniform(0.9, 1.6) * max(0.6, rh)
+            if x > cx + w / 2 - m - 0.4:
+                break
+            xs.append(x)
+        xs.append(cx + w / 2 - m)
+        for a, b in zip(xs, xs[1:]):
+            if b - a < 0.15:
+                continue
+            ta = min(0.12, 0.05 / max(0.3, rh)), min(0.12, 0.05 / max(0.3, b - a))
+            o.append(plate(name + "_st%d" % k, a + gap / 2, z0, b - gap / 2, z1, fy - 0.02, M(cols[rnd.randint(0, 3)]),
+                           rnd.uniform(0.06, 0.09), tilt=(rnd.uniform(-ta[0], ta[0]), rnd.uniform(-ta[1], ta[1]))))
+            k += 1
+    # a crack across one block
+    if w > 1 and h > 1:
+        px, pz = cx + rnd.uniform(-w, w) * 0.2, cz + rnd.uniform(-h, h) * 0.2
+        for i in range(2):
+            o.append(C.box(name + "_c%d" % i, (px + i * 0.12, fy - 0.08, pz - i * 0.1), (min(w, h) * 0.22, 0.02, 0.035),
+                           M("stone_dark"), rot=Matrix.Rotation(rnd.uniform(-0.9, 0.9), 4, "Y")))
+    return o
+
+
+def _metal_box(name, w, h, cx, cz, fy, rnd):
+    o = []
+    s = min(w, h)
+    c = min(0.55, s * 0.32)          # corner bracket size
+    t = min(0.16, s * 0.1)           # bracket arm width
+    # raised center panel
+    pm = min(0.3, s * 0.18)
+    o.append(plate(name + "_pn", cx - w / 2 + pm, cz - h / 2 + pm, cx + w / 2 - pm, cz + h / 2 - pm, fy, M("metal_light"), 0.03))
+    if w > 2.5 * h:     # long girders: vertical ribs every ~2 units
+        n = int(w / 2)
+        for i in range(1, n):
+            x = cx - w / 2 + w * i / n
+            o.append(plate(name + "_rb%d" % i, x - 0.05, cz - h / 2 + pm, x + 0.05, cz + h / 2 - pm, fy - 0.03, M("metal_dark"), 0.03))
+    elif s > 1.6:       # cross brace on big boxes
+        ln = math.hypot(w - 2 * pm, h - 2 * pm)
+        ang = math.atan2(h - 2 * pm, w - 2 * pm)
+        for sg in (-1, 1):
+            o.append(C.box(name + "_x%d" % sg, (cx, fy - 0.045, cz), (ln * 0.92, 0.03, t * 0.7), M("metal_dark"),
+                           rot=Matrix.Rotation(sg * ang, 4, "Y")))
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            x0, z0 = cx + sx * w / 2, cz + sz * h / 2
+            pts = [(x0, z0), (x0 - sx * c, z0), (x0 - sx * c, z0 - sz * t), (x0 - sx * t, z0 - sz * t),
+                   (x0 - sx * t, z0 - sz * c), (x0, z0 - sz * c)]
+            if sx * sz < 0:
+                pts.reverse()
+            br = C.extrude(name + "_br%d%d" % (sx, sz), pts, 0.05, M("metal_dark"), y0=fy - 0.05)
+            o.append(br)
+            o.append(nail(name + "_rv%d%d" % (sx, sz), x0 - sx * t * 0.5 - sx * c * 0.35, z0 - sz * t * 0.5, fy - 0.05, "steel", 0.06))
+            o.append(nail(name + "_rw%d%d" % (sx, sz), x0 - sx * t * 0.5, z0 - sz * t * 0.5 - sz * c * 0.35, fy - 0.05, "steel", 0.06))
+    return o
+
+
+def _ice_box(name, w, h, cx, cz, fy, depth, rnd):
+    o = []
+    # light facets
+    for i in range(3 if min(w, h) > 1.2 else 1):
+        px, pz = cx + rnd.uniform(-0.3, 0.3) * w, cz + rnd.uniform(-0.3, 0.3) * h
+        r = min(w, h) * rnd.uniform(0.12, 0.22)
+        a0 = rnd.uniform(0, 6.28)
+        pts = [(px + r * math.cos(a0 + k * 2.1), pz + r * math.sin(a0 + k * 2.1)) for k in range(3)]
+        tri = C.extrude(name + "_f%d" % i, pts, 0.02, M("ice_light" if i % 2 == 0 else "ice_mid"), y0=fy - 0.02)
+        o.append(tri)
+    o.append(C.box(name + "_hl", (cx - w * 0.22, fy - 0.02, cz + h * 0.22), (min(w, h) * 0.35, 0.03, 0.07), M("white"),
+                   rot=Matrix.Rotation(0.6, 4, "Y")))
+    o.append(C.box(name + "_hl2", (cx - w * 0.1, fy - 0.02, cz + h * 0.14), (min(w, h) * 0.15, 0.03, 0.05), M("white"),
+                   rot=Matrix.Rotation(0.6, 4, "Y")))
+    # lumpy snow cap along the top edge
+    top = cz + h / 2
+    n = max(3, int(w / 0.35))
+    pts = []
+    for i in range(n + 1):
+        x = cx - w / 2 + w * i / n
+        pts.append((x, top + 0.06 + 0.07 * math.sin(i * 1.7 + rnd.uniform(0, 1)) + rnd.uniform(0, 0.05)))
+    edge = []
+    for i in range(n, -1, -1):
+        x = cx - w / 2 + w * i / n
+        drip = 0.1 + (0.2 if rnd.random() < 0.3 else 0.0) * min(1.0, h / 1.5)
+        edge.append((x, top - drip))
+    snow = C.extrude(name + "_snow", pts + edge, depth * 1.04, M("snow"), bevel=0.03)
+    o.append(snow)
+    return o
+
+
+def details(name, material, pts, depth, w, h, cx, cz, kind):
+    import random
+    rnd = random.Random(sum(ord(ch) * (i + 1) for i, ch in enumerate(name)))
+    o = []
+    fy = -depth / 2
     face, rim = MATERIALS[material]
     inset = []
     for (x, z) in pts:
         d = V((cx - x, 0, cz - z))
         if d.length > 1e-4:
-            inset.append(V((x, fy, z)) + d.normalized() * min(0.35, d.length * 0.3))
+            inset.append(V((x, fy - 0.01, z)) + d.normalized() * min(0.35, d.length * 0.3))
+    if kind == "box":
+        if material == "Wood":
+            return _wood_box(name, w, h, cx, cz, fy, rnd)
+        if material == "Stone":
+            return _stone_box(name, w, h, cx, cz, fy, rnd)
+        if material == "Metal":
+            return _metal_box(name, w, h, cx, cz, fy, rnd)
+        return _ice_box(name, w, h, cx, cz, fy, depth, rnd)
+    # triangles: inset trim plus a few accents
     if material == "Wood":
-        if kind in ("box",):
-            long_x = w >= h
-            n = 2 if min(w, h) > 1.6 else 1
-            for i in range(n):
-                t = (i + 1) / (n + 1)
-                if long_x:
-                    o.append(C.box(name + "_g%d" % i, (cx, fy, cz - h / 2 + h * t), (w * 0.8, 0.03, 0.05), M(rim)))
-                else:
-                    o.append(C.box(name + "_g%d" % i, (cx - w / 2 + w * t, fy, cz), (0.05, 0.03, h * 0.8), M(rim)))
         for i, p in enumerate(inset):
-            o.append(C.sphere(name + "_n%d" % i, p, (0.07, 0.03, 0.07), M("gun"), 8, 4))
+            o.append(nail(name + "_n%d" % i, p.x, p.z, fy - 0.01))
+        o.append(C.box(name + "_g", (cx, fy - 0.01, cz - h * 0.1), (w * 0.5, 0.03, 0.05), M(rim)))
     elif material == "Metal":
         for i, p in enumerate(inset):
-            o.append(C.sphere(name + "_r%d" % i, p, (0.1, 0.05, 0.1), M("metal_dark"), 8, 4))
-        if kind == "box" and w > 3 and h > 1:
-            o.append(C.box(name + "_seam", (cx, fy, cz), (0.05, 0.03, h * 0.8), M(rim)))
+            o.append(nail(name + "_r%d" % i, p.x, p.z, fy - 0.01, "metal_dark", 0.09))
     elif material == "Stone":
-        import random
-        rnd = random.Random(hash(name) & 0xffff)
         for i in range(2 if min(w, h) > 1.5 else 1):
-            ln = min(w, h) * 0.35
-            px = cx + rnd.uniform(-w, w) * 0.25
-            pz = cz + rnd.uniform(-h, h) * 0.25
-            o.append(C.box(name + "_c%d" % i, (px, fy, pz), (ln, 0.03, 0.05), M(rim),
+            ln = min(w, h) * 0.3
+            px = cx + rnd.uniform(-w, w) * 0.15
+            pz = cz + rnd.uniform(-h, h) * 0.15
+            o.append(C.box(name + "_c%d" % i, (px, fy - 0.01, pz), (ln, 0.03, 0.05), M(rim),
                            rot=Matrix.Rotation(rnd.uniform(-0.8, 0.8), 4, "Y")))
     elif material == "Ice":
-        o.append(C.box(name + "_hl", (cx - w * 0.2, fy, cz + h * 0.2), (min(w, h) * 0.35, 0.03, 0.07), M("white"),
-                       rot=Matrix.Rotation(0.6, 4, "Y")))
-        o.append(C.box(name + "_hl2", (cx - w * 0.08, fy, cz + h * 0.12), (min(w, h) * 0.15, 0.03, 0.05), M("white"),
+        o.append(C.box(name + "_hl", (cx - w * 0.15, fy - 0.01, cz), (min(w, h) * 0.3, 0.03, 0.06), M("white"),
                        rot=Matrix.Rotation(0.6, 4, "Y")))
     return o
 
@@ -149,6 +300,9 @@ def ball(name, material, r, cx, cz):
         o.append(C.ico(name + "_b", (cx, 0, cz), r, M(face), subdiv=2, seed=7, jitter=0.06, smooth=True))
         o.append(C.box(name + "_c", (cx + r * 0.2, -r * 0.98, cz + r * 0.1), (r * 0.5, 0.03, 0.05), M(rim),
                        rot=Matrix.Rotation(0.5, 4, "Y")))
+        for i, (a, rr) in enumerate(((2.2, 0.22), (4.0, 0.16), (5.3, 0.12))):
+            p = V((cx + r * 0.55 * math.cos(a), -r * 0.82, cz + r * 0.55 * math.sin(a)))
+            o.append(C.sphere(name + "_cr%d" % i, p, (r * rr, r * 0.05, r * rr), M("stone_mid"), 8, 4))
     else:
         o.append(C.sphere(name + "_b", (cx, 0, cz), r, M(face), 20, 12))
     if material == "Wood":
@@ -235,6 +389,13 @@ def crate_mesh(n, size=1.3, wood="wood", dark="wood_dark", emblem=None):
                            rot=Matrix.Rotation(math.radians(45), 4, "Y")))
     for sx in (-1, 1):
         o.append(C.box(n + "_sx%d" % sx, (sx * (s / 2 + 0.01), 0, 0), (0.03, s * 0.98, t), M(dark)))
+    # board grooves between the frame and nails at the frame corners (front face)
+    for i in (-1, 1):
+        o.append(C.box(n + "_gv%d" % i, (0, -s / 2 - 0.004, i * s * 0.17), (s - 2 * t, 0.012, 0.022), M(dark)))
+    for x in (-1, 1):
+        for z in (-1, 1):
+            o.append(C.sphere(n + "_nl%d%d" % (x, z), (x * (s / 2 - t / 2), -s / 2 - 0.03, z * (s / 2 - t / 2)),
+                              (0.035, 0.015, 0.035), M("steel"), 6, 3))
     f = -s / 2 - 0.03
     if emblem:
         kind, col = emblem
