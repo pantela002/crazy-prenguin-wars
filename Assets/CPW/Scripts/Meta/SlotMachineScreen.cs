@@ -122,7 +122,7 @@ namespace CPW
         }
 
         /// <summary>
-        /// Give one SlotWin's reward. Item rewards: Lemon → 3 Grenades (the "Lemon Grenade"), Ammo → a pack of a
+        /// Give one SlotWin's reward. Item rewards: Lemon → 3 Lemon Grenades, Ammo → a pack of a
         /// random weapon unlocked at your level, Crafting → a common / rare ingredient (see CraftingCatalog).
         /// Returns a description.
         /// </summary>
@@ -130,15 +130,16 @@ namespace CPW
         {
             int coins = w.Int("RewardCoin"), cash = w.Int("RewardCash"), xp = w.Int("RewardXP");
             if (coins > 0) { Progression.AddCoins(coins); return "+" + coins + " coins"; }
-            if (cash > 0) { Progression.AddCash(cash); return "+" + cash + " fish"; }
+            if (cash > 0) { Progression.AddCash(cash); return "+" + cash + " cash"; }
             if (xp > 0) { Progression.AddXp(xp); return "+" + xp + " XP"; }
             string sym = WinSymbol(w, 1);
             if (sym == "Lemon")
             {
                 var set = GameData.Get("SlotMachine", "SetLemon");
                 int n = Mathf.Max(1, set?.Int("RewardItemAmount", 3) ?? 3);
-                ProfileService.P.AddAmmo("Grenade", n);
-                return "+" + n + " Grenades";
+                string item = GameData.Item("LemonGrenade") != null ? "LemonGrenade" : "Grenade";
+                ProfileService.P.AddAmmo(item, n);
+                return "+" + n + (item == "LemonGrenade" ? " Lemon Grenades" : " Grenades");
             }
             if (sym == "Ammo")
             {
@@ -166,7 +167,7 @@ namespace CPW
             if (cash > 0) return cash + " fish";
             if (xp > 0) return xp + " XP";
             var sym = WinSymbol(w, 1);
-            if (sym == "Lemon") return "3 Grenades";
+            if (sym == "Lemon") return GameData.Item("LemonGrenade") != null ? "3 Lemon Grenades" : "3 Grenades";
             if (sym == "Ammo") return "Ammo pack";
             if (sym == "Bolt") return WinLength(w) >= 3 ? "Rare ingredient" : "Ingredient";
             return "";
