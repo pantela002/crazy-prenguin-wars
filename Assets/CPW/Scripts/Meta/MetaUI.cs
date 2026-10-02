@@ -129,9 +129,34 @@ namespace CPW
             }
         }
 
-        /// <summary>Full-screen sky gradient with drifting snow (blocks nothing).</summary>
+        /// <summary>
+        /// Full-screen menu background with drifting snow (blocks nothing): the original igloo interior
+        /// (background_main) behind a soft dark vignette, like the original's popups over the home screen; the sky
+        /// gradient with snowy hills when the art is missing. It also covers the notch / home-indicator margins.
+        /// </summary>
         public static void Background(RectTransform root)
         {
+            var igloo = UI.Skin.Bitmap("home_screen", 1);
+            if (igloo != null)
+            {
+                var host = UI.Rect(root, "Igloo");
+                UI.Stretch(host, -300, -300, -300, -300);
+                host.SetAsFirstSibling();
+                var img = UI.Image(host, igloo, Color.white, false, "Backdrop");
+                var fit = img.gameObject.AddComponent<AspectRatioFitter>();
+                fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+                fit.aspectRatio = igloo.rect.width / Mathf.Max(1f, igloo.rect.height);
+                var dim = UI.Image(host, UI.WhiteSprite, new Color(0.02f, 0.1f, 0.25f, 0.35f), false, "Dim");
+                UI.Stretch(dim.rectTransform);
+                var vignette = UI.Skin.Bitmap("hud_shared", 44);
+                if (vignette != null) { var v = UI.Image(host, vignette, new Color(1, 1, 1, 0.8f), false, "Vignette"); UI.Stretch(v.rectTransform); }
+                var flakes = UI.Image(root, SnowDots, Color.white, false, "Snow");
+                flakes.type = Image.Type.Tiled;
+                UI.Stretch(flakes.rectTransform, -200, -200, -200, -200);
+                flakes.gameObject.AddComponent<UIDrift>().speed = new Vector2(-12, -30);
+                flakes.transform.SetSiblingIndex(1);
+                return;
+            }
             var bg = UI.Image(root, Gradient, Color.white, false, "Sky");
             UI.Stretch(bg.rectTransform);
             var snow = UI.Image(root, SnowDots, Color.white, false, "Snow");
@@ -156,15 +181,16 @@ namespace CPW
         /// </summary>
         public static RectTransform IconTile(Transform parent, string iconPath, string displayName, Color? tint = null, bool frame = true)
         {
-            var sprite = ModelLibrary.Icon(iconPath);
+            var sprite = UI.Skin.Icon(iconPath);   // original icon, else the Blender render
             var col = tint ?? TintFor(displayName ?? iconPath);
-            var tile = UI.Panel(parent, frame || sprite == null ? col : new Color(0, 0, 0, 0), true, "IconTile");
+            var tile = UI.PanelRaw(parent, frame || sprite == null ? col : new Color(0, 0, 0, 0), true, "IconTile");
             tile.raycastTarget = false;
             if (sprite != null)
             {
-                if (frame) tile.color = new Color(col.r, col.g, col.b, 0.35f);
+                // framed icons sit on the original white-blue item slot (weapon picker / shop)
+                if (frame && !UI.Skin.Apply(tile, "slot.blue")) tile.color = new Color(col.r, col.g, col.b, 0.35f);
                 var img = UI.Image(tile.transform, sprite);
-                UI.Stretch(img.rectTransform, 6, 6, 6, 6);
+                UI.Stretch(img.rectTransform, frame ? 12 : 6, frame ? 12 : 6, frame ? 10 : 6, frame ? 14 : 6);
             }
             else
             {
@@ -200,6 +226,8 @@ namespace CPW
         public static RectTransform CurrencyIcon(Transform parent, string kind)
         {
             // the premium currency is "Cash" (green banknotes) in the UI, like the original; Ui/cash is a fish render
+            var orig = UI.Skin.OriginalIcon("Ui/" + kind);
+            if (orig != null) return UI.Image(parent, orig, null, true, "Cur " + kind).rectTransform;
             if (kind == "cash") return CashBill(parent);
             var sprite = ModelLibrary.Icon("Ui/" + kind);
             if (sprite != null) return UI.Image(parent, sprite, null, true, "Cur " + kind).rectTransform;
@@ -283,11 +311,25 @@ namespace CPW
         /// <summary>White card with a soft drop shadow.</summary>
         public static Image CardPanel(Transform parent, Color? color = null, string name = "Card")
         {
-            var p = UI.Panel(parent, color ?? Card, true, name);
+            var c = color ?? Card;
+            var p = UI.PanelRaw(parent, c, true, name);
+            if (UI.Skin.Apply(p, CardKey(c))) return p;
             var sh = p.gameObject.AddComponent<Shadow>();
             sh.effectColor = new Color(0, 0, 0, 0.25f);
             sh.effectDistance = new Vector2(0, -8);
             return p;
+        }
+
+        /// <summary>Original panel for a card color: light window, dark blue panel, cream or orange paper; null keeps the color.</summary>
+        public static string CardKey(Color c)
+        {
+            if (c == Card || c == Theme.Panel) return "window.small";
+            if (c == CardDark || c == Theme.PanelDark) return "panel.dark";
+            Color.RGBToHSV(c, out float h, out float sat, out float v);
+            if (c.a > 0.9f && v > 0.9f && sat < 0.2f && h > 0.05f && h < 0.2f) return "panel.cream";   // warm paper
+            if (c == Orange || c == Gold) return "panel.orange";
+            if (c.a < 0.95f && v < 0.45f && h > 0.5f && h < 0.7f) return "panel.dark";                  // translucent navy
+            return null;
         }
 
         /// <summary>A round "badge" with text (counts, level numbers).</summary>
@@ -295,8 +337,11 @@ namespace CPW
         {
             var b = UI.Image(parent, UI.Circle, color, false, "Badge");
             b.rectTransform.sizeDelta = new Vector2(size, size);
+            // counts use the original orange notification dot (white rim)
+            bool skinned = (color == Theme.Danger || color == Orange || color == Gold || color == Theme.Primary) && UI.Skin.Apply(b, "badge");
             var l = UI.Label(b.transform, text, (int)(size * 0.55f), Color.white, TextAnchor.MiddleCenter, true);
             UI.Stretch(l.rectTransform, 2, 2, 2, 2);
+            if (skinned) UI.StyleText(l, new Color32(140, 50, 0, 255), 1.5f);
             return l;
         }
 
@@ -311,6 +356,7 @@ namespace CPW
                 int idx = i;
                 var b = UI.Button(row, labels[i], () => onSelect(idx), i == selected ? UI.ButtonStyle.Primary : UI.ButtonStyle.Dark, fontSize);
                 UI.Layout(b, Mathf.Max(200, labels[i].Length * fontSize * 0.62f + 60), -1, 0, 1);
+                SkinTab(b, i == selected);
                 list.Add(b);
             }
             return list;
@@ -321,6 +367,7 @@ namespace CPW
         {
             for (int i = 0; i < tabs.Count; i++)
             {
+                if (SkinTab(tabs[i], i == selected)) continue;
                 var img = tabs[i].GetComponent<Image>();
                 img.color = i == selected ? Theme.Primary : Theme.PanelDark;
                 var l = tabs[i].GetComponentInChildren<Text>();
@@ -328,22 +375,22 @@ namespace CPW
             }
         }
 
+        /// <summary>The original shop tab look (bright blue selected, dark blue otherwise). False when the art is missing.</summary>
+        public static bool SkinTab(Button b, bool selected)
+        {
+            var img = b != null ? b.GetComponent<Image>() : null;
+            if (img == null || !UI.Skin.Apply(img, selected ? "tab.on" : "tab.off")) return false;
+            var l = b.GetComponentInChildren<Text>();
+            if (l) UI.StyleText(l, new Color32(6, 36, 80, 255), 2.5f, selected ? Color.white : new Color32(170, 214, 250, 255));
+            return true;
+        }
+
         // ---------- cartoon widgets (the original home screen look) ----------
         /// <summary>color darkened toward black by amount (0..1), alpha kept.</summary>
         public static Color Darker(Color c, float amount = 0.35f) => new Color(c.r * (1 - amount), c.g * (1 - amount), c.b * (1 - amount), c.a);
 
         /// <summary>Thick colored outline around a label (bold sticker text like the Flash UI).</summary>
-        public static Text Outlined(Text t, Color outline, float width = 3f)
-        {
-            foreach (var o in t.GetComponents<Shadow>()) UnityEngine.Object.Destroy(o);
-            var ol = t.gameObject.AddComponent<Outline>();
-            ol.effectColor = outline;
-            ol.effectDistance = new Vector2(width, -width);
-            var sh = t.gameObject.AddComponent<Shadow>();
-            sh.effectColor = new Color(outline.r, outline.g, outline.b, 0.8f);
-            sh.effectDistance = new Vector2(0, -width - 2);
-            return t;
-        }
+        public static Text Outlined(Text t, Color outline, float width = 3f) => UI.StyleText(t, outline, width);
 
         /// <summary>
         /// Rounded button with a thick darker border, a darker "3D" bottom lip, a glossy top half and bold outlined
@@ -352,23 +399,38 @@ namespace CPW
         public static Button CartoonButton(Transform parent, string caption, Color face, Action onClick, int fontSize = 48, string name = null)
         {
             var border = Darker(face, 0.42f);
-            var rim = UI.Panel(parent, border, true, name ?? ("Cartoon " + caption));
+            var rim = UI.PanelRaw(parent, border, true, name ?? ("Cartoon " + caption));
+            string key = UI.Skin.KeyForColor(face);
+            bool skinned = UI.Skin.Apply(rim, key);
             var b = rim.gameObject.AddComponent<Button>();
             var colors = b.colors;
             colors.highlightedColor = Color.white;
             colors.pressedColor = new Color(0.85f, 0.85f, 0.85f);
             colors.disabledColor = new Color(0.75f, 0.75f, 0.75f, 0.85f);
             b.colors = colors;
+            if (skinned)
+            {
+                // the original bitmap already has its border, lip and gloss
+                if (caption != null)
+                {
+                    var l = UI.Label(rim.transform, caption, fontSize, Color.white, TextAnchor.MiddleCenter, true, "Caption");
+                    UI.Stretch(l.rectTransform, 14, 14, 6, 14);
+                    UI.StyleText(l, UI.Skin.OutlineColor(key, Darker(face, 0.6f)), Mathf.Clamp(fontSize / 18f, 2f, 4f), UI.Skin.TextColor(key, Color.white));
+                }
+                if (onClick != null) b.onClick.AddListener(() => { UI.Click(); onClick(); });
+                rim.gameObject.AddComponent<PressScale>();
+                return b;
+            }
             var sh = rim.gameObject.AddComponent<Shadow>();
             sh.effectColor = new Color(0, 0, 0, 0.3f);
             sh.effectDistance = new Vector2(0, -8);
-            var lip = UI.Panel(rim.transform, Darker(face, 0.18f), true, "Lip");
+            var lip = UI.PanelRaw(rim.transform, Darker(face, 0.18f), true, "Lip");
             UI.Stretch(lip.rectTransform, 6, 6, 6, 6);
             lip.raycastTarget = false;
-            var top = UI.Panel(rim.transform, face, true, "Face");
+            var top = UI.PanelRaw(rim.transform, face, true, "Face");
             UI.Stretch(top.rectTransform, 6, 6, 6, 14);
             top.raycastTarget = false;
-            var gloss = UI.Panel(top.transform, new Color(1, 1, 1, 0.22f), true, "Gloss");
+            var gloss = UI.PanelRaw(top.transform, new Color(1, 1, 1, 0.22f), true, "Gloss");
             UI.Anchor(gloss.rectTransform, 0, 0.52f, 1, 1);
             gloss.rectTransform.offsetMin = new Vector2(6, 0); gloss.rectTransform.offsetMax = new Vector2(-6, -4);
             gloss.raycastTarget = false;
@@ -387,11 +449,17 @@ namespace CPW
         public static Button CartoonTile(Transform parent, string icon, string caption, Color face, Action onClick, int fontSize = 44)
         {
             var b = CartoonButton(parent, null, face, onClick, fontSize, "Tile " + caption);
+            // the original home tiles: orange (Supplies, Character, Crafting...) or white-blue (Invite, slots)
+            Color.RGBToHSV(face, out float h, out float sat, out _);
+            string key = sat > 0.3f && h > 0.03f && h < 0.17f ? "tile.orange" : "tile.blue";
+            var img = b.GetComponent<Image>();
+            bool skinned = img != null && img.sprite != null && UI.Skin.Apply(img, key);
             var tile = IconTile(Box(b.transform, 0.14f, 0.3f, 0.86f, 0.95f), icon, caption, Color.Lerp(face, Color.white, 0.3f), false);
             Square(tile);
             var l = UI.Label(b.transform, caption, fontSize, Color.white, TextAnchor.MiddleCenter, true, "Caption");
             UI.Anchor(l.rectTransform, 0.04f, 0.05f, 0.96f, 0.32f);
-            Outlined(l, Darker(face, 0.6f), 3f);
+            if (skinned) UI.StyleText(l, UI.Skin.OutlineColor(key, Darker(face, 0.6f)), 3f, UI.Skin.TextColor(key, Color.white));
+            else Outlined(l, Darker(face, 0.6f), 3f);
             return b;
         }
 
@@ -399,7 +467,8 @@ namespace CPW
         public static Button RoundIcon(Transform parent, string icon, string caption, Color face, Action onClick, float size = 96)
         {
             var b = CartoonButton(parent, null, face, onClick, 30, "Round " + caption);
-            foreach (var img in b.GetComponentsInChildren<Image>()) { img.sprite = UI.Circle; img.type = Image.Type.Simple; }
+            if (!UI.Skin.Apply(b.GetComponent<Image>(), "round.blue"))
+                foreach (var img in b.GetComponentsInChildren<Image>()) { img.sprite = UI.Circle; img.type = Image.Type.Simple; }
             var rt = (RectTransform)b.transform;
             rt.sizeDelta = new Vector2(size, size);
             var tile = IconTile(Box(b.transform, 0.16f, 0.18f, 0.84f, 0.86f), icon, caption, Color.Lerp(face, Color.white, 0.3f), false);
@@ -434,6 +503,18 @@ namespace CPW
         {
             var b = UI.Button(window, "X", onClose, UI.ButtonStyle.Danger, 40, "Close");
             UI.Place((RectTransform)b.transform, new Vector2(1, 1), new Vector2(90, 90), new Vector2(20, 20));
+            SkinClose(b);
+        }
+
+        /// <summary>The original orange X button art on a close button (its "X" caption hidden). False when missing.</summary>
+        public static bool SkinClose(Button b)
+        {
+            var img = b != null ? b.GetComponent<Image>() : null;
+            if (img == null || !UI.Skin.Apply(img, "close")) return false;
+            img.preserveAspect = true;
+            var l = b.GetComponentInChildren<Text>();
+            if (l) l.enabled = false;
+            return true;
         }
 
         /// <summary>
@@ -444,18 +525,23 @@ namespace CPW
             layer = UI.Rect(UI.PopupLayer, "Popup " + title);
             UI.Stretch(layer);
             UI.Blocker(layer, 0.6f);
-            var panel = UI.Panel(layer, Theme.Panel, true, "Window");
+            var panel = UI.PanelRaw(layer, Theme.Panel, true, "Window");
+            bool skinned = UI.Skin.Apply(panel, "window");   // the original popup_message window, title on its top edge
             UI.Place(panel.rectTransform, new Vector2(0.5f, 0.5f), size, Vector2.zero);
-            var sh = panel.gameObject.AddComponent<Shadow>();
-            sh.effectColor = new Color(0, 0, 0, 0.4f);
-            sh.effectDistance = new Vector2(0, -12);
-            var head = UI.Panel(panel.transform, titleColor ?? Theme.Secondary, true, "Head");
+            if (!skinned)
+            {
+                var sh = panel.gameObject.AddComponent<Shadow>();
+                sh.effectColor = new Color(0, 0, 0, 0.4f);
+                sh.effectDistance = new Vector2(0, -12);
+            }
+            var head = UI.PanelRaw(panel.transform, skinned ? new Color(0, 0, 0, 0) : titleColor ?? Theme.Secondary, true, "Head");
             head.rectTransform.anchorMin = new Vector2(0, 1); head.rectTransform.anchorMax = new Vector2(1, 1);
             head.rectTransform.pivot = new Vector2(0.5f, 1);
             head.rectTransform.sizeDelta = new Vector2(0, 110);
             head.rectTransform.anchoredPosition = Vector2.zero;
             var t = UI.Label(head.transform, title, 58, Color.white, TextAnchor.MiddleCenter, true);
             UI.Stretch(t.rectTransform, 100, 100, 6, 6);
+            if (skinned) UI.StyleText(t, Darker(titleColor ?? new Color32(20, 80, 160, 255), 0.45f), 3.5f);
             var l = layer;
             CloseButton(panel.rectTransform, () => { if (l) UnityEngine.Object.Destroy(l.gameObject); });
             layer.gameObject.AddComponent<PopIn>().target = panel.rectTransform;
@@ -504,6 +590,7 @@ namespace CPW
                 }
                 var t = UI.Label(header, Title, 72, Color.white, TextAnchor.MiddleLeft, true);
                 UI.Stretch(t.rectTransform, ShowBack ? 170 : 40, 40, 4, 4);
+                UI.StyleText(t, new Color32(12, 52, 110, 255), 4f);
                 top += 110;
             }
             Content = UI.Rect(Root, "Content");

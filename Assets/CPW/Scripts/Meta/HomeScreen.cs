@@ -102,7 +102,8 @@ namespace CPW
     ///
     /// Bars are fixed pixel sizes; the centre follows the penguin's projected position, so it fits 4:3 (canvas
     /// ~1920x1440) to 21:9 (~2260x970) in the safe area. First launch offers the tutorial; the daily gift pops up
-    /// once per day.
+    /// once per day. With the original art (UI.Skin) the tiles, Play (green with the bazooka) and Custom game (blue
+    /// with the wrench) are the original home_screen bitmaps with uGUI captions.
     /// </summary>
     public partial class HomeScreen : UIScreen
     {
@@ -138,7 +139,8 @@ namespace CPW
             tilesRight = TileColumn("TilesRight");
             var craft = MetaUI.CartoonTile(tilesRight, "Ui/crafting", Loc.T("BUTTON_CRAFTING"), TileOrange, () => ScreenManager.Show(() => new CraftingScreen()));
             AddBadge(craft.transform, CraftingCatalog.ReadyCount, new Vector2(-10, -10));
-            var soon = MetaUI.CartoonTile(tilesRight, "Ui/lock", "Coming Soon", SoonGrey, () => UI.Toast("Coming soon!"));
+            // the original greyed this tile out with alpha over the orange art
+            var soon = MetaUI.CartoonTile(tilesRight, "Ui/lock", "Coming Soon", UI.Skin.Has("tile.orange") ? TileOrange : SoonGrey, () => UI.Toast("Coming soon!"));
             soon.gameObject.AddComponent<CanvasGroup>().alpha = 0.6f;
 
             var play = MetaUI.CartoonButton(Root, Loc.T("BUTTON_PLAY"), PlayGreen, QuickPlay.Start, 96, "Play");
@@ -148,9 +150,14 @@ namespace CPW
             playCaption = UI.Label(play.transform, QuickPlay.Caption, 24, Color.white, TextAnchor.MiddleCenter, false, "Mode");
             UI.Anchor(playCaption.rectTransform, 0.08f, 0.1f, 0.92f, 0.32f);
             MetaUI.Outlined(playCaption, MetaUI.Darker(PlayGreen, 0.6f), 1.5f);
+            // original art: the bazooka is on the left third, captions go right of it
+            playArt = ArtButton(play, 255, pl, new Vector4(0.3f, 0.3f, 0.95f, 0.94f));
+            if (playArt) UI.Anchor(playCaption.rectTransform, 0.3f, 0.1f, 0.95f, 0.36f);
             play.gameObject.AddComponent<UIPulse>().amount = 0.02f;
             var custom = MetaUI.CartoonButton(Root, "Custom game", CustomBlue, () => ScreenManager.Show(() => new CustomGameScreen()), 40, "Custom");
             customRt = (RectTransform)custom.transform;
+            customArt = ArtButton(custom, 267, custom.transform.Find("Caption") as RectTransform, new Vector4(0.06f, 0.14f, 0.8f, 0.9f));
+            UI.HitPad(customRt, 8, 10);   // 54..78 tall: reach a fingertip without overlapping Play
 
             // ---- edges: the remake's extra features ----
             var left = SideColumn(true);
@@ -168,6 +175,24 @@ namespace CPW
             BuildBottom();
             stage.Update(0);
             Relayout();
+        }
+
+        bool playArt, customArt;
+
+        /// <summary>
+        /// Swap a cartoon button's face for an original home_screen bitmap drawn at its own aspect (Play 255,
+        /// Custom game 267) and move its caption into the given normalized rect. False when the art is missing.
+        /// </summary>
+        static bool ArtButton(Button b, int bitmap, RectTransform caption, Vector4 captionRect)
+        {
+            var art = UI.Skin.Bitmap("home_screen", bitmap);
+            if (art == null || b == null) return false;
+            var img = b.GetComponent<Image>();
+            img.sprite = art; img.type = Image.Type.Simple; img.preserveAspect = true; img.color = Color.white;
+            var fit = b.GetComponent<SkinFit>();
+            if (fit != null) fit.enabled = false;
+            if (caption != null) UI.Anchor(caption, captionRect.x, captionRect.y, captionRect.z, captionRect.w);
+            return true;
         }
 
         /// <summary>Two big tiles stacked; size and position come from Relayout.</summary>
@@ -207,9 +232,10 @@ namespace CPW
             float space = Mathf.Max(0, top - (StripHeight + 12)) - 10;
             float playH = Mathf.Clamp(space * 0.62f, 84, 140), customH = Mathf.Clamp(space - playH, 54, 78);
             float playY = Mathf.Max(top, StripHeight + 12 + customH + 10 + playH);
-            float playW = Mathf.Min(460, playH * 3.3f);
+            float playW = playArt ? playH * 2.1f : Mathf.Min(460, playH * 3.3f);       // art: 455x216
+            float customW = customArt ? customH * 3.8f : playW * 0.74f;                  // art: 456x119
             PlaceTL(playRt, new Vector2(feet.x - playW / 2, playY), new Vector2(playW, playH));
-            PlaceTL(customRt, new Vector2(feet.x - playW * 0.37f, playY - playH - 10), new Vector2(playW * 0.74f, customH));
+            PlaceTL(customRt, new Vector2(feet.x - customW / 2, playY - playH - 10), new Vector2(customW, customH));
 
             // tiles: from about the penguin's knees to under the stats row, outside the doorway, clear of the edge icons
             float bandBottom = Mathf.Max(feet.y - 40, playY + 14), bandTop = size.y - HeaderHeight - 14;
