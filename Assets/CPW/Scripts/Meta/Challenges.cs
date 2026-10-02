@@ -233,6 +233,19 @@ namespace CPW
             BattleEvents.PenguinKilled += OnKilled;
             BattleEvents.BoosterUsed += OnBooster;
             BattleEvents.Explosion += OnExplosion;
+            DynamicObjectEntity.Destroyed += OnObjectDestroyed;
+        }
+
+        /// <summary>Original Destroy_Ice / Destroy_Wood / Destroy_Stone counters for smashing level objects.</summary>
+        static void OnObjectDestroyed(DynamicObjectEntity obj, int attacker, string item)
+        {
+            if (!tracking || attacker != me || obj == null) return;
+            switch (obj.Material)
+            {
+                case "Ice": ProfileService.P.AddCounter("Destroy_Ice", 1); break;
+                case "Wood": ProfileService.P.AddCounter("Destroy_Wood", 1); break;
+                case "Stone": ProfileService.P.AddCounter("Destroy_Stone", 1); break;
+            }
         }
 
         static void OnStarted(BattleConfig c)

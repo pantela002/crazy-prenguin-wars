@@ -315,11 +315,14 @@ namespace CPW
             return best;
         }
 
-        /// <summary>Predicted impact point of a shot (trajectory sampling; uses the last point as the impact).</summary>
+        /// <summary>Predicted impact point of a shot (WeaponSystem.PredictImpact, falling back to the last trajectory point).</summary>
         public static bool AimPredict(string item, Vector2 origin, float angle, float power, List<Vector2> buffer, out Vector2 impact)
         {
             impact = origin;
-            if (!WeaponSystem.PredictTrajectory(item, origin, angle, power, buffer) || buffer.Count == 0) return false;
+            // trajectory points are still needed by callers that score the whole path
+            WeaponSystem.PredictTrajectory(item, origin, angle, power, buffer);
+            if (WeaponSystem.PredictImpact(item, origin, angle, power, out impact, out _)) return true;
+            if (buffer.Count == 0) return false;
             impact = buffer[buffer.Count - 1];
             return true;
         }
