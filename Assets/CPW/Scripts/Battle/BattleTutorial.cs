@@ -98,6 +98,7 @@ namespace CPW
                     DropCrate();
                     break;
                 case Step.Jump:
+                    if (Player != null && Player.ActionPoints < Player.JumpCost) Player.ActionPoints = Player.MaxActionPoints;   // walking may have used it all
                     hud.ShowHint(T("TUTORIAL_JUMP_TITLE", "Jump"), "Tap the JUMP button to jump. Jumping costs ENERGY (the bar at the bottom).");
                     hud.Highlight("jump");
                     break;
