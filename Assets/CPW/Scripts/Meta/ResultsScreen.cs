@@ -6,10 +6,25 @@ namespace CPW
 {
     /// <summary>
     /// After-battle results (MetaHooks.ResultsScreen): podium, score table, rewards with VIP and bet lines, earned
-    /// items, an animated XP bar with level-ups, then Rematch or Home.
+    /// items, an animated XP bar with level-ups, an after-match deal (original AfterResultSalesScreen), then Rematch or
+    /// Home. Online matches get the original rematch offer: a TimeToStartRematch countdown and the ready state of every
+    /// player (FirebaseService.Rematch.cs).
     /// </summary>
     public class ResultsScreen : MetaScreen
     {
+        const float DealDiscount = 0.25f;   // invented: the original AfterResultSales prices are not in the config
+
+        // online rematch
+        static string offeredMatchId;       // the offer is made once per match (the screen is rebuilt after the shop)
+        OnlineRematch rematch;
+        Button rematchBtn;
+        Text rematchText;
+        RectTransform rematchLayer, rematchSlots;
+        Text rematchCountdown, rematchStatus;
+        bool rematchPopupOpen, startingBattle;
+        int rematchShownVersion = -1, rematchShownSecs = -1;
+        FirebaseService Fs => Online.Service as FirebaseService;
+
         readonly BattleResult result;
         readonly RewardSummary reward;
         Image xpFill;
@@ -57,18 +72,205 @@ namespace CPW
             // ---- buttons ----
             var home = UI.Button(Content, Loc.T("RESULTS_HOME"), GameManager.GoHome, UI.ButtonStyle.Secondary, 48);
             UI.Place((RectTransform)home.transform, new Vector2(0, 0), new Vector2(360, 110), Vector2.zero);
-            bool canRematch = result.config != null && result.config.mode != BattleMode.Online && result.config.mode != BattleMode.Tutorial;
+            bool online = result.config != null && result.config.mode == BattleMode.Online;
+            bool canRematch = result.config != null && !online && result.config.mode != BattleMode.Tutorial;
             if (canRematch)
             {
                 var re = UI.Button(Content, Loc.T("RESULTS_REMATCH"), Rematch, UI.ButtonStyle.Primary, 52);
                 UI.Place((RectTransform)re.transform, new Vector2(1, 0), new Vector2(420, 110), Vector2.zero);
                 re.gameObject.AddComponent<UIPulse>().amount = 0.03f;
             }
-            if (!won && !practice)
+            if (online) OnlineRematchButton();
+            bool rewarded = result.config != null && (result.config.mode == BattleMode.QuickMatch || online);
+            var deal = rewarded ? PickDeal(won) : null;
+            if (deal != null) DealCard(deal);
+            else if (!won && !practice)
             {
                 var shop = UI.Button(Content, Loc.T("RESULTS_GET_GUNS"), () => ScreenManager.Show(() => new ShopScreen(2)), UI.ButtonStyle.Good, 40);
                 UI.Place((RectTransform)shop.transform, new Vector2(0.5f, 0), new Vector2(360, 110), new Vector2(0, 0));
             }
+        }
+
+        // ------------------------------------------------------------------ after-match deal
+
+        /// <summary>
+        /// The AfterResultsSalesWinner / AfterResultsSalesLoser lists (the loser list falls back to the winner one),
+        /// keeping items the player can buy now; otherwise a random unlocked shop weapon.
+        /// </summary>
+        static Record PickDeal(bool won)
+        {
+            var pool = new List<Record>();
+            var sec = GameData.Section(won ? "AfterResultsSalesWinner" : "AfterResultsSalesLoser");
+            if (sec.Count == 0) sec = GameData.Section("AfterResultsSalesWinner");
+            foreach (var r in sec.Values)
+            {
+                var it = ItemCatalog.Real(GameData.Item(r.Str("ItemId", "")));
+                if (Buyable(it) && !pool.Contains(it)) pool.Add(it);
+            }
+            if (pool.Count == 0)
+                foreach (var it in ItemCatalog.ShopItems("Weapon")) if (Buyable(it)) pool.Add(it);
+            return pool.Count == 0 ? null : pool[Random.Range(0, pool.Count)];
+        }
+
+        static bool Buyable(Record it) =>
+            it != null && ItemCatalog.IsUnlocked(it) && !ItemCatalog.VipBlocked(it) && ItemCatalog.PriceCoins(it) + ItemCatalog.PriceCash(it) > 0;
+
+        static int Discounted(int price) => price <= 0 ? 0 : Mathf.Max(1, Mathf.CeilToInt(price * (1f - DealDiscount)));
+
+        void DealCard(Record item)
+        {
+            int coins = Discounted(ItemCatalog.PriceCoins(item)), cash = Discounted(ItemCatalog.PriceCash(item));
+            if (cash > 0) coins = 0;   // priced in fish (like Price())
+            int amount = ItemCatalog.AmountPurchased(item);
+            var card = MetaUI.CardPanel(Content, MetaUI.Card, "Deal");
+            var rt = card.rectTransform;
+            rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(1, 0); rt.pivot = new Vector2(0.5f, 0);
+            rt.offsetMin = new Vector2(380, 0); rt.offsetMax = new Vector2(-440, 110);
+            var tile = MetaUI.IconTile(card.transform, ItemCatalog.IconPath(item), ItemCatalog.Name(item));
+            UI.Place(tile, new Vector2(0, 0.5f), new Vector2(96, 96), new Vector2(8, 0));
+            var tag = MetaUI.Badge(tile, "-" + Mathf.RoundToInt(DealDiscount * 100) + "%", Theme.Danger, 52);
+            tag.fontSize = 20;
+            var trt = (RectTransform)tag.transform.parent;
+            trt.anchorMin = trt.anchorMax = new Vector2(1, 1);
+            trt.anchoredPosition = new Vector2(-6, -6);
+            var name = UI.Label(card.transform, "Deal: " + amount + "x " + ItemCatalog.Name(item), 30, Theme.Text, TextAnchor.MiddleLeft, true);
+            UI.Anchor(name.rectTransform, 0, 0.45f, 0.5f, 1);
+            name.rectTransform.offsetMin = new Vector2(116, 0);
+            var priceRow = UI.Rect(card.transform, "Price");
+            UI.Anchor(priceRow, 0, 0.04f, 0.5f, 0.5f);
+            priceRow.offsetMin = new Vector2(116, 0);
+            UI.HBox(priceRow, 6, TextAnchor.MiddleLeft).childForceExpandWidth = false;
+            MetaUI.Price(priceRow, coins, cash, 30, Theme.Good);
+            var was = UI.Label(priceRow, "(was " + UI.Money(cash > 0 ? ItemCatalog.PriceCash(item) : ItemCatalog.PriceCoins(item)) + ")", 24, Theme.Muted, TextAnchor.MiddleLeft);
+            UI.Layout(was, 170, 40);
+            Button buy = null;
+            buy = UI.Button(card.transform, Loc.T("BUY"), () =>
+            {
+                if (!Progression.Spend(coins, cash)) { AudioManager.Sfx("Nomoney"); Progression.NotEnough(cash > 0); return; }
+                ProfileService.P.AddAmmo(item.Id, amount);
+                ProfileService.Save();
+                AudioManager.Sfx("Buy");
+                UI.Toast("+" + amount + " " + ItemCatalog.Name(item), Theme.Good);
+                buy.interactable = false;
+                var l = buy.GetComponentInChildren<Text>();
+                if (l) l.text = "Bought!";
+            }, UI.ButtonStyle.Good, 34);
+            UI.Anchor((RectTransform)buy.transform, 0.5f, 0.1f, 0.74f, 0.9f);
+            var shop = UI.Button(card.transform, "Go to shop", () => ScreenManager.Show(() => new ShopScreen()), UI.ButtonStyle.Secondary, 30);
+            UI.Anchor((RectTransform)shop.transform, 0.76f, 0.1f, 0.98f, 0.9f);
+        }
+
+        // ------------------------------------------------------------------ online rematch
+
+        void OnlineRematchButton()
+        {
+            var fs = Fs;
+            var net = result.config.network as FirebaseBattleNetwork;
+            if (fs != null && fs.Available && net != null && offeredMatchId != net.MatchId)
+            {
+                offeredMatchId = net.MatchId;
+                rematch = fs.BeginRematch(result.config);
+            }
+            if (rematch == null)
+            {
+                var l = UI.Label(Content, fs != null && fs.Available ? "" : "Connect to play online again.", 30, Color.white, TextAnchor.MiddleRight);
+                UI.Place(l.rectTransform, new Vector2(1, 0), new Vector2(420, 110), Vector2.zero);
+                return;
+            }
+            rematch.started = OnRematchStarted;
+            rematchBtn = UI.Button(Content, "", RematchPressed, UI.ButtonStyle.Primary, 44);
+            UI.Place((RectTransform)rematchBtn.transform, new Vector2(1, 0), new Vector2(420, 110), Vector2.zero);
+            rematchBtn.gameObject.AddComponent<UIPulse>().amount = 0.03f;
+            rematchText = rematchBtn.GetComponentInChildren<Text>();
+            UpdateRematchUi();
+        }
+
+        void RematchPressed()
+        {
+            if (rematch == null || rematch.finished) return;
+            if (!rematch.localReady)
+            {
+                ProfileService.P.AddCounter("Games_Rematch", 1);
+                ProfileService.Save();
+                Fs?.RematchReady(rematch);
+            }
+            OpenRematchPopup();
+        }
+
+        void OpenRematchPopup()
+        {
+            if (rematchPopupOpen) return;
+            var win = MetaUI.Window(Loc.T("RESULTS_REMATCH"), new Vector2(1000, 640), out rematchLayer);
+            rematchPopupOpen = true;
+            rematchCountdown = UI.Label(win, "", 64, Theme.Secondary, TextAnchor.MiddleCenter, true);
+            UI.Anchor(rematchCountdown.rectTransform, 0.05f, 0.7f, 0.95f, 0.82f);
+            rematchSlots = UI.Rect(win, "Slots");
+            UI.Anchor(rematchSlots, 0.06f, 0.3f, 0.94f, 0.69f);
+            UI.VBox(rematchSlots, 8, TextAnchor.UpperCenter);
+            rematchStatus = UI.Label(win, "", 30, Theme.Muted);
+            UI.Anchor(rematchStatus.rectTransform, 0.05f, 0.2f, 0.95f, 0.29f);
+            var no = UI.Button(win, Loc.T("REMATCH_LEFT"), () => { MetaUI.Close(rematchLayer); LeaveRematch(); }, UI.ButtonStyle.Danger, 36);
+            UI.Anchor((RectTransform)no.transform, 0.3f, 0.03f, 0.7f, 0.18f);
+            rematchShownVersion = -1;
+            UpdateRematchUi();
+        }
+
+        void LeaveRematch()
+        {
+            rematchPopupOpen = false;
+            if (rematch != null && !rematch.finished) Fs?.RematchLeave(rematch);
+            UpdateRematchUi();
+        }
+
+        void UpdateRematchUi()
+        {
+            if (rematch == null) return;
+            int secs = Mathf.Max(0, Mathf.CeilToInt(rematch.timeLeft));
+            if (secs == rematchShownSecs && rematch.version == rematchShownVersion) return;
+            bool slotsChanged = rematch.version != rematchShownVersion;
+            rematchShownSecs = secs;
+            rematchShownVersion = rematch.version;
+            bool open = !rematch.finished;
+            if (rematchBtn)
+            {
+                rematchBtn.interactable = open;
+                rematchText.text = !open ? Loc.T("REMATCH_LEFT")
+                    : Loc.T("RESULTS_REMATCH") + (secs > 0 && !rematch.starting ? " (" + secs + ")" : "") + "  " + rematch.ReadyCount + "/" + rematch.slots.Count;
+            }
+            if (!rematchPopupOpen || !rematchLayer) return;
+            rematchCountdown.text = rematch.starting ? "Get ready!" : secs > 0 ? secs.ToString() : "...";
+            rematchStatus.text = rematch.status;
+            if (!slotsChanged) return;
+            UI.Clear(rematchSlots);
+            for (int i = 0; i < rematch.slots.Count; i++)
+            {
+                var sl = rematch.slots[i];
+                var row = UI.Panel(rematchSlots, Theme.PanelInner, true, "Slot");
+                UI.Layout(row, -1, 70);
+                var dot = UI.Image(row.transform, UI.Circle, Theme.PlayerColors[i % Theme.PlayerColors.Length], false, "Color");
+                UI.Place(dot.rectTransform, new Vector2(0, 0.5f), new Vector2(46, 46), new Vector2(16, 0));
+                var n = UI.Label(row.transform, sl.name + (sl.isLocal ? "  (you)" : ""), 32, Theme.Text, TextAnchor.MiddleLeft);
+                UI.Anchor(n.rectTransform, 0.1f, 0, 0.62f, 1);
+                string st = sl.state == "ready" ? Loc.T("REMATCH_READY") + "!" : sl.state == "left" ? Loc.T("REMATCH_LEFT") : "Thinking...";
+                var c = sl.state == "ready" ? Theme.Good : sl.state == "left" ? Theme.Danger : Theme.Muted;
+                var sv = UI.Label(row.transform, st, 30, c, TextAnchor.MiddleRight, true);
+                UI.Anchor(sv.rectTransform, 0.62f, 0, 0.96f, 1);
+            }
+        }
+
+        void OnRematchStarted(BattleConfig cfg)
+        {
+            if (cfg == null) return;
+            startingBattle = true;
+            if (rematchLayer) MetaUI.Close(rematchLayer);
+            rematchPopupOpen = false;
+            GameManager.StartBattle(cfg);
+        }
+
+        public override void OnHide()
+        {
+            if (rematchLayer) MetaUI.Close(rematchLayer);
+            if (!startingBattle && rematch != null && !rematch.finished) Fs?.RematchLeave(rematch);
         }
 
         string WinnerName()
@@ -236,6 +438,18 @@ namespace CPW
 
         public override void Tick(float dt)
         {
+            if (rematch != null)
+            {
+                // the popup was closed with X / Android back: that's a "no"
+                if (rematchPopupOpen && !rematchLayer) LeaveRematch();
+                if (rematch.finished && rematchPopupOpen && !startingBattle)
+                {
+                    if (!string.IsNullOrEmpty(rematch.status)) UI.Toast(rematch.status);
+                    MetaUI.Close(rematchLayer);
+                    rematchPopupOpen = false;
+                }
+                UpdateRematchUi();
+            }
             if (animDone || thresholds == null) return;
             animT += dt;
             if (animT < 0.6f) return;   // let the screen settle first

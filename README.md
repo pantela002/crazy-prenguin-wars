@@ -17,8 +17,11 @@ music) comes from the original game's files.
 - Quick Match against AI and custom games (map, match time, turn time, number of players, local pass-and-play).
 - Progression: XP and levels, coins and cash, shop, wardrobe with the original clothes, crafting, slot machine,
   daily gift, achievements, challenges and a leaderboard.
-- Fully playable **offline**. With Firebase (free) connected: **online battles** (Quick Match, public games,
-  private games with a 5-letter code), **cloud save** and a **world leaderboard**.
+- One-tap **PLAY** on the home screen (online quick match when connected, otherwise against the computer).
+- Fully playable **offline**. With Firebase (free) connected: **online battles** (Quick Match matched by level,
+  public games, private games with a 5-letter code, rematch with a 10 s countdown), **cloud save**, **friends**
+  (friend codes, one free gift a day, inbox with gifts and game invites), **weekly / monthly / all-time
+  leaderboards** by category with a friends filter, and a **weekly league** with promotion, relegation and rewards.
 - 3D penguins and props generated with Blender scripts (sources in `Blender/`).
 
 ## Quick start
@@ -64,6 +67,8 @@ See [Docs/BUILD.md#6-build-with-github-actions](Docs/BUILD.md#6-build-with-githu
 Online play is switched on by adding one small file, `Assets/CPW/Resources/firebase_config.json`, with three values
 from a free Firebase project. No SDK or plugin is needed. Step-by-step guide (about 15 minutes):
 **[Docs/FIREBASE.md](Docs/FIREBASE.md)**. The **Settings** screen in the game shows whether it is connected.
+When you update the game, publish the latest `Docs/firebase/database.rules.json` again: new features
+(friends, inbox, league, rematch) need their rules.
 
 ## Editing the art (Blender)
 

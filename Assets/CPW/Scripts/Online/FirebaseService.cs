@@ -11,14 +11,19 @@ namespace CPW
     ///
     /// Database layout (see Docs/FIREBASE.md and Docs/firebase/database.rules.json):
     ///   users/{uid}/profile      {json, updated, name}     cloud save (PlayerProfile as JsonUtility text)
-    ///   leaderboard/{uid}        {name, xp, level, wins, updated}
-    ///   lobby/{matchId}          {host, hostName, levelId, players, maxPlayers, quick, hb}   public waiting matches
+    ///   users/{uid}/friends/{f}  {name, added, gift}       friend list (Online/Social.cs)
+    ///   players/{uid}            {name, level, code, seen} public card + presence (Online/Social.cs)
+    ///   friendCodes/{CODE}       {uid}                     friend codes; inbox/{uid}/{id} gifts, invites, friend notices
+    ///   leaderboard/{period}/{uid} {name, xp, level, wins, games, kills, ...}  period = "all", "2026-W40", "2026-10"
+    ///   league/{week}/{tier}/{uid} {name, level, points, games}  weekly league (Online/League.cs)
+    ///   lobby/{matchId}          {host, hostName, level, levelId, players, maxPlayers, quick, hb}   public waiting matches
     ///   codes/{CODE}             {match, host, hb}          short join codes
     ///   matches/{matchId}        {host, hostName, isPrivate, quick, code, state, created, settings{...},
     ///                             players/{uid}{name, level, head, chest, feet, trophy, items, joined, hb, left},
-    ///                             order[uid...], turn{...}, actions/..., snapshots/...}
+    ///                             order[uid...], turn{...}, actions/..., snapshots/...,
+    ///                             rematch/{uid}{s: "ready"|"left", next}}   (FirebaseService.Rematch.cs)
     /// </summary>
-    public sealed class FirebaseService : IOnlineService
+    public sealed partial class FirebaseService : IOnlineService
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Install()
@@ -37,7 +42,8 @@ namespace CPW
         const float RoomPoll = 1f, RoomHeartbeat = 3f;
         const long StaleMs = 30000;          // lobby entries / room players without a heartbeat for this long are ignored
         const float QuickStartDelay = 15f;   // quick match: start this long after the last player joined (original: 15 s extra wait)
-        const string CodeChars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1 to avoid confusion
+        const int QuickLevelRange = 30;      // quick match prefers rooms whose host is within this many levels (findGameManager.py)
+        internal const string CodeChars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1 to avoid confusion
 
         readonly FirebaseConfig cfg;
         FirebaseClient fb;
@@ -153,27 +159,63 @@ namespace CPW
             }), _ => done?.Invoke(null));
         }
 
+        /// <summary>
+        /// Upload the all-time totals and this week's / month's counters (PlayerStatsTracker) to leaderboard/{period}/{uid}.
+        /// </summary>
         public void SubmitStats(PlayerProfile p)
         {
             if (p == null || !Available) return;
-            var body = new Dictionary<string, object>
+            PlayerStatsTracker.Roll(p);
+            var all = p.statsAll ?? new PeriodStats();
+            var total = new Dictionary<string, object>
             {
                 { "name", Clip(p.displayName, 32) },
-                { "xp", p.xp },
                 { "level", p.level },
+                { "xp", p.xp },
                 { "wins", p.gamesWon },
+                { "games", p.gamesPlayed },
+                { "kills", p.kills },
+                { "deaths", p.deaths },
+                { "damage", (int)Math.Min(p.totalDamage, int.MaxValue) },
+                { "turns", all.turns },
+                { "suicides", all.suicides },
+                { "shots", all.shots },
                 { "updated", Fb.ServerTime },
             };
-            fb.Put("leaderboard/" + fb.Uid, body, r =>
+            PutBoard(Leaderboards.AllKey, total);
+            if (p.statsWeek != null && p.statsWeek.games + p.statsWeek.xp > 0) PutBoard(p.statsWeek.key, PeriodBody(p, p.statsWeek));
+            if (p.statsMonth != null && p.statsMonth.games + p.statsMonth.xp > 0) PutBoard(p.statsMonth.key, PeriodBody(p, p.statsMonth));
+        }
+
+        void PutBoard(string period, Dictionary<string, object> body)
+        {
+            if (string.IsNullOrEmpty(period)) return;
+            fb.Put("leaderboard/" + period + "/" + fb.Uid, body, r =>
             {
                 if (!r.ok) Debug.LogWarning("CPW: leaderboard update failed: " + r.error);
             });
         }
 
+        static Dictionary<string, object> PeriodBody(PlayerProfile p, PeriodStats s) => new Dictionary<string, object>
+        {
+            { "name", Clip(p.displayName, 32) },
+            { "level", p.level },
+            { "xp", s.xp },
+            { "wins", s.wins },
+            { "games", s.games },
+            { "kills", s.kills },
+            { "deaths", s.deaths },
+            { "damage", s.damage },
+            { "turns", s.turns },
+            { "suicides", s.suicides },
+            { "shots", s.shots },
+            { "updated", Fb.ServerTime },
+        };
+
         public void GetLeaderboard(int count, Action<List<LeaderboardEntry>> done)
         {
             var list = new List<LeaderboardEntry>();
-            Ready(() => fb.Get("leaderboard", r =>
+            Ready(() => fb.Get("leaderboard/" + Leaderboards.AllKey, r =>
             {
                 if (r.ok && r.Obj != null)
                 {
@@ -224,6 +266,7 @@ namespace CPW
                         {
                             matchId = kv.Key,
                             hostName = Fb.Str(d, "hostName", "Penguin"),
+                            hostLevel = Fb.Int(d, "level", 0),
                             levelId = Fb.Str(d, "levelId"),
                             players = players,
                             maxPlayers = max,
@@ -316,6 +359,7 @@ namespace CPW
             {
                 { "host", fb.Uid },
                 { "hostName", Clip(ProfileService.P.displayName, 32) },
+                { "level", ProfileService.P.level },
                 { "levelId", r.info.levelId ?? "" },
                 { "players", Mathf.Max(1, r.info.players.Count) },
                 { "maxPlayers", MaxPlayers },
@@ -410,9 +454,15 @@ namespace CPW
             statusCb?.Invoke("Looking for a game...");
             Ready(() => ListOpenMatches(list =>
             {
-                // Join the fullest open public game.
+                // Join the fullest open public game, preferring hosts near our level (original findGameManager.py
+                // accept_level_range); any game is better than none.
                 OnlineMatchInfo pick = null;
-                foreach (var m in list) if (pick == null || m.players > pick.players) pick = m;
+                bool pickNear = false;
+                foreach (var m in list)
+                {
+                    bool near = IsNearLevel(m);
+                    if (pick == null || (near && !pickNear) || (near == pickNear && m.players > pick.players)) { pick = m; pickNear = near; }
+                }
                 if (pick != null)
                 {
                     Join(pick.matchId, started, err =>
@@ -425,9 +475,11 @@ namespace CPW
             }), err => statusCb?.Invoke(err));
         }
 
+        static bool IsNearLevel(OnlineMatchInfo m) => m.hostLevel <= 0 || Mathf.Abs(m.hostLevel - ProfileService.P.level) <= QuickLevelRange;
+
         void HostQuick(Action<BattleConfig> started, Action<string> statusCb)
         {
-            Host(DefaultSettings(), false, true, null, started, statusCb);
+            Host(QuickSettings(new System.Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue)), false, true, null, started, statusCb);
             if (room != null) room.lastJoinTime = Time.realtimeSinceStartup;
         }
 
@@ -489,9 +541,12 @@ namespace CPW
             });
         }
 
+        /// <summary>Random map for the host's level (Level.MinLevel, the same lock as the lobby map picker).</summary>
         static string PickLevel(int seed)
         {
-            var ids = new List<string>(GameData.Section("Level").Keys);
+            var ids = new List<string>();
+            foreach (var r in BattleFactory.Levels()) if (ProfileService.P.level >= r.Int("MinLevel", 1)) ids.Add(r.Id);
+            if (ids.Count == 0) foreach (var r in BattleFactory.Levels()) ids.Add(r.Id);
             if (ids.Count == 0) return "";
             ids.Sort(string.CompareOrdinal);
             return ids[new System.Random(seed).Next(ids.Count)];
@@ -502,6 +557,7 @@ namespace CPW
         void Update(float dt)
         {
             if (pushTimer > 0 && (pushTimer -= dt) <= 0) FlushProfile();
+            UpdateRematch(dt);
 
             var r = room;
             if (r == null || !r.ready || r.startedBattle || r.info.state == "closed") return;
@@ -544,7 +600,10 @@ namespace CPW
                     if (room != r || r.info.players.Count != 1 || r.info.state != "waiting") return;
                     OnlineMatchInfo older = null;
                     foreach (var m in list)
-                        if (m.matchId != r.matchId && string.CompareOrdinal(m.matchId, r.matchId) < 0 && m.players < m.maxPlayers) { older = m; break; }
+                    {
+                        if (m.matchId == r.matchId || string.CompareOrdinal(m.matchId, r.matchId) >= 0 || m.players >= m.maxPlayers) continue;
+                        if (older == null || (IsNearLevel(m) && !IsNearLevel(older))) older = m;
+                    }
                     if (older == null) return;
                     var started = r.started; var statusCb = r.statusCb;
                     Join(older.matchId, started, _ => HostQuick(started, statusCb), statusCb);
@@ -555,6 +614,9 @@ namespace CPW
             if (r.info.isHost && r.info.isQuickMatch && r.info.state == "waiting" && r.info.players.Count >= 2 &&
                 (r.info.players.Count >= MaxPlayers || Time.realtimeSinceStartup - r.lastJoinTime >= QuickStartDelay))
                 StartHostedMatch();
+
+            // Rematch rooms start once everybody who said yes is in, or at the deadline with whoever made it.
+            if (r.rematch != null && r.info.isHost && r.info.state == "waiting") UpdateRematchRoom(r);
         }
 
         /// <summary>Update the room from the match document; start the battle when it is playing.</summary>
@@ -694,7 +756,20 @@ namespace CPW
             };
         }
 
-        /// <summary>Settings used by Quick Match (the original picked 5-8 minute matches and 10-30 s turns).</summary>
+        /// <summary>
+        /// Quick Match settings like the original findGameManager.py: a random 5-8 minute match and 10-30 s turns,
+        /// picked from the seed so the same seed always gives the same settings.
+        /// </summary>
+        public static BattleConfig QuickSettings(int seed)
+        {
+            var c = DefaultSettings();
+            var rnd = new System.Random(seed);
+            c.matchTime = rnd.Next(5, 9) * 60;
+            c.turnTime = rnd.Next(10, 31);
+            return c;
+        }
+
+        /// <summary>Default settings for hosted games (the host picks map, turn and match time in the lobby).</summary>
         public static BattleConfig DefaultSettings()
         {
             var b = GameData.Battle;
@@ -772,6 +847,8 @@ namespace CPW
             public bool polling, startedBattle, merging;
             public float mergeTimer;
             public bool ready;   // the match exists and we are in it (polling starts)
+            public OnlineRematch rematch;   // set when this room is a rematch we host
+            public float rematchDeadline;
         }
     }
 }
