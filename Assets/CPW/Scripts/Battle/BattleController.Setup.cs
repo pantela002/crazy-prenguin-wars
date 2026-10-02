@@ -398,7 +398,7 @@ namespace CPW
             if (human) AudioManager.Sfx("PlayerStartTurn");
             else AudioManager.Sfx("SplashOpponentsTurn", 0.6f);
 
-            if (PassAndPlay && human)
+            if (PassAndPlay && human && !Config.skipPassCurtain)
             {
                 CurrentPhase = Phase.Curtain;
                 Hud.ShowCurtain(a);
@@ -420,7 +420,9 @@ namespace CPW
             string name = a.DisplayName;
             if (IsLocalHuman(ActiveIndex))
             {
-                Hud.Banner(Loc.Has("TID_YOUR_TURN") ? Loc.T("TID_YOUR_TURN") : "Your turn!", a.TeamColor, 1.6f);
+                // pass-and-play: every local player is "you", so name whose turn it is
+                if (PassAndPlay) Hud.Banner(name + "'s turn!", a.TeamColor, 1.6f);
+                else Hud.Banner(Loc.Has("TID_YOUR_TURN") ? Loc.T("TID_YOUR_TURN") : "Your turn!", a.TeamColor, 1.6f);
                 AudioManager.Sfx("SplashYourTurn", 0.7f);
                 // the held weapon is shown when the turn starts so the player can aim right away
                 var w = SelectedItem(ActiveIndex);
@@ -878,7 +880,8 @@ namespace CPW
 
         // ================================================================ events
 
-        void OnExplosion(Vector2 pos, float radius) { if (Cam) Cam.LookAtExplosion(pos, radius); }
+        // tiny repeated blasts (acid drops, goo bites) would make the camera jump around: only real explosions
+        void OnExplosion(Vector2 pos, float radius) { if (Cam && radius >= 1.25f) Cam.LookAtExplosion(pos, radius); }
 
         void OnPenguinDamaged(int victim, int attacker, float amount, string item) => Ai?.OnDamaged(victim, attacker, amount);
 

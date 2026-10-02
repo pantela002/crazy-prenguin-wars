@@ -49,7 +49,7 @@ namespace CPW
             var r = ShopRecord(id);
             bool unlocked = r != null && ItemCatalog.IsUnlocked(r);
             int coins = r != null ? ItemCatalog.PriceCoins(r) : 0, cash = r != null ? ItemCatalog.PriceCash(r) : 0;
-            string price = !unlocked ? "Lv " + ItemCatalog.RequiredLevel(r) : (cash > 0 ? cash + " fish" : UI.Money(coins));
+            string price = !unlocked ? "Lv " + ItemCatalog.RequiredLevel(r) : (cash > 0 ? UI.Money(cash) : UI.Money(coins));
             var b = ItemCell(grid, id, BattleItems.Icon(id), "", false, unlocked, () => BuyInBattle(a, id));
             // greyed icon, price tag instead of the count
             foreach (var img in b.GetComponentsInChildren<Image>(true))
@@ -57,8 +57,17 @@ namespace CPW
             var tag = UI.Panel(b.transform, cash > 0 ? new Color(0.1f, 0.45f, 0.2f, 0.92f) : new Color(0.45f, 0.32f, 0.02f, 0.92f), true, "Price");
             tag.raycastTarget = false;
             UI.Anchor(tag.rectTransform, 0.3f, 0.02f, 0.98f, 0.27f);
-            var pl = UI.Label(tag.transform, unlocked ? Loc.T("BUY") + " " + price : price, 24, unlocked ? (cash > 0 ? Theme.Cash : Theme.Coin) : Color.white, TextAnchor.MiddleCenter, true);
-            UI.Stretch(pl.rectTransform, 6, 6, 2, 2);
+            if (unlocked)
+            {
+                // currency icon (gold coin / green Cash) + amount, same as the Supplies shop cards
+                var ic = MetaUI.CurrencyIcon(tag.transform, cash > 0 ? "cash" : "coin");
+                ic.anchorMin = ic.anchorMax = new Vector2(0, 0.5f);
+                ic.pivot = new Vector2(0, 0.5f);
+                ic.sizeDelta = new Vector2(34, 34);
+                ic.anchoredPosition = new Vector2(6, 0);
+            }
+            var pl = UI.Label(tag.transform, price, 26, unlocked ? (cash > 0 ? Theme.Cash : Theme.Coin) : Color.white, TextAnchor.MiddleCenter, true);
+            UI.Stretch(pl.rectTransform, unlocked ? 42 : 6, 6, 2, 2);
         }
 
         void BuyInBattle(Penguin a, string id)
@@ -71,7 +80,7 @@ namespace CPW
             {
                 // Progression.NotEnough would offer the bank screen, which can't open over a battle
                 AudioManager.Sfx("Nomoney");
-                UI.Toast(cash > 0 ? "Not enough fish" : (Loc.Has("NOT_ENOUGH_COINS_POP_UP_TITLE") ? Loc.T("NOT_ENOUGH_COINS_POP_UP_TITLE") : "Not enough coins"), Theme.Danger);
+                UI.Toast(cash > 0 ? "Not enough Cash" : (Loc.Has("NOT_ENOUGH_COINS_POP_UP_TITLE") ? Loc.T("NOT_ENOUGH_COINS_POP_UP_TITLE") : "Not enough coins"), Theme.Danger);
                 return;
             }
             System.Action buy = () =>
@@ -85,7 +94,7 @@ namespace CPW
             // premium currency always asks first; coins buy on the tap like the original Buy button
             if (cash > 0)
                 UI.Confirm(Loc.T("BUY") + " " + BattleItems.Name(id),
-                    "x" + ItemCatalog.AmountPurchased(r) + " for " + cash + " fish?", buy);
+                    "x" + ItemCatalog.AmountPurchased(r) + " for " + cash + " Cash?", buy);
             else buy();
         }
     }

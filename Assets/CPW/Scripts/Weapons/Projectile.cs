@@ -8,6 +8,8 @@ namespace CPW
     /// Missile = explodes on first contact; TimerMissile = on contact or when Timer runs out;
     /// Grenade = bounces, explodes on Timer; Enviroment = emits its Emitters every Interval for Duration
     /// (burning patches, drill bits, void nodes); Mine = treated as a Grenade (boosters use Deployable).
+    /// Remake additions: Sticky = sticks to the first penguin/object/wall it touches and explodes on Timer (Glue
+    /// Bomb); SimpleScript "Crawl" on an Enviroment missile = creeps sideways after every emission (Grey Goo).
     /// MissileEmitter.AffectsObjects is the collision mask: categories not in it are passed through
     /// (a projectile that does not affect terrain becomes a trigger and hits targets by sweep tests).
     /// </summary>
@@ -26,7 +28,10 @@ namespace CPW
         bool triggerMode, exploded, removed, graceOver, hasContact, rocketLike;
         Vector2 origin, lastVel, normal, prevPos, lastTailPos;
         float age, contactAt = -10, intervalElapsed, durationElapsed, tailTimer, spinAngle;
-        int attacker = -1;
+        int attacker = -1, crawlDir = 1;
+        bool stuck;
+        IDamageable stuckTo;
+        Vector2 stuckOffset;
         Transform visual;
         TrailRenderer trail;
         readonly List<Collider2D> shooterCols = new List<Collider2D>();
@@ -48,6 +53,7 @@ namespace CPW
             p.triggerMode = (e.Affects & Affects.Terrain) == 0;
             p.rocketLike = m.Type == "Missile" || m.Type == "TimerMissile";
             if (m.RandomIntervalStart && m.IntervalSec > 0) p.intervalElapsed = Random.Range(0, m.IntervalSec);
+            p.crawlDir = dir.x >= 0 ? 1 : -1;
 
             float speed = speedOverride > 0 ? speedOverride
                 : EmissionEngine.LaunchSpeed(m, src != null ? src.Power01 : 0, src != null && src.Primary, src != null && src.Activation, shot?.Item);
@@ -154,6 +160,14 @@ namespace CPW
                 case "Mine":
                     if (age >= Def.TimerSec) { Explode(); return; }
                     break;
+                case "Sticky":
+                    if (stuck && stuckTo != null)
+                    {
+                        if (stuckTo.Alive && stuckTo.gameObject) Body.MovePosition(stuckTo.Position + stuckOffset);
+                        else Unstick();
+                    }
+                    if (age >= Def.TimerSec) { Explode(); return; }
+                    break;
                 case "Enviroment":
                     durationElapsed += dt;
                     if (Def.IntervalSec > 0)
@@ -163,6 +177,7 @@ namespace CPW
                         {
                             intervalElapsed -= Def.IntervalSec;
                             EmitCopy(null);
+                            if (Def.Script == "Crawl" && Alive) Crawl();
                         }
                     }
                     if (durationElapsed >= Def.DurationSec) { Remove(); return; }
@@ -206,7 +221,45 @@ namespace CPW
             return false;
         }
 
-        void OnCollisionEnter2D(Collision2D c) { Contact(c); if (rocketLike && Alive) Explode(); }
+        void OnCollisionEnter2D(Collision2D c)
+        {
+            Contact(c);
+            if (rocketLike && Alive) Explode();
+            else if (Def.Type == "Sticky" && Alive && !stuck) Stick(c.collider);
+        }
+
+        /// <summary>Glue Bomb: stop and ride on what was hit (a penguin or object keeps carrying it).</summary>
+        void Stick(Collider2D other)
+        {
+            stuck = true;
+            var d = WorldQuery.FindDamageable(other);
+            stuckTo = d != null && !(d is Deployable) ? d : null;
+            stuckOffset = stuckTo != null ? Body.position - stuckTo.Position : Vector2.zero;
+            Body.SetVel(Vector2.zero);
+            Body.angularVelocity = 0;
+            Body.bodyType = RigidbodyType2D.Kinematic;
+            if (col) col.isTrigger = true;   // no more pushing what it sticks to
+            AudioManager.Sfx("StickyBombBlob", 0.8f);
+            Fx.Bubbles(Body.position, new Color(0.35f, 0.85f, 0.25f, 0.9f), 6);
+        }
+
+        /// <summary>What it stuck to is gone (died, removed): fall again.</summary>
+        void Unstick()
+        {
+            stuckTo = null;
+            stuck = false;
+            Body.bodyType = RigidbodyType2D.Dynamic;
+            if (col) col.isTrigger = triggerMode;
+        }
+
+        /// <summary>Grey Goo: after each bite creep sideways (and keep falling into the hole it just ate).</summary>
+        void Crawl()
+        {
+            var v = Body.Vel();
+            if (Mathf.Abs(v.x) < WeaponTuning.GooCrawlSpeed * 0.25f && hasContact && Time.time - contactAt < 0.5f && Mathf.Abs(normal.x) > 0.7f)
+                crawlDir = normal.x > 0 ? 1 : -1;   // pressed against a wall: turn around
+            Body.SetVel(new Vector2(crawlDir * WeaponTuning.GooCrawlSpeed, Mathf.Min(v.y, 0f)));
+        }
         void OnCollisionStay2D(Collision2D c) { if (Alive && (Time.frameCount & 3) == 0) Contact(c); }
 
         void Contact(Collision2D c)
@@ -422,6 +475,17 @@ namespace CPW
             if (id.Contains("Void")) return new Color(0.4f, 0.1f, 0.7f);
             if (id.Contains("Fireworks")) return Color.HSVToRGB(Random.value, 0.7f, 1f);
             if (id.Contains("Artillery")) return new Color(0.35f, 0.38f, 0.3f);
+            if (id.Contains("Flame")) return new Color(1f, 0.55f, 0.15f);
+            if (id.Contains("Lemon")) return new Color(0.95f, 0.9f, 0.2f);
+            if (id.Contains("Gas")) return new Color(0.5f, 0.85f, 0.3f);
+            if (id.Contains("Sticky")) return new Color(0.35f, 0.8f, 0.25f);
+            if (id.Contains("GreyGoo")) return new Color(0.6f, 0.62f, 0.66f);
+            if (id.Contains("Teleport")) return new Color(0.6f, 0.4f, 1f);
+            if (id.Contains("ShieldWall")) return new Color(0.4f, 0.7f, 1f);
+            if (id.Contains("Snowball")) return new Color(0.95f, 0.97f, 1f);
+            if (id.Contains("EasterEgg")) return Color.HSVToRGB(Random.value, 0.45f, 1f);
+            if (id.Contains("Cannon")) return new Color(0.4f, 0.24f, 0.12f);
+            if (id.Contains("HeatSeeker")) return new Color(0.85f, 0.3f, 0.2f);
             if (m.Bullet) return new Color(1f, 0.85f, 0.4f);
             return new Color(0.55f, 0.55f, 0.6f);
         }

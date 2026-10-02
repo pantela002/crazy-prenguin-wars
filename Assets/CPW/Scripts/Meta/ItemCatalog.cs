@@ -130,7 +130,7 @@ namespace CPW
             item = Real(item);
             if (item == null) return false;
             if (VipBlocked(item)) { UI.Message("VIP only", "This item is only for VIP members.", () => ScreenManager.Show(() => new VipScreen())); return false; }
-            if (!IsUnlocked(item)) { UI.Toast("Reach level " + RequiredLevel(item) + " or unlock it with fish first."); return false; }
+            if (!IsUnlocked(item)) { UI.Toast("Reach level " + RequiredLevel(item) + " or unlock it with Cash first."); return false; }
             int coins = PriceCoins(item) * packs, cash = PriceCash(item) * packs;
             if (!Progression.Spend(coins, cash))
             {

@@ -75,7 +75,7 @@ namespace CPW
         }
         public static bool Exists => inst;
 
-        struct Scheduled { public float at; public EmitterDef e; public Src src; public Shot shot; public System.Action action; }
+        struct Scheduled { public float at; public EmitterDef e; public Src src; public Shot shot; public System.Action action; public bool quiet; }
 
         public readonly List<Projectile> Projectiles = new List<Projectile>();
         public readonly List<FollowerRt> Followers = new List<FollowerRt>();
@@ -90,9 +90,9 @@ namespace CPW
         /// <summary>Parent for spawned battle objects (destroyed with the battle).</summary>
         public Transform Parent => BattleWorld.Root ? BattleWorld.Root : transform;
 
-        public void Schedule(float delay, EmitterDef e, Src src, Shot shot)
+        public void Schedule(float delay, EmitterDef e, Src src, Shot shot, bool quiet = false)
         {
-            schedule.Add(new Scheduled { at = Time.time + delay, e = e, src = src, shot = shot });
+            schedule.Add(new Scheduled { at = Time.time + delay, e = e, src = src, shot = shot, quiet = quiet });
             if (shot != null) shot.Live++;
         }
 
@@ -115,7 +115,7 @@ namespace CPW
                 schedule.RemoveAt(i--);
                 if (s.shot != null) s.shot.Live--;
                 if (s.action != null) s.action();
-                else EmissionEngine.EmitOne(s.e, s.src, s.shot, 0, 1);
+                else EmissionEngine.EmitOne(s.e, s.src, s.shot, 0, 1, s.quiet);
             }
 
             // followers (copy: activations may add new followers)
@@ -278,7 +278,7 @@ namespace CPW
             {
                 // the original emits delayed copies one at a time, each with currentCount 0 of maxCount 1
                 EmitOne(e, src, shot, 0, 1);
-                for (int i = 1; i < e.Number; i++) WeaponRuntime.I.Schedule(e.DelaySec * i, e, src, shot);
+                for (int i = 1; i < e.Number; i++) WeaponRuntime.I.Schedule(e.DelaySec * i, e, src, shot, e.SoundOnce);
             }
         }
 
@@ -338,7 +338,7 @@ namespace CPW
         }
 
         /// <summary>One activation of an emitter (one missile / one explosion).</summary>
-        public static void EmitOne(EmitterDef e, Src src, Shot shot, int index, int count)
+        public static void EmitOne(EmitterDef e, Src src, Shot shot, int index, int count, bool quiet = false)
         {
             if (e == null || src == null) return;
             var baseDir = BaseDirection(src, e);
@@ -349,11 +349,12 @@ namespace CPW
                 dir = Vector2.Reflect(dir, src.Normal);
             var pos = src.Pos + dir * OffsetDistance(e, index);
 
-            if (!string.IsNullOrEmpty(e.Sound)) AudioManager.Sfx(e.Sound, e.IsMissile && e.Number > 6 ? 0.5f : 1f);
+            if (!quiet && !string.IsNullOrEmpty(e.Sound) && !(e.SoundOnce && index > 0)) AudioManager.Sfx(e.Sound, e.IsMissile && e.Number > 6 && !e.SoundOnce ? 0.5f : 1f);
 
             if (e.IsMissile)
             {
                 if (e.Id.StartsWith("ArtilleryStrikeShard")) { ArtilleryShell(e, src, shot, dir); return; }
+                if (e.Missile.Script == "Orbital") { OrbitalStrike(e, src, shot); return; }
                 if (src.HasContact) pos += src.Normal * (e.Missile.RadiusU + 0.05f);
                 Projectile.Spawn(e, e.Missile, pos, dir, src, shot, -1f);
             }
@@ -368,6 +369,21 @@ namespace CPW
             var start = new Vector2(src.Pos.x + Random.Range(-1.5f, 1.5f), Mathf.Min(src.Pos.y + WeaponTuning.ArtilleryHeight, top));
             float ang = (-90f + Random.Range(e.AngleOne, e.AngleOne + e.AngleTwo)) * Mathf.Deg2Rad;
             Projectile.Spawn(e, e.Missile, start, new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)), src, shot, WeaponTuning.ArtilleryShellSpeed);
+        }
+
+        /// <summary>
+        /// Orbital Plasma Attack: the bolt starts above the top of the level straight over the target point and
+        /// falls at OrbitalSpeed, so it hits the first terrain/penguin/object on the vertical line (the original:
+        /// "Make sure the path is clear"). Deterministic: only the target point (TurnAction px/py) matters.
+        /// </summary>
+        static void OrbitalStrike(EmitterDef e, Src src, Shot shot)
+        {
+            var t = BattleTerrain.I;
+            float top = t != null && t.Level != null ? Mathf.Max(t.Level.size.y, src.Pos.y) + WeaponTuning.OrbitalStartAbove : src.Pos.y + 40f;
+            var start = new Vector2(src.Pos.x, top);
+            Fx.Beam(start, src.Pos, new Color(1f, 0.35f, 0.9f, 0.6f), 0.08f, 0.35f);   // targeting beam
+            Fx.Glow(src.Pos, 1.6f, new Color(1f, 0.4f, 0.9f));
+            Projectile.Spawn(e, e.Missile, start, Vector2.down, src, shot, WeaponTuning.OrbitalSpeed);
         }
 
         /// <summary>Launch speed (units/s) for a missile, see WeaponTuning for the model.</summary>
@@ -505,8 +521,18 @@ namespace CPW
                 BattleTerrain.I.Carve(pos, r);
             }
 
-            // ---- SimpleScript "Teleport": the attacker moves to the explosion
-            if (x.Teleport && shot != null && shot.Shooter != null && shot.Shooter.Alive) shot.Shooter.Teleport(pos);
+            // ---- SimpleScript "Teleport": the attacker moves to the explosion (lifted out of the ground if needed)
+            if (x.Teleport && shot != null && shot.Shooter != null && shot.Shooter.Alive)
+            {
+                var from = shot.Shooter.Position;
+                var to = TeleportSpot(pos);
+                Fx.Explosion(from, 1f, "TeleportEffect");
+                shot.Shooter.Teleport(to);
+                Fx.Explosion(to, 1.2f, "TeleportEffect");
+            }
+
+            // ---- remake SimpleScript "BuildWall": Shield Wall raises stone above the ground under pos
+            if (x.Script == "BuildWall") BuildWall(pos, x.ArgInt(0, 7), Units.W(x.ArgInt(1, 20)));
 
             // ---- chained emitters of the explosion itself (ImpactCannon 1 → 2 → 3)
             if (x.Emitters.Count > 0)
@@ -514,6 +540,48 @@ namespace CPW
                 var child = new Src { Pos = pos, HasDir = true, Dir = dir, Power01 = src != null ? src.Power01 : 0, Exclude = null };
                 EmissionEngine.Run(x.Emitters, child, shot);
             }
+        }
+
+        /// <summary>Nearest spot at or above p where a penguin fits (not inside terrain). Deterministic grid search.</summary>
+        public static Vector2 TeleportSpot(Vector2 p)
+        {
+            var t = BattleTerrain.I;
+            if (t == null) return p;
+            float r = Tuning.PenguinRadius;
+            for (int i = 0; i < 160; i++)
+            {
+                var c = p + Vector2.up * (i * 0.25f);
+                if (t.IsSolid(c) || t.IsSolid(c + Vector2.up * r) || t.IsSolid(c + Vector2.down * r * 0.6f)
+                    || t.IsSolid(c + Vector2.left * r * 0.8f) || t.IsSolid(c + Vector2.right * r * 0.8f)) continue;
+                return c + Vector2.up * r * 0.3f;
+            }
+            return p;
+        }
+
+        /// <summary>
+        /// Shield Wall: count stone blobs of radius r stacked up from the ground below pos (BattleTerrain.Fill, so
+        /// the wall is real terrain: it stops missiles and penguins, can be blown away and is part of the online
+        /// snapshot's crater history). Blobs that would bury a penguin are left out.
+        /// </summary>
+        static void BuildWall(Vector2 pos, int count, float r)
+        {
+            var t = BattleTerrain.I;
+            if (t == null || count <= 0 || r <= 0.05f) return;
+            var baseP = t.GroundBelow(pos.x, pos.y + 0.5f, out var g) && pos.y - g.y < 4f ? g : pos;
+            float step = r * 1.3f;
+            float clear = r + Tuning.PenguinRadius + 0.1f;
+            for (int i = 0; i < count; i++)
+            {
+                var c = baseP + Vector2.up * (r * 0.6f + i * step);
+                if (WorldQuery.OutOfWorld(c) || (t.Level != null && c.y > t.Level.size.y)) break;
+                bool blocked = false;
+                foreach (var p in BattleWorld.Penguins)
+                    if (p != null && p.Alive && (p.Position - c).sqrMagnitude < clear * clear) { blocked = true; break; }
+                if (blocked) continue;
+                t.Fill(c, r, "Stone");
+                Fx.Debris(c, new Color(0.6f, 0.62f, 0.66f), 4);
+            }
+            Fx.Glow(baseP + Vector2.up * count * step * 0.5f, 2.5f, new Color(0.5f, 0.8f, 1f));
         }
 
         /// <summary>Velocity change on a body without damage (shoves, pulls, recoil).</summary>

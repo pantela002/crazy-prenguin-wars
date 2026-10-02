@@ -7,7 +7,9 @@ namespace CPW
 {
     /// <summary>
     /// Shop laid out like the original Screen.Shop: Featured, Bundles, Weapons (All/Rockets/Grenades/Guns/Special),
-    /// Boosters and Clothes pages, plus a shortcut to the bank (coins & fish).
+    /// Boosters and Clothes pages, plus a shortcut to the bank (coins & Cash; the code calls Cash "fish"/premium).
+    /// Weapons have the original Rockets/Grenades/Guns/Special tabs; boosters (supplies) are grouped by what they
+    /// do (remake grouping, the original showed one list).
     /// </summary>
     public class ShopScreen : MetaScreen
     {
@@ -19,6 +21,16 @@ namespace CPW
 
         static readonly string[] WeaponCats = { null, "Rockets", "Grenades", "Guns", "Special" };
         static readonly string[] WeaponTabIds = { "ShopWeaponsTabAll", "ShopWeaponsTabRockets", "ShopWeaponsTabGrenades", "ShopWeaponsTabGuns", "ShopWeaponsTabSpecial" };
+
+        // booster (supply) tabs: All, Power-ups, Protection, Traps; anything not listed shows under All only
+        static readonly string[] BoosterTabs = { "All", "Power-ups", "Protection", "Traps" };
+        static readonly string[][] BoosterGroups =
+        {
+            null,
+            new[] { "SalmonSushi", "SpicySushi", "WasabiSushi", "ProteinBar", "Scroll", "Kamikaze", "Confetti" },
+            new[] { "Shield", "Bandage", "Umbrella", "PogoStick", "Innertube" },
+            new[] { "Mine", "FlameMine", "SpringMine", "Caltrops", "Mushroom", "Burrito" },
+        };
 
         readonly int startSub;
 
@@ -77,9 +89,13 @@ namespace CPW
                     break;
                 }
                 case 3:
-                    Hint("Boosters last for one turn. Pick them before a battle.");
-                    foreach (var r in ItemCatalog.ShopItems("Booster")) ItemCard(r);
+                {
+                    subTabs = MetaUI.Tabs(subRow, BoosterTabs, sub, i => { sub = i; Fill(); }, 30);
+                    var group = BoosterGroups[Mathf.Clamp(sub, 0, BoosterGroups.Length - 1)];
+                    foreach (var r in ItemCatalog.ShopItems("Booster"))
+                        if (group == null || System.Array.IndexOf(group, r.Id) >= 0) ItemCard(r);
                     break;
+                }
                 case 4:
                 {
                     subTabs = MetaUI.Tabs(subRow, new[] { "Hats", "Outfits", "Shoes" }, sub, i => { sub = i; Fill(); }, 30);
@@ -227,7 +243,7 @@ namespace CPW
             string gift = GiftCoins + " coins" + (weapon != null ? " and " + GiftAmmo + "x " + Progression.NameOf(weapon) : "");
             UI.Popup(MetaUI.TOr("FREE_AMMO_PACKAGE_HEADER", "Free ammo!"),
                 MetaUI.TOr("FREE_AMMO_PACKAGE_TEXT", "Running low? The penguin quartermaster sent you a help package:") + "\n\n" + gift,
-                new UI.PopupButton(MetaUI.TOr("BUTTON_MONEY", "Get fish"), () => ScreenManager.Show(() => new BankScreen()), UI.ButtonStyle.Secondary),
+                new UI.PopupButton(MetaUI.TOr("BUTTON_MONEY", "Get Cash"), () => ScreenManager.Show(() => new BankScreen()), UI.ButtonStyle.Secondary),
                 new UI.PopupButton("OK"));
         }
     }
@@ -268,6 +284,18 @@ namespace CPW
             }
             Line(info, "Required level: " + ItemCatalog.RequiredLevel(item) + (ItemCatalog.IsVipItem(item) ? "   -   VIP only" : ""), 32, ItemCatalog.IsUnlocked(item) ? Theme.Text : Theme.Danger, 44);
             Line(info, ItemCatalog.IsInfinite(item) ? "Unlimited use" : "You have: " + P.Ammo(item.Id), 32, Theme.Good, 44);
+            if (!ItemCatalog.IsInfinite(item))
+            {
+                // the price with its currency icon (gold coins or green Cash)
+                var priceRow = UI.Rect(info, "Price");
+                UI.Layout(priceRow, -1, 48);
+                UI.HBox(priceRow, 8, TextAnchor.MiddleLeft).childForceExpandWidth = false;
+                var pl = UI.Label(priceRow, "Price:", 32, Theme.Text, TextAnchor.MiddleLeft);
+                UI.Layout(pl, 110, 44);
+                MetaUI.Price(priceRow, ItemCatalog.PriceCoins(item), ItemCatalog.PriceCash(item), 32);
+                var per = UI.Label(priceRow, "for x" + ItemCatalog.AmountPurchased(item), 30, Theme.Muted, TextAnchor.MiddleLeft);
+                UI.Layout(per, 160, 44);
+            }
 
             var row = UI.Rect(win, "Buttons");
             UI.Anchor(row, 0.05f, 0.03f, 0.95f, 0.18f);
@@ -276,7 +304,7 @@ namespace CPW
             if (ItemCatalog.IsInfinite(item)) return;
             if (!ItemCatalog.IsUnlocked(item) && ItemCatalog.UnlockCash(item) > 0)
             {
-                var ub = UI.Button(row, Loc.T("UNLOCK") + "  " + ItemCatalog.UnlockCash(item) + " fish", () => ConfirmSpend(0, ItemCatalog.UnlockCash(rec), Loc.T("UNLOCK") + " " + ItemCatalog.Name(rec),
+                var ub = UI.Button(row, Loc.T("UNLOCK") + "  " + ItemCatalog.UnlockCash(item) + " Cash", () => ConfirmSpend(0, ItemCatalog.UnlockCash(rec), Loc.T("UNLOCK") + " " + ItemCatalog.Name(rec),
                     () => { if (ItemCatalog.Unlock(rec)) { MetaUI.Close(layer); changed?.Invoke(); Show(rec, changed); } }), UI.ButtonStyle.Good, 40);
                 UI.Layout(ub, 480, 110);
             }
@@ -288,7 +316,7 @@ namespace CPW
             else if (ItemCatalog.IsUnlocked(item))
             {
                 int coins = ItemCatalog.PriceCoins(item), cash = ItemCatalog.PriceCash(item);
-                string price = cash > 0 ? cash + " fish" : coins + " coins";
+                string price = cash > 0 ? cash + " Cash" : coins + " coins";
                 string what = ItemCatalog.Name(item) + " x";
                 var b1 = UI.Button(row, Loc.T("BUY") + " x" + ItemCatalog.AmountPurchased(item) + "  (" + price + ")", () =>
                     ConfirmSpend(coins, cash, what + ItemCatalog.AmountPurchased(rec), () =>
@@ -314,13 +342,13 @@ namespace CPW
         }
 
         /// <summary>
-        /// Run buy right away for coin prices; ask first when it costs fish (premium) or when always is set,
-        /// so a stray tap on a phone never spends fish.
+        /// Run buy right away for coin prices; ask first when it costs Cash (premium) or when always is set,
+        /// so a stray tap on a phone never spends Cash.
         /// </summary>
         public static void ConfirmSpend(int coins, int cash, string what, Action buy, bool always = false)
         {
             if (cash <= 0 && !always) { buy(); return; }
-            string price = cash > 0 ? cash + " fish" : coins > 0 ? coins + " coins" : "nothing";
+            string price = cash > 0 ? cash + " Cash" : coins > 0 ? coins + " coins" : "nothing";
             UI.Confirm(Loc.T("BUY") + "?", "Get " + what + " for " + price + "?", buy, null, Loc.T("BUY"), "Cancel");
         }
 
@@ -369,12 +397,12 @@ namespace CPW
             {
                 if (!ClothesCatalog.IsUnlocked(d))
                 {
-                    var u = UI.Button(row, Loc.T("UNLOCK") + "  " + ClothesCatalog.UnlockCash(d) + " fish", () => ItemInfo.ConfirmSpend(0, ClothesCatalog.UnlockCash(d), Loc.T("UNLOCK") + " " + name, () => { if (ClothesCatalog.Unlock(d)) refresh(); }), UI.ButtonStyle.Good, 38);
+                    var u = UI.Button(row, Loc.T("UNLOCK") + "  " + ClothesCatalog.UnlockCash(d) + " Cash", () => ItemInfo.ConfirmSpend(0, ClothesCatalog.UnlockCash(d), Loc.T("UNLOCK") + " " + name, () => { if (ClothesCatalog.Unlock(d)) refresh(); }), UI.ButtonStyle.Good, 38);
                     UI.Layout(u, 440, 110);
                 }
                 else
                 {
-                    string price = d.cash > 0 ? d.cash + " fish" : d.coins + " coins";
+                    string price = d.cash > 0 ? d.cash + " Cash" : d.coins + " coins";
                     var b = UI.Button(row, Loc.T("BUY") + "  (" + price + ")", () => ItemInfo.ConfirmSpend(d.coins, d.cash, name, () => { if (ClothesCatalog.Buy(d)) refresh(); }), UI.ButtonStyle.Good, 38);
                     UI.Layout(b, 440, 110);
                 }

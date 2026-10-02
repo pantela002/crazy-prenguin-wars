@@ -70,6 +70,12 @@ for sec in ('PracticeLevel',):
         if k != '$DATA_TYPE':
             lv['LevelFile'] = 'Data/Levels/tutorial_forest_1'
 
+# Remake additions (weapons/supplies the original had but the shipped Item table lost): Tools/lost_items.py
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.dont_write_bytecode = True
+import lost_items
+lost_items.patch_config(cfg)
+
 with open(os.path.join(RES, 'Data', 'config.json'), 'w', encoding='utf-8') as f:
     json.dump(cfg, f, separators=(',', ':'), ensure_ascii=False)
 
@@ -86,6 +92,7 @@ for p in (os.path.join(A, 'json', 'dev', 'tuxwars_config_en_beforecleanup.json')
 for k, v in dev.get('TID', {}).items():
     if k != '$DATA_TYPE' and isinstance(v, dict) and v.get('en'):
         strings.setdefault(k, v['en'])
+lost_items.patch_strings(strings)
 with open(os.path.join(RES, 'Data', 'strings_en.json'), 'w', encoding='utf-8') as f:
     json.dump(strings, f, ensure_ascii=False, indent=0)
 

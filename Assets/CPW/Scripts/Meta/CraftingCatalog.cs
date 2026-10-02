@@ -193,7 +193,7 @@ namespace CPW
                 int coins = 0, xp = 0, cash = 0;
                 foreach (var i in ing) { var d = Ingredient(i); if (d == null) continue; coins += d.failCoins; xp += d.failXp; cash += d.failCash; }
                 Progression.AddCoins(coins); Progression.AddCash(cash); Progression.AddXp(xp);
-                text = "No recipe this time... The penguin scientists salvaged " + coins + " coins" + (xp > 0 ? ", " + xp + " XP" : "") + (cash > 0 ? " and " + cash + " fish" : "") + ".";
+                text = "No recipe this time... The penguin scientists salvaged " + coins + " coins" + (xp > 0 ? ", " + xp + " XP" : "") + (cash > 0 ? " and " + cash + " Cash" : "") + ".";
             }
             Lab(lab).recipeId = "";
             Lab(lab).finishUnixMs = 0;

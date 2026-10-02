@@ -90,6 +90,7 @@ namespace CPW
             d.OffsetBy = r.Int("DirectionAndOffsetBy", 1);
             d.UseHitDirection = r.Bool("UseHitDirection");
             d.RandomOffset = r.Bool("RandomOffset");
+            d.SoundOnce = r.Bool("SoundOnce");   // remake field: a stream (Number + Delay) plays its sound once
             var fx = GameData.Resolve(r.Str("SpecialEffect"));
             if (fx != null)
             {
@@ -133,6 +134,7 @@ namespace CPW
                 d.RayHits = int.TryParse(script[1], out var n) ? n : 1;
                 d.RayAffects = ParseAffects(script.GetRange(2, script.Count - 2));
             }
+            else if (script.Count > 0) d.Script = script[0];   // remake scripts: "Orbital", "Crawl"
             var p = r.Ref("Physics");
             if (p != null)
             {
@@ -170,6 +172,11 @@ namespace CPW
             if (shape != null) { d.ShapeMinPx = shape.Float("MinRadius", 0); d.ShapeMaxPx = shape.Float("MaxRadius", 0); }
             var script = r.List("SimpleScript");
             d.Teleport = script.Count > 0 && script[0] == "Teleport";
+            if (script.Count > 0 && !d.Teleport)
+            {
+                d.Script = script[0];                       // remake: "BuildWall", count, radius px
+                d.ScriptArgs = script.GetRange(1, script.Count - 1);
+            }
             foreach (var e in r.List("Emitters")) { var ed = Emitter(GameData.RefId(e)); if (ed != null) d.Emitters.Add(ed); }
             return d;
         }
@@ -233,7 +240,7 @@ namespace CPW
         public Affects Affects;
         public int Number, OffsetBy;
         public float DelaySec, Spread, AngleOne, AngleTwo;
-        public bool UseHitDirection, RandomOffset;
+        public bool UseHitDirection, RandomOffset, SoundOnce;
         public MissileDef Missile;
         public ExplosionDef Explosion;
         public readonly List<FollowerDef> Followers = new List<FollowerDef>();
@@ -244,6 +251,7 @@ namespace CPW
     public sealed class MissileDef
     {
         public string Id, Type, Tail, GraphicId;
+        public string Script;                // SimpleScript other than Ray: "Orbital" (drops from the sky), "Crawl" (goo)
         public float TimerSec, DurationSec, IntervalSec, ImpulseMin, ImpulseMax, TailSpawnDistance, TailSpawnTime;
         public bool RandomIntervalStart, CameraFollowed;
         public int RayHits;                  // 0 = no Ray script, -1 = unlimited
@@ -263,7 +271,10 @@ namespace CPW
         public string Id, DamageType, Particle;
         public float Attack, DamageRadiusPx, ImpulseRadiusPx, Impulse, ShakeSec, ShakeStrength, ShapeMinPx, ShapeMaxPx;
         public bool Flash, Teleport;
+        public string Script;                // SimpleScript other than Teleport ("BuildWall", count, radius px)
+        public List<string> ScriptArgs;
         public readonly List<EmitterDef> Emitters = new List<EmitterDef>();
+        public int ArgInt(int i, int def) => ScriptArgs != null && i < ScriptArgs.Count && int.TryParse(ScriptArgs[i], out var v) ? v : def;
     }
 
     public sealed class FollowerDef

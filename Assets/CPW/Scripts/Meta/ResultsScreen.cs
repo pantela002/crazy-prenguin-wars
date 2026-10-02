@@ -120,7 +120,7 @@ namespace CPW
         void DealCard(Record item)
         {
             int coins = Discounted(ItemCatalog.PriceCoins(item)), cash = Discounted(ItemCatalog.PriceCash(item));
-            if (cash > 0) coins = 0;   // priced in fish (like Price())
+            if (cash > 0) coins = 0;   // priced in Cash (like Price())
             int amount = ItemCatalog.AmountPurchased(item);
             var card = MetaUI.CardPanel(Content, MetaUI.Card, "Deal");
             var rt = card.rectTransform;
@@ -366,8 +366,11 @@ namespace CPW
                     int amt = betCash ? reward.betCash : reward.betCoins;
                     Line(parent, amt > 0 ? "Bet won!" : Loc.T("BETLOST"), betCash ? "cash" : "coin", amt, amt > 0 ? Theme.Good : Theme.Danger);
                 }
-                if (reward.cash > 0) Line(parent, "Fish found", "cash", reward.cash, Theme.Good);
+                if (reward.cash > 0) Line(parent, "Cash found", "cash", reward.cash, Theme.Good);
                 Line(parent, "XP", "xp", reward.TotalXp, Theme.Secondary);
+                // what this match paid in each currency, with the same coin / Cash icons as the shop
+                Line(parent, "Coins earned", "coin", reward.TotalCoins, Theme.Coin);
+                Line(parent, "Cash earned", "cash", reward.cash + Mathf.Max(0, reward.betCash), Theme.Cash);
             }
             if (reward.items.Count > 0)
             {

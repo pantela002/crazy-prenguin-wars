@@ -9,7 +9,7 @@ namespace CPW
     /// </summary>
     internal sealed class Deployable : MonoBehaviour, IDamageable
     {
-        public enum Kind { Mine, FlameMine, Caltrops, Mushroom }
+        public enum Kind { Mine, FlameMine, Caltrops, Mushroom, SpringMine }
 
         public Kind Type;
         public int Owner = -1;
@@ -79,8 +79,9 @@ namespace CPW
             {
                 case Kind.Mine:
                 case Kind.FlameMine:
+                case Kind.SpringMine:
                 {
-                    var bodyCol = Type == Kind.Mine ? new Color(0.25f, 0.27f, 0.3f) : new Color(0.75f, 0.25f, 0.1f);
+                    var bodyCol = Type == Kind.Mine ? new Color(0.25f, 0.27f, 0.3f) : Type == Kind.SpringMine ? new Color(0.2f, 0.6f, 0.95f) : new Color(0.75f, 0.25f, 0.1f);
                     var b = ModelLibrary.Spawn("Missiles/" + Type, visual, PrimitiveType.Cylinder, 1f, bodyCol);
                     if (!ModelLibrary.Exists("Missiles/" + Type)) b.transform.localScale = new Vector3(0.75f, 0.12f, 0.75f);
                     var l = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -140,6 +141,7 @@ namespace CPW
             {
                 case Kind.Mine:
                 case Kind.FlameMine:
+                case Kind.SpringMine:
                     if (armTimer <= 0 && AnyPenguinWithin(WeaponTuning.MineTriggerRadius, false)) Trigger(WeaponTuning.MineFuseSec);
                     break;
                 case Kind.Caltrops:
@@ -223,6 +225,12 @@ namespace CPW
                     var shards = WeaponDefs.Emitter("MolotovBurning");
                     if (shards != null) EmissionEngine.Run(shards, src.Copy(), shot);
                     break;
+                case Kind.SpringMine:
+                    // centred under the mine so everyone near it is thrown upward (original Explosion SpringMine)
+                    src.Pos = Position + Vector2.down * WeaponTuning.SpringMineDepth;
+                    EmissionEngine.Run(Synthetic("SpringMine", Affects.All, null, "MineExplosion"), src, shot);
+                    Fx.Sparks(pos, new Color(0.5f, 0.8f, 1f), 14);
+                    break;
                 case Kind.Mushroom:
                     EmissionEngine.Run(Synthetic("Mushroom", Affects.Penguin, "Status_Poison", "Mushroom"), src, shot);
                     Fx.Smoke(pos, 1.5f, new Color(0.45f, 0.8f, 0.2f, 0.6f));
@@ -257,7 +265,8 @@ namespace CPW
             switch (Type)
             {
                 case Kind.Mine:
-                case Kind.FlameMine: Trigger(0.15f); break;      // chain reactions
+                case Kind.FlameMine:
+                case Kind.SpringMine: Trigger(0.15f); break;      // chain reactions
                 case Kind.Mushroom: Fx.Debris(Position, new Color(0.55f, 0.85f, 0.2f), 8); Remove(true); break;
                 case Kind.Caltrops: if (d.amount >= 25) Remove(true); break;
             }
