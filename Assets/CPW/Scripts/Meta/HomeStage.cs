@@ -4,11 +4,13 @@ using UnityEngine.UI;
 namespace CPW
 {
     /// <summary>
-    /// The home screen's igloo: a full-screen light-blue ice-brick interior painted at runtime with an arched doorway
-    /// cut out where MenuScene3D's 3D penguin stands (the original HomeScreen's round window behind the character),
-    /// plus a snowy podium under its feet. The doorway follows the penguin: its feet/head are projected through
-    /// GameManager.MenuCamera, so the layout keeps working wherever MenuScene3D places it. The texture is only
-    /// repainted when the screen size, safe area or the penguin's screen position changes.
+    /// The home screen's igloo. With the original art: the original igloo interior (home_screen background_main) on a
+    /// quad in the MenuCamera's world just behind the penguin (so the 3D/sprite penguin stands in front of it and
+    /// MenuScene3D's own backdrop is hidden), its round window framed around the penguin's head, with the original
+    /// character spotlight (Character_Frame) under its feet. Without it: a full-screen light-blue ice-brick interior
+    /// painted at runtime with an arched doorway cut out where the penguin stands, plus a snowy podium. Either way the
+    /// penguin's feet/head are projected through GameManager.MenuCamera, so the layout keeps working wherever
+    /// MenuScene3D places it; nothing is rebuilt unless the screen size, safe area or the penguin's position changes.
     /// </summary>
     public class HomeStage
     {
@@ -31,6 +33,9 @@ namespace CPW
         Sprite sprite;
         PenguinAvatar avatar;
         float findCooldown;
+        float feetDepth = 10f;
+        readonly Sprite wallArt, spotArt;
+        GameObject wall, spot;
         Vector2 feetVp, lastFeetVp = new Vector2(-1, -1);
         float headVp, halfVp, lastHeadVp, lastHalfVp;
         int lastW, lastH;
@@ -44,7 +49,18 @@ namespace CPW
             podium = UI.Image(root, UI.Circle, new Color32(236, 248, 255, 255), false, "Podium");
             var shine = UI.Image(podium.transform, UI.Circle, new Color(1, 1, 1, 0.7f), false, "Shine");
             UI.Anchor(shine.rectTransform, 0.18f, 0.45f, 0.82f, 0.9f);
+            wallArt = UI.Skin.Bitmap("home_screen", 1);    // background_main (igloo, round window)
+            spotArt = UI.Skin.Bitmap("home_screen", 4);    // Character_Frame spotlight + floor ring
+            if (wallArt != null)
+            {
+                // the wall lives in the 3D world behind the penguin; the UI must not cover the penguin
+                backdrop.enabled = false;
+                podium.enabled = false; podiumRim.enabled = false; shine.enabled = false;
+            }
         }
+
+        /// <summary>True when the original igloo art is drawn behind the penguin.</summary>
+        public bool OriginalArt => wallArt != null;
 
         /// <summary>Re-project the penguin; returns true when the layout changed (caller re-places its widgets).</summary>
         public bool Update(float dt)
@@ -95,6 +111,7 @@ namespace CPW
             feetVp = new Vector2(f.x, f.y);
             headVp = top.y;
             halfVp = Mathf.Abs(side.x - mid.x);
+            feetDepth = f.z;
         }
 
         void Layout()
@@ -114,13 +131,71 @@ namespace CPW
             brt.anchorMin = new Vector2(-sMin.x / sSize.x, -sMin.y / sSize.y);
             brt.anchorMax = new Vector2((1 - sMin.x) / sSize.x, (1 - sMin.y) / sSize.y);
             brt.offsetMin = brt.offsetMax = Vector2.zero;
-            Paint();
+            if (wallArt != null) PlaceWall();
+            else Paint();
 
             // snowy podium in front of the feet
             float pw = Mathf.Max(HalfWidthPx * 2.9f + 40, 160), ph = pw * 0.2f;
             PodiumHeight = ph;
             Place(podiumRim.rectTransform, new Vector2(FeetPx.x, FeetPx.y - ph * 0.22f), new Vector2(pw + 16, ph + 14));
             Place(podium.rectTransform, new Vector2(FeetPx.x, FeetPx.y - ph * 0.12f), new Vector2(pw, ph));
+        }
+
+        // ------------------------------------------------------------------ original igloo (3D quads)
+
+        /// <summary>Where the round window sits in background_main (0..1 from the bottom-left) and its share of the width.</summary>
+        static readonly Vector2 WindowUv = new Vector2(0.515f, 0.73f);
+        const float WallGap = 0.7f;    // world units behind the penguin's feet (in front of MenuScene3D's props)
+
+        void PlaceWall()
+        {
+            var cam = GameManager.I != null ? GameManager.I.MenuCamera : null;
+            if (cam == null) return;
+            float depth = Mathf.Max(cam.nearClipPlane + 1f, feetDepth) + WallGap;
+            float hh = depth * Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad), hw = hh * Mathf.Max(0.1f, cam.aspect);
+            float aspect = wallArt.rect.width / Mathf.Max(1f, wallArt.rect.height);
+            // cover the view (a bit larger so the window can move toward the penguin), then frame the window
+            float h = Mathf.Max(2 * hh, 2 * hw / aspect) * 1.12f, w = h * aspect;
+            // target: the window centred over the penguin's chest/head
+            var target = new Vector2((feetVp.x - 0.5f) * 2 * hw, (Mathf.Lerp(feetVp.y, headVp, 0.72f) - 0.5f) * 2 * hh);
+            float cx = target.x - (WindowUv.x - 0.5f) * w, cy = target.y - (WindowUv.y - 0.5f) * h;
+            cx = Mathf.Clamp(cx, -(w / 2 - hw), w / 2 - hw);
+            cy = Mathf.Clamp(cy, -(h / 2 - hh), h / 2 - hh);
+            if (wall == null) wall = Quad("HomeIglooWall", wallArt, Mats.UnlitTex(wallArt.texture, Color.white), cam);
+            wall.transform.localPosition = new Vector3(cx, cy, depth);
+            wall.transform.localScale = new Vector3(w, h, 1);
+
+            // the spotlight: ring under the feet, cone up behind the penguin, a hair in front of the wall
+            if (spotArt == null) return;
+            if (spot == null) spot = Quad("HomeSpotlight", spotArt, Mats.TransparentTex(spotArt.texture, new Color(1, 1, 1, 0.9f)), cam);
+            float sd = depth - 0.05f, k = sd / depth;
+            float penguinH = Mathf.Max(0.2f, (headVp - feetVp.y) * 2 * hh * k);
+            float sh = penguinH * 1.45f, sw = sh * spotArt.rect.width / Mathf.Max(1f, spotArt.rect.height);
+            // the ring is at ~88% down the bitmap: put it at the feet
+            spot.transform.localPosition = new Vector3(target.x * k, (feetVp.y - 0.5f) * 2 * hh * k + sh * (0.5f - 0.12f), sd);
+            spot.transform.localScale = new Vector3(sw, sh, 1);
+        }
+
+        /// <summary>A unit quad facing the camera, child of it, showing a sprite's texture rect.</summary>
+        static GameObject Quad(string name, Sprite art, Material mat, Camera cam)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(cam.transform, false);
+            var r = art.textureRect;
+            float tw = Mathf.Max(1, art.texture.width), th = Mathf.Max(1, art.texture.height);
+            float u0 = r.xMin / tw, u1 = r.xMax / tw, v0 = r.yMin / th, v1 = r.yMax / th;
+            var mesh = new Mesh { name = name };
+            mesh.vertices = new[] { new Vector3(-0.5f, -0.5f, 0), new Vector3(0.5f, -0.5f, 0), new Vector3(0.5f, 0.5f, 0), new Vector3(-0.5f, 0.5f, 0) };
+            mesh.uv = new[] { new Vector2(u0, v0), new Vector2(u1, v0), new Vector2(u1, v1), new Vector2(u0, v1) };
+            mesh.colors32 = new[] { new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255) };
+            mesh.triangles = new[] { 0, 2, 1, 0, 3, 2 };
+            mesh.RecalculateBounds();
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var mr = go.AddComponent<MeshRenderer>();
+            mr.sharedMaterial = mat;
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            mr.receiveShadows = false;
+            return go;
         }
 
         static void Place(RectTransform rt, Vector2 centerPx, Vector2 size)
@@ -249,6 +324,14 @@ namespace CPW
             if (sprite != null) Object.Destroy(sprite);
             if (tex != null) Object.Destroy(tex);
             sprite = null; tex = null;
+            foreach (var go in new[] { wall, spot })
+            {
+                if (go == null) continue;
+                var mf = go.GetComponent<MeshFilter>();
+                if (mf != null && mf.sharedMesh != null) Object.Destroy(mf.sharedMesh);
+                Object.Destroy(go);
+            }
+            wall = spot = null;
         }
     }
 }

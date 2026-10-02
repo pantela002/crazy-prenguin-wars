@@ -220,7 +220,7 @@ namespace CPW
         static void LootTile(RectTransform list, string icon, string name, Action onClick)
         {
             var b = UI.Button(list, null, onClick, UI.ButtonStyle.Plain, 24, "Loot " + name);
-            b.GetComponent<Image>().color = MetaUI.Card;
+            UI.SkinColor(b.GetComponent<Image>(), MetaUI.Card);
             UI.Layout(b, 190, -1);
             var tile = MetaUI.IconTile(MetaUI.Box(b.transform, 0.08f, 0.3f, 0.92f, 0.96f), icon, name);
             MetaUI.Square(tile);

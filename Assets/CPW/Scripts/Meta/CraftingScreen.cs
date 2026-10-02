@@ -146,7 +146,7 @@ namespace CPW
                 else
                 {
                     var b = UI.Button(slotsRow, "+", () => { selectedLab = lab; BuildLab(0); BuildLab(1); }, UI.ButtonStyle.Plain, 70, "Empty");
-                    b.GetComponent<Image>().color = new Color(0.85f, 0.9f, 0.97f);
+                    UI.SkinColor(b.GetComponent<Image>(), new Color(0.85f, 0.9f, 0.97f));
                 }
             }
             var bottom = UI.Rect(root, "Bottom");
@@ -205,7 +205,7 @@ namespace CPW
                     var rec = r;
                     var rb = UI.Button(recipeList, null, () => UseRecipe(rec), UI.ButtonStyle.Plain, 24, "Recipe");
                     row = rb.GetComponent<Image>();
-                    row.color = new Color(1, 1, 1, 0.9f);
+                    UI.SkinColor(row, new Color(1, 1, 1, 0.9f));
                 }
                 else row = UI.Panel(recipeList, new Color(0, 0, 0, 0.06f), true, "Recipe");
                 UI.Layout(row, -1, 120);

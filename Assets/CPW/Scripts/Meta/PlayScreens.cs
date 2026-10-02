@@ -96,7 +96,7 @@ namespace CPW
         void Card(RectTransform parent, string icon, string title, string desc, Color color, Action onClick, bool featured)
         {
             var b = UI.Button(parent, null, onClick, UI.ButtonStyle.Dark, 30, "Mode " + title);
-            b.GetComponent<Image>().color = color;
+            UI.SkinColor(b.GetComponent<Image>(), color, true);
             UI.Layout(b, -1, -1, featured ? 1.35f : 1f, 1);
             var tile = MetaUI.IconTile(MetaUI.Box(b.transform, 0.15f, 0.5f, 0.85f, 0.94f), icon, title, Color.Lerp(color, Color.white, 0.35f));
             MetaUI.Square(tile);
@@ -354,9 +354,9 @@ namespace CPW
             for (int i = 0; i < btns.Count; i++)
             {
                 bool on = i == selected;
-                btns[i].GetComponent<Image>().color = on ? (i == 0 ? Theme.Good : Theme.Secondary) : Theme.PanelInner;
+                UI.SetButtonStyle(btns[i], on ? (i == 0 ? UI.ButtonStyle.Good : UI.ButtonStyle.Secondary) : UI.ButtonStyle.Plain);
                 var l = btns[i].GetComponentInChildren<Text>();
-                if (l) l.color = on ? Color.white : Theme.Text;
+                if (l && !UI.Skin.Enabled) l.color = on ? Color.white : Theme.Text;
             }
         }
 
@@ -369,7 +369,7 @@ namespace CPW
                 BuildSeats();
             }, UI.ButtonStyle.Dark, 36, "Empty seat " + (idx + 1));
             UI.Stretch((RectTransform)b.transform);
-            b.GetComponent<Image>().color = new Color(1, 1, 1, 0.15f);
+            UI.SkinColor(b.GetComponent<Image>(), new Color(1, 1, 1, 0.15f));
         }
 
         // ---------- map locks (MapLocks: Level.MinLevel above the player's level, unless unlocked for testing) ----------

@@ -36,7 +36,7 @@ namespace CPW
     /// Code-built uGUI helpers. The whole game UI is built from code with these so no scenes or prefabs are needed.
     /// Layout is done in a 1920x1080 reference canvas (landscape).
     /// </summary>
-    public static class UI
+    public static partial class UI
     {
         public static Canvas Canvas { get; private set; }
         public static RectTransform Root { get; private set; }      // full screen
@@ -214,7 +214,19 @@ namespace CPW
         }
 
         // ---------- widgets ----------
+        /// <summary>
+        /// A colored panel. Rounded panels in the theme's panel colors (Panel, PanelDark, PanelInner) get the original
+        /// art through UI.Skin (light window, dark blue content panel, light card); other colors stay procedural.
+        /// </summary>
         public static Image Panel(Transform parent, Color color, bool roundedCorners = true, string name = "Panel")
+        {
+            var img = PanelRaw(parent, color, roundedCorners, name);
+            if (roundedCorners) Skin.Apply(img, Skin.KeyForPanel(color));
+            return img;
+        }
+
+        /// <summary>A procedural panel (never skinned).</summary>
+        public static Image PanelRaw(Transform parent, Color color, bool roundedCorners = true, string name = "Panel")
         {
             var rt = Rect(parent, name);
             var img = rt.gameObject.AddComponent<Image>();
@@ -285,23 +297,29 @@ namespace CPW
 
         public static Button Button(Transform parent, string text, Action onClick, ButtonStyle style = ButtonStyle.Primary, int fontSize = 40, string name = null)
         {
-            var img = Panel(parent, StyleColor(style), true, name ?? ("Btn " + text));
+            var img = PanelRaw(parent, StyleColor(style), true, name ?? ("Btn " + text));
+            string key = Skin.ButtonKey(style);
+            bool skinned = Skin.Apply(img, key);
             var b = img.gameObject.AddComponent<Button>();
             var colors = b.colors;
             colors.highlightedColor = Color.white;
             colors.pressedColor = new Color(0.8f, 0.8f, 0.8f);
             colors.disabledColor = new Color(0.55f, 0.55f, 0.55f, 0.8f);
             b.colors = colors;
-            // drop shadow under the button
-            var sh = img.gameObject.AddComponent<Shadow>();
-            sh.effectColor = new Color(0, 0, 0, 0.35f);
-            sh.effectDistance = new Vector2(0, -6);
+            // drop shadow under the button (the original bitmaps have their own lip and shading)
+            if (!skinned)
+            {
+                var sh = img.gameObject.AddComponent<Shadow>();
+                sh.effectColor = new Color(0, 0, 0, 0.35f);
+                sh.effectDistance = new Vector2(0, -6);
+            }
             if (!string.IsNullOrEmpty(text))
             {
                 var col = style == ButtonStyle.Primary ? Theme.PrimaryText : (style == ButtonStyle.Plain ? Theme.Text : Theme.TextLight);
                 var l = Label(img.transform, text, fontSize, col, TextAnchor.MiddleCenter, style != ButtonStyle.Plain);
-                Stretch(l.rectTransform, 16, 16, 6, 6);
-                if (style == ButtonStyle.Primary) { var o = l.GetComponent<Outline>(); if (o) UnityEngine.Object.Destroy(o); }
+                Stretch(l.rectTransform, 16, 16, 6, skinned ? 10 : 6);   // bitmaps: keep the caption off the bottom lip
+                if (skinned) StyleText(l, Skin.OutlineColor(key, Theme.Text), Mathf.Clamp(fontSize / 16f, 1.5f, 3f), Skin.TextColor(key, Color.white));
+                else if (style == ButtonStyle.Primary) { var o = l.GetComponent<Outline>(); if (o) UnityEngine.Object.Destroy(o); }
             }
             if (onClick != null) b.onClick.AddListener(() => { Click(); onClick(); });
             img.gameObject.AddComponent<PressScale>();
@@ -370,11 +388,13 @@ namespace CPW
         {
             var rt = Rect(parent, "Slider");
             var s = rt.gameObject.AddComponent<Slider>();
-            var bg = Panel(rt, Theme.PanelInner, true, "Bg"); Anchor(bg.rectTransform, 0, 0.3f, 1, 0.7f);
+            var bg = PanelRaw(rt, Theme.PanelInner, true, "Bg"); Anchor(bg.rectTransform, 0, 0.3f, 1, 0.7f);
+            Skin.Apply(bg, "bar.back");
             var fillArea = Rect(rt, "FillArea"); Anchor(fillArea, 0, 0.3f, 1, 0.7f);
-            var fill = Panel(fillArea, Theme.Secondary, true, "Fill"); Stretch(fill.rectTransform);
+            var fill = PanelRaw(fillArea, Theme.Secondary, true, "Fill"); Stretch(fill.rectTransform);
             var handleArea = Rect(rt, "HandleArea"); Stretch(handleArea, 20, 20);
             var handle = Image(handleArea, Circle, Theme.Primary, false, "Handle");
+            if (Skin.Apply(handle, "round.blue")) handle.preserveAspect = true;
             handle.raycastTarget = true;
             handle.rectTransform.sizeDelta = new Vector2(48, 0);
             s.fillRect = fill.rectTransform;
@@ -390,10 +410,13 @@ namespace CPW
             var rt = Rect(parent, "Toggle " + label);
             HBox(rt, 16, TextAnchor.MiddleLeft);
             var t = rt.gameObject.AddComponent<Toggle>();
-            var box = Panel(rt, Theme.PanelInner, true, "Box");
+            var box = PanelRaw(rt, Theme.PanelInner, true, "Box");
+            Skin.Apply(box, "slot.blue");
             Layout(box, 64, 64);
-            var check = Image(box.transform, Circle, Theme.Good, false, "Check");
-            Anchor(check.rectTransform, 0.18f, 0.18f, 0.82f, 0.82f);
+            var tick = Skin.Bitmap("popups", 181);   // the original green check mark
+            var check = Image(box.transform, tick != null ? tick : Circle, tick != null ? Color.white : Theme.Good, tick != null, "Check");
+            if (tick != null) Anchor(check.rectTransform, 0.05f, 0.1f, 1.05f, 1.0f);
+            else Anchor(check.rectTransform, 0.18f, 0.18f, 0.82f, 0.82f);
             var l = Label(rt, label, 36, Theme.Text, TextAnchor.MiddleLeft);
             Layout(l, 400, 64, 1);
             t.targetGraphic = box;
@@ -409,6 +432,7 @@ namespace CPW
         public static InputField Input(Transform parent, string value, string placeholder, Action<string> onEnd)
         {
             var bg = Panel(parent, Color.white, true, "Input");
+            Skin.Apply(bg, "card");
             var f = bg.gameObject.AddComponent<InputField>();
             var txt = Label(bg.transform, value, 36, Theme.Text, TextAnchor.MiddleLeft);
             txt.resizeTextForBestFit = false;
@@ -427,12 +451,14 @@ namespace CPW
         /// <summary>A horizontal progress bar; returns the fill image (set fillAmount 0..1).</summary>
         public static Image Bar(Transform parent, Color fillColor, Color? bgColor = null)
         {
-            var bg = Panel(parent, bgColor ?? new Color(0, 0, 0, 0.35f), true, "Bar");
+            var bg = PanelRaw(parent, bgColor ?? new Color(0, 0, 0, 0.35f), true, "Bar");
+            bool skinned = Skin.Apply(bg, "bar.back");   // the original dark rounded track (fill colors stay the caller's)
             var fill = Image(bg.transform, WhiteSprite, fillColor, false, "Fill");
             fill.type = UnityEngine.UI.Image.Type.Filled;
             fill.fillMethod = UnityEngine.UI.Image.FillMethod.Horizontal;
             fill.fillAmount = 1;
             Stretch(fill.rectTransform, 6, 6, 6, 6);
+            if (skinned) Gloss(bg.transform, 6);
             return fill;
         }
 
@@ -449,10 +475,12 @@ namespace CPW
             var layer = Rect(PopupLayer, "Popup " + title);
             Stretch(layer);
             Blocker(layer, 0.55f);
-            var panel = Panel(layer, Theme.Panel, true, "Window");
+            var panel = PanelRaw(layer, Theme.Panel, true, "Window");
+            bool skinned = Skin.Apply(panel, "window");   // the original light-blue popup (popup_message)
             Place(panel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(1100, 680), Vector2.zero);
             var t = Label(panel.transform, title, 64, Theme.Secondary, TextAnchor.MiddleCenter, true);
             Anchor(t.rectTransform, 0.05f, 0.8f, 0.95f, 0.97f);
+            if (skinned) StyleText(t, new Color32(12, 52, 110, 255), 3.5f, Color.white);
             var content = Rect(panel.transform, "Content");
             Anchor(content, 0.06f, 0.24f, 0.94f, 0.8f);
             if (!string.IsNullOrEmpty(message))
@@ -481,7 +509,8 @@ namespace CPW
         /// <summary>Short message that fades out at the top of the screen.</summary>
         public static void Toast(string text, Color? color = null)
         {
-            var bg = Panel(PopupLayer, new Color(0, 0, 0, 0.7f), true, "Toast");
+            var bg = PanelRaw(PopupLayer, new Color(0, 0, 0, 0.7f), true, "Toast");
+            Skin.Apply(bg, "panel.tooltip");
             Place(bg.rectTransform, new Vector2(0.5f, 1f), new Vector2(1100, 110), new Vector2(0, -150));
             bg.raycastTarget = false;
             var l = Label(bg.transform, text, 40, color ?? Color.white);
@@ -493,6 +522,15 @@ namespace CPW
         public static void Clear(Transform t)
         {
             for (int i = t.childCount - 1; i >= 0; i--) UnityEngine.Object.Destroy(t.GetChild(i).gameObject);
+        }
+
+        /// <summary>Soft white highlight across the upper part of a bar (the original bars are glossy). Not raycast.</summary>
+        public static Image Gloss(Transform bar, float inset = 6)
+        {
+            var g = Image(bar, WhiteSprite, new Color(1, 1, 1, 0.22f), false, "Gloss");
+            g.rectTransform.anchorMin = new Vector2(0, 0.55f); g.rectTransform.anchorMax = new Vector2(1, 1);
+            g.rectTransform.offsetMin = new Vector2(inset + 4, 0); g.rectTransform.offsetMax = new Vector2(-inset - 4, -inset);
+            return g;
         }
 
         public static string Money(int v) => v >= 100000 ? (v / 1000) + "k" : v.ToString("N0");

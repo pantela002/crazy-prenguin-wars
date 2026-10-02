@@ -115,6 +115,7 @@ namespace CPW
             overlay.gameObject.AddComponent<SafeAreaFitter>();
             BuildHint();
             BuildAimVisuals();
+            SkinHud();   // original Flash HUD art over the procedural HUD (BattleHUD.Skin)
         }
 
         /// <summary>A HUD button that acts on finger lift (TapAction) instead of Button.onClick.</summary>
@@ -373,6 +374,7 @@ namespace CPW
         {
             bannerText.text = text;
             bannerText.color = color;
+            BannerArt(text);
             PlaceBanner();
             banner.Restart(hold);
         }
@@ -427,6 +429,7 @@ namespace CPW
                 shownMatchSec = ms;
                 matchClock.text = (ms / 60) + ":" + (ms % 60).ToString("00");
                 matchClock.color = ms <= 12 ? Theme.Danger : Color.white;
+                OnMatchSecond(ms);
             }
             bool turnRunning = c.CurrentPhase == BattleController.Phase.Turn;
             int ts = turnRunning ? Mathf.Max(0, Mathf.CeilToInt(c.TurnTimeLeft)) : 0;
@@ -435,6 +438,7 @@ namespace CPW
                 shownTurnSec = ts;
                 turnSeconds.text = turnRunning ? Num(ts) : "";
                 turnRing.color = ts <= 3 ? Theme.Danger : Theme.Good;
+                OnTurnSecond(ts, turnRunning);
             }
             float frac = c.Fired ? c.TurnTimeLeft / Mathf.Max(0.1f, BattleRules.TimeAfterFiring) : c.TurnTimeLeft / Mathf.Max(0.1f, c.TurnDuration);
             turnRing.fillAmount = turnRunning ? Mathf.Clamp01(frac) : 0f;
@@ -495,12 +499,13 @@ namespace CPW
             if (w != shownWeapon || ammo != shownAmmo)
             {
                 shownWeapon = w; shownAmmo = ammo;
-                var icon = w != null ? BattleItems.Icon(w) : null;
+                var icon = ItemIcon(w);
                 weaponIcon.sprite = icon;
                 weaponIcon.enabled = icon != null;
                 weaponFallback.text = icon == null && w != null ? BattleItems.Name(w) : "";
                 weaponAmmo.text = w == null ? "" : ammo == Loadout.Infinite ? "∞" : "x" + Num(ammo);
             }
+            UpdateWalkArt();
             emoteBtn.interactable = c.ViewPenguin != null && c.ViewPenguin.CanEmote && c.CurrentPhase != BattleController.Phase.Over;
         }
 
@@ -730,6 +735,7 @@ namespace CPW
         void HideAimVisuals()
         {
             traj.enabled = false; arrow.enabled = false; cross.enabled = false;
+            HideAimArt();
         }
 
         void UpdateAimVisuals()
@@ -737,7 +743,7 @@ namespace CPW
             var a = c.Active;
             var item = CurrentItem;
             bool show = a != null && CanAimNow && a.Aiming;
-            if (!show) { if (traj.enabled || arrow.enabled || cross.enabled) HideAimVisuals(); return; }
+            if (!show) { if (traj.enabled || arrow.enabled || cross.enabled || AimArtShown) HideAimVisuals(); return; }
             var mode = WeaponSystem.Targeting(item);
             Vector2 origin = BattleController.ShotOrigin(a);   // same clamped origin DoFire uses
             float rad = a.AimAngle * Mathf.Deg2Rad;
@@ -746,6 +752,7 @@ namespace CPW
             if (mode == TargetingMode.Point)
             {
                 arrow.enabled = false; traj.enabled = false;
+                if (ShowCrossArt(pointSet, pointTarget)) { cross.enabled = false; return; }
                 cross.enabled = pointSet;
                 if (pointSet)
                 {
@@ -761,8 +768,9 @@ namespace CPW
             }
             cross.enabled = false;
 
-            // power arrow
-            arrow.enabled = true;
+            // power arrow: the original attack_power_bar when available, else the line
+            if (ShowPowerArt(origin, a.AimAngle, a.AimPower)) { if (arrow.enabled) arrow.enabled = false; }
+            else arrow.enabled = true;
             float len = 1.2f + a.AimPower * 4f;
             arrow.positionCount = 2;
             arrow.SetPosition(0, new Vector3(origin.x, origin.y, -1f));

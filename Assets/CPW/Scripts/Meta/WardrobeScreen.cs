@@ -187,7 +187,7 @@ namespace CPW
                 string id = Preview(s);
                 bool trying = tryOn[(int)s] != null;
                 var b = UI.Button(chips, null, () => OpenSlot(slot), UI.ButtonStyle.Dark, 24, "Slot " + s);
-                b.GetComponent<Image>().color = trying ? new Color(1f, 0.85f, 0.35f, 0.95f) : new Color(0.08f, 0.2f, 0.42f, 0.85f);
+                UI.SkinColor(b.GetComponent<Image>(), trying ? new Color(1f, 0.85f, 0.35f, 0.95f) : new Color(0.08f, 0.2f, 0.42f, 0.85f));
                 UI.Layout(b, -1, 10, 1, 1);
                 if (!string.IsNullOrEmpty(id))
                 {
