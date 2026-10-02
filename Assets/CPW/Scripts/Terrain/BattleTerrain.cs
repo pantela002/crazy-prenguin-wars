@@ -20,6 +20,8 @@ namespace CPW
         public static BattleTerrain I { get; private set; }
         public LevelData Level { get; private set; }
         public float WaterY => Level != null ? Level.waterY : 0;
+        /// <summary>The level liquid is lava (Mountain/Volcano): burns wood/ice props; penguins die in it like in water.</summary>
+        public bool IsLava => Level != null && Level.IsLava;
         /// <summary>Every change made to the terrain this battle, in order (for online snapshots).</summary>
         public readonly List<CraterState> History = new List<CraterState>();
 
