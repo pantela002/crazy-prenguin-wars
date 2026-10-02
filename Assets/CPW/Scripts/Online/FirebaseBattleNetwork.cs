@@ -50,6 +50,8 @@ namespace CPW
         public event Action<TurnAction> ActionReceived;
         public event Action<BattleSnapshot> TurnEndReceived;
         public event Action<int> PlayerLeft;
+        public event Action<BattleChatMessage> ChatReceived;
+        public bool SupportsChat => true;
 
         const float PollInterval = 0.5f, PlayersInterval = 2f, HeartbeatInterval = 3f, BatchInterval = 0.2f;
         const float DisconnectAfter = 15f;
@@ -77,6 +79,14 @@ namespace CPW
         bool writing;
 
         bool closed, leaveSent, matchOver;
+
+        // chat (matches/{id}/chat/{push id}: {p, u, x, k, at}); polled on its own slower timer
+        const float ChatInterval = 1.5f;
+        const int ChatMaxLength = 80;
+        float chatTimer;
+        bool pollingChat;
+        string chatCursor;          // newest chat key handled (push ids sort by server time)
+        readonly long chatSince;    // server ms when we joined: older lines are not shown
         float lastSuccess;
 
         public FirebaseBattleNetwork(FirebaseClient client, string matchId, string localUid, IList<string> order, bool isHost)
@@ -93,6 +103,7 @@ namespace CPW
             lastSuccess = Time.realtimeSinceStartup;
             fb.Updated += Pump;
             BattleEvents.BattleEnded += OnBattleEnded;
+            chatSince = fb.ServerNowMs - 10000;
         }
 
         // ------------------------------------------------------------------ IBattleNetwork
@@ -186,6 +197,54 @@ namespace CPW
                 pollingPlayers = true;
                 PollPlayers();
             }
+
+            if (!pollingChat && (chatTimer += dt) >= ChatInterval)
+            {
+                chatTimer = 0;
+                pollingChat = true;
+                PollChat();
+            }
+        }
+
+        // ------------------------------------------------------------------ chat
+
+        /// <summary>POST so the server makes the key (push ids sort by server time, whatever the senders' clocks).</summary>
+        public void SendChat(BattleChatMessage m)
+        {
+            if (closed || m == null || (string.IsNullOrEmpty(m.text) && string.IsNullOrEmpty(m.tid))) return;
+            var d = new Dictionary<string, object> { { "p", LocalSlot }, { "u", localUid }, { "at", Fb.ServerTime } };
+            if (!string.IsNullOrEmpty(m.text)) d["x"] = m.text.Length > ChatMaxLength ? m.text.Substring(0, ChatMaxLength) : m.text;
+            if (!string.IsNullOrEmpty(m.tid)) d["k"] = m.tid;
+            fb.Db("POST", root + "/chat", d, Note);
+        }
+
+        void PollChat()
+        {
+            string q = "orderBy=" + Fb.Q("$key") + (chatCursor == null ? "&limitToLast=30" : "&startAt=" + Fb.Q(chatCursor));
+            fb.Get(root + "/chat", r =>
+            {
+                Note(r);
+                pollingChat = false;
+                if (closed || !r.ok) return;
+                var d = r.Obj;
+                if (d == null) return;
+                var keys = new List<string>(d.Keys);
+                keys.Sort(string.CompareOrdinal);
+                foreach (var k in keys)
+                {
+                    if (chatCursor != null && string.CompareOrdinal(k, chatCursor) <= 0) continue;   // startAt is inclusive
+                    chatCursor = k;
+                    var o = d[k] as Dictionary<string, object>;
+                    if (o == null) continue;
+                    long at = Fb.Long(o, "at");
+                    if (at > 0 && at < chatSince) continue;
+                    int p = Fb.Int(o, "p", -1);
+                    if (p == LocalSlot || p < 0 || p >= uids.Length) continue;
+                    var m = new BattleChatMessage { player = p, text = Fb.Str(o, "x"), tid = Fb.Str(o, "k") };
+                    if (m.text.Length > ChatMaxLength) m.text = m.text.Substring(0, ChatMaxLength);
+                    inbox.Enqueue(() => ChatReceived?.Invoke(m));
+                }
+            }, q);
         }
 
         void Note(FbResponse r)

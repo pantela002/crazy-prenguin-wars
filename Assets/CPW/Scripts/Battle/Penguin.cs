@@ -49,7 +49,6 @@ namespace CPW
         // modifiers from Bonus stats (clothes/trophy)
         float jumpPowerMod, maxSpeedPxMod;
         public float ExpBonus = 1f, CoinsBonus = 1f;
-        readonly Dictionary<string, float> typeDefence = new Dictionary<string, float>();
 
         Rigidbody2D rb;
         CircleCollider2D col;
@@ -151,11 +150,10 @@ namespace CPW
                     var m = StatMod.Parse(s);
                     switch (kv.Key)
                     {
-                        case "Attack": if (string.IsNullOrEmpty(m.Tag)) Stats.attack = m.Apply(Stats.attack); break;
-                        case "Defence":
-                            if (string.IsNullOrEmpty(m.Tag)) Stats.defence = m.Apply(Stats.defence);
-                            else typeDefence[m.Tag] = m.Apply(typeDefence.TryGetValue(m.Tag, out var td) ? td : 0);
-                            break;
+                        // typed rows ("Add:6:Fire" FlameBadge, "Multiply:1.50:object" CreativityMedal) count only
+                        // when the hit matches the tag (StatBlock.TagMatches)
+                        case "Attack": if (string.IsNullOrEmpty(m.Tag)) Stats.attack = m.Apply(Stats.attack); else Stats.typedAttack.Add(m); break;
+                        case "Defence": if (string.IsNullOrEmpty(m.Tag)) Stats.defence = m.Apply(Stats.defence); else Stats.typedDefence.Add(m); break;
                         case "Luck": Stats.luck = m.Apply(Stats.luck); break;
                         case "ImpulseResistance":
                             if (m.Op == "Multiply") impulseMul *= m.Value; else Stats.impulseResistance = m.Apply(Stats.impulseResistance);
@@ -306,8 +304,7 @@ namespace CPW
             if (d.amount <= 0) return;
             if (!string.IsNullOrEmpty(d.type) && Stats.flags.Contains("Immune" + d.type)) return;
 
-            float def = Stats.defence;
-            if (!string.IsNullOrEmpty(d.type) && typeDefence.TryGetValue(d.type, out var td)) def += td;
+            float def = StatBlock.ApplyTyped(Stats.defence, Stats.typedDefence, d.type, this);
             float dmg = BattleRules.ApplyDefence(d.amount, def);
             dmg = Mathf.Round(Mathf.Min(dmg, BattleRules.DamageSingleHitMax));
             if (dmg <= 0) return;
@@ -641,7 +638,7 @@ namespace CPW
                     if (a == null) continue;
                     a.AddScore(BattleRules.ScoreFromDamage(amount));
                     a.DamageDealt += amount;
-                    ctrl.GiveDamageRewards(a, amount, killed);
+                    ctrl.GiveDamageRewards(a, amount, killed, Position);
                 }
                 else if (attacker == PlayerIndex)
                 {

@@ -377,6 +377,52 @@ namespace CPW
             return n;
         }
 
+        // ---------- live view for the battle HUD (BattleHudChallengesElement) ----------
+
+        /// <summary>The current battle counts toward challenges (false in pass-and-play and outside battles).</summary>
+        public static bool Tracking => tracking;
+
+        /// <summary>Metrics that only exist once the match is over (wins, streaks, matches played...).</summary>
+        public static bool IsLiveMetric(string metric)
+        {
+            switch (metric)
+            {
+                case "wins": case "matches": case "winVs3": case "winAfterDeath": case "winNoDeath":
+                case "winFewShots": case "winVsHard3": case "winStreak": case "level":
+                case "shopBuys": case "crafted": case "slotSpins": case "fishSpent":
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Progress the challenge would have if the match ended now: stored progress plus (or, for best-of metrics,
+        /// the best of) what this match did so far. Metrics settled at the end show the stored value.
+        /// Earned coins count the in-battle coins of the local penguin (the end-of-match bonus comes later).
+        /// </summary>
+        public static int LiveProgress(ChallengeDef d)
+        {
+            int stored = ChallengeCatalog.Progress(d);
+            if (d == null || !tracking || !IsLiveMetric(d.metric)) return stored;
+            int value;
+            if (d.metric == "coinsEarned")
+            {
+                var bc = BattleController.I;
+                var me = bc != null && bc.Config != null ? bc.PenguinAt(bc.Config.LocalPlayerIndex) : null;
+                value = me != null ? me.Coins : 0;
+            }
+            else value = Eval(d.metric, Stats);
+            bool best = d.perMatch || d.metric == "distinctWeapons";
+            return best ? Mathf.Max(stored, value) : stored + value;
+        }
+
+        /// <summary>The active challenge of every chain (null entries for finished chains).</summary>
+        public static void ActiveChallenges(List<ChallengeDef> into)
+        {
+            into.Clear();
+            for (int c = 0; c < ChallengeCatalog.ChainNames.Length; c++) into.Add(ChallengeCatalog.Active(c));
+        }
+
         /// <summary>Called by RewardService once the battle's rewards are known.</summary>
         public static void EndMatch(BattleResult result, bool won, int coinsEarned)
         {

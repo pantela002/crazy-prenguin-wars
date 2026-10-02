@@ -124,8 +124,22 @@ namespace CPW
     }
 
     /// <summary>
+    /// One in-battle chat line (original ChatMessage: id, text, tid). Sent by any player at any time, outside the
+    /// turn actions. text is free text (already profanity filtered by the sender, filtered again on arrival);
+    /// tid is a quick-chat preset id ("qc.*") or a string key, shown instead of text when the receiver knows it.
+    /// </summary>
+    [Serializable]
+    public class BattleChatMessage
+    {
+        public int player = -1;     // slot index of the sender (-1 = system line)
+        public string text = "";
+        public string tid = "";
+    }
+
+    /// <summary>
     /// Transport for online battles, implemented by the Firebase layer (Online/). The battle code records
     /// actions for the local player's turn, sends them, and applies snapshots it receives.
+    /// Chat has default (no-op) implementations so transports without chat still compile.
     /// </summary>
     public interface IBattleNetwork
     {
@@ -140,6 +154,11 @@ namespace CPW
         event Action<int> PlayerLeft;
         /// <summary>Called every frame by the battle so the transport can poll.</summary>
         void Tick(float dt);
+        /// <summary>Whether this transport carries chat (the HUD hides the chat button otherwise).</summary>
+        bool SupportsChat => false;
+        void SendChat(BattleChatMessage message) { }
+        /// <summary>Chat from other players (never echoes our own); raised from Tick like the other events.</summary>
+        event Action<BattleChatMessage> ChatReceived { add { } remove { } }
     }
 
     /// <summary>Global battle events (challenges/achievements, sounds and the online layer listen to these).</summary>

@@ -17,7 +17,7 @@ namespace CPW
     {
         BattleController c;
         BattleCamera cam;
-        RectTransform root, safe, tagsLayer, controls, panelLayer;
+        RectTransform root, safe, tagsLayer, controls, panelLayer, overlay;
         CanvasGroup controlsGroup;
 
         // top
@@ -38,7 +38,9 @@ namespace CPW
 
         // banner / hint
         Text bannerText;
+        RectTransform bannerRt;
         BannerFade banner;
+        bool hintCompact;
         RectTransform hintBox;
         Text hintTitle, hintBody;
 
@@ -101,16 +103,29 @@ namespace CPW
             BuildTags();
             BuildTop();
             BuildControls();
-            BuildBannerAndHint();
+            BuildFeatures();
+            BuildBanner();
             panelLayer = UI.Stretch(UI.Rect(root, "Panels"));
+            // above the panels (never takes touches): tutorial hints must stay readable over the weapon menu
+            overlay = UI.Stretch(UI.Rect(root, "Overlay"));
+            overlay.gameObject.AddComponent<SafeAreaFitter>();
+            BuildHint();
             BuildAimVisuals();
+        }
+
+        /// <summary>A HUD button that acts on finger lift (TapAction) instead of Button.onClick.</summary>
+        Button TapButton(Transform parent, string text, System.Action click, UI.ButtonStyle style, int fontSize = 40)
+        {
+            var b = UI.Button(parent, text, null, style, fontSize);
+            if (click != null) TapAction.On(b, click);
+            return b;
         }
 
         Button HudButton(RectTransform parent, string iconPath, string text, System.Action click, UI.ButtonStyle style,
             Vector2 anchor, Vector2 size, Vector2 offset, int fontSize = 48)
         {
             var icon = string.IsNullOrEmpty(iconPath) ? null : ModelLibrary.Icon(iconPath);
-            var b = UI.Button(parent, icon != null ? null : text, click, style, fontSize);
+            var b = TapButton(parent, icon != null ? null : text, click, style, fontSize);
             UI.Place((RectTransform)b.transform, anchor, size, offset);
             if (icon != null)
             {
@@ -167,6 +182,7 @@ namespace CPW
             // pause + emote (top-right)
             pauseBtn = HudButton(safe, "Hud/Pause", "II", OpenPause, UI.ButtonStyle.Dark, new Vector2(1, 1), new Vector2(112, 112), new Vector2(-20, -20), 52);
             emoteBtn = HudButton(safe, "Hud/Emote", ":)", OpenEmotes, UI.ButtonStyle.Secondary, new Vector2(1, 1), new Vector2(112, 112), new Vector2(-148, -20), 52);
+            // chat (online only) sits left of the emote button; challenges list hangs below these (BattleHUD.Challenges)
         }
 
         void BuildControls()
@@ -192,7 +208,7 @@ namespace CPW
 
             // fire, weapon, booster (bottom-right)
             fireBtn = HudButton(controls, "Hud/Fire", "FIRE", Fire, UI.ButtonStyle.Danger, new Vector2(1, 0), new Vector2(250, 250), new Vector2(-24, 24), 64);
-            weaponBtn = UI.Button(controls, null, OpenWeapons, UI.ButtonStyle.Dark);
+            weaponBtn = TapButton(controls, null, OpenWeapons, UI.ButtonStyle.Dark);
             UI.Place((RectTransform)weaponBtn.transform, new Vector2(1, 0), new Vector2(200, 200), new Vector2(-294, 24));
             weaponIcon = UI.Image(weaponBtn.transform, null);
             UI.Anchor(weaponIcon.rectTransform, 0.1f, 0.22f, 0.9f, 0.95f);
@@ -200,19 +216,22 @@ namespace CPW
             UI.Anchor(weaponFallback.rectTransform, 0.05f, 0.25f, 0.95f, 0.95f);
             weaponAmmo = UI.Label(weaponBtn.transform, "", 34, Theme.Primary, TextAnchor.MiddleCenter, true);
             UI.Anchor(weaponAmmo.rectTransform, 0.05f, 0.0f, 0.95f, 0.26f);
-            boosterBtn = UI.Button(controls, null, OpenBoosters, UI.ButtonStyle.Secondary);
+            boosterBtn = TapButton(controls, null, OpenBoosters, UI.ButtonStyle.Secondary);
             UI.Place((RectTransform)boosterBtn.transform, new Vector2(1, 0), new Vector2(200, 110), new Vector2(-294, 236));
             boosterLabel = UI.Label(boosterBtn.transform, Loc.Has("HUD_CHANGE_BOOSTER") ? "BOOST" : "BOOST", 34, Color.white, TextAnchor.MiddleCenter, true);
             UI.Stretch(boosterLabel.rectTransform, 8, 8, 4, 4);
             AddPulse("fire", fireBtn); AddPulse("weapon", weaponBtn);
+            BuildBoosterCooldown();
         }
 
         void AddPulse(string key, Component b) => highlights[key] = b.gameObject.AddComponent<Pulse>();
 
-        void BuildBannerAndHint()
+        const float BannerY = 170f, BannerYBelowHint = -70f;
+
+        void BuildBanner()
         {
-            var bannerRt = UI.Rect(safe, "Banner");
-            UI.Place(bannerRt, new Vector2(0.5f, 0.5f), new Vector2(1400, 160), new Vector2(0, 170));
+            bannerRt = UI.Rect(safe, "Banner");
+            UI.Place(bannerRt, new Vector2(0.5f, 0.5f), new Vector2(1400, 160), new Vector2(0, BannerY));
             var g = bannerRt.gameObject.AddComponent<CanvasGroup>();
             g.blocksRaycasts = false; g.interactable = false;
             bannerText = UI.Label(bannerRt, "", 96, Color.white, TextAnchor.MiddleCenter, true);
@@ -220,16 +239,38 @@ namespace CPW
             banner = bannerRt.gameObject.AddComponent<BannerFade>();
             banner.group = g;
             bannerRt.gameObject.SetActive(false);
+        }
 
-            var hint = UI.Panel(safe, Theme.Panel, true, "Hint");
+        void BuildHint()
+        {
+            var hint = UI.Panel(overlay, Theme.Panel, true, "Hint");
             hint.raycastTarget = false;
             hintBox = hint.rectTransform;
-            UI.Place(hintBox, new Vector2(0.5f, 1), new Vector2(1040, 220), new Vector2(0, -290));
             hintTitle = UI.Label(hintBox, "", 44, Theme.Secondary, TextAnchor.MiddleCenter, true);
-            UI.Anchor(hintTitle.rectTransform, 0.03f, 0.66f, 0.97f, 0.97f);
             hintBody = UI.Label(hintBox, "", 34, Theme.Text, TextAnchor.MiddleCenter);
-            UI.Anchor(hintBody.rectTransform, 0.04f, 0.05f, 0.96f, 0.68f);
+            hintCompact = true;
+            LayoutHint(false);
             hintBox.gameObject.SetActive(false);
+        }
+
+        /// <summary>Full hint under the turn timer, or a slim strip above the window while a panel is open.</summary>
+        void LayoutHint(bool compact)
+        {
+            if (compact == hintCompact) return;
+            hintCompact = compact;
+            if (compact)
+            {
+                UI.Place(hintBox, new Vector2(0.5f, 1), new Vector2(1100, 100), new Vector2(0, -4));   // clear of the window X button
+                hintTitle.gameObject.SetActive(false);
+                UI.Anchor(hintBody.rectTransform, 0.02f, 0.04f, 0.98f, 0.96f);
+            }
+            else
+            {
+                UI.Place(hintBox, new Vector2(0.5f, 1), new Vector2(1040, 220), new Vector2(0, -290));
+                hintTitle.gameObject.SetActive(true);
+                UI.Anchor(hintTitle.rectTransform, 0.03f, 0.66f, 0.97f, 0.97f);
+                UI.Anchor(hintBody.rectTransform, 0.04f, 0.05f, 0.96f, 0.68f);
+            }
         }
 
         void BuildTags()
@@ -300,7 +341,15 @@ namespace CPW
         {
             bannerText.text = text;
             bannerText.color = color;
+            PlaceBanner();
             banner.Restart(hold);
+        }
+
+        /// <summary>The banner and the tutorial hint share the upper middle: move the banner under the hint while one shows.</summary>
+        void PlaceBanner()
+        {
+            float y = hintBox != null && hintBox.gameObject.activeSelf && !hintCompact ? BannerYBelowHint : BannerY;
+            if (bannerRt.anchoredPosition.y != y) bannerRt.anchoredPosition = new Vector2(0, y);
         }
 
         public void ShowHint(string title, string body)
@@ -326,6 +375,9 @@ namespace CPW
             UpdateInput();
             UpdateTop();
             UpdateControls();
+            if (hintBox.gameObject.activeSelf) LayoutHint(AnyPanelOpen);
+            if (bannerRt.gameObject.activeSelf) PlaceBanner();
+            UpdateFeatures(Time.unscaledDeltaTime);
         }
 
         void LateUpdate()
