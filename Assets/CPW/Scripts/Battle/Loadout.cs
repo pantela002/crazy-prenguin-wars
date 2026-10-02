@@ -22,6 +22,8 @@ namespace CPW
         /// <summary>Icon sprite path: "Weapons/{WeaponIcon id}" or "Boosters/{BoosterIcon id}".</summary>
         public static Sprite Icon(string id)
         {
+            var orig = OriginalArt.Icon(id);
+            if (orig != null) return orig;
             var r = GameData.Item(id);
             if (r == null) return null;
             var icon = r.Str("Icon");

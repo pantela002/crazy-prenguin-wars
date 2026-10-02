@@ -178,8 +178,8 @@ def main():
     ap.add_argument('--jobs', type=int, default=os.cpu_count() or 2)
     a = ap.parse_args()
     if not a.dry_run:
-        # clear everything this script made, but keep folders generated elsewhere (clothes: Blender/scripts/clothes_sprites.py)
-        keep = {'clothes'}
+        # clear everything this script made, but keep folders generated elsewhere (clothes: Blender/scripts/clothes_sprites.py; ui_skin.json is hand-made)
+        keep = {'clothes', 'ui_skin.json'}
         if os.path.isdir(a.dst):
             for name in os.listdir(a.dst):
                 if name in keep: continue
