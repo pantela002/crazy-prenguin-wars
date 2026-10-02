@@ -139,6 +139,15 @@ namespace CPW
             return res;
         }
 
+        /// <summary>Shop clothes (not trophies) whose required level is exactly this level (level-up loot).</summary>
+        public static List<ClothesDef> UnlockedAtLevel(int level)
+        {
+            Build();
+            var res = new List<ClothesDef>();
+            foreach (var d in all) if (d.slot != ClothesSlot.Trophy && d.level == level) res.Add(d);
+            return res;
+        }
+
         public static bool IsTrophy(string id) { var d = Get(id); return d != null && d.slot == ClothesSlot.Trophy; }
 
         public static string DisplayName(string id)

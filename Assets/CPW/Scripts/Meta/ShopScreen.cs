@@ -20,12 +20,16 @@ namespace CPW
         static readonly string[] WeaponCats = { null, "Rockets", "Grenades", "Guns", "Special" };
         static readonly string[] WeaponTabIds = { "ShopWeaponsTabAll", "ShopWeaponsTabRockets", "ShopWeaponsTabGrenades", "ShopWeaponsTabGuns", "ShopWeaponsTabSpecial" };
 
+        readonly int startSub;
+
         public ShopScreen() { startPage = -1; }
-        public ShopScreen(int page) { startPage = page; }
+        public ShopScreen(int page, int sub = 0) { startPage = page; startSub = sub; }
+
+        public override void OnShow() => FreeAmmoPack.Offer();
 
         protected override void BuildContent()
         {
-            if (startPage >= 0) { page = startPage; sub = 0; }
+            if (startPage >= 0) { page = startPage; sub = startSub; }
             var pages = new[]
             {
                 Loc.T("SHOPTAB_FEATURED"), Loc.T("TAB_BUNDLES"), Loc.T("SHOPTAB_WEAPONS"), Loc.T("SHOPTAB_BOOSTERS"), Loc.T("SHOPTAB_CLOTHES"), Loc.T("TAB_FISH_COINS")
@@ -126,7 +130,13 @@ namespace CPW
         void BundleCard(BundleDef b)
         {
             var bundle = b;
-            var btn = UI.Button(grid, null, () => { if (ItemCatalog.BuyBundle(bundle)) Fill(); }, UI.ButtonStyle.Plain, 24, "Bundle " + b.id);
+            // the whole card is a big touch target, so buying always asks first (no accidental buys while scrolling)
+            Action buyIt = () =>
+            {
+                if (ProfileService.P.level < bundle.requiredLevel) { UI.Toast("Reach level " + bundle.requiredLevel + " first."); return; }
+                ItemInfo.ConfirmSpend(bundle.priceCoins, bundle.priceCash, bundle.name, () => { if (ItemCatalog.BuyBundle(bundle)) Fill(); }, true);
+            };
+            var btn = UI.Button(grid, null, buyIt, UI.ButtonStyle.Plain, 24, "Bundle " + b.id);
             btn.GetComponent<Image>().color = MetaUI.Card;
             var tile = MetaUI.IconTile(btn.transform, b.iconPath, b.name, MetaUI.Orange);
             UI.Anchor(tile, 0.03f, 0.3f, 0.33f, 0.95f);
@@ -145,7 +155,7 @@ namespace CPW
             UI.Anchor(price, 0.03f, 0.04f, 0.33f, 0.26f);
             UI.HBox(price, 6, TextAnchor.MiddleCenter).childForceExpandWidth = false;
             MetaUI.Price(price, b.priceCoins, b.priceCash, 36);
-            var buy = UI.Button(btn.transform, Loc.T("BUY"), () => { if (ItemCatalog.BuyBundle(bundle)) Fill(); }, UI.ButtonStyle.Good, 36);
+            var buy = UI.Button(btn.transform, Loc.T("BUY"), buyIt, UI.ButtonStyle.Good, 36);
             UI.Anchor((RectTransform)buy.transform, 0.64f, 0.04f, 0.97f, 0.2f);
             if (ProfileService.P.level < b.requiredLevel) ItemCards.LockOverlay(btn.transform, "Lv " + b.requiredLevel);
         }
@@ -165,6 +175,60 @@ namespace CPW
             else MetaUI.Price(f, d.coins, d.cash, 30);
             if (!owned && locked) ItemCards.LockOverlay(card.transform, "Lv " + d.level);
             else if (!owned && d.vipOnly && !Progression.IsVip) ItemCards.LockOverlay(card.transform, "VIP", MetaUI.Gold);
+        }
+    }
+
+    /// <summary>
+    /// Free ammo rescue (original FreeAmmoPopUp, ShopScreen.as:135): a broke player (under 50 coins and 5 fish)
+    /// whose ammo is below the minimum gets a small help package, at most once a day, shown when opening the shop.
+    /// The package came from the server (help_package coins + weapon) and Tuner.MinimumAmmoForMatch did not ship,
+    /// so the values are INVENTED: 100 coins + 10 BasicNuke when the player has fewer than 10 shots of ammo.
+    /// The day is stored in PlayerPrefs per player id (PlayerProfile has no field for it).
+    /// </summary>
+    public static class FreeAmmoPack
+    {
+        const int MaxCoins = 50, MaxCash = 5, GiftCoins = 100, GiftAmmo = 10;
+        const string GiftWeapon = "BasicNuke";
+
+        public static int MinAmmo => GameData.Tuner != null ? GameData.Tuner.Int("MinimumAmmoForMatch", 10) : 10;
+        static string Key => "cpw_freeammo_" + (string.IsNullOrEmpty(ProfileService.P.playerId) ? "local" : ProfileService.P.playerId);
+
+        /// <summary>Weapon ammo the player owns (Punch and other infinite items don't count).</summary>
+        public static int TotalAmmo()
+        {
+            int n = 0;
+            foreach (var s in ProfileService.P.items)
+            {
+                var r = GameData.Item(s.id);
+                if (s.amount > 0 && ItemCatalog.IsWeapon(r) && !ItemCatalog.IsInfinite(r)) n += s.amount;
+            }
+            return n;
+        }
+
+        public static bool Eligible()
+        {
+            var P = ProfileService.P;
+            if (P.coins >= MaxCoins || P.cash >= MaxCash || TotalAmmo() >= MinAmmo) return false;
+            return PlayerPrefs.GetString(Key, "") != MetaUI.Today;
+        }
+
+        /// <summary>Give the package and show the popup when the player qualifies.</summary>
+        public static void Offer()
+        {
+            if (!Eligible()) return;
+            PlayerPrefs.SetString(Key, MetaUI.Today);
+            PlayerPrefs.Save();
+            var weapon = GameData.Item(GiftWeapon) != null ? GiftWeapon : null;
+            Progression.AddCoins(GiftCoins);
+            if (weapon != null) ProfileService.P.AddAmmo(weapon, GiftAmmo);
+            ProfileService.Save();
+            ProfileService.NotifyChanged();
+            AudioManager.Sfx("Treasure");
+            string gift = GiftCoins + " coins" + (weapon != null ? " and " + GiftAmmo + "x " + Progression.NameOf(weapon) : "");
+            UI.Popup(MetaUI.TOr("FREE_AMMO_PACKAGE_HEADER", "Free ammo!"),
+                MetaUI.TOr("FREE_AMMO_PACKAGE_TEXT", "Running low? The penguin quartermaster sent you a help package:") + "\n\n" + gift,
+                new UI.PopupButton(MetaUI.TOr("BUTTON_MONEY", "Get fish"), () => ScreenManager.Show(() => new BankScreen()), UI.ButtonStyle.Secondary),
+                new UI.PopupButton("OK"));
         }
     }
 
@@ -212,7 +276,8 @@ namespace CPW
             if (ItemCatalog.IsInfinite(item)) return;
             if (!ItemCatalog.IsUnlocked(item) && ItemCatalog.UnlockCash(item) > 0)
             {
-                var ub = UI.Button(row, Loc.T("UNLOCK") + "  " + ItemCatalog.UnlockCash(item) + " fish", () => { if (ItemCatalog.Unlock(rec)) { MetaUI.Close(layer); changed?.Invoke(); Show(rec, changed); } }, UI.ButtonStyle.Good, 40);
+                var ub = UI.Button(row, Loc.T("UNLOCK") + "  " + ItemCatalog.UnlockCash(item) + " fish", () => ConfirmSpend(0, ItemCatalog.UnlockCash(rec), Loc.T("UNLOCK") + " " + ItemCatalog.Name(rec),
+                    () => { if (ItemCatalog.Unlock(rec)) { MetaUI.Close(layer); changed?.Invoke(); Show(rec, changed); } }), UI.ButtonStyle.Good, 40);
                 UI.Layout(ub, 480, 110);
             }
             else if (ItemCatalog.VipBlocked(item))
@@ -224,17 +289,20 @@ namespace CPW
             {
                 int coins = ItemCatalog.PriceCoins(item), cash = ItemCatalog.PriceCash(item);
                 string price = cash > 0 ? cash + " fish" : coins + " coins";
+                string what = ItemCatalog.Name(item) + " x";
                 var b1 = UI.Button(row, Loc.T("BUY") + " x" + ItemCatalog.AmountPurchased(item) + "  (" + price + ")", () =>
-                {
-                    if (ItemCatalog.Buy(rec)) { MetaUI.Close(layer); changed?.Invoke(); Show(rec, changed); }
-                }, UI.ButtonStyle.Good, 36);
+                    ConfirmSpend(coins, cash, what + ItemCatalog.AmountPurchased(rec), () =>
+                    {
+                        if (ItemCatalog.Buy(rec)) { MetaUI.Close(layer); changed?.Invoke(); Show(rec, changed); }
+                    }), UI.ButtonStyle.Good, 36);
                 UI.Layout(b1, 520, 110);
                 if (ItemCatalog.AmountPurchased(item) > 1 || coins > 0)
                 {
                     var b5 = UI.Button(row, Loc.T("BUY") + " x" + ItemCatalog.AmountPurchased(item) * 5, () =>
-                    {
-                        if (ItemCatalog.Buy(rec, 5)) { MetaUI.Close(layer); changed?.Invoke(); Show(rec, changed); }
-                    }, UI.ButtonStyle.Secondary, 36);
+                        ConfirmSpend(coins * 5, cash * 5, what + ItemCatalog.AmountPurchased(rec) * 5, () =>
+                        {
+                            if (ItemCatalog.Buy(rec, 5)) { MetaUI.Close(layer); changed?.Invoke(); Show(rec, changed); }
+                        }), UI.ButtonStyle.Secondary, 36);
                     UI.Layout(b5, 320, 110);
                 }
             }
@@ -243,6 +311,17 @@ namespace CPW
                 var l = UI.Label(row, "Reach level " + ItemCatalog.RequiredLevel(item) + " to buy this.", 36, Theme.Danger);
                 UI.Layout(l, 800, 100);
             }
+        }
+
+        /// <summary>
+        /// Run buy right away for coin prices; ask first when it costs fish (premium) or when always is set,
+        /// so a stray tap on a phone never spends fish.
+        /// </summary>
+        public static void ConfirmSpend(int coins, int cash, string what, Action buy, bool always = false)
+        {
+            if (cash <= 0 && !always) { buy(); return; }
+            string price = cash > 0 ? cash + " fish" : coins > 0 ? coins + " coins" : "nothing";
+            UI.Confirm(Loc.T("BUY") + "?", "Get " + what + " for " + price + "?", buy, null, Loc.T("BUY"), "Cancel");
         }
 
         public static void Line(RectTransform parent, string text, int size, Color color, float height)
@@ -290,13 +369,13 @@ namespace CPW
             {
                 if (!ClothesCatalog.IsUnlocked(d))
                 {
-                    var u = UI.Button(row, Loc.T("UNLOCK") + "  " + ClothesCatalog.UnlockCash(d) + " fish", () => { if (ClothesCatalog.Unlock(d)) refresh(); }, UI.ButtonStyle.Good, 38);
+                    var u = UI.Button(row, Loc.T("UNLOCK") + "  " + ClothesCatalog.UnlockCash(d) + " fish", () => ItemInfo.ConfirmSpend(0, ClothesCatalog.UnlockCash(d), Loc.T("UNLOCK") + " " + name, () => { if (ClothesCatalog.Unlock(d)) refresh(); }), UI.ButtonStyle.Good, 38);
                     UI.Layout(u, 440, 110);
                 }
                 else
                 {
                     string price = d.cash > 0 ? d.cash + " fish" : d.coins + " coins";
-                    var b = UI.Button(row, Loc.T("BUY") + "  (" + price + ")", () => { if (ClothesCatalog.Buy(d)) refresh(); }, UI.ButtonStyle.Good, 38);
+                    var b = UI.Button(row, Loc.T("BUY") + "  (" + price + ")", () => ItemInfo.ConfirmSpend(d.coins, d.cash, name, () => { if (ClothesCatalog.Buy(d)) refresh(); }), UI.ButtonStyle.Good, 38);
                     UI.Layout(b, 440, 110);
                 }
             }
