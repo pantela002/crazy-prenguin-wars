@@ -45,18 +45,51 @@ namespace CPW
             return ok.Count == 0 ? "" : ok[UnityEngine.Random.Range(0, ok.Count)];
         }
 
+        /// <summary>
+        /// Map theme for pickers: the Level row's "Theme" field when it has one, else from the id
+        /// ("winter_easy_01" → Winter, "lava_..."/"volcano_..." → Lava), else the id's first word, else Forest.
+        /// </summary>
         public static string LevelTheme(string levelId)
         {
             var s = (levelId ?? "").ToLowerInvariant();
+            var rowTheme = string.IsNullOrEmpty(levelId) ? null : GameData.Get("Level", levelId)?.Str("Theme", "");
+            if (!string.IsNullOrEmpty(rowTheme)) return Loc.Prettify(rowTheme);
             if (s.Contains("winter")) return "Winter";
             if (s.Contains("desert")) return "Desert";
             if (s.Contains("mountain")) return "Mountain";
+            if (s.Contains("forest")) return "Forest";
+            if (s.Contains("lava") || s.Contains("volcan")) return "Lava";
+            int u = s.IndexOf('_');
+            if (u > 0 && !char.IsDigit(s[0])) return Loc.Prettify(s.Substring(0, u));
             return "Forest";
+        }
+
+        static readonly string[] ThemeOrder = { "Forest", "Desert", "Mountain", "Winter", "Lava" };
+
+        /// <summary>Themes that have at least one playable map: the original four first, then any new ones.</summary>
+        public static List<string> LevelThemes()
+        {
+            var found = new List<string>();
+            foreach (var r in Levels())
+            {
+                var t = LevelTheme(r.Id);
+                if (!found.Contains(t)) found.Add(t);
+            }
+            found.Sort((a, b) =>
+            {
+                int ia = Array.IndexOf(ThemeOrder, a), ib = Array.IndexOf(ThemeOrder, b);
+                if (ia < 0) ia = 99;
+                if (ib < 0) ib = 99;
+                return ia != ib ? ia.CompareTo(ib) : string.CompareOrdinal(a, b);
+            });
+            return found;
         }
 
         public static string LevelDisplayName(string levelId)
         {
             if (string.IsNullOrEmpty(levelId)) return "Random map";
+            var rowName = GameData.Get("Level", levelId)?.Str("Name", "");   // new maps may carry a display name
+            if (!string.IsNullOrEmpty(rowName)) return Loc.T(rowName);
             var parts = levelId.Split('_');
             if (parts.Length >= 3) return LevelTheme(levelId) + " " + Loc.Prettify(parts[1]) + " " + parts[2].TrimStart('0');
             return Loc.Prettify(levelId);

@@ -41,9 +41,12 @@ namespace CPW
         static Texture2D Placeholder(string id, int w, int h)
         {
             string theme = BattleFactory.LevelTheme(id);
-            Color sky = theme == "Desert" ? new Color(1f, 0.8f, 0.5f) : theme == "Winter" ? new Color(0.7f, 0.85f, 1f) : theme == "Mountain" ? new Color(0.55f, 0.7f, 0.9f) : new Color(0.55f, 0.85f, 1f);
-            Color ground = theme == "Desert" ? new Color(0.85f, 0.65f, 0.35f) : theme == "Winter" ? new Color(0.95f, 0.97f, 1f) : theme == "Mountain" ? new Color(0.5f, 0.48f, 0.45f) : new Color(0.35f, 0.65f, 0.3f);
-            Color water = new Color(0.2f, 0.45f, 0.85f);
+            bool lava = theme == "Lava";
+            Color sky = theme == "Desert" ? new Color(1f, 0.8f, 0.5f) : theme == "Winter" ? new Color(0.7f, 0.85f, 1f) : theme == "Mountain" ? new Color(0.55f, 0.7f, 0.9f)
+                : lava ? new Color(0.45f, 0.15f, 0.12f) : new Color(0.55f, 0.85f, 1f);
+            Color ground = theme == "Desert" ? new Color(0.85f, 0.65f, 0.35f) : theme == "Winter" ? new Color(0.95f, 0.97f, 1f) : theme == "Mountain" ? new Color(0.5f, 0.48f, 0.45f)
+                : lava ? new Color(0.25f, 0.2f, 0.2f) : new Color(0.35f, 0.65f, 0.3f);
+            Color water = lava ? new Color(1f, 0.45f, 0.1f) : new Color(0.2f, 0.45f, 0.85f);
             var tex = new Texture2D(w, h, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
             var px = new Color[w * h];
             int seed = 0; foreach (char c in id) seed = seed * 31 + c;
@@ -83,7 +86,7 @@ namespace CPW
                 () => ScreenManager.Show(() => new QuickMatchScreen()), true);
             Card(row, "Ui/practice", Loc.T("PRACTICE"), Loc.T("CUSTOM_GAME_PRACTICE_DESCRIPTION"), Theme.Good,
                 () => ScreenManager.Show(() => new LoadoutScreen(BattleFactory.PracticeMatch())), false);
-            Card(row, "Ui/custom", Loc.T("BUTTON_CUSTOM_GAME"), "Pick the map, rules and up to 4 penguins. Pass the phone around or fill seats with AI.", MetaUI.Purple,
+            Card(row, "Ui/custom", Loc.T("BUTTON_CUSTOM_GAME"), "Lobby for up to 4 penguins: pick the map and rules, play every seat yourself (pass the phone) or fill seats with AI.", MetaUI.Purple,
                 () => ScreenManager.Show(() => new CustomGameScreen()), false);
             Card(row, "Ui/online", "Online", "Fight real penguins over the internet.", MetaUI.Teal, OpenOnline, false);
             Card(row, "Ui/tutorial", "Tutorial", Loc.T("TUTORIAL_INTRO_TITLE"), MetaUI.Orange,
@@ -168,15 +171,17 @@ namespace CPW
     }
 
     /// <summary>
-    /// Custom game: map picker with thumbnails, 2-4 players (Human for pass-and-play, or AI easy/normal/hard),
-    /// match time (BattleOptions Min/MaxMatchTime), turn time, power-ups and winning score.
+    /// Custom game lobby: 4 seat cards (penguin, name, Human for pass-and-play or AI easy/normal/hard, add/remove),
+    /// a map picker grouped by theme, match time (BattleOptions Min/MaxMatchTime), turn time, winning score and
+    /// power-ups. "Test: 4 players, all me" fills every seat with a human so one phone controls all 4 penguins.
     /// </summary>
     public class CustomGameScreen : MetaScreen
     {
-        protected override string Title => Loc.T("BUTTON_CUSTOM_GAME");
+        protected override string Title => Loc.T("BUTTON_CUSTOM_GAME") + " Lobby";
 
         class Seat { public string name; public int type; } // type: 0 human, 1 AI easy, 2 AI normal, 3 AI hard
         static readonly string[] TypeNames = { "Human", "AI Easy", "AI Normal", "AI Hard" };
+        const int MinSeats = 2;
         static List<Seat> seats;
         /// <summary>Forget the remembered seats (after a progress reset).</summary>
         public static void ClearRemembered() => seats = null;
@@ -184,180 +189,217 @@ namespace CPW
         static int matchTime = 240, turnTime = 20, winScore = 200;
         static bool powerUps = true;
 
-        RectTransform playersBox;
-        readonly List<Image> mapFrames = new List<Image>();
-        readonly List<string> mapIds = new List<string>();
+        RectTransform seatsBox;
+        Text seatsHead, mapName, startText, passNote;
+
+        static int MaxSeats => Mathf.Clamp(GameData.Battle?.Int("MaxNumberOfPlayers", 4) ?? 4, MinSeats, 4);
+        static string MyName => string.IsNullOrEmpty(ProfileService.P.displayName) ? "Player 1" : ProfileService.P.displayName;
 
         protected override void BuildContent()
         {
             if (seats == null)
             {
-                seats = new List<Seat> { new Seat { name = ProfileService.P.displayName, type = 0 }, new Seat { name = "Player 2", type = 0 } };
+                seats = new List<Seat> { new Seat { name = MyName, type = 0 }, new Seat { name = "Player 2", type = 0 } };
                 matchTime = (int)(GameData.Battle?.Float("MatchTime", 240) ?? 240);
             }
-            if (MapLocked(levelId)) levelId = "";   // remembered map got locked again (progress reset)
+            while (seats.Count > MaxSeats) seats.RemoveAt(seats.Count - 1);
+            // remembered map got locked again (progress reset, testing switch off) or is gone from the level data
+            if (!string.IsNullOrEmpty(levelId) && (MapLocked(levelId) || GameData.Get("Level", levelId) == null)) levelId = "";
 
-            // ---- maps (left) ----
-            var mapsPanel = MetaUI.CardPanel(Content, MetaUI.CardDark);
-            UI.Anchor(mapsPanel.rectTransform, 0, 0.13f, 0.5f, 1, 0);
-            var mt = UI.Label(mapsPanel.transform, Loc.T("GAME_SETTINGS_MAP"), 40, Color.white, TextAnchor.UpperLeft, true);
-            UI.Anchor(mt.rectTransform, 0.03f, 0.9f, 1, 0.99f);
-            var scrollHost = UI.Rect(mapsPanel.transform, "Maps");
-            UI.Anchor(scrollHost, 0.01f, 0.01f, 0.99f, 0.9f);
-            var sr = UI.ScrollGrid(scrollHost, out var grid, new Vector2(280, 200), new Vector2(14, 14));
-            UI.Stretch((RectTransform)sr.transform);
-            AddMap(grid, "", "Random");
-            foreach (var r in BattleFactory.Levels()) AddMap(grid, r.Id, BattleFactory.LevelDisplayName(r.Id));
-            HighlightMap();
+            // ---- players (left) ----
+            var players = MetaUI.CardPanel(Content, MetaUI.CardDark, "Players");
+            UI.Anchor(players.rectTransform, 0, 0, 0.37f, 1, 0);
+            seatsHead = UI.Label(players.transform, "", 40, Color.white, TextAnchor.MiddleLeft, true);
+            UI.Anchor(seatsHead.rectTransform, 0.04f, 0.88f, 0.42f, 0.99f);
+            var test = UI.Button(players.transform, "Test: 4 players, all me", FillTestSeats, UI.ButtonStyle.Good, 28, "TestPreset");
+            UI.Anchor((RectTransform)test.transform, 0.43f, 0.885f, 0.98f, 0.985f);
+            seatsBox = UI.Rect(players.transform, "Seats");
+            UI.Anchor(seatsBox, 0.02f, 0.015f, 0.98f, 0.87f);
+            BuildSeats();
 
-            // ---- rules + players (right) ----
-            var right = MetaUI.CardPanel(Content);
-            UI.Anchor(right.rectTransform, 0.515f, 0.13f, 1, 1, 0);
-            var v = UI.VBox(right.rectTransform, 10, TextAnchor.UpperCenter, 22);
+            // ---- map (middle) ----
+            var maps = MetaUI.CardPanel(Content, MetaUI.CardDark, "Maps");
+            UI.Anchor(maps.rectTransform, 0.38f, 0, 0.74f, 1, 0);
+            var mt = UI.Label(maps.transform, Loc.T("GAME_SETTINGS_MAP"), 40, Color.white, TextAnchor.MiddleLeft, true);
+            UI.Anchor(mt.rectTransform, 0.04f, 0.88f, 0.3f, 0.99f);
+            mapName = UI.Label(maps.transform, "", 32, MetaUI.Gold, TextAnchor.MiddleRight, true);
+            UI.Anchor(mapName.rectTransform, 0.3f, 0.88f, 0.96f, 0.99f);
+            var pickHost = UI.Rect(maps.transform, "Picker");
+            UI.Anchor(pickHost, 0.02f, 0.015f, 0.98f, 0.87f);
+            new MapPicker(pickHost, () => levelId, id => { levelId = id; UpdateTexts(); });
+
+            // ---- rules (right) ----
+            var rules = MetaUI.CardPanel(Content, null, "Rules");
+            UI.Anchor(rules.rectTransform, 0.75f, 0.2f, 1, 1, 0);
+            var v = UI.VBox(rules.rectTransform, 8, TextAnchor.UpperCenter, 18);
             v.childForceExpandHeight = false;
-            var pl = UI.Label(right.transform, Loc.T("CUSTOM_PLAYER_NUMBER"), 38, Theme.Secondary, TextAnchor.MiddleLeft, true);
-            UI.Layout(pl, -1, 50);
-            playersBox = UI.Rect(right.transform, "Players");
-            UI.Layout(playersBox, -1, 4 * 84 + 3 * 8 + 70);
-            UI.VBox(playersBox, 8, TextAnchor.UpperCenter).childForceExpandHeight = false;
-            BuildPlayers();
-
             var opt = GameData.Battle;
             int minM = (int)(opt?.Float("MinMatchTime", 180) ?? 180), maxM = (int)(opt?.Float("MaxMatchTime", 480) ?? 480);
+            if (maxM < minM) maxM = minM;
+            matchTime = Mathf.Clamp(matchTime, minM, maxM);
             int step = Mathf.Max(5, (int)(opt?.Float("TurnTimeIncrement", 5) ?? 5));
-            Stepper(right.rectTransform, Loc.T("GAME_SETTINGS_MATCH_TIME"), () => MetaUI.Clock(matchTime), d => matchTime = Mathf.Clamp(matchTime + d * 60, minM, maxM));
-            Stepper(right.rectTransform, Loc.T("GAME_SETTINGS_TURN_TIME"), () => turnTime + " s", d => turnTime = Mathf.Clamp(turnTime + d * step, 10, 60));
-            Stepper(right.rectTransform, "Winning score", () => winScore == 0 ? "Off" : winScore.ToString(), d => winScore = Mathf.Clamp(winScore + d * 100, 0, 1000));
-            var tg = UI.Toggle(right.transform, "Power-up crates", powerUps, b => powerUps = b);
+            Stepper(rules.rectTransform, Loc.T("GAME_SETTINGS_MATCH_TIME"), () => MetaUI.Clock(matchTime), d => matchTime = Mathf.Clamp(matchTime + d * 60, minM, maxM));
+            Stepper(rules.rectTransform, Loc.T("GAME_SETTINGS_TURN_TIME"), () => turnTime + " s", d => turnTime = Mathf.Clamp(turnTime + d * step, 10, 60));
+            Stepper(rules.rectTransform, "Winning score", () => winScore == 0 ? "Off" : winScore.ToString(), d => winScore = Mathf.Clamp(winScore + d * 100, 0, 1000));
+            var tg = UI.Toggle(rules.transform, "Power-ups", powerUps, b => powerUps = b);
             UI.Layout(tg, -1, 70);
+            passNote = UI.Label(rules.transform, "", 26, Theme.Muted, TextAnchor.UpperLeft);
+            UI.Layout(passNote, -1, 130);
 
-            var start = UI.Button(Content, "Start!", StartGame, UI.ButtonStyle.Primary, 54);
-            UI.Place((RectTransform)start.transform, new Vector2(1, 0), new Vector2(420, 110), Vector2.zero);
-            var note = UI.Label(Content, "Everyone gets the same arsenal. Custom games give no rewards.", 28, Color.white, TextAnchor.MiddleLeft);
-            UI.Anchor(note.rectTransform, 0, 0, 0.7f, 0.11f);
+            var start = UI.Button(Content, "", StartGame, UI.ButtonStyle.Primary, 54, "Start");
+            UI.Anchor((RectTransform)start.transform, 0.75f, 0, 1, 0.18f, 0);
+            startText = UI.Label(start.transform, "", 54, Theme.PrimaryText, TextAnchor.MiddleCenter, true);
+            NoOutline(startText);
+            UI.Stretch(startText.rectTransform, 12, 12, 6, 6);
+            UpdateTexts();
         }
 
-        void AddMap(RectTransform grid, string id, string name)
+        void UpdateTexts()
         {
-            int index = mapIds.Count;
-            mapIds.Add(id);
-            var b = MapButton(grid, id, name, () => { levelId = mapIds[index]; HighlightMap(); });
-            mapFrames.Add(b.GetComponent<Image>());
+            if (seatsHead) seatsHead.text = "Players " + seats.Count + "/" + MaxSeats;
+            if (mapName) mapName.text = BattleFactory.LevelDisplayName(levelId);
+            int humans = 0;
+            foreach (var s in seats) if (s.type == 0) humans++;
+            if (startText) startText.text = "Start!  (" + seats.Count + " penguins)";
+            if (passNote)
+                passNote.text = humans > 1
+                    ? humans + " humans on this phone: pass it over when the screen shows whose turn it is. No rewards in local games."
+                    : "Everyone gets the same arsenal.";
         }
 
-        // ---------- map locks (original LockedLevelButtonContainer: Level.MinLevel above the player's level) ----------
-        public static int MapLevel(string id) => string.IsNullOrEmpty(id) ? 1 : (GameData.Get("Level", id)?.Int("MinLevel", 1) ?? 1);
-        public static bool MapLocked(string id) => MapLevel(id) > ProfileService.P.level;
+        /// <summary>Testing preset: 4 human seats (you + Player 2-4), all controlled on this phone.</summary>
+        void FillTestSeats()
+        {
+            seats = new List<Seat> { new Seat { name = MyName, type = 0 } };
+            while (seats.Count < MaxSeats) seats.Add(new Seat { name = "Player " + (seats.Count + 1), type = 0 });
+            BuildSeats();
+            UI.Toast(seats.Count + " human players: you control every penguin.");
+        }
+
+        void BuildSeats()
+        {
+            UI.Clear(seatsBox);
+            int max = MaxSeats;
+            float gap = 0.025f, hEach = (1f - gap * (max - 1)) / max;
+            for (int i = 0; i < max; i++)
+            {
+                float top = 1f - i * (hEach + gap);
+                var box = MetaUI.Box(seatsBox, 0, top - hEach, 1, top);
+                if (i < seats.Count) SeatCard(box, i);
+                else EmptySeat(box, i);
+            }
+            UpdateTexts();
+        }
+
+        void SeatCard(RectTransform box, int idx)
+        {
+            var seat = seats[idx];
+            Color team = Theme.PlayerColors[idx % Theme.PlayerColors.Length];
+            var card = UI.Panel(box, Theme.Panel, true, "Seat " + (idx + 1));
+            UI.Stretch(card.rectTransform);
+            var strip = UI.Panel(card.transform, team, true, "Color");
+            strip.raycastTarget = false;
+            UI.Anchor(strip.rectTransform, 0, 0, 0.025f, 1);
+
+            var pic = MetaUI.Box(card.transform, 0.035f, 0.06f, 0.23f, 0.94f);
+            PenguinGlyph.Create(pic, team);
+            var num = MetaUI.Badge(pic, "P" + (idx + 1), team, 46);
+            UI.Place((RectTransform)num.transform.parent, new Vector2(1, 0), new Vector2(46, 46), new Vector2(-2, 2));
+
+            var input = UI.Input(card.transform, seat.name, "Name", s =>
+            {
+                s = (s ?? "").Trim();
+                seat.name = s.Length == 0 ? "Player " + (idx + 1) : (s.Length > 16 ? s.Substring(0, 16) : s);
+            });
+            input.characterLimit = 16;
+            UI.Anchor(input.GetComponent<RectTransform>(), 0.25f, 0.53f, idx >= MinSeats ? 0.84f : 0.98f, 0.94f);
+            if (idx >= MinSeats)
+            {
+                var rm = UI.Button(card.transform, "X", () => { if (idx < seats.Count) seats.RemoveAt(idx); BuildSeats(); }, UI.ButtonStyle.Danger, 36, "Remove");
+                UI.Anchor((RectTransform)rm.transform, 0.86f, 0.53f, 0.98f, 0.94f);
+            }
+
+            var types = UI.Rect(card.transform, "Type");
+            UI.Anchor(types, 0.25f, 0.06f, 0.98f, 0.46f);
+            var h = UI.HBox(types, 6, TextAnchor.MiddleCenter, 0, true);
+            h.childForceExpandHeight = true;
+            if (idx == 0)
+            {
+                // seat 1 is always you
+                var me = UI.Label(types, "Human (you)", 30, Theme.Good, TextAnchor.MiddleLeft, true);
+                NoOutline(me);
+                return;
+            }
+            var btns = new List<Button>();
+            for (int t = 0; t < TypeNames.Length; t++)
+            {
+                int type = t;
+                var b = UI.Button(types, TypeNames[t], () =>
+                {
+                    seat.type = type;
+                    StyleTypes(btns, type);
+                    UpdateTexts();
+                }, UI.ButtonStyle.Plain, 26, "Type " + TypeNames[t]);
+                UI.Layout(b, -1, -1, 1, 1);
+                btns.Add(b);
+            }
+            StyleTypes(btns, seat.type);
+        }
+
+        static void StyleTypes(List<Button> btns, int selected)
+        {
+            for (int i = 0; i < btns.Count; i++)
+            {
+                bool on = i == selected;
+                btns[i].GetComponent<Image>().color = on ? (i == 0 ? Theme.Good : Theme.Secondary) : Theme.PanelInner;
+                var l = btns[i].GetComponentInChildren<Text>();
+                if (l) l.color = on ? Color.white : Theme.Text;
+            }
+        }
+
+        void EmptySeat(RectTransform box, int idx)
+        {
+            var b = UI.Button(box, "+ Add penguin", () =>
+            {
+                if (seats.Count >= MaxSeats) return;
+                seats.Add(new Seat { name = "Player " + (seats.Count + 1), type = 0 });
+                BuildSeats();
+            }, UI.ButtonStyle.Dark, 36, "Empty seat " + (idx + 1));
+            UI.Stretch((RectTransform)b.transform);
+            b.GetComponent<Image>().color = new Color(1, 1, 1, 0.15f);
+        }
+
+        // ---------- map locks (MapLocks: Level.MinLevel above the player's level, unless unlocked for testing) ----------
+        public static int MapLevel(string id) => MapLocks.MinLevel(id);
+        public static bool MapLocked(string id) => MapLocks.Locked(id);
 
         /// <summary>Map thumbnail button ("" = random). Locked maps show the required level and can't be picked.</summary>
-        public static Button MapButton(Transform grid, string id, string name, Action pick)
-        {
-            bool locked = MapLocked(id);
-            int need = MapLevel(id);
-            var b = UI.Button(grid, null, () =>
-            {
-                if (locked) { AudioManager.Sfx("Nomoney"); UI.Toast("Reach level " + need + " to play this map."); return; }
-                pick();
-            }, UI.ButtonStyle.Plain, 24, "Map " + name);
-            if (string.IsNullOrEmpty(id))
-            {
-                var q = UI.Label(b.transform, "?", 110, Theme.Secondary, TextAnchor.MiddleCenter, true);
-                UI.Anchor(q.rectTransform, 0.05f, 0.25f, 0.95f, 0.95f);
-            }
-            else
-            {
-                var img = UI.Image(b.transform, LevelThumbs.Get(id), Color.white, false);
-                UI.Anchor(img.rectTransform, 0.04f, 0.24f, 0.96f, 0.96f);
-            }
-            var l = UI.Label(b.transform, name, 26, Theme.Text, TextAnchor.MiddleCenter, true);
-            NoOutline(l);
-            UI.Anchor(l.rectTransform, 0.02f, 0.01f, 0.98f, 0.24f);
-            if (locked) ItemCards.LockOverlay(b.transform, "Lv " + need);
-            return b;
-        }
+        public static Button MapButton(Transform grid, string id, string name, Action pick) => MapPicker.Thumb(grid, id, name, pick);
 
         /// <summary>Popup map picker (used by Practice). pick gets the level id, "" for a random map.</summary>
-        public static void PickMap(string current, Action<string> pick)
-        {
-            var win = MetaUI.Window(Loc.T("GAME_SETTINGS_MAP"), new Vector2(1500, 860), out var layer);
-            var host = UI.Rect(win, "Maps");
-            UI.Stretch(host, 16, 16, 124, 16);
-            var sr = UI.ScrollGrid(host, out var grid, new Vector2(280, 200), new Vector2(14, 14));
-            UI.Stretch((RectTransform)sr.transform);
-            var ids = new List<string> { "" };
-            foreach (var r in BattleFactory.Levels()) ids.Add(r.Id);
-            foreach (var id in ids)
-            {
-                var chosen = id;
-                var b = MapButton(grid, id, string.IsNullOrEmpty(id) ? "Random" : BattleFactory.LevelDisplayName(id), () => { MetaUI.Close(layer); pick(chosen); });
-                b.GetComponent<Image>().color = id == (current ?? "") ? Theme.Primary : Theme.PanelInner;
-            }
-        }
+        public static void PickMap(string current, Action<string> pick) => MapPicker.Popup(Loc.T("GAME_SETTINGS_MAP"), current, pick);
 
         public static void NoOutline(Text l) { var o = l.GetComponent<Outline>(); if (o) UnityEngine.Object.Destroy(o); }
-
-        void HighlightMap()
-        {
-            for (int i = 0; i < mapFrames.Count; i++) mapFrames[i].color = mapIds[i] == levelId ? Theme.Primary : Theme.PanelInner;
-        }
-
-        void BuildPlayers()
-        {
-            UI.Clear(playersBox);
-            for (int i = 0; i < seats.Count; i++)
-            {
-                int idx = i;
-                var seat = seats[i];
-                var row = UI.Rect(playersBox, "Seat " + i);
-                UI.Layout(row, -1, 84);
-                var dot = UI.Image(row, UI.Circle, Theme.PlayerColors[i % 4], false);
-                UI.Place(dot.rectTransform, new Vector2(0, 0.5f), new Vector2(60, 60), new Vector2(4, 0));
-                var input = UI.Input(row, seat.name, "Name", s => seat.name = string.IsNullOrEmpty(s) ? "Penguin " + (idx + 1) : s);
-                UI.Anchor(input.GetComponent<RectTransform>(), 0, 0.05f, 0.5f, 0.95f);
-                input.GetComponent<RectTransform>().offsetMin = new Vector2(80, 0);
-                Button typeBtn = null;
-                typeBtn = UI.Button(row, TypeNames[seat.type], () =>
-                {
-                    seat.type = (seat.type + 1) % TypeNames.Length;
-                    if (idx == 0 && seat.type != 0) seat.type = 0;   // seat 1 is always you
-                    typeBtn.GetComponentInChildren<Text>().text = TypeNames[seat.type];
-                }, seat.type == 0 ? UI.ButtonStyle.Good : UI.ButtonStyle.Secondary, 32);
-                UI.Anchor((RectTransform)typeBtn.transform, 0.52f, 0.05f, 0.86f, 0.95f);
-                if (i >= 2)
-                {
-                    var rm = UI.Button(row, "-", () => { seats.RemoveAt(idx); BuildPlayers(); }, UI.ButtonStyle.Danger, 44);
-                    UI.Anchor((RectTransform)rm.transform, 0.88f, 0.05f, 1f, 0.95f);
-                }
-            }
-            if (seats.Count < (GameData.Battle?.Int("MaxNumberOfPlayers", 4) ?? 4))
-            {
-                var add = UI.Button(playersBox, "+ Add penguin", () =>
-                {
-                    seats.Add(new Seat { name = "Penguin " + (seats.Count + 1), type = 2 });
-                    BuildPlayers();
-                }, UI.ButtonStyle.Secondary, 34);
-                UI.Layout(add, -1, 64);
-            }
-        }
 
         void Stepper(RectTransform parent, string label, Func<string> value, Action<int> change)
         {
             var row = UI.Rect(parent, label);
             UI.Layout(row, -1, 76);
-            var t = UI.Label(row, label, 34, Theme.Text, TextAnchor.MiddleLeft);
-            UI.Anchor(t.rectTransform, 0, 0, 0.5f, 1);
+            var t = UI.Label(row, label, 32, Theme.Text, TextAnchor.MiddleLeft);
+            UI.Anchor(t.rectTransform, 0, 0, 0.44f, 1);
             Text v = null;
             var minus = UI.Button(row, "-", () => { change(-1); v.text = value(); }, UI.ButtonStyle.Secondary, 44);
-            UI.Anchor((RectTransform)minus.transform, 0.52f, 0.06f, 0.64f, 0.94f);
-            v = UI.Label(row, value(), 38, Theme.Text, TextAnchor.MiddleCenter, true);
+            UI.Anchor((RectTransform)minus.transform, 0.45f, 0.06f, 0.6f, 0.94f);
+            v = UI.Label(row, value(), 36, Theme.Text, TextAnchor.MiddleCenter, true);
             v.color = Theme.Secondary;
-            UI.Anchor(v.rectTransform, 0.64f, 0, 0.86f, 1);
+            UI.Anchor(v.rectTransform, 0.6f, 0, 0.83f, 1);
             var plus = UI.Button(row, "+", () => { change(1); v.text = value(); }, UI.ButtonStyle.Secondary, 44);
-            UI.Anchor((RectTransform)plus.transform, 0.86f, 0.06f, 0.98f, 0.94f);
+            UI.Anchor((RectTransform)plus.transform, 0.83f, 0.06f, 0.98f, 0.94f);
         }
 
         void StartGame()
         {
+            if (seats.Count < MinSeats) { UI.Toast("Add at least one more penguin."); return; }
             var c = new BattleConfig
             {
                 mode = BattleMode.Custom, seed = Environment.TickCount, matchTime = matchTime, turnTime = turnTime,
@@ -368,13 +410,14 @@ namespace CPW
             for (int i = 0; i < seats.Count; i++)
             {
                 var s = seats[i];
+                string name = string.IsNullOrEmpty(s.name) ? "Player " + (i + 1) : s.name;
                 PlayerSlot slot;
                 if (s.type == 0)
                 {
-                    slot = new PlayerSlot { name = s.name, isAI = false, isLocalHuman = true, usesProfileInventory = false, level = P.level, colorIndex = i };
+                    slot = new PlayerSlot { name = name, isAI = false, isLocalHuman = true, usesProfileInventory = false, level = P.level, colorIndex = i };
                     if (i == 0) { slot.head = P.wornHead; slot.chest = P.wornChest; slot.feet = P.wornFeet; slot.trophy = P.wornTrophy; }
                 }
-                else slot = BattleFactory.AiSlot(s.name, P.level, s.type - 1, i);
+                else slot = BattleFactory.AiSlot(name, P.level, s.type - 1, i);
                 slot.loadout = BattleFactory.CustomLoadout();
                 slot.boosters.Clear();
                 c.players.Add(slot);
