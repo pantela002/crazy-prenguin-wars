@@ -60,7 +60,7 @@ namespace CPW
         public List<ItemStack> items = new List<ItemStack>();     // weapons and boosters with ammo counts
         public List<string> unlockedItems = new List<string>();   // permanently unlocked items (e.g. via premium unlock)
         public List<string> ownedClothes = new List<string>();    // Bonus ids for clothes (flannel_head ...)
-        public string wornHead = "";
+        public string wornHead = "";      // "" = bare (new profiles start with nothing worn)
         public string wornChest = "";
         public string wornFeet = "";
         public List<string> trophies = new List<string>();        // trophy Bonus ids (BandaidBadge ...)
@@ -138,6 +138,10 @@ namespace CPW
             p.items.Add(new ItemStack("Punch", 5));
             p.items.Add(new ItemStack("Pistol", 5));
             p.items.Add(new ItemStack("Grenade", 5));
+            // Like the original (worn_items: [], no starter clothes) the penguin starts bare: nothing owned,
+            // nothing worn. The player dresses it on the Character screen (Meta/WardrobeScreen).
+            p.ownedClothes.Clear();
+            p.wornHead = p.wornChest = p.wornFeet = p.wornTrophy = "";
             return p;
         }
     }
