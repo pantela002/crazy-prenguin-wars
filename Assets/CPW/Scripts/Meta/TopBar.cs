@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace CPW
 {
     /// <summary>
-    /// Shared bar at the top of menu screens: level badge with XP bar, coins, cash (fish) with "+" to the bank,
+    /// Shared bar at the top of menu screens: level badge with XP bar, coins, Cash (green banknotes) with "+" to the bank,
     /// VIP badge and settings. Shown when the current screen has ShowTopBar; values tick up smoothly.
     /// </summary>
     public class TopBar : MonoBehaviour
