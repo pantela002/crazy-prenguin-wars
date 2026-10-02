@@ -45,9 +45,14 @@ namespace CPW
             UI.Place(win.rectTransform, new Vector2(0.5f, 0.5f), size, Vector2.zero);
             var t = UI.Label(win.transform, title, 56, Theme.Primary, TextAnchor.MiddleCenter, true);
             UI.Place(t.rectTransform, new Vector2(0.5f, 1), new Vector2(size.x - 240, 90), new Vector2(0, -10));
-            var x = TapButton(win.transform, "X", onClose, UI.ButtonStyle.Danger, 48);
-            UI.Place((RectTransform)x.transform, new Vector2(1, 1), new Vector2(100, 100), new Vector2(-14, -14));
             layer.gameObject.AddComponent<PopIn>().target = win.rectTransform;
+            // the X sits on its own rect over the window (a sibling added after it), so content the caller builds
+            // into the window later can't cover it (the chat history's top edge overlapped the X by a few units)
+            var top = UI.Rect(layer, "WindowTop");
+            UI.Place(top, new Vector2(0.5f, 0.5f), size, Vector2.zero);
+            var x = TapButton(top, "X", onClose, UI.ButtonStyle.Danger, 48);
+            UI.Place((RectTransform)x.transform, new Vector2(1, 1), new Vector2(100, 100), new Vector2(-14, -14));
+            layer.gameObject.AddComponent<PopIn>().target = top;
             return win.rectTransform;
         }
 

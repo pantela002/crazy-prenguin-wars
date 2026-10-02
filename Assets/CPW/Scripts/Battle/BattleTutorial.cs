@@ -161,6 +161,14 @@ namespace CPW
         public void OnAimed() { if (Current == Step.Aim && Mine) aimTime += Time.deltaTime + 0.05f; }
         public void OnBooster() { }
 
+        /// <summary>The player fell in the water and was put back on land (no death in the tutorial).</summary>
+        public void OnRescued(Penguin p)
+        {
+            if (p != Player) return;
+            c.Hud.Banner("Careful, stay out of the water!", Color.white, 1.4f);
+            if (Current == Step.Move) moveStartX = p.Position.x;   // the walk counts from where it landed
+        }
+
         public void OnWeaponPanelOpened() { if (Current == Step.ChangeWeapon && Mine) Go(Step.SelectPistol); }
 
         /// <summary>Closed without picking the pistol: back to "open the weapon menu".</summary>
