@@ -1,0 +1,105 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    92,
+    97
+   ]
+  },
+  "_bitmaps/bitmap_5.png": {
+   "id": 5,
+   "linkage": null,
+   "size": [
+    275,
+    213
+   ]
+  },
+  "_bitmaps/bitmap_9.png": {
+   "id": 9,
+   "linkage": null,
+   "size": [
+    55,
+    55
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/icons_drops.swf",
+ "symbols": {
+  "drop_cash": {
+   "files": [
+    "drop_cash.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 8,
+   "labels": null,
+   "offsets": [
+    [
+     7,
+     2
+    ]
+   ],
+   "origin_px": [
+    108.0,
+    88.0
+   ],
+   "sequence": null,
+   "size": [
+    247,
+    191
+   ]
+  },
+  "drop_coins": {
+   "files": [
+    "drop_coins.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 12,
+   "labels": null,
+   "offsets": [
+    [
+     26,
+     14
+    ]
+   ],
+   "origin_px": [
+    108.0,
+    108.0
+   ],
+   "sequence": null,
+   "size": [
+    220,
+    220
+   ]
+  },
+  "drop_exp": {
+   "files": [
+    "drop_exp.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 4,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    80.0,
+    92.0
+   ],
+   "sequence": null,
+   "size": [
+    179,
+    188
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 4
+}

@@ -1,0 +1,88 @@
+{
+ "bitmaps": {
+  "_bitmaps/landmass_bg_tile.png": {
+   "id": 1,
+   "linkage": "landmass_bg_tile.png",
+   "size": [
+    256,
+    256
+   ]
+  },
+  "_bitmaps/landmass_end_left.png": {
+   "id": 10,
+   "linkage": "landmass_end_left.png",
+   "size": [
+    31,
+    23
+   ]
+  },
+  "_bitmaps/landmass_end_right.png": {
+   "id": 9,
+   "linkage": "landmass_end_right.png",
+   "size": [
+    31,
+    23
+   ]
+  },
+  "_bitmaps/landmass_filler.png": {
+   "id": 8,
+   "linkage": "landmass_filler.png",
+   "size": [
+    23,
+    27
+   ]
+  },
+  "_bitmaps/landmass_tile.png": {
+   "id": 2,
+   "linkage": "landmass_tile.png",
+   "size": [
+    36,
+    24
+   ]
+  },
+  "_bitmaps/particle_1.png": {
+   "id": 7,
+   "linkage": "particle_1.png",
+   "size": [
+    28,
+    27
+   ]
+  },
+  "_bitmaps/particle_2.png": {
+   "id": 6,
+   "linkage": "particle_2.png",
+   "size": [
+    22,
+    18
+   ]
+  },
+  "_bitmaps/particle_3.png": {
+   "id": 5,
+   "linkage": "particle_3.png",
+   "size": [
+    20,
+    20
+   ]
+  },
+  "_bitmaps/particle_4.png": {
+   "id": 4,
+   "linkage": "particle_4.png",
+   "size": [
+    14,
+    14
+   ]
+  },
+  "_bitmaps/particle_5.png": {
+   "id": 3,
+   "linkage": "particle_5.png",
+   "size": [
+    16,
+    16
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/level_graphics/level_assets_desert.swf",
+ "symbols": {},
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 1
+}

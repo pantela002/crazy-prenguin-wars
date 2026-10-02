@@ -1,0 +1,5922 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    767,
+    706
+   ]
+  },
+  "_bitmaps/bitmap_10.png": {
+   "id": 10,
+   "linkage": null,
+   "size": [
+    918,
+    178
+   ]
+  },
+  "_bitmaps/bitmap_114.png": {
+   "id": 114,
+   "linkage": null,
+   "size": [
+    72,
+    72
+   ]
+  },
+  "_bitmaps/bitmap_116.png": {
+   "id": 116,
+   "linkage": null,
+   "size": [
+    72,
+    72
+   ]
+  },
+  "_bitmaps/bitmap_122.png": {
+   "id": 122,
+   "linkage": null,
+   "size": [
+    200,
+    183
+   ]
+  },
+  "_bitmaps/bitmap_124.png": {
+   "id": 124,
+   "linkage": null,
+   "size": [
+    242,
+    214
+   ]
+  },
+  "_bitmaps/bitmap_127.png": {
+   "id": 127,
+   "linkage": null,
+   "size": [
+    200,
+    182
+   ]
+  },
+  "_bitmaps/bitmap_129.png": {
+   "id": 129,
+   "linkage": null,
+   "size": [
+    196,
+    175
+   ]
+  },
+  "_bitmaps/bitmap_13.png": {
+   "id": 13,
+   "linkage": null,
+   "size": [
+    297,
+    305
+   ]
+  },
+  "_bitmaps/bitmap_135.png": {
+   "id": 135,
+   "linkage": null,
+   "size": [
+    213,
+    185
+   ]
+  },
+  "_bitmaps/bitmap_137.png": {
+   "id": 137,
+   "linkage": null,
+   "size": [
+    174,
+    124
+   ]
+  },
+  "_bitmaps/bitmap_140.png": {
+   "id": 140,
+   "linkage": null,
+   "size": [
+    213,
+    185
+   ]
+  },
+  "_bitmaps/bitmap_142.png": {
+   "id": 142,
+   "linkage": null,
+   "size": [
+    210,
+    178
+   ]
+  },
+  "_bitmaps/bitmap_149.png": {
+   "id": 149,
+   "linkage": null,
+   "size": [
+    242,
+    190
+   ]
+  },
+  "_bitmaps/bitmap_159.png": {
+   "id": 159,
+   "linkage": null,
+   "size": [
+    149,
+    113
+   ]
+  },
+  "_bitmaps/bitmap_166.png": {
+   "id": 166,
+   "linkage": null,
+   "size": [
+    467,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_169.png": {
+   "id": 169,
+   "linkage": null,
+   "size": [
+    275,
+    213
+   ]
+  },
+  "_bitmaps/bitmap_170.png": {
+   "id": 170,
+   "linkage": null,
+   "size": [
+    55,
+    55
+   ]
+  },
+  "_bitmaps/bitmap_171.png": {
+   "id": 171,
+   "linkage": null,
+   "size": [
+    338,
+    94
+   ]
+  },
+  "_bitmaps/bitmap_183.png": {
+   "id": 183,
+   "linkage": null,
+   "size": [
+    136,
+    124
+   ]
+  },
+  "_bitmaps/bitmap_186.png": {
+   "id": 186,
+   "linkage": null,
+   "size": [
+    196,
+    208
+   ]
+  },
+  "_bitmaps/bitmap_189.png": {
+   "id": 189,
+   "linkage": null,
+   "size": [
+    112,
+    106
+   ]
+  },
+  "_bitmaps/bitmap_199.png": {
+   "id": 199,
+   "linkage": null,
+   "size": [
+    1453,
+    430
+   ]
+  },
+  "_bitmaps/bitmap_20.png": {
+   "id": 20,
+   "linkage": null,
+   "size": [
+    93,
+    98
+   ]
+  },
+  "_bitmaps/bitmap_209.png": {
+   "id": 209,
+   "linkage": null,
+   "size": [
+    167,
+    22
+   ]
+  },
+  "_bitmaps/bitmap_212.png": {
+   "id": 212,
+   "linkage": null,
+   "size": [
+    13,
+    25
+   ]
+  },
+  "_bitmaps/bitmap_216.png": {
+   "id": 216,
+   "linkage": null,
+   "size": [
+    146,
+    25
+   ]
+  },
+  "_bitmaps/bitmap_221.png": {
+   "id": 221,
+   "linkage": null,
+   "size": [
+    117,
+    125
+   ]
+  },
+  "_bitmaps/bitmap_229.png": {
+   "id": 229,
+   "linkage": null,
+   "size": [
+    152,
+    129
+   ]
+  },
+  "_bitmaps/bitmap_234.png": {
+   "id": 234,
+   "linkage": null,
+   "size": [
+    156,
+    127
+   ]
+  },
+  "_bitmaps/bitmap_239.png": {
+   "id": 239,
+   "linkage": null,
+   "size": [
+    275,
+    213
+   ]
+  },
+  "_bitmaps/bitmap_244.png": {
+   "id": 244,
+   "linkage": null,
+   "size": [
+    484,
+    213
+   ]
+  },
+  "_bitmaps/bitmap_25.png": {
+   "id": 25,
+   "linkage": null,
+   "size": [
+    251,
+    232
+   ]
+  },
+  "_bitmaps/bitmap_251.png": {
+   "id": 251,
+   "linkage": null,
+   "size": [
+    504,
+    127
+   ]
+  },
+  "_bitmaps/bitmap_255.png": {
+   "id": 255,
+   "linkage": null,
+   "size": [
+    455,
+    216
+   ]
+  },
+  "_bitmaps/bitmap_258.png": {
+   "id": 258,
+   "linkage": null,
+   "size": [
+    455,
+    216
+   ]
+  },
+  "_bitmaps/bitmap_261.png": {
+   "id": 261,
+   "linkage": null,
+   "size": [
+    455,
+    216
+   ]
+  },
+  "_bitmaps/bitmap_267.png": {
+   "id": 267,
+   "linkage": null,
+   "size": [
+    456,
+    119
+   ]
+  },
+  "_bitmaps/bitmap_271.png": {
+   "id": 271,
+   "linkage": null,
+   "size": [
+    456,
+    119
+   ]
+  },
+  "_bitmaps/bitmap_274.png": {
+   "id": 274,
+   "linkage": null,
+   "size": [
+    456,
+    116
+   ]
+  },
+  "_bitmaps/bitmap_279.png": {
+   "id": 279,
+   "linkage": null,
+   "size": [
+    451,
+    159
+   ]
+  },
+  "_bitmaps/bitmap_28.png": {
+   "id": 28,
+   "linkage": null,
+   "size": [
+    298,
+    305
+   ]
+  },
+  "_bitmaps/bitmap_282.png": {
+   "id": 282,
+   "linkage": null,
+   "size": [
+    446,
+    167
+   ]
+  },
+  "_bitmaps/bitmap_30.png": {
+   "id": 30,
+   "linkage": null,
+   "size": [
+    298,
+    290
+   ]
+  },
+  "_bitmaps/bitmap_306.png": {
+   "id": 306,
+   "linkage": null,
+   "size": [
+    187,
+    196
+   ]
+  },
+  "_bitmaps/bitmap_315.png": {
+   "id": 315,
+   "linkage": null,
+   "size": [
+    767,
+    706
+   ]
+  },
+  "_bitmaps/bitmap_36.png": {
+   "id": 36,
+   "linkage": null,
+   "size": [
+    185,
+    196
+   ]
+  },
+  "_bitmaps/bitmap_38.png": {
+   "id": 38,
+   "linkage": null,
+   "size": [
+    185,
+    196
+   ]
+  },
+  "_bitmaps/bitmap_4.png": {
+   "id": 4,
+   "linkage": null,
+   "size": [
+    175,
+    275
+   ]
+  },
+  "_bitmaps/bitmap_40.png": {
+   "id": 40,
+   "linkage": null,
+   "size": [
+    185,
+    196
+   ]
+  },
+  "_bitmaps/bitmap_44.png": {
+   "id": 44,
+   "linkage": null,
+   "size": [
+    185,
+    196
+   ]
+  },
+  "_bitmaps/bitmap_46.png": {
+   "id": 46,
+   "linkage": null,
+   "size": [
+    185,
+    196
+   ]
+  },
+  "_bitmaps/bitmap_48.png": {
+   "id": 48,
+   "linkage": null,
+   "size": [
+    185,
+    196
+   ]
+  },
+  "_bitmaps/bitmap_54.png": {
+   "id": 54,
+   "linkage": null,
+   "size": [
+    466,
+    362
+   ]
+  },
+  "_bitmaps/bitmap_58.png": {
+   "id": 58,
+   "linkage": null,
+   "size": [
+    466,
+    362
+   ]
+  },
+  "_bitmaps/bitmap_61.png": {
+   "id": 61,
+   "linkage": null,
+   "size": [
+    489,
+    139
+   ]
+  },
+  "_bitmaps/bitmap_63.png": {
+   "id": 63,
+   "linkage": null,
+   "size": [
+    348,
+    97
+   ]
+  },
+  "_bitmaps/bitmap_64.png": {
+   "id": 64,
+   "linkage": null,
+   "size": [
+    459,
+    131
+   ]
+  },
+  "_bitmaps/bitmap_70.png": {
+   "id": 70,
+   "linkage": null,
+   "size": [
+    242,
+    239
+   ]
+  },
+  "_bitmaps/bitmap_76.png": {
+   "id": 76,
+   "linkage": null,
+   "size": [
+    36,
+    167
+   ]
+  },
+  "_bitmaps/bitmap_78.png": {
+   "id": 78,
+   "linkage": null,
+   "size": [
+    27,
+    27
+   ]
+  },
+  "_bitmaps/bitmap_8.png": {
+   "id": 8,
+   "linkage": null,
+   "size": [
+    1520,
+    228
+   ]
+  },
+  "_bitmaps/bitmap_83.png": {
+   "id": 83,
+   "linkage": null,
+   "size": [
+    27,
+    27
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/home_screen.swf",
+ "symbols": {
+  "Button_Add_Cash": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Add_Cash.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 178,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Add_Coins": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Add_Coins.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 176,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Character": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.2,
+     15.15
+    ]
+   },
+   "files": [
+    "Button_Character/001.png",
+    "Button_Character/002.png",
+    "Button_Character/003.png",
+    "Button_Character/004.png"
+   ],
+   "frames_exported": 4,
+   "frames_total": 4,
+   "id": 132,
+   "labels": {
+    "Close": 4,
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    113.7,
+    104.55
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "size": [
+    235,
+    216
+   ]
+  },
+  "Button_Crafting": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -1.15,
+     2.2
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.45,
+     16.55
+    ]
+   },
+   "files": [
+    "Button_Crafting/001.png",
+    "Button_Crafting/002.png",
+    "Button_Crafting/003.png",
+    "Button_Crafting/004.png"
+   ],
+   "frames_exported": 4,
+   "frames_total": 4,
+   "id": 145,
+   "labels": {
+    "Close": 4,
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     0,
+     4
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    119.6,
+    93.9
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "size": [
+    231,
+    206
+   ]
+  },
+  "Button_Custom_Game": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     4.5,
+     2.35
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -61.15,
+     -7.95
+    ]
+   },
+   "files": [
+    "Button_Custom_Game/001.png",
+    "Button_Custom_Game/002.png",
+    "Button_Custom_Game/003.png",
+    "Button_Custom_Game/004.png"
+   ],
+   "frames_exported": 4,
+   "frames_total": 4,
+   "id": 277,
+   "labels": {
+    "Close": 4,
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     4,
+     4
+    ],
+    [
+     4,
+     3
+    ],
+    [
+     4,
+     4
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    131.9,
+    31.96
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "size": [
+    282,
+    74
+   ]
+  },
+  "Button_Exit": {
+   "children_frame1": {
+    "Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ],
+    "Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Exit.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 302,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_FastForward_Left": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_FastForward_Left.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 310,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_FastForward_Right": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_FastForward_Right.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 314,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Friends": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     -145.45,
+     -193.8
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -154.35,
+     -101.3
+    ]
+   },
+   "files": [
+    "Button_Friends/001.png",
+    "Button_Friends/002.png",
+    "Button_Friends/003.png",
+    "Button_Friends/004.png",
+    "Button_Friends/005.png",
+    "Button_Friends/006.png",
+    "Button_Friends/007.png",
+    "Button_Friends/008.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 228,
+   "labels": {
+    "Disabled": 7,
+    "Down": 6,
+    "Hover": 5,
+    "Hover_To_Visible": 8,
+    "Visible": 1,
+    "Visible_To_Hover": 2,
+    "end": 10
+   },
+   "offsets": [
+    [
+     76,
+     22
+    ],
+    [
+     20,
+     0
+    ],
+    [
+     20,
+     0
+    ],
+    [
+     20,
+     0
+    ],
+    [
+     21,
+     2
+    ],
+    [
+     20,
+     0
+    ],
+    [
+     20,
+     0
+    ],
+    [
+     20,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    312.55,
+    389.2
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    5,
+    6,
+    7
+   ],
+   "size": [
+    337,
+    258
+   ]
+  },
+  "Button_Fullscreen": {
+   "children_frame1": {
+    "Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ],
+    "Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Fullscreen.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 298,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Gifts": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     -74.25,
+     -65.9
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -53.45,
+     26.6
+    ]
+   },
+   "files": [
+    "Button_Gifts/001.png",
+    "Button_Gifts/002.png",
+    "Button_Gifts/003.png",
+    "Button_Gifts/004.png",
+    "Button_Gifts/005.png",
+    "Button_Gifts/006.png",
+    "Button_Gifts/007.png",
+    "Button_Gifts/008.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 224,
+   "labels": {
+    "Disabled": 7,
+    "Down": 6,
+    "Hover": 5,
+    "Hover_To_Visible": 8,
+    "Visible": 1,
+    "Visible_To_Hover": 2,
+    "end": 10
+   },
+   "offsets": [
+    [
+     55,
+     2
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    150.24,
+    136.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    5,
+    6,
+    7
+   ],
+   "size": [
+    296,
+    261
+   ]
+  },
+  "Button_Help": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     46.35,
+     -193.8
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     69.65,
+     -100.05
+    ]
+   },
+   "files": [
+    "Button_Help/001.png",
+    "Button_Help/002.png",
+    "Button_Help/003.png",
+    "Button_Help/004.png",
+    "Button_Help/005.png",
+    "Button_Help/006.png",
+    "Button_Help/007.png",
+    "Button_Help/008.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 233,
+   "labels": {
+    "Down": 6,
+    "Hover": 5,
+    "Hover_To_Visible": 8,
+    "Visible": 1,
+    "Visible_To_Hover": 2,
+    "end": 10
+   },
+   "offsets": [
+    [
+     41,
+     14
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     2,
+     4
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    -90.61,
+    391.65
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    5,
+    6,
+    7
+   ],
+   "size": [
+    295,
+    263
+   ]
+  },
+  "Button_Inbox": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.8664,
+     0.0,
+     0.0,
+     1.7189,
+     -104.8,
+     -125.9
+    ],
+    "Inbox_Animated": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Inbox_Idle": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -45.05,
+     36.5
+    ],
+    "Text_Number": [
+     1.3887,
+     0.0,
+     0.0,
+     1.5171,
+     44.0,
+     -92.3
+    ]
+   },
+   "files": [
+    "Button_Inbox/001.png",
+    "Button_Inbox/002.png",
+    "Button_Inbox/003.png",
+    "Button_Inbox/004.png",
+    "Button_Inbox/005.png",
+    "Button_Inbox/006.png",
+    "Button_Inbox/007.png",
+    "Button_Inbox/008.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 196,
+   "labels": {
+    "Down": 6,
+    "Hover": 5,
+    "Hover_To_Visible": 8,
+    "Visible": 1,
+    "Visible_To_Hover": 2,
+    "end": 10
+   },
+   "offsets": [
+    [
+     65,
+     26
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     3,
+     3
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    213.12,
+    254.92
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    5,
+    6,
+    7
+   ],
+   "size": [
+    512,
+    427
+   ]
+  },
+  "Button_Music": {
+   "children_frame1": {
+    "Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ],
+    "Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Music.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 300,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_News": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     85.4,
+     -193.8
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     107.1,
+     -100.15
+    ]
+   },
+   "files": [
+    "Button_News/001.png",
+    "Button_News/002.png",
+    "Button_News/003.png",
+    "Button_News/004.png",
+    "Button_News/005.png",
+    "Button_News/006.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 238,
+   "labels": {
+    "Down": 6,
+    "Hover": 5,
+    "Hover_To_Visible": 8,
+    "Visible": 1,
+    "Visible_To_Hover": 2,
+    "end": 10
+   },
+   "offsets": [
+    [
+     34,
+     28
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    -168.77,
+    389.75
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    5,
+    2,
+    1
+   ],
+   "size": [
+    295,
+    261
+   ]
+  },
+  "Button_Options": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Options.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 305,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Play": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -30.75,
+     0.75
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -96.05,
+     -30.15
+    ]
+   },
+   "files": [
+    "Button_Play/001.png",
+    "Button_Play/002.png",
+    "Button_Play/003.png",
+    "Button_Play/004.png"
+   ],
+   "frames_exported": 4,
+   "frames_total": 4,
+   "id": 264,
+   "labels": {
+    "Close": 4,
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    374.03,
+    145.65
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "size": [
+    625,
+    296
+   ]
+  },
+  "Button_Quality": {
+   "children_frame1": {
+    "Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ],
+    "Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Quality.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 299,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Scroll_Left": {
+   "files": [
+    "Button_Scroll_Left.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 308,
+   "labels": {
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    -812.0,
+    204.0
+   ],
+   "sequence": null,
+   "size": [
+    374,
+    392
+   ]
+  },
+  "Button_Scroll_Right": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Scroll_Right.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 312,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Sounds": {
+   "children_frame1": {
+    "Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ],
+    "Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Sounds.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 301,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Supplies": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -0.55,
+     2.4
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -56.3,
+     16.65
+    ]
+   },
+   "files": [
+    "Button_Supplies/001.png",
+    "Button_Supplies/002.png",
+    "Button_Supplies/003.png",
+    "Button_Supplies/004.png"
+   ],
+   "frames_exported": 4,
+   "frames_total": 4,
+   "id": 155,
+   "labels": {
+    "Close": 4,
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    116.4,
+    93.85
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "size": [
+    230,
+    209
+   ]
+  },
+  "Button_Teams": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -54.15,
+     12.25
+    ]
+   },
+   "files": [
+    "Button_Teams/001.png",
+    "Button_Teams/002.png",
+    "Button_Teams/003.png",
+    "Button_Teams/004.png"
+   ],
+   "frames_exported": 4,
+   "frames_total": 4,
+   "id": 165,
+   "labels": {
+    "Close": 4,
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    121.55,
+    107.95
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "size": [
+    235,
+    216
+   ]
+  },
+  "Button_Tournament": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.35,
+     -16.95
+    ]
+   },
+   "files": [
+    "Button_Tournament/001.png",
+    "Button_Tournament/002.png",
+    "Button_Tournament/003.png"
+   ],
+   "frames_exported": 4,
+   "frames_total": 4,
+   "id": 285,
+   "labels": {
+    "Close": 4,
+    "Disabled": 2,
+    "Down": 3,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     3,
+     10
+    ],
+    [
+     2,
+     10
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    115.9,
+    79.9
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "size": [
+    341,
+    126
+   ]
+  },
+  "Button_VIP": {
+   "files": [
+    "Button_VIP.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 246,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Button_VIP_Active": {
+   "files": [
+    "Button_VIP_Active.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 247,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Button_cash": {
+   "children_frame1": {
+    "Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     123.3,
+     -193.8
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     143.7,
+     -100.15
+    ]
+   },
+   "files": [
+    "Button_cash/001.png",
+    "Button_cash/002.png",
+    "Button_cash/003.png",
+    "Button_cash/004.png",
+    "Button_cash/005.png",
+    "Button_cash/006.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 243,
+   "labels": {
+    "Down": 6,
+    "Hover": 5,
+    "Hover_To_Visible": 8,
+    "Visible": 1,
+    "Visible_To_Hover": 2,
+    "end": 10
+   },
+   "offsets": [
+    [
+     40,
+     25
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    -244.57,
+    389.55
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    5,
+    2,
+    1
+   ],
+   "size": [
+    295,
+    261
+   ]
+  },
+  "Character_Frame": {
+   "children_frame1": {
+    "Container_Character": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -0.1,
+     -0.2
+    ]
+   },
+   "files": [
+    "Character_Frame.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 7,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     21,
+     31
+    ]
+   ],
+   "origin_px": [
+    84.0,
+    158.0
+   ],
+   "sequence": null,
+   "size": [
+    170,
+    267
+   ]
+  },
+  "Container_Challenges": {
+   "children_frame1": {
+    "Button_Challenge_1": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Challenge_1/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_1/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_1/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_1/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_2": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Challenge_2/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_2/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_2/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_2/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_3": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Challenge_3/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_3/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_3/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_3/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_4": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Challenge_4/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_4/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_4/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ],
+    "Button_Challenge_4/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     1.0
+    ]
+   },
+   "files": [
+    "Container_Challenges.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 207,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "Container_Play_Buttons": {
+   "children_frame1": {
+    "Play_No_Tournament": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     45.05,
+     881.75
+    ],
+    "Play_No_Tournament/Button_Custom_Game": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     184.0865,
+     1218.8081
+    ],
+    "Play_No_Tournament/Button_Custom_Game/Hit_Area": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     193.5662,
+     1223.7587
+    ],
+    "Play_No_Tournament/Button_Custom_Game/Text": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     55.2671,
+     1202.0605
+    ],
+    "Play_No_Tournament/Button_Play": [
+     1.1388,
+     0.0,
+     0.0,
+     1.1386,
+     -102.2023,
+     1166.1428
+    ],
+    "Play_No_Tournament/Button_Play/Hit_Area": [
+     1.1388,
+     0.0,
+     0.0,
+     1.1386,
+     -137.2207,
+     1166.9967
+    ],
+    "Play_No_Tournament/Button_Play/Text": [
+     1.1388,
+     0.0,
+     0.0,
+     1.1386,
+     -211.585,
+     1131.8135
+    ],
+    "Play_No_Tournament/Button_Tournament": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     167.2336,
+     1153.5031
+    ],
+    "Play_No_Tournament/Button_Tournament/Text": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     56.9524,
+     1117.796
+    ],
+    "Play_Tournament": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     786.35,
+     -40.2
+    ],
+    "Play_Tournament/Button_Custom_Game": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     184.1746,
+     1218.9227
+    ],
+    "Play_Tournament/Button_Custom_Game/Hit_Area": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     193.6544,
+     1223.8733
+    ],
+    "Play_Tournament/Button_Custom_Game/Text": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     55.3552,
+     1202.1751
+    ],
+    "Play_Tournament/Button_Play": [
+     1.139,
+     0.0,
+     0.0,
+     1.1389,
+     -101.7981,
+     1166.2574
+    ],
+    "Play_Tournament/Button_Play/Hit_Area": [
+     1.139,
+     0.0,
+     0.0,
+     1.1389,
+     -136.8225,
+     1167.1116
+    ],
+    "Play_Tournament/Button_Play/Text": [
+     1.139,
+     0.0,
+     0.0,
+     1.1389,
+     -211.1994,
+     1131.9184
+    ],
+    "Play_Tournament/Button_Tournament": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     169.2177,
+     1153.723
+    ],
+    "Play_Tournament/Button_Tournament/Text": [
+     2.1066,
+     0.0,
+     0.0,
+     2.1066,
+     58.9365,
+     1118.0159
+    ]
+   },
+   "files": [
+    "Container_Play_Buttons.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 288,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    687.7,
+    -2102.35
+   ],
+   "sequence": null,
+   "size": [
+    1832,
+    462
+   ]
+  },
+  "Dark_Background_Container": {
+   "files": [
+    "Dark_Background_Container.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 250,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "HUD_Friends_Bar": {
+   "children_frame1": {
+    "Button_FastForward_Left": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -80.45,
+     -58.8
+    ],
+    "Button_FastForward_Right": [
+     -1.0,
+     0.0,
+     0.0,
+     1.0,
+     613.3,
+     -58.8
+    ],
+    "Button_Options": [
+     0.563,
+     0.0,
+     0.0,
+     0.5571,
+     947.25,
+     -189.85
+    ],
+    "Button_Scroll_Left": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -80.45,
+     -105.45
+    ],
+    "Button_Scroll_Right": [
+     -1.0,
+     0.0,
+     0.0,
+     1.0,
+     613.0,
+     -105.45
+    ],
+    "Button_Slot_Machine": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     790.8,
+     -51.6
+    ],
+    "Button_Slot_Machine/Active": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     790.8,
+     -51.6
+    ],
+    "Button_Slot_Machine/Active/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     806.1,
+     -110.15
+    ],
+    "Button_Slot_Machine/Active/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     687.9,
+     -39.35
+    ],
+    "Button_Slot_Machine/Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     790.8,
+     -51.6
+    ],
+    "Button_Slot_Machine/Default/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     806.1,
+     -110.15
+    ],
+    "Container_Slots": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     14.2,
+     -117.7
+    ],
+    "Container_Slots/Slot_01": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     14.2,
+     -117.7
+    ],
+    "Container_Slots/Slot_01/Slot_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     11.2,
+     -116.7
+    ],
+    "Container_Slots/Slot_01/Slot_Default/Container_Profile_Picture": [
+     0.1931,
+     0.0,
+     0.0,
+     0.1909,
+     -0.25,
+     -83.55
+    ],
+    "Container_Slots/Slot_01/Slot_Default/Icon_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     -31.9,
+     -115.85
+    ],
+    "Container_Slots/Slot_01/Slot_Default/Icon_Level/Text_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     -49.6233,
+     -133.0002
+    ],
+    "Container_Slots/Slot_01/Slot_Default/Text_Name": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -51.4,
+     -25.75
+    ],
+    "Container_Slots/Slot_01/Slot_Disabled": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     11.2,
+     -116.7
+    ],
+    "Container_Slots/Slot_01/Slot_Disabled/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -51.45,
+     -61.4
+    ],
+    "Container_Slots/Slot_02": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     121.3,
+     -117.7
+    ],
+    "Container_Slots/Slot_02/Slot_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     118.3,
+     -116.7
+    ],
+    "Container_Slots/Slot_02/Slot_Default/Container_Profile_Picture": [
+     0.1931,
+     0.0,
+     0.0,
+     0.1909,
+     106.85,
+     -83.55
+    ],
+    "Container_Slots/Slot_02/Slot_Default/Icon_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     75.2,
+     -115.85
+    ],
+    "Container_Slots/Slot_02/Slot_Default/Icon_Level/Text_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     57.4767,
+     -133.0002
+    ],
+    "Container_Slots/Slot_02/Slot_Default/Text_Name": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     55.7,
+     -25.75
+    ],
+    "Container_Slots/Slot_02/Slot_Disabled": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     118.3,
+     -116.7
+    ],
+    "Container_Slots/Slot_02/Slot_Disabled/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     55.65,
+     -61.4
+    ],
+    "Container_Slots/Slot_03": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     228.4,
+     -117.7
+    ],
+    "Container_Slots/Slot_03/Slot_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     225.4,
+     -116.7
+    ],
+    "Container_Slots/Slot_03/Slot_Default/Container_Profile_Picture": [
+     0.1931,
+     0.0,
+     0.0,
+     0.1909,
+     213.95,
+     -83.55
+    ],
+    "Container_Slots/Slot_03/Slot_Default/Icon_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     182.3,
+     -115.85
+    ],
+    "Container_Slots/Slot_03/Slot_Default/Icon_Level/Text_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     164.5767,
+     -133.0002
+    ],
+    "Container_Slots/Slot_03/Slot_Default/Text_Name": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     162.8,
+     -25.75
+    ],
+    "Container_Slots/Slot_03/Slot_Disabled": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     225.4,
+     -116.7
+    ],
+    "Container_Slots/Slot_03/Slot_Disabled/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     162.75,
+     -61.4
+    ],
+    "Container_Slots/Slot_04": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     335.5,
+     -117.7
+    ],
+    "Container_Slots/Slot_04/Slot_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     332.5,
+     -116.7
+    ],
+    "Container_Slots/Slot_04/Slot_Default/Container_Profile_Picture": [
+     0.1931,
+     0.0,
+     0.0,
+     0.1909,
+     321.05,
+     -83.55
+    ],
+    "Container_Slots/Slot_04/Slot_Default/Icon_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     289.4,
+     -115.85
+    ],
+    "Container_Slots/Slot_04/Slot_Default/Icon_Level/Text_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     271.6767,
+     -133.0002
+    ],
+    "Container_Slots/Slot_04/Slot_Default/Text_Name": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     269.9,
+     -25.75
+    ],
+    "Container_Slots/Slot_04/Slot_Disabled": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     332.5,
+     -116.7
+    ],
+    "Container_Slots/Slot_04/Slot_Disabled/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     269.85,
+     -61.4
+    ],
+    "Container_Slots/Slot_05": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     442.6,
+     -116.7
+    ],
+    "Container_Slots/Slot_05/Slot_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     439.6,
+     -115.7
+    ],
+    "Container_Slots/Slot_05/Slot_Default/Container_Profile_Picture": [
+     0.1931,
+     0.0,
+     0.0,
+     0.1909,
+     428.15,
+     -82.55
+    ],
+    "Container_Slots/Slot_05/Slot_Default/Icon_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     396.5,
+     -114.85
+    ],
+    "Container_Slots/Slot_05/Slot_Default/Icon_Level/Text_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     378.7767,
+     -132.0002
+    ],
+    "Container_Slots/Slot_05/Slot_Default/Text_Name": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     377.0,
+     -24.75
+    ],
+    "Container_Slots/Slot_05/Slot_Disabled": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     439.6,
+     -115.7
+    ],
+    "Container_Slots/Slot_05/Slot_Disabled/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     376.95,
+     -60.4
+    ],
+    "Container_Slots/Slot_06": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     549.7,
+     -116.7
+    ],
+    "Container_Slots/Slot_06/Slot_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     546.7,
+     -115.7
+    ],
+    "Container_Slots/Slot_06/Slot_Default/Container_Profile_Picture": [
+     0.1931,
+     0.0,
+     0.0,
+     0.1909,
+     535.25,
+     -82.55
+    ],
+    "Container_Slots/Slot_06/Slot_Default/Icon_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     503.6,
+     -114.85
+    ],
+    "Container_Slots/Slot_06/Slot_Default/Icon_Level/Text_Level": [
+     0.5354,
+     0.0,
+     0.0,
+     0.5293,
+     485.8767,
+     -132.0002
+    ],
+    "Container_Slots/Slot_06/Slot_Default/Text_Name": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     484.1,
+     -24.75
+    ],
+    "Container_Slots/Slot_06/Slot_Disabled": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     546.7,
+     -115.7
+    ],
+    "Container_Slots/Slot_06/Slot_Disabled/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     484.05,
+     -60.4
+    ],
+    "Options_Bar": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     951.0,
+     -376.5
+    ],
+    "Options_Bar/Button_Fullscreen": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -401.3748
+    ],
+    "Options_Bar/Button_Fullscreen/Button_Off": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -401.3748
+    ],
+    "Options_Bar/Button_Fullscreen/Button_On": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -401.3748
+    ],
+    "Options_Bar/Button_Music": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -308.285
+    ],
+    "Options_Bar/Button_Music/Button_Off": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -308.285
+    ],
+    "Options_Bar/Button_Music/Button_On": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -308.285
+    ],
+    "Options_Bar/Button_Quality": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -354.2195
+    ],
+    "Options_Bar/Button_Quality/Button_Off": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -354.2195
+    ],
+    "Options_Bar/Button_Quality/Button_On": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -354.2195
+    ],
+    "Options_Bar/Button_Sounds": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -262.3506
+    ],
+    "Options_Bar/Button_Sounds/Button_Off": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -262.3506
+    ],
+    "Options_Bar/Button_Sounds/Button_On": [
+     1.5261,
+     0.0,
+     0.0,
+     1.5261,
+     950.6185,
+     -262.3506
+    ]
+   },
+   "files": [
+    "HUD_Friends_Bar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 119,
+   "labels": null,
+   "offsets": [
+    [
+     128,
+     94
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    479.86,
+    955.7
+   ],
+   "sequence": null,
+   "size": [
+    2735,
+    1336
+   ]
+  },
+  "HUD_Level": {
+   "children_frame1": {
+    "Container_Challenges": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     88.0
+    ],
+    "Container_Challenges/Button_Challenge_1": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     88.0
+    ],
+    "Container_Challenges/Button_Challenge_1/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_1/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_1/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_1/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_2": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     88.0
+    ],
+    "Container_Challenges/Button_Challenge_2/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_2/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_2/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_2/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_3": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     88.0
+    ],
+    "Container_Challenges/Button_Challenge_3/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_3/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_3/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_3/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_4": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     1.0,
+     88.0
+    ],
+    "Container_Challenges/Button_Challenge_4/Challenge_Default": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_4/Challenge_Default/Container_Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_4/Challenge_Done": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Container_Challenges/Button_Challenge_4/Challenge_New": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -2.0,
+     89.0
+    ],
+    "Fill": [
+     1.6397,
+     0.0,
+     0.0,
+     1.6281,
+     -59.25,
+     141.25
+    ],
+    "Icon_Level": [
+     1.0646,
+     0.0,
+     0.0,
+     1.0651,
+     63.0,
+     139.2
+    ],
+    "Icon_Level/Text_Level": [
+     1.0646,
+     0.0,
+     0.0,
+     1.0651,
+     27.7621,
+     104.6919
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     135.2,
+     145.75
+    ],
+    "Top_Bar_Left": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     66.3,
+     133.5
+    ],
+    "Top_Bar_Left/Button_Friends": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     390.9046,
+     133.5
+    ],
+    "Top_Bar_Left/Button_Friends/Hit_Area": [
+     0.6724,
+     0.0,
+     0.0,
+     0.6873,
+     300.8106,
+     0.298
+    ],
+    "Top_Bar_Left/Button_Friends/Text": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     295.2978,
+     63.8748
+    ],
+    "Top_Bar_Left/Button_Gifts": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     251.691,
+     45.5234
+    ],
+    "Top_Bar_Left/Button_Gifts/Hit_Area": [
+     0.6724,
+     0.0,
+     0.0,
+     0.6873,
+     205.6994,
+     0.2293
+    ],
+    "Top_Bar_Left/Button_Gifts/Text": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     218.5833,
+     63.8061
+    ],
+    "Top_Bar_Left/Button_Help": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     367.3668,
+     133.5
+    ],
+    "Top_Bar_Left/Button_Help/Hit_Area": [
+     0.6724,
+     0.0,
+     0.0,
+     0.6873,
+     396.0767,
+     0.298
+    ],
+    "Top_Bar_Left/Button_Help/Text": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     410.5091,
+     64.7339
+    ],
+    "Top_Bar_Left/Button_News": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     438.5996,
+     133.5
+    ],
+    "Top_Bar_Left/Button_News/Hit_Area": [
+     0.6724,
+     0.0,
+     0.0,
+     0.6873,
+     491.4976,
+     0.298
+    ],
+    "Top_Bar_Left/Button_News/Text": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     504.9389,
+     64.6652
+    ],
+    "Top_Bar_Left/Button_VIP": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     346.2757,
+     45.9702
+    ],
+    "Top_Bar_Left/Button_VIP_Active": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     346.2757,
+     45.9702
+    ],
+    "Top_Bar_Left/Button_cash": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     510.4517,
+     133.5
+    ],
+    "Top_Bar_Left/Button_cash/Hit_Area": [
+     0.6724,
+     0.0,
+     0.0,
+     0.6873,
+     586.8256,
+     0.298
+    ],
+    "Top_Bar_Left/Button_cash/Text": [
+     0.6194,
+     0.0,
+     0.0,
+     0.6873,
+     599.4617,
+     64.6652
+    ],
+    "Xp_Bar_Back": [
+     1.6396,
+     0.0,
+     0.0,
+     1.6396,
+     117.65,
+     97.75
+    ]
+   },
+   "files": [
+    "HUD_Level.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 249,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     128,
+     2
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    206.92,
+    2.08
+   ],
+   "sequence": null,
+   "size": [
+    1562,
+    448
+   ]
+  },
+  "HUD_money": {
+   "children_frame1": {
+    "Saldo": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -435.65,
+     82.6
+    ],
+    "Saldo/Button_Add_Cash": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     -57.65,
+     156.6
+    ],
+    "Saldo/Button_Add_Cash/Text": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     -88.8787,
+     143.5805
+    ],
+    "Saldo/Button_Add_Coins": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     -272.65,
+     156.6
+    ],
+    "Saldo/Button_Add_Coins/Text": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     -303.8787,
+     143.5805
+    ],
+    "Saldo/Text_Cash": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -150.7,
+     95.4
+    ],
+    "Saldo/Text_Coins": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -286.2,
+     95.4
+    ],
+    "Top_Bar_Right": [
+     0.3977,
+     0.0,
+     0.0,
+     0.4054,
+     -56.5,
+     50.25
+    ],
+    "Top_Bar_Right/Button_Inbox": [
+     0.3977,
+     0.0,
+     0.0,
+     0.4054,
+     -56.5,
+     51.6487
+    ],
+    "Top_Bar_Right/Button_Inbox/Hit_Area": [
+     0.7422,
+     0.0,
+     0.0,
+     0.6969,
+     -98.1763,
+     0.6056
+    ],
+    "Top_Bar_Right/Button_Inbox/Inbox_Animated": [
+     0.3977,
+     0.0,
+     0.0,
+     0.4054,
+     -57.693,
+     52.0541
+    ],
+    "Top_Bar_Right/Button_Inbox/Inbox_Idle": [
+     0.3977,
+     0.0,
+     0.0,
+     0.4054,
+     -57.693,
+     52.0541
+    ],
+    "Top_Bar_Right/Button_Inbox/Text": [
+     0.3977,
+     0.0,
+     0.0,
+     0.4054,
+     -74.4152,
+     66.4468
+    ],
+    "Top_Bar_Right/Button_Inbox/Text_Number": [
+     0.5522,
+     0.0,
+     0.0,
+     0.6151,
+     -39.0023,
+     14.2279
+    ]
+   },
+   "files": [
+    "HUD_money.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 198,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     3,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    841.0,
+    -0.16
+   ],
+   "sequence": null,
+   "size": [
+    934,
+    384
+   ]
+  },
+  "Inbox_Animated": {
+   "files": [
+    "Inbox_Animated.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 191,
+   "labels": null,
+   "offsets": [
+    [
+     12,
+     5
+    ]
+   ],
+   "origin_px": [
+    154.0,
+    236.0
+   ],
+   "sequence": null,
+   "size": [
+    424,
+    363
+   ]
+  },
+  "Inbox_Idle": {
+   "files": [
+    "Inbox_Idle.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 192,
+   "labels": null,
+   "offsets": [
+    [
+     12,
+     5
+    ]
+   ],
+   "origin_px": [
+    154.0,
+    236.0
+   ],
+   "sequence": null,
+   "size": [
+    424,
+    363
+   ]
+  },
+  "Options_Bar": {
+   "children_frame1": {
+    "Button_Exit": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     337.0
+    ],
+    "Button_Exit/Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     337.0
+    ],
+    "Button_Exit/Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     315.3
+    ],
+    "Button_Exit/Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     337.0
+    ],
+    "Button_Exit/Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     315.3
+    ],
+    "Button_Fullscreen": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Fullscreen/Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Fullscreen/Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ],
+    "Button_Fullscreen/Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Button_Fullscreen/Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ],
+    "Button_Music": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     165.0
+    ],
+    "Button_Music/Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     165.0
+    ],
+    "Button_Music/Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     143.3
+    ],
+    "Button_Music/Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     165.0
+    ],
+    "Button_Music/Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     143.3
+    ],
+    "Button_Quality": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     82.0
+    ],
+    "Button_Quality/Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     82.0
+    ],
+    "Button_Quality/Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     60.3
+    ],
+    "Button_Quality/Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     82.0
+    ],
+    "Button_Quality/Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     60.3
+    ],
+    "Button_Sounds": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -1.0,
+     253.0
+    ],
+    "Button_Sounds/Button_Off": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -1.0,
+     253.0
+    ],
+    "Button_Sounds/Button_Off/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -53.05,
+     231.3
+    ],
+    "Button_Sounds/Button_On": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -1.0,
+     253.0
+    ],
+    "Button_Sounds/Button_On/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -53.05,
+     231.3
+    ]
+   },
+   "files": [
+    "Options_Bar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 303,
+   "labels": null,
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    110.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    218,
+    749
+   ]
+  },
+  "Play_No_Tournament": {
+   "children_frame1": {
+    "Button_Custom_Game": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     66.0,
+     160.0
+    ],
+    "Button_Custom_Game/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     70.5,
+     162.35
+    ],
+    "Button_Custom_Game/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     4.85,
+     152.05
+    ],
+    "Button_Play": [
+     0.5406,
+     0.0,
+     0.0,
+     0.5405,
+     -69.9,
+     135.0
+    ],
+    "Button_Play/Hit_Area": [
+     0.5406,
+     0.0,
+     0.0,
+     0.5405,
+     -86.5231,
+     135.4054
+    ],
+    "Button_Play/Text": [
+     0.5406,
+     0.0,
+     0.0,
+     0.5405,
+     -121.8235,
+     118.704
+    ],
+    "Button_Tournament": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     58.0,
+     129.0
+    ],
+    "Button_Tournament/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     5.65,
+     112.05
+    ]
+   },
+   "files": [
+    "Play_No_Tournament.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 287,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     10
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    341.9,
+    -178.1
+   ],
+   "sequence": null,
+   "size": [
+    683,
+    184
+   ]
+  },
+  "Play_Tournament": {
+   "children_frame1": {
+    "Button_Custom_Game": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -285.85,
+     597.7
+    ],
+    "Button_Custom_Game/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -281.35,
+     600.05
+    ],
+    "Button_Custom_Game/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -347.0,
+     589.75
+    ],
+    "Button_Play": [
+     0.5407,
+     0.0,
+     0.0,
+     0.5406,
+     -421.6,
+     572.7
+    ],
+    "Button_Play/Hit_Area": [
+     0.5407,
+     0.0,
+     0.0,
+     0.5406,
+     -438.2259,
+     573.1055
+    ],
+    "Button_Play/Text": [
+     0.5407,
+     0.0,
+     0.0,
+     0.5406,
+     -473.5323,
+     556.3994
+    ],
+    "Button_Tournament": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -292.95,
+     566.75
+    ],
+    "Button_Tournament/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -345.3,
+     549.8
+    ]
+   },
+   "files": [
+    "Play_Tournament.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 286,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     10
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    1045.07,
+    -1053.55
+   ],
+   "sequence": null,
+   "size": [
+    684,
+    184
+   ]
+  },
+  "Saldo": {
+   "children_frame1": {
+    "Button_Add_Cash": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     378.0,
+     74.0
+    ],
+    "Button_Add_Cash/Text": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     346.7713,
+     60.9805
+    ],
+    "Button_Add_Coins": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     163.0,
+     74.0
+    ],
+    "Button_Add_Coins/Text": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     131.7713,
+     60.9805
+    ],
+    "Text_Cash": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     284.95,
+     12.8
+    ],
+    "Text_Coins": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     149.45,
+     12.8
+    ]
+   },
+   "files": [
+    "Saldo.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 182,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     8
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    -146.4,
+    -6.02
+   ],
+   "sequence": null,
+   "size": [
+    674,
+    159
+   ]
+  },
+  "Top_Bar_Left": {
+   "children_frame1": {
+    "Button_Friends": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     524.05,
+     0.0
+    ],
+    "Button_Friends/Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     378.6,
+     -193.8
+    ],
+    "Button_Friends/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     369.7,
+     -101.3
+    ],
+    "Button_Gifts": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     299.3,
+     -128.0
+    ],
+    "Button_Gifts/Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     225.05,
+     -193.9
+    ],
+    "Button_Gifts/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     245.85,
+     -101.4
+    ],
+    "Button_Help": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     486.05,
+     0.0
+    ],
+    "Button_Help/Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     532.4,
+     -193.8
+    ],
+    "Button_Help/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     555.7,
+     -100.05
+    ],
+    "Button_News": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     601.05,
+     0.0
+    ],
+    "Button_News/Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     686.45,
+     -193.8
+    ],
+    "Button_News/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     708.15,
+     -100.15
+    ],
+    "Button_VIP": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     452.0,
+     -127.35
+    ],
+    "Button_VIP_Active": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     452.0,
+     -127.35
+    ],
+    "Button_cash": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     717.05,
+     0.0
+    ],
+    "Button_cash/Hit_Area": [
+     1.0856,
+     0.0,
+     0.0,
+     1.0,
+     840.35,
+     -193.8
+    ],
+    "Button_cash/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     860.75,
+     -100.15
+    ]
+   },
+   "files": [
+    "Top_Bar_Left.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 248,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     2
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    197.6,
+    391.65
+   ],
+   "sequence": null,
+   "size": [
+    2171,
+    263
+   ]
+  },
+  "Top_Bar_Right": {
+   "children_frame1": {
+    "Button_Inbox": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     3.45
+    ],
+    "Button_Inbox/Hit_Area": [
+     1.8664,
+     0.0,
+     0.0,
+     1.7189,
+     -104.8,
+     -122.45
+    ],
+    "Button_Inbox/Inbox_Animated": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     4.45
+    ],
+    "Button_Inbox/Inbox_Idle": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -3.0,
+     4.45
+    ],
+    "Button_Inbox/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -45.05,
+     39.95
+    ],
+    "Button_Inbox/Text_Number": [
+     1.3887,
+     0.0,
+     0.0,
+     1.5171,
+     44.0,
+     -88.85
+    ]
+   },
+   "files": [
+    "Top_Bar_Right.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 197,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     65,
+     26
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    213.12,
+    248.02
+   ],
+   "sequence": null,
+   "size": [
+    512,
+    427
+   ]
+  },
+  "background_main": {
+   "files": [
+    "background_main.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 317,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    766.0,
+    702.0
+   ],
+   "sequence": null,
+   "size": [
+    1534,
+    1412
+   ]
+  },
+  "dark_back": {
+   "files": [
+    "dark_back.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 318,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    766.9,
+    701.2
+   ],
+   "sequence": null,
+   "size": [
+    1534,
+    1412
+   ]
+  },
+  "home_screen": {
+   "children_frame1": {
+    "Button_Character": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -185.35,
+     29.25
+    ],
+    "Button_Character/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -185.35,
+     29.25
+    ],
+    "Button_Character/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -237.55,
+     44.4
+    ],
+    "Button_Crafting": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     178.45,
+     -97.2
+    ],
+    "Button_Crafting/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     177.3,
+     -95.0
+    ],
+    "Button_Crafting/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     126.0,
+     -80.65
+    ],
+    "Button_Supplies": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -175.1,
+     -96.1
+    ],
+    "Button_Supplies/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -175.65,
+     -93.7
+    ],
+    "Button_Supplies/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -231.4,
+     -79.45
+    ],
+    "Button_Teams": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     188.15,
+     31.25
+    ],
+    "Button_Teams/Hit_Area": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     188.15,
+     31.25
+    ],
+    "Button_Teams/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     134.0,
+     43.5
+    ],
+    "Character_Frame": [
+     3.4267,
+     0.0,
+     0.0,
+     3.4267,
+     -4.4,
+     -22.35
+    ],
+    "Character_Frame/Container_Character": [
+     3.4267,
+     0.0,
+     0.0,
+     3.4267,
+     -4.7427,
+     -23.0353
+    ],
+    "Container_Play_Buttons": [
+     0.5173,
+     0.0,
+     0.0,
+     0.53,
+     -22.85,
+     -390.45
+    ],
+    "Container_Play_Buttons/Play_No_Tournament": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     0.4559,
+     76.8495
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Custom_Game": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     72.3842,
+     255.4796
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Custom_Game/Hit_Area": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     77.2884,
+     258.1032
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Custom_Game/Text": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     5.7415,
+     246.6039
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Play": [
+     0.5891,
+     0.0,
+     0.0,
+     0.6034,
+     -75.7227,
+     227.5687
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Play/Hit_Area": [
+     0.5891,
+     0.0,
+     0.0,
+     0.6034,
+     -93.8389,
+     228.0212
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Play/Text": [
+     0.5891,
+     0.0,
+     0.0,
+     0.6034,
+     -132.3101,
+     209.3752
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Tournament": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     63.6656,
+     220.87
+    ],
+    "Container_Play_Buttons/Play_No_Tournament/Button_Tournament/Text": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     6.6134,
+     201.9464
+    ],
+    "Container_Play_Buttons/Play_Tournament": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     383.9556,
+     -411.7547
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Custom_Game": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     72.4298,
+     255.5403
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Custom_Game/Hit_Area": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     77.334,
+     258.164
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Custom_Game/Text": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     5.7871,
+     246.6647
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Play": [
+     0.5892,
+     0.0,
+     0.0,
+     0.6036,
+     -75.5136,
+     227.6294
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Play/Hit_Area": [
+     0.5892,
+     0.0,
+     0.0,
+     0.6036,
+     -93.6329,
+     228.0821
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Play/Text": [
+     0.5892,
+     0.0,
+     0.0,
+     0.6036,
+     -132.1106,
+     209.4308
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Tournament": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     64.6921,
+     220.9866
+    ],
+    "Container_Play_Buttons/Play_Tournament/Button_Tournament/Text": [
+     1.0898,
+     0.0,
+     0.0,
+     1.1164,
+     7.6398,
+     202.063
+    ],
+    "Dark_Background_Container": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     0.0,
+     0.0
+    ],
+    "HUD_Friends_Bar": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -290.7,
+     412.85
+    ],
+    "HUD_Friends_Bar/Button_FastForward_Left": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -345.0371,
+     373.1473
+    ],
+    "HUD_Friends_Bar/Button_FastForward_Right": [
+     -0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     123.532,
+     373.1473
+    ],
+    "HUD_Friends_Bar/Button_Options": [
+     0.3803,
+     0.0,
+     0.0,
+     0.3761,
+     349.0869,
+     284.6601
+    ],
+    "HUD_Friends_Bar/Button_Scroll_Left": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -345.0371,
+     341.6484
+    ],
+    "HUD_Friends_Bar/Button_Scroll_Right": [
+     -0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     123.3294,
+     341.6484
+    ],
+    "HUD_Friends_Bar/Button_Slot_Machine": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     243.4182,
+     378.0088
+    ],
+    "HUD_Friends_Bar/Button_Slot_Machine/Active": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     243.4182,
+     378.0088
+    ],
+    "HUD_Friends_Bar/Button_Slot_Machine/Active/Hit_Area": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     253.7521,
+     338.4749
+    ],
+    "HUD_Friends_Bar/Button_Slot_Machine/Active/Text": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     173.918,
+     386.2802
+    ],
+    "HUD_Friends_Bar/Button_Slot_Machine/Default": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     243.4182,
+     378.0088
+    ],
+    "HUD_Friends_Bar/Button_Slot_Machine/Default/Hit_Area": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     253.7521,
+     338.4749
+    ],
+    "HUD_Friends_Bar/Container_Slots": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -281.1091,
+     333.377
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -281.1091,
+     333.377
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01/Slot_Default": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -283.1354,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01/Slot_Default/Container_Profile_Picture": [
+     0.1304,
+     0.0,
+     0.0,
+     0.1289,
+     -290.8689,
+     356.4356
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01/Slot_Default/Icon_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -312.2457,
+     334.6261
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01/Slot_Default/Icon_Level/Text_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -324.2163,
+     323.046
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01/Slot_Default/Text_Name": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -325.4163,
+     395.4632
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01/Slot_Disabled": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -283.1354,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_01/Slot_Disabled/Text": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -325.4501,
+     371.3917
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -208.7722,
+     333.377
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02/Slot_Default": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -210.7984,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02/Slot_Default/Container_Profile_Picture": [
+     0.1304,
+     0.0,
+     0.0,
+     0.1289,
+     -218.5319,
+     356.4356
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02/Slot_Default/Icon_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -239.9088,
+     334.6261
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02/Slot_Default/Icon_Level/Text_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -251.8794,
+     323.046
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02/Slot_Default/Text_Name": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -253.0794,
+     395.4632
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02/Slot_Disabled": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -210.7984,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_02/Slot_Disabled/Text": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -253.1132,
+     371.3917
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -136.4352,
+     333.377
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03/Slot_Default": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -138.4614,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03/Slot_Default/Container_Profile_Picture": [
+     0.1304,
+     0.0,
+     0.0,
+     0.1289,
+     -146.195,
+     356.4356
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03/Slot_Default/Icon_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -167.5718,
+     334.6261
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03/Slot_Default/Icon_Level/Text_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -179.5424,
+     323.046
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03/Slot_Default/Text_Name": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -180.7424,
+     395.4632
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03/Slot_Disabled": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -138.4614,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_03/Slot_Disabled/Text": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -180.7762,
+     371.3917
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -64.0983,
+     333.377
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04/Slot_Default": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -66.1245,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04/Slot_Default/Container_Profile_Picture": [
+     0.1304,
+     0.0,
+     0.0,
+     0.1289,
+     -73.858,
+     356.4356
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04/Slot_Default/Icon_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -95.2349,
+     334.6261
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04/Slot_Default/Icon_Level/Text_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -107.2054,
+     323.046
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04/Slot_Default/Text_Name": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -108.4055,
+     395.4632
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04/Slot_Disabled": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -66.1245,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_04/Slot_Disabled/Text": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -108.4393,
+     371.3917
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     8.2387,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05/Slot_Default": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     6.2125,
+     334.7274
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05/Slot_Default/Container_Profile_Picture": [
+     0.1304,
+     0.0,
+     0.0,
+     0.1289,
+     -1.5211,
+     357.1109
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05/Slot_Default/Icon_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -22.8979,
+     335.3014
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05/Slot_Default/Icon_Level/Text_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     -34.8685,
+     323.7213
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05/Slot_Default/Text_Name": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -36.0685,
+     396.1384
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05/Slot_Disabled": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     6.2125,
+     334.7274
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_05/Slot_Disabled/Text": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     -36.1023,
+     372.0669
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     80.5756,
+     334.0522
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06/Slot_Default": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     78.5494,
+     334.7274
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06/Slot_Default/Container_Profile_Picture": [
+     0.1304,
+     0.0,
+     0.0,
+     0.1289,
+     70.8159,
+     357.1109
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06/Slot_Default/Icon_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     49.439,
+     335.3014
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06/Slot_Default/Icon_Level/Text_Level": [
+     0.3616,
+     0.0,
+     0.0,
+     0.3574,
+     37.4685,
+     323.7213
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06/Slot_Default/Text_Name": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     36.2684,
+     396.1384
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06/Slot_Disabled": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     78.5494,
+     334.7274
+    ],
+    "HUD_Friends_Bar/Container_Slots/Slot_06/Slot_Disabled/Text": [
+     0.6754,
+     0.0,
+     0.0,
+     0.6752,
+     36.2347,
+     372.0669
+    ],
+    "HUD_Friends_Bar/Options_Bar": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.6197,
+     158.6309
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Fullscreen": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     141.835
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Fullscreen/Button_Off": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     141.835
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Fullscreen/Button_On": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     141.835
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Music": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     204.6908
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Music/Button_Off": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     204.6908
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Music/Button_On": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     204.6908
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Quality": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     173.6751
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Quality/Button_Off": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     173.6751
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Quality/Button_On": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     173.6751
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Sounds": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     235.7065
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Sounds/Button_Off": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     235.7065
+    ],
+    "HUD_Friends_Bar/Options_Bar/Button_Sounds/Button_On": [
+     1.0307,
+     0.0,
+     0.0,
+     1.0304,
+     351.362,
+     235.7065
+    ],
+    "HUD_Level": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -377.45,
+     -268.1
+    ],
+    "HUD_Level/Container_Challenges": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -376.7155,
+     -201.6408
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_1": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -376.7155,
+     -201.6408
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_1/Challenge_Default": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_1/Challenge_Default/Container_Icon": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_1/Challenge_Done": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_1/Challenge_New": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_2": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -376.7155,
+     -201.6408
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_2/Challenge_Default": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_2/Challenge_Default/Container_Icon": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_2/Challenge_Done": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_2/Challenge_New": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_3": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -376.7155,
+     -201.6408
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_3/Challenge_Default": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_3/Challenge_Default/Container_Icon": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_3/Challenge_Done": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_3/Challenge_New": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_4": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -376.7155,
+     -201.6408
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_4/Challenge_Default": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_4/Challenge_Default/Container_Icon": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_4/Challenge_Done": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Container_Challenges/Button_Challenge_4/Challenge_New": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -378.9189,
+     -200.8856
+    ],
+    "HUD_Level/Fill": [
+     1.2043,
+     0.0,
+     0.0,
+     1.2296,
+     -420.9671,
+     -161.4254
+    ],
+    "HUD_Level/Icon_Level": [
+     0.7819,
+     0.0,
+     0.0,
+     0.8044,
+     -331.1786,
+     -162.9736
+    ],
+    "HUD_Level/Icon_Level/Text_Level": [
+     0.7819,
+     0.0,
+     0.0,
+     0.8044,
+     -357.0597,
+     -189.0347
+    ],
+    "HUD_Level/Text": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     -278.1501,
+     -158.0269
+    ],
+    "HUD_Level/Top_Bar_Left": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -328.7549,
+     -167.2783
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Friends": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -90.3437,
+     -167.2783
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Friends/Hit_Area": [
+     0.4939,
+     0.0,
+     0.0,
+     0.5191,
+     -156.5147,
+     -267.875
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Friends/Text": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -160.5636,
+     -219.8606
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Gifts": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -192.5914,
+     -233.7199
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Gifts/Hit_Area": [
+     0.4939,
+     0.0,
+     0.0,
+     0.5191,
+     -226.3707,
+     -267.9269
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Gifts/Text": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -216.9079,
+     -219.9125
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Help": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -107.6314,
+     -167.2783
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Help/Hit_Area": [
+     0.4939,
+     0.0,
+     0.0,
+     0.5191,
+     -86.5449,
+     -267.875
+    ],
+    "HUD_Level/Top_Bar_Left/Button_Help/Text": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -75.9448,
+     -219.2117
+    ],
+    "HUD_Level/Top_Bar_Left/Button_News": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -55.3133,
+     -167.2783
+    ],
+    "HUD_Level/Top_Bar_Left/Button_News/Hit_Area": [
+     0.4939,
+     0.0,
+     0.0,
+     0.5191,
+     -16.4614,
+     -267.875
+    ],
+    "HUD_Level/Top_Bar_Left/Button_News/Text": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -6.5892,
+     -219.2636
+    ],
+    "HUD_Level/Top_Bar_Left/Button_VIP": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -123.1221,
+     -233.3825
+    ],
+    "HUD_Level/Top_Bar_Left/Button_VIP_Active": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -123.1221,
+     -233.3825
+    ],
+    "HUD_Level/Top_Bar_Left/Button_cash": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     -2.5403,
+     -167.2783
+    ],
+    "HUD_Level/Top_Bar_Left/Button_cash/Hit_Area": [
+     0.4939,
+     0.0,
+     0.0,
+     0.5191,
+     53.5538,
+     -267.875
+    ],
+    "HUD_Level/Top_Bar_Left/Button_cash/Text": [
+     0.4549,
+     0.0,
+     0.0,
+     0.5191,
+     62.8346,
+     -219.2636
+    ],
+    "HUD_Level/Xp_Bar_Back": [
+     1.2042,
+     0.0,
+     0.0,
+     1.2382,
+     -291.04,
+     -194.2774
+    ],
+    "HUD_money": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     377.85,
+     -268.7
+    ],
+    "HUD_money/Saldo": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     57.8796,
+     -206.319
+    ],
+    "HUD_money/Saldo/Button_Add_Cash": [
+     0.4407,
+     0.0,
+     0.0,
+     0.4531,
+     335.508,
+     -150.4328
+    ],
+    "HUD_money/Saldo/Button_Add_Cash/Text": [
+     0.4407,
+     0.0,
+     0.0,
+     0.4531,
+     312.5715,
+     -160.2653
+    ],
+    "HUD_money/Saldo/Button_Add_Coins": [
+     0.4407,
+     0.0,
+     0.0,
+     0.4531,
+     177.5977,
+     -150.4328
+    ],
+    "HUD_money/Saldo/Button_Add_Coins/Text": [
+     0.4407,
+     0.0,
+     0.0,
+     0.4531,
+     154.6612,
+     -160.2653
+    ],
+    "HUD_money/Saldo/Text_Cash": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     267.1659,
+     -196.6522
+    ],
+    "HUD_money/Saldo/Text_Coins": [
+     0.7345,
+     0.0,
+     0.0,
+     0.7552,
+     167.6457,
+     -196.6522
+    ],
+    "HUD_money/Top_Bar_Right": [
+     0.2921,
+     0.0,
+     0.0,
+     0.3062,
+     336.3526,
+     -230.7503
+    ],
+    "HUD_money/Top_Bar_Right/Button_Inbox": [
+     0.2921,
+     0.0,
+     0.0,
+     0.3062,
+     336.3526,
+     -229.6939
+    ],
+    "HUD_money/Top_Bar_Right/Button_Inbox/Hit_Area": [
+     0.5451,
+     0.0,
+     0.0,
+     0.5263,
+     305.7428,
+     -268.2427
+    ],
+    "HUD_money/Top_Bar_Right/Button_Inbox/Inbox_Animated": [
+     0.2921,
+     0.0,
+     0.0,
+     0.3062,
+     335.4764,
+     -229.3877
+    ],
+    "HUD_money/Top_Bar_Right/Button_Inbox/Inbox_Idle": [
+     0.2921,
+     0.0,
+     0.0,
+     0.3062,
+     335.4764,
+     -229.3877
+    ],
+    "HUD_money/Top_Bar_Right/Button_Inbox/Text": [
+     0.2921,
+     0.0,
+     0.0,
+     0.3062,
+     323.1945,
+     -218.5182
+    ],
+    "HUD_money/Top_Bar_Right/Button_Inbox/Text_Number": [
+     0.4056,
+     0.0,
+     0.0,
+     0.4645,
+     349.2041,
+     -257.9548
+    ]
+   },
+   "files": [
+    "home_screen.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 289,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     88,
+     47
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    906.56,
+    585.72
+   ],
+   "sequence": null,
+   "size": [
+    1848,
+    1668
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

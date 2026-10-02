@@ -1,0 +1,324 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_4.png": {
+   "id": 4,
+   "linkage": null,
+   "size": [
+    480,
+    480
+   ]
+  },
+  "_bitmaps/bitmap_7.png": {
+   "id": 7,
+   "linkage": null,
+   "size": [
+    175,
+    168
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/fx/boosters.swf",
+ "symbols": {
+  "booster_start": {
+   "children_frame1": {
+    "booster_icon_01": [
+     0.4479,
+     0.0,
+     0.0,
+     0.4479,
+     -69.2,
+     -2.75
+    ],
+    "booster_icon_02": [
+     0.4479,
+     0.0,
+     0.0,
+     0.4479,
+     22.75,
+     64.55
+    ],
+    "booster_icon_03": [
+     0.4479,
+     0.0,
+     0.0,
+     0.4479,
+     49.55,
+     -48.1
+    ]
+   },
+   "files": [
+    "booster_start/001.png",
+    "booster_start/002.png",
+    "booster_start/003.png",
+    "booster_start/004.png",
+    "booster_start/005.png",
+    "booster_start/006.png",
+    "booster_start/007.png",
+    "booster_start/008.png",
+    "booster_start/009.png",
+    "booster_start/010.png",
+    "booster_start/011.png",
+    "booster_start/012.png",
+    "booster_start/013.png",
+    "booster_start/014.png",
+    "booster_start/015.png",
+    "booster_start/016.png",
+    "booster_start/017.png",
+    "booster_start/018.png",
+    "booster_start/019.png",
+    "booster_start/020.png",
+    "booster_start/021.png",
+    "booster_start/022.png",
+    "booster_start/023.png",
+    "booster_start/024.png",
+    "booster_start/025.png",
+    "booster_start/026.png",
+    "booster_start/027.png",
+    "booster_start/028.png",
+    "booster_start/029.png",
+    "booster_start/030.png",
+    "booster_start/031.png",
+    "booster_start/032.png",
+    "booster_start/033.png",
+    "booster_start/034.png",
+    "booster_start/035.png",
+    "booster_start/036.png"
+   ],
+   "frames_exported": 36,
+   "frames_total": 36,
+   "id": 10,
+   "labels": {
+    "in": 1,
+    "out": 36
+   },
+   "offsets": [
+    [
+     20,
+     15
+    ],
+    [
+     20,
+     15
+    ],
+    [
+     21,
+     16
+    ],
+    [
+     22,
+     17
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     24,
+     19
+    ],
+    [
+     26,
+     21
+    ],
+    [
+     28,
+     23
+    ],
+    [
+     31,
+     26
+    ],
+    [
+     33,
+     28
+    ],
+    [
+     36,
+     31
+    ],
+    [
+     40,
+     35
+    ],
+    [
+     44,
+     39
+    ],
+    [
+     48,
+     43
+    ],
+    [
+     52,
+     47
+    ],
+    [
+     57,
+     52
+    ],
+    [
+     62,
+     57
+    ],
+    [
+     67,
+     62
+    ],
+    [
+     73,
+     68
+    ],
+    [
+     79,
+     74
+    ],
+    [
+     85,
+     80
+    ],
+    [
+     92,
+     87
+    ],
+    [
+     99,
+     94
+    ],
+    [
+     106,
+     101
+    ],
+    [
+     114,
+     109
+    ],
+    [
+     122,
+     117
+    ],
+    [
+     130,
+     125
+    ],
+    [
+     139,
+     134
+    ],
+    [
+     148,
+     143
+    ],
+    [
+     157,
+     152
+    ],
+    [
+     166,
+     161
+    ],
+    [
+     176,
+     171
+    ],
+    [
+     186,
+     182
+    ],
+    [
+     197,
+     192
+    ],
+    [
+     208,
+     203
+    ],
+    [
+     219,
+     213
+    ]
+   ],
+   "origin_px": [
+    219.9,
+    215.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ],
+   "size": [
+    448,
+    438
+   ]
+  },
+  "shimmer": {
+   "children_frame1": {
+    "booster_icon": [
+     0.277,
+     0.0,
+     0.0,
+     0.277,
+     0.0,
+     -7.4
+    ]
+   },
+   "files": [
+    "shimmer.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 3,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    27.7,
+    42.5
+   ],
+   "sequence": null,
+   "size": [
+    55,
+    55
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

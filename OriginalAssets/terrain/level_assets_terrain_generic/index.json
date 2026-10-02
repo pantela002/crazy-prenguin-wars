@@ -1,0 +1,16 @@
+{
+ "bitmaps": {
+  "_bitmaps/landmass_terrain_generic.png": {
+   "id": 1,
+   "linkage": "landmass_terrain_generic.png",
+   "size": [
+    256,
+    256
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/level_graphics/level_assets_terrain_generic.swf",
+ "symbols": {},
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 1
+}

@@ -1,0 +1,9535 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_100.png": {
+   "id": 100,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_104.png": {
+   "id": 104,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_107.png": {
+   "id": 107,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_111.png": {
+   "id": 111,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_114.png": {
+   "id": 114,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_118.png": {
+   "id": 118,
+   "linkage": null,
+   "size": [
+    78,
+    78
+   ]
+  },
+  "_bitmaps/bitmap_124.png": {
+   "id": 124,
+   "linkage": null,
+   "size": [
+    31,
+    47
+   ]
+  },
+  "_bitmaps/bitmap_128.png": {
+   "id": 128,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_131.png": {
+   "id": 131,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_134.png": {
+   "id": 134,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_137.png": {
+   "id": 137,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_141.png": {
+   "id": 141,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_144.png": {
+   "id": 144,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_148.png": {
+   "id": 148,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_151.png": {
+   "id": 151,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_155.png": {
+   "id": 155,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_158.png": {
+   "id": 158,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_162.png": {
+   "id": 162,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_165.png": {
+   "id": 165,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_169.png": {
+   "id": 169,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_172.png": {
+   "id": 172,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_176.png": {
+   "id": 176,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_179.png": {
+   "id": 179,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_183.png": {
+   "id": 183,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_186.png": {
+   "id": 186,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_190.png": {
+   "id": 190,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_193.png": {
+   "id": 193,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_197.png": {
+   "id": 197,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_200.png": {
+   "id": 200,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_205.png": {
+   "id": 205,
+   "linkage": null,
+   "size": [
+    85,
+    22
+   ]
+  },
+  "_bitmaps/bitmap_207.png": {
+   "id": 207,
+   "linkage": null,
+   "size": [
+    85,
+    22
+   ]
+  },
+  "_bitmaps/bitmap_213.png": {
+   "id": 213,
+   "linkage": null,
+   "size": [
+    85,
+    22
+   ]
+  },
+  "_bitmaps/bitmap_215.png": {
+   "id": 215,
+   "linkage": null,
+   "size": [
+    85,
+    22
+   ]
+  },
+  "_bitmaps/bitmap_224.png": {
+   "id": 224,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_227.png": {
+   "id": 227,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_23.png": {
+   "id": 23,
+   "linkage": null,
+   "size": [
+    32,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_231.png": {
+   "id": 231,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_235.png": {
+   "id": 235,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_239.png": {
+   "id": 239,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_242.png": {
+   "id": 242,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_246.png": {
+   "id": 246,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_250.png": {
+   "id": 250,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_254.png": {
+   "id": 254,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_257.png": {
+   "id": 257,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_26.png": {
+   "id": 26,
+   "linkage": null,
+   "size": [
+    36,
+    30
+   ]
+  },
+  "_bitmaps/bitmap_261.png": {
+   "id": 261,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_265.png": {
+   "id": 265,
+   "linkage": null,
+   "size": [
+    77,
+    69
+   ]
+  },
+  "_bitmaps/bitmap_285.png": {
+   "id": 285,
+   "linkage": null,
+   "size": [
+    34,
+    34
+   ]
+  },
+  "_bitmaps/bitmap_288.png": {
+   "id": 288,
+   "linkage": null,
+   "size": [
+    286,
+    112
+   ]
+  },
+  "_bitmaps/bitmap_291.png": {
+   "id": 291,
+   "linkage": null,
+   "size": [
+    92,
+    68
+   ]
+  },
+  "_bitmaps/bitmap_295.png": {
+   "id": 295,
+   "linkage": null,
+   "size": [
+    32,
+    16
+   ]
+  },
+  "_bitmaps/bitmap_296.png": {
+   "id": 296,
+   "linkage": null,
+   "size": [
+    32,
+    18
+   ]
+  },
+  "_bitmaps/bitmap_297.png": {
+   "id": 297,
+   "linkage": null,
+   "size": [
+    32,
+    17
+   ]
+  },
+  "_bitmaps/bitmap_298.png": {
+   "id": 298,
+   "linkage": null,
+   "size": [
+    32,
+    17
+   ]
+  },
+  "_bitmaps/bitmap_299.png": {
+   "id": 299,
+   "linkage": null,
+   "size": [
+    32,
+    17
+   ]
+  },
+  "_bitmaps/bitmap_300.png": {
+   "id": 300,
+   "linkage": null,
+   "size": [
+    32,
+    18
+   ]
+  },
+  "_bitmaps/bitmap_301.png": {
+   "id": 301,
+   "linkage": null,
+   "size": [
+    32,
+    17
+   ]
+  },
+  "_bitmaps/bitmap_302.png": {
+   "id": 302,
+   "linkage": null,
+   "size": [
+    32,
+    17
+   ]
+  },
+  "_bitmaps/bitmap_303.png": {
+   "id": 303,
+   "linkage": null,
+   "size": [
+    32,
+    17
+   ]
+  },
+  "_bitmaps/bitmap_304.png": {
+   "id": 304,
+   "linkage": null,
+   "size": [
+    32,
+    17
+   ]
+  },
+  "_bitmaps/bitmap_305.png": {
+   "id": 305,
+   "linkage": null,
+   "size": [
+    32,
+    19
+   ]
+  },
+  "_bitmaps/bitmap_31.png": {
+   "id": 31,
+   "linkage": null,
+   "size": [
+    36,
+    34
+   ]
+  },
+  "_bitmaps/bitmap_310.png": {
+   "id": 310,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_312.png": {
+   "id": 312,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_314.png": {
+   "id": 314,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_316.png": {
+   "id": 316,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_318.png": {
+   "id": 318,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_320.png": {
+   "id": 320,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_322.png": {
+   "id": 322,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_324.png": {
+   "id": 324,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_326.png": {
+   "id": 326,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_328.png": {
+   "id": 328,
+   "linkage": null,
+   "size": [
+    47,
+    31
+   ]
+  },
+  "_bitmaps/bitmap_346.png": {
+   "id": 346,
+   "linkage": null,
+   "size": [
+    111,
+    11
+   ]
+  },
+  "_bitmaps/bitmap_357.png": {
+   "id": 357,
+   "linkage": null,
+   "size": [
+    111,
+    11
+   ]
+  },
+  "_bitmaps/bitmap_368.png": {
+   "id": 368,
+   "linkage": null,
+   "size": [
+    111,
+    11
+   ]
+  },
+  "_bitmaps/bitmap_379.png": {
+   "id": 379,
+   "linkage": null,
+   "size": [
+    111,
+    11
+   ]
+  },
+  "_bitmaps/bitmap_43.png": {
+   "id": 43,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_47.png": {
+   "id": 47,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_50.png": {
+   "id": 50,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_53.png": {
+   "id": 53,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_57.png": {
+   "id": 57,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_60.png": {
+   "id": 60,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_64.png": {
+   "id": 64,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_67.png": {
+   "id": 67,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_71.png": {
+   "id": 71,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_74.png": {
+   "id": 74,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_78.png": {
+   "id": 78,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_81.png": {
+   "id": 81,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_85.png": {
+   "id": 85,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_88.png": {
+   "id": 88,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_92.png": {
+   "id": 92,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_97.png": {
+   "id": 97,
+   "linkage": null,
+   "size": [
+    24,
+    24
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/character_ui.swf",
+ "symbols": {
+  "ButtonActionCircleAttack": {
+   "files": [
+    "ButtonActionCircleAttack.png"
+   ],
+   "frames_exported": 21,
+   "frames_total": 21,
+   "id": 284,
+   "labels": {
+    "Active": 13,
+    "Disabled": 14,
+    "In": 1,
+    "Out": 15,
+    "Visible": 12
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "ButtonActionCircleBazooka": {
+   "files": [
+    "ButtonActionCircleBazooka.png"
+   ],
+   "frames_exported": 21,
+   "frames_total": 21,
+   "id": 280,
+   "labels": {
+    "Active": 13,
+    "Disabled": 14,
+    "In": 1,
+    "Out": 15,
+    "Visible": 12
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "ButtonActionCircleFragGrenade": {
+   "files": [
+    "ButtonActionCircleFragGrenade.png"
+   ],
+   "frames_exported": 21,
+   "frames_total": 21,
+   "id": 276,
+   "labels": {
+    "Active": 13,
+    "Disabled": 14,
+    "In": 1,
+    "Out": 15,
+    "Visible": 12
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "ButtonActionCircleJump": {
+   "files": [
+    "ButtonActionCircleJump.png"
+   ],
+   "frames_exported": 21,
+   "frames_total": 21,
+   "id": 272,
+   "labels": {
+    "Active": 13,
+    "Disabled": 14,
+    "In": 1,
+    "Out": 15,
+    "Visible": 12
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "action_arrows_aim": {
+   "files": [
+    "action_arrows_aim/001.png",
+    "action_arrows_aim/002.png",
+    "action_arrows_aim/003.png",
+    "action_arrows_aim/004.png",
+    "action_arrows_aim/005.png",
+    "action_arrows_aim/006.png",
+    "action_arrows_aim/007.png",
+    "action_arrows_aim/008.png",
+    "action_arrows_aim/009.png",
+    "action_arrows_aim/010.png",
+    "action_arrows_aim/011.png",
+    "action_arrows_aim/012.png",
+    "action_arrows_aim/013.png"
+   ],
+   "frames_exported": 20,
+   "frames_total": 20,
+   "id": 268,
+   "labels": {
+    "Active": 11,
+    "In": 1,
+    "Out": 12,
+    "Visible": 10
+   },
+   "offsets": [
+    [
+     76,
+     196
+    ],
+    [
+     50,
+     130
+    ],
+    [
+     24,
+     65
+    ],
+    [
+     14,
+     41
+    ],
+    [
+     3,
+     16
+    ],
+    [
+     2,
+     9
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     8,
+     11
+    ],
+    [
+     8,
+     11
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     2,
+     9
+    ],
+    [
+     14,
+     41
+    ]
+   ],
+   "origin_px": [
+    84.8,
+    79.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    8,
+    9,
+    8,
+    10,
+    6,
+    11,
+    4,
+    12,
+    2,
+    1,
+    0
+   ],
+   "size": [
+    169,
+    228
+   ]
+  },
+  "action_arrows_aim_disabled": {
+   "files": [
+    "action_arrows_aim_disabled/001.png",
+    "action_arrows_aim_disabled/002.png",
+    "action_arrows_aim_disabled/003.png",
+    "action_arrows_aim_disabled/004.png",
+    "action_arrows_aim_disabled/005.png",
+    "action_arrows_aim_disabled/006.png",
+    "action_arrows_aim_disabled/007.png",
+    "action_arrows_aim_disabled/008.png",
+    "action_arrows_aim_disabled/009.png",
+    "action_arrows_aim_disabled/010.png",
+    "action_arrows_aim_disabled/011.png",
+    "action_arrows_aim_disabled/012.png"
+   ],
+   "frames_exported": 19,
+   "frames_total": 19,
+   "id": 264,
+   "labels": {
+    "In": 1,
+    "Out": 11,
+    "Visible": 10
+   },
+   "offsets": [
+    [
+     76,
+     196
+    ],
+    [
+     50,
+     130
+    ],
+    [
+     24,
+     65
+    ],
+    [
+     14,
+     41
+    ],
+    [
+     3,
+     16
+    ],
+    [
+     2,
+     9
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     8,
+     11
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     2,
+     9
+    ],
+    [
+     14,
+     41
+    ]
+   ],
+   "origin_px": [
+    84.8,
+    79.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    8,
+    8,
+    9,
+    6,
+    10,
+    4,
+    11,
+    2,
+    1,
+    0
+   ],
+   "size": [
+    169,
+    228
+   ]
+  },
+  "action_arrows_aim_hint": {
+   "files": [
+    "action_arrows_aim_hint/001.png",
+    "action_arrows_aim_hint/002.png",
+    "action_arrows_aim_hint/003.png",
+    "action_arrows_aim_hint/004.png",
+    "action_arrows_aim_hint/005.png",
+    "action_arrows_aim_hint/006.png",
+    "action_arrows_aim_hint/007.png",
+    "action_arrows_aim_hint/008.png",
+    "action_arrows_aim_hint/009.png",
+    "action_arrows_aim_hint/010.png",
+    "action_arrows_aim_hint/011.png",
+    "action_arrows_aim_hint/012.png",
+    "action_arrows_aim_hint/013.png",
+    "action_arrows_aim_hint/014.png",
+    "action_arrows_aim_hint/015.png",
+    "action_arrows_aim_hint/016.png",
+    "action_arrows_aim_hint/017.png",
+    "action_arrows_aim_hint/018.png",
+    "action_arrows_aim_hint/019.png",
+    "action_arrows_aim_hint/020.png"
+   ],
+   "frames_exported": 54,
+   "frames_total": 54,
+   "id": 260,
+   "labels": {
+    "Hint": 1
+   },
+   "offsets": [
+    [
+     0,
+     93
+    ],
+    [
+     0,
+     87
+    ],
+    [
+     0,
+     81
+    ],
+    [
+     0,
+     75
+    ],
+    [
+     0,
+     69
+    ],
+    [
+     0,
+     62
+    ],
+    [
+     0,
+     56
+    ],
+    [
+     0,
+     50
+    ],
+    [
+     0,
+     44
+    ],
+    [
+     0,
+     38
+    ],
+    [
+     0,
+     32
+    ],
+    [
+     0,
+     26
+    ],
+    [
+     0,
+     19
+    ],
+    [
+     0,
+     13
+    ],
+    [
+     0,
+     7
+    ],
+    [
+     0,
+     41
+    ],
+    [
+     0,
+     39
+    ],
+    [
+     0,
+     37
+    ],
+    [
+     0,
+     35
+    ],
+    [
+     0,
+     99
+    ]
+   ],
+   "origin_px": [
+    77.0,
+    167.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19
+   ],
+   "size": [
+    154,
+    236
+   ]
+  },
+  "action_arrows_drop": {
+   "files": [
+    "action_arrows_drop/001.png",
+    "action_arrows_drop/002.png",
+    "action_arrows_drop/003.png",
+    "action_arrows_drop/004.png",
+    "action_arrows_drop/005.png",
+    "action_arrows_drop/006.png",
+    "action_arrows_drop/007.png",
+    "action_arrows_drop/008.png",
+    "action_arrows_drop/009.png",
+    "action_arrows_drop/010.png",
+    "action_arrows_drop/011.png",
+    "action_arrows_drop/012.png",
+    "action_arrows_drop/013.png",
+    "action_arrows_drop/014.png",
+    "action_arrows_drop/015.png",
+    "action_arrows_drop/016.png"
+   ],
+   "frames_exported": 20,
+   "frames_total": 20,
+   "id": 253,
+   "labels": {
+    "Active": 11,
+    "In": 1,
+    "Out": 12,
+    "Visible": 10
+   },
+   "offsets": [
+    [
+     6,
+     66
+    ],
+    [
+     9,
+     40
+    ],
+    [
+     11,
+     15
+    ],
+    [
+     31,
+     11
+    ],
+    [
+     50,
+     7
+    ],
+    [
+     69,
+     4
+    ],
+    [
+     88,
+     1
+    ],
+    [
+     75,
+     4
+    ],
+    [
+     63,
+     7
+    ],
+    [
+     61,
+     7
+    ],
+    [
+     76,
+     4
+    ],
+    [
+     69,
+     4
+    ],
+    [
+     31,
+     9
+    ],
+    [
+     11,
+     12
+    ],
+    [
+     9,
+     38
+    ],
+    [
+     6,
+     65
+    ]
+   ],
+   "origin_px": [
+    129.0,
+    75.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    8,
+    9,
+    8,
+    10,
+    6,
+    11,
+    4,
+    12,
+    13,
+    14,
+    15
+   ],
+   "size": [
+    206,
+    150
+   ]
+  },
+  "action_arrows_drop_disabled": {
+   "files": [
+    "action_arrows_drop_disabled/001.png",
+    "action_arrows_drop_disabled/002.png",
+    "action_arrows_drop_disabled/003.png",
+    "action_arrows_drop_disabled/004.png",
+    "action_arrows_drop_disabled/005.png",
+    "action_arrows_drop_disabled/006.png",
+    "action_arrows_drop_disabled/007.png",
+    "action_arrows_drop_disabled/008.png",
+    "action_arrows_drop_disabled/009.png",
+    "action_arrows_drop_disabled/010.png",
+    "action_arrows_drop_disabled/011.png",
+    "action_arrows_drop_disabled/012.png",
+    "action_arrows_drop_disabled/013.png",
+    "action_arrows_drop_disabled/014.png",
+    "action_arrows_drop_disabled/015.png"
+   ],
+   "frames_exported": 19,
+   "frames_total": 19,
+   "id": 249,
+   "labels": {
+    "In": 1,
+    "Out": 11,
+    "Visible": 10
+   },
+   "offsets": [
+    [
+     6,
+     66
+    ],
+    [
+     9,
+     40
+    ],
+    [
+     11,
+     15
+    ],
+    [
+     31,
+     11
+    ],
+    [
+     50,
+     7
+    ],
+    [
+     69,
+     4
+    ],
+    [
+     88,
+     1
+    ],
+    [
+     75,
+     4
+    ],
+    [
+     63,
+     7
+    ],
+    [
+     76,
+     4
+    ],
+    [
+     69,
+     4
+    ],
+    [
+     31,
+     9
+    ],
+    [
+     11,
+     12
+    ],
+    [
+     9,
+     38
+    ],
+    [
+     6,
+     65
+    ]
+   ],
+   "origin_px": [
+    129.0,
+    75.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    8,
+    8,
+    9,
+    6,
+    10,
+    4,
+    11,
+    12,
+    13,
+    14
+   ],
+   "size": [
+    206,
+    150
+   ]
+  },
+  "action_arrows_drop_hint": {
+   "files": [
+    "action_arrows_drop_hint/001.png",
+    "action_arrows_drop_hint/002.png",
+    "action_arrows_drop_hint/003.png",
+    "action_arrows_drop_hint/004.png",
+    "action_arrows_drop_hint/005.png",
+    "action_arrows_drop_hint/006.png",
+    "action_arrows_drop_hint/007.png",
+    "action_arrows_drop_hint/008.png",
+    "action_arrows_drop_hint/009.png",
+    "action_arrows_drop_hint/010.png",
+    "action_arrows_drop_hint/011.png",
+    "action_arrows_drop_hint/012.png",
+    "action_arrows_drop_hint/013.png",
+    "action_arrows_drop_hint/014.png",
+    "action_arrows_drop_hint/015.png",
+    "action_arrows_drop_hint/016.png",
+    "action_arrows_drop_hint/017.png",
+    "action_arrows_drop_hint/018.png",
+    "action_arrows_drop_hint/019.png",
+    "action_arrows_drop_hint/020.png"
+   ],
+   "frames_exported": 54,
+   "frames_total": 54,
+   "id": 245,
+   "labels": {
+    "Hint": 1
+   },
+   "offsets": [
+    [
+     51,
+     35
+    ],
+    [
+     50,
+     33
+    ],
+    [
+     48,
+     31
+    ],
+    [
+     46,
+     30
+    ],
+    [
+     44,
+     28
+    ],
+    [
+     42,
+     26
+    ],
+    [
+     40,
+     24
+    ],
+    [
+     39,
+     23
+    ],
+    [
+     37,
+     21
+    ],
+    [
+     35,
+     19
+    ],
+    [
+     32,
+     16
+    ],
+    [
+     29,
+     13
+    ],
+    [
+     26,
+     10
+    ],
+    [
+     23,
+     7
+    ],
+    [
+     20,
+     5
+    ],
+    [
+     32,
+     16
+    ],
+    [
+     29,
+     13
+    ],
+    [
+     25,
+     10
+    ],
+    [
+     22,
+     7
+    ],
+    [
+     51,
+     35
+    ]
+   ],
+   "origin_px": [
+    117.3,
+    103.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19
+   ],
+   "size": [
+    234,
+    210
+   ]
+  },
+  "action_arrows_jump": {
+   "files": [
+    "action_arrows_jump/001.png",
+    "action_arrows_jump/002.png",
+    "action_arrows_jump/003.png",
+    "action_arrows_jump/004.png",
+    "action_arrows_jump/005.png",
+    "action_arrows_jump/006.png",
+    "action_arrows_jump/007.png",
+    "action_arrows_jump/008.png",
+    "action_arrows_jump/009.png",
+    "action_arrows_jump/010.png",
+    "action_arrows_jump/011.png"
+   ],
+   "frames_exported": 20,
+   "frames_total": 20,
+   "id": 238,
+   "labels": {
+    "Active": 11,
+    "In": 1,
+    "Out": 12,
+    "Visible": 10
+   },
+   "offsets": [
+    [
+     73,
+     0
+    ],
+    [
+     45,
+     23
+    ],
+    [
+     16,
+     46
+    ],
+    [
+     11,
+     64
+    ],
+    [
+     6,
+     82
+    ],
+    [
+     3,
+     103
+    ],
+    [
+     0,
+     124
+    ],
+    [
+     3,
+     113
+    ],
+    [
+     6,
+     101
+    ],
+    [
+     6,
+     101
+    ],
+    [
+     11,
+     64
+    ]
+   ],
+   "origin_px": [
+    82.7,
+    155.4
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    8,
+    9,
+    8,
+    7,
+    6,
+    5,
+    4,
+    10,
+    2,
+    1,
+    0
+   ],
+   "size": [
+    165,
+    239
+   ]
+  },
+  "action_arrows_jump_disabled": {
+   "files": [
+    "action_arrows_jump_disabled/001.png",
+    "action_arrows_jump_disabled/002.png",
+    "action_arrows_jump_disabled/003.png",
+    "action_arrows_jump_disabled/004.png",
+    "action_arrows_jump_disabled/005.png",
+    "action_arrows_jump_disabled/006.png",
+    "action_arrows_jump_disabled/007.png",
+    "action_arrows_jump_disabled/008.png",
+    "action_arrows_jump_disabled/009.png",
+    "action_arrows_jump_disabled/010.png"
+   ],
+   "frames_exported": 19,
+   "frames_total": 19,
+   "id": 234,
+   "labels": {
+    "In": 1,
+    "Out": 11,
+    "Visible": 10
+   },
+   "offsets": [
+    [
+     73,
+     0
+    ],
+    [
+     45,
+     23
+    ],
+    [
+     16,
+     46
+    ],
+    [
+     11,
+     64
+    ],
+    [
+     6,
+     82
+    ],
+    [
+     3,
+     103
+    ],
+    [
+     0,
+     124
+    ],
+    [
+     3,
+     113
+    ],
+    [
+     6,
+     101
+    ],
+    [
+     11,
+     64
+    ]
+   ],
+   "origin_px": [
+    82.7,
+    155.4
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    8,
+    8,
+    7,
+    6,
+    5,
+    4,
+    9,
+    2,
+    1,
+    0
+   ],
+   "size": [
+    165,
+    239
+   ]
+  },
+  "action_arrows_jump_hint": {
+   "files": [
+    "action_arrows_jump_hint/001.png",
+    "action_arrows_jump_hint/002.png",
+    "action_arrows_jump_hint/003.png",
+    "action_arrows_jump_hint/004.png",
+    "action_arrows_jump_hint/005.png",
+    "action_arrows_jump_hint/006.png",
+    "action_arrows_jump_hint/007.png",
+    "action_arrows_jump_hint/008.png",
+    "action_arrows_jump_hint/009.png",
+    "action_arrows_jump_hint/010.png",
+    "action_arrows_jump_hint/011.png",
+    "action_arrows_jump_hint/012.png",
+    "action_arrows_jump_hint/013.png",
+    "action_arrows_jump_hint/014.png",
+    "action_arrows_jump_hint/015.png",
+    "action_arrows_jump_hint/016.png",
+    "action_arrows_jump_hint/017.png",
+    "action_arrows_jump_hint/018.png",
+    "action_arrows_jump_hint/019.png",
+    "action_arrows_jump_hint/020.png"
+   ],
+   "frames_exported": 54,
+   "frames_total": 54,
+   "id": 230,
+   "labels": {
+    "Hint": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    77.0,
+    54.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19
+   ],
+   "size": [
+    154,
+    237
+   ]
+  },
+  "action_points_floater": {
+   "children_frame1": {
+    "Text_Action_Points": [
+     1.7104,
+     0.0,
+     0.0,
+     1.7104,
+     -338.7,
+     -79.65
+    ]
+   },
+   "files": [
+    "action_points_floater/001.png",
+    "action_points_floater/002.png",
+    "action_points_floater/003.png",
+    "action_points_floater/004.png",
+    "action_points_floater/005.png",
+    "action_points_floater/006.png",
+    "action_points_floater/007.png",
+    "action_points_floater/008.png",
+    "action_points_floater/009.png",
+    "action_points_floater/010.png",
+    "action_points_floater/011.png",
+    "action_points_floater/012.png",
+    "action_points_floater/013.png",
+    "action_points_floater/014.png",
+    "action_points_floater/015.png",
+    "action_points_floater/016.png",
+    "action_points_floater/017.png",
+    "action_points_floater/018.png",
+    "action_points_floater/019.png",
+    "action_points_floater/020.png",
+    "action_points_floater/021.png",
+    "action_points_floater/022.png",
+    "action_points_floater/023.png",
+    "action_points_floater/024.png",
+    "action_points_floater/025.png",
+    "action_points_floater/026.png",
+    "action_points_floater/027.png",
+    "action_points_floater/028.png",
+    "action_points_floater/029.png",
+    "action_points_floater/030.png",
+    "action_points_floater/031.png",
+    "action_points_floater/032.png",
+    "action_points_floater/033.png",
+    "action_points_floater/034.png",
+    "action_points_floater/035.png",
+    "action_points_floater/036.png",
+    "action_points_floater/037.png",
+    "action_points_floater/038.png",
+    "action_points_floater/039.png"
+   ],
+   "frames_exported": 40,
+   "frames_total": 40,
+   "id": 223,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     184,
+     325
+    ],
+    [
+     184,
+     315
+    ],
+    [
+     184,
+     305
+    ],
+    [
+     184,
+     295
+    ],
+    [
+     184,
+     285
+    ],
+    [
+     184,
+     275
+    ],
+    [
+     184,
+     267
+    ],
+    [
+     184,
+     258
+    ],
+    [
+     184,
+     249
+    ],
+    [
+     184,
+     241
+    ],
+    [
+     184,
+     232
+    ],
+    [
+     184,
+     224
+    ],
+    [
+     184,
+     215
+    ],
+    [
+     184,
+     206
+    ],
+    [
+     184,
+     197
+    ],
+    [
+     184,
+     188
+    ],
+    [
+     184,
+     179
+    ],
+    [
+     184,
+     170
+    ],
+    [
+     184,
+     161
+    ],
+    [
+     184,
+     152
+    ],
+    [
+     184,
+     143
+    ],
+    [
+     184,
+     134
+    ],
+    [
+     184,
+     126
+    ],
+    [
+     184,
+     119
+    ],
+    [
+     184,
+     112
+    ],
+    [
+     184,
+     104
+    ],
+    [
+     184,
+     97
+    ],
+    [
+     184,
+     89
+    ],
+    [
+     184,
+     82
+    ],
+    [
+     184,
+     75
+    ],
+    [
+     184,
+     67
+    ],
+    [
+     184,
+     60
+    ],
+    [
+     184,
+     52
+    ],
+    [
+     184,
+     47
+    ],
+    [
+     184,
+     41
+    ],
+    [
+     184,
+     35
+    ],
+    [
+     184,
+     30
+    ],
+    [
+     184,
+     24
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    684.0,
+    482.42
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    0
+   ],
+   "size": [
+    1368,
+    426
+   ]
+  },
+  "aim_bar_bounding_box": {
+   "files": [
+    "aim_bar_bounding_box.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 309,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    31.8,
+    177.1
+   ],
+   "sequence": null,
+   "size": [
+    64,
+    137
+   ]
+  },
+  "aim_dot": {
+   "files": [
+    "aim_dot.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 287,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    34.0,
+    34.0
+   ],
+   "sequence": null,
+   "size": [
+    68,
+    68
+   ]
+  },
+  "aim_ui": {
+   "children_frame1": {
+    "Power_Bar": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     2.0,
+     0.0
+    ],
+    "Power_Bar/Bounding_Box": [
+     0.0,
+     1.1595,
+     -3.9477,
+     0.0,
+     -32.15,
+     72.2
+    ]
+   },
+   "files": [
+    "aim_ui.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 332,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    43.4,
+    414.9
+   ],
+   "sequence": null,
+   "size": [
+    678,
+    596
+   ]
+  },
+  "animated_health_bar_01": {
+   "children_frame1": {
+    "Ingame_Health_Bar_Filler": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -42.5,
+     49.2
+    ],
+    "Text_Ingame_Nametag": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -76.35,
+     20.85
+    ]
+   },
+   "files": [
+    "animated_health_bar_01/001.png",
+    "animated_health_bar_01/002.png",
+    "animated_health_bar_01/003.png",
+    "animated_health_bar_01/004.png",
+    "animated_health_bar_01/005.png",
+    "animated_health_bar_01/006.png",
+    "animated_health_bar_01/007.png",
+    "animated_health_bar_01/008.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 220,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     103,
+     28
+    ],
+    [
+     97,
+     22
+    ],
+    [
+     92,
+     16
+    ],
+    [
+     87,
+     10
+    ],
+    [
+     90,
+     13
+    ],
+    [
+     93,
+     17
+    ],
+    [
+     96,
+     20
+    ],
+    [
+     99,
+     25
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    186.44,
+    -16.36
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    0
+   ],
+   "size": [
+    373,
+    126
+   ]
+  },
+  "animated_health_bar_02": {
+   "children_frame1": {
+    "Ingame_Health_Bar_Filler": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -42.5,
+     49.2
+    ],
+    "Text_Ingame_Nametag": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -76.35,
+     20.85
+    ]
+   },
+   "files": [
+    "animated_health_bar_02/001.png",
+    "animated_health_bar_02/002.png",
+    "animated_health_bar_02/003.png",
+    "animated_health_bar_02/004.png",
+    "animated_health_bar_02/005.png",
+    "animated_health_bar_02/006.png",
+    "animated_health_bar_02/007.png",
+    "animated_health_bar_02/008.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 212,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     86,
+     28
+    ],
+    [
+     80,
+     22
+    ],
+    [
+     74,
+     15
+    ],
+    [
+     69,
+     9
+    ],
+    [
+     72,
+     13
+    ],
+    [
+     75,
+     16
+    ],
+    [
+     79,
+     20
+    ],
+    [
+     83,
+     24
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    186.44,
+    -16.36
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    0
+   ],
+   "size": [
+    373,
+    126
+   ]
+  },
+  "arrow_01": {
+   "files": [
+    "arrow_01/001.png",
+    "arrow_01/002.png",
+    "arrow_01/003.png",
+    "arrow_01/004.png",
+    "arrow_01/005.png",
+    "arrow_01/006.png",
+    "arrow_01/007.png",
+    "arrow_01/008.png",
+    "arrow_01/009.png",
+    "arrow_01/010.png",
+    "arrow_01/011.png",
+    "arrow_01/012.png",
+    "arrow_01/013.png",
+    "arrow_01/014.png",
+    "arrow_01/015.png",
+    "arrow_01/016.png",
+    "arrow_01/017.png",
+    "arrow_01/018.png",
+    "arrow_01/019.png",
+    "arrow_01/020.png",
+    "arrow_01/021.png",
+    "arrow_01/022.png",
+    "arrow_01/023.png",
+    "arrow_01/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 204,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_02": {
+   "files": [
+    "arrow_02/001.png",
+    "arrow_02/002.png",
+    "arrow_02/003.png",
+    "arrow_02/004.png",
+    "arrow_02/005.png",
+    "arrow_02/006.png",
+    "arrow_02/007.png",
+    "arrow_02/008.png",
+    "arrow_02/009.png",
+    "arrow_02/010.png",
+    "arrow_02/011.png",
+    "arrow_02/012.png",
+    "arrow_02/013.png",
+    "arrow_02/014.png",
+    "arrow_02/015.png",
+    "arrow_02/016.png",
+    "arrow_02/017.png",
+    "arrow_02/018.png",
+    "arrow_02/019.png",
+    "arrow_02/020.png",
+    "arrow_02/021.png",
+    "arrow_02/022.png",
+    "arrow_02/023.png",
+    "arrow_02/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 203,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_03": {
+   "files": [
+    "arrow_03/001.png",
+    "arrow_03/002.png",
+    "arrow_03/003.png",
+    "arrow_03/004.png",
+    "arrow_03/005.png",
+    "arrow_03/006.png",
+    "arrow_03/007.png",
+    "arrow_03/008.png",
+    "arrow_03/009.png",
+    "arrow_03/010.png",
+    "arrow_03/011.png",
+    "arrow_03/012.png",
+    "arrow_03/013.png",
+    "arrow_03/014.png",
+    "arrow_03/015.png",
+    "arrow_03/016.png",
+    "arrow_03/017.png",
+    "arrow_03/018.png",
+    "arrow_03/019.png",
+    "arrow_03/020.png",
+    "arrow_03/021.png",
+    "arrow_03/022.png",
+    "arrow_03/023.png",
+    "arrow_03/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 196,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_04": {
+   "files": [
+    "arrow_04/001.png",
+    "arrow_04/002.png",
+    "arrow_04/003.png",
+    "arrow_04/004.png",
+    "arrow_04/005.png",
+    "arrow_04/006.png",
+    "arrow_04/007.png",
+    "arrow_04/008.png",
+    "arrow_04/009.png",
+    "arrow_04/010.png",
+    "arrow_04/011.png",
+    "arrow_04/012.png",
+    "arrow_04/013.png",
+    "arrow_04/014.png",
+    "arrow_04/015.png",
+    "arrow_04/016.png",
+    "arrow_04/017.png",
+    "arrow_04/018.png",
+    "arrow_04/019.png",
+    "arrow_04/020.png",
+    "arrow_04/021.png",
+    "arrow_04/022.png",
+    "arrow_04/023.png",
+    "arrow_04/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 189,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_05": {
+   "files": [
+    "arrow_05/001.png",
+    "arrow_05/002.png",
+    "arrow_05/003.png",
+    "arrow_05/004.png",
+    "arrow_05/005.png",
+    "arrow_05/006.png",
+    "arrow_05/007.png",
+    "arrow_05/008.png",
+    "arrow_05/009.png",
+    "arrow_05/010.png",
+    "arrow_05/011.png",
+    "arrow_05/012.png",
+    "arrow_05/013.png",
+    "arrow_05/014.png",
+    "arrow_05/015.png",
+    "arrow_05/016.png",
+    "arrow_05/017.png",
+    "arrow_05/018.png",
+    "arrow_05/019.png",
+    "arrow_05/020.png",
+    "arrow_05/021.png",
+    "arrow_05/022.png",
+    "arrow_05/023.png",
+    "arrow_05/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 182,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_06": {
+   "files": [
+    "arrow_06/001.png",
+    "arrow_06/002.png",
+    "arrow_06/003.png",
+    "arrow_06/004.png",
+    "arrow_06/005.png",
+    "arrow_06/006.png",
+    "arrow_06/007.png",
+    "arrow_06/008.png",
+    "arrow_06/009.png",
+    "arrow_06/010.png",
+    "arrow_06/011.png",
+    "arrow_06/012.png",
+    "arrow_06/013.png",
+    "arrow_06/014.png",
+    "arrow_06/015.png",
+    "arrow_06/016.png",
+    "arrow_06/017.png",
+    "arrow_06/018.png",
+    "arrow_06/019.png",
+    "arrow_06/020.png",
+    "arrow_06/021.png",
+    "arrow_06/022.png",
+    "arrow_06/023.png",
+    "arrow_06/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 175,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_07": {
+   "files": [
+    "arrow_07/001.png",
+    "arrow_07/002.png",
+    "arrow_07/003.png",
+    "arrow_07/004.png",
+    "arrow_07/005.png",
+    "arrow_07/006.png",
+    "arrow_07/007.png",
+    "arrow_07/008.png",
+    "arrow_07/009.png",
+    "arrow_07/010.png",
+    "arrow_07/011.png",
+    "arrow_07/012.png",
+    "arrow_07/013.png",
+    "arrow_07/014.png",
+    "arrow_07/015.png",
+    "arrow_07/016.png",
+    "arrow_07/017.png",
+    "arrow_07/018.png",
+    "arrow_07/019.png",
+    "arrow_07/020.png",
+    "arrow_07/021.png",
+    "arrow_07/022.png",
+    "arrow_07/023.png",
+    "arrow_07/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 168,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_08": {
+   "files": [
+    "arrow_08/001.png",
+    "arrow_08/002.png",
+    "arrow_08/003.png",
+    "arrow_08/004.png",
+    "arrow_08/005.png",
+    "arrow_08/006.png",
+    "arrow_08/007.png",
+    "arrow_08/008.png",
+    "arrow_08/009.png",
+    "arrow_08/010.png",
+    "arrow_08/011.png",
+    "arrow_08/012.png",
+    "arrow_08/013.png",
+    "arrow_08/014.png",
+    "arrow_08/015.png",
+    "arrow_08/016.png",
+    "arrow_08/017.png",
+    "arrow_08/018.png",
+    "arrow_08/019.png",
+    "arrow_08/020.png",
+    "arrow_08/021.png",
+    "arrow_08/022.png",
+    "arrow_08/023.png",
+    "arrow_08/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 161,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_09": {
+   "files": [
+    "arrow_09/001.png",
+    "arrow_09/002.png",
+    "arrow_09/003.png",
+    "arrow_09/004.png",
+    "arrow_09/005.png",
+    "arrow_09/006.png",
+    "arrow_09/007.png",
+    "arrow_09/008.png",
+    "arrow_09/009.png",
+    "arrow_09/010.png",
+    "arrow_09/011.png",
+    "arrow_09/012.png",
+    "arrow_09/013.png",
+    "arrow_09/014.png",
+    "arrow_09/015.png",
+    "arrow_09/016.png",
+    "arrow_09/017.png",
+    "arrow_09/018.png",
+    "arrow_09/019.png",
+    "arrow_09/020.png",
+    "arrow_09/021.png",
+    "arrow_09/022.png",
+    "arrow_09/023.png",
+    "arrow_09/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 154,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_10": {
+   "files": [
+    "arrow_10/001.png",
+    "arrow_10/002.png",
+    "arrow_10/003.png",
+    "arrow_10/004.png",
+    "arrow_10/005.png",
+    "arrow_10/006.png",
+    "arrow_10/007.png",
+    "arrow_10/008.png",
+    "arrow_10/009.png",
+    "arrow_10/010.png",
+    "arrow_10/011.png",
+    "arrow_10/012.png",
+    "arrow_10/013.png",
+    "arrow_10/014.png",
+    "arrow_10/015.png",
+    "arrow_10/016.png",
+    "arrow_10/017.png",
+    "arrow_10/018.png",
+    "arrow_10/019.png",
+    "arrow_10/020.png",
+    "arrow_10/021.png",
+    "arrow_10/022.png",
+    "arrow_10/023.png",
+    "arrow_10/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 147,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_11": {
+   "files": [
+    "arrow_11/001.png",
+    "arrow_11/002.png",
+    "arrow_11/003.png",
+    "arrow_11/004.png",
+    "arrow_11/005.png",
+    "arrow_11/006.png",
+    "arrow_11/007.png",
+    "arrow_11/008.png",
+    "arrow_11/009.png",
+    "arrow_11/010.png",
+    "arrow_11/011.png",
+    "arrow_11/012.png",
+    "arrow_11/013.png",
+    "arrow_11/014.png",
+    "arrow_11/015.png",
+    "arrow_11/016.png",
+    "arrow_11/017.png",
+    "arrow_11/018.png",
+    "arrow_11/019.png",
+    "arrow_11/020.png",
+    "arrow_11/021.png",
+    "arrow_11/022.png",
+    "arrow_11/023.png",
+    "arrow_11/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 140,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_12": {
+   "files": [
+    "arrow_12.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 130,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     1
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": null,
+   "size": [
+    64,
+    48
+   ]
+  },
+  "arrow_blue_anim": {
+   "files": [
+    "arrow_blue_anim.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 390,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "arrow_green_anim": {
+   "files": [
+    "arrow_green_anim.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 389,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "arrow_orange_anim": {
+   "files": [
+    "arrow_orange_anim.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 388,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "arrow_pink_anim": {
+   "files": [
+    "arrow_pink_anim.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 387,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    37.0,
+    42.9
+   ],
+   "sequence": null,
+   "size": [
+    102,
+    102
+   ]
+  },
+  "attack_arrow": {
+   "files": [
+    "attack_arrow.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 127,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    47.0,
+    61.0
+   ],
+   "sequence": null,
+   "size": [
+    94,
+    62
+   ]
+  },
+  "attack_power_bar": {
+   "children_frame1": {
+    "Bounding_Box": [
+     0.0,
+     1.1595,
+     -3.9477,
+     0.0,
+     -34.15,
+     72.2
+    ]
+   },
+   "files": [
+    "attack_power_bar/001.png",
+    "attack_power_bar/002.png",
+    "attack_power_bar/003.png",
+    "attack_power_bar/004.png",
+    "attack_power_bar/005.png",
+    "attack_power_bar/006.png",
+    "attack_power_bar/007.png",
+    "attack_power_bar/008.png",
+    "attack_power_bar/009.png",
+    "attack_power_bar/010.png",
+    "attack_power_bar/011.png",
+    "attack_power_bar/012.png",
+    "attack_power_bar/013.png"
+   ],
+   "frames_exported": 15,
+   "frames_total": 15,
+   "id": 331,
+   "labels": {
+    "PowerBar01": 1,
+    "PowerBar02": 2,
+    "PowerBar03": 3,
+    "PowerBar04": 4,
+    "PowerBar05": 5,
+    "PowerBar06": 6,
+    "PowerBar07": 7,
+    "PowerBar08": 8,
+    "PowerBar09": 9,
+    "PowerBar10": 10,
+    "PowerBar11": 11,
+    "PowerBar12": 12,
+    "PowerBar13": 13
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     3,
+     35
+    ],
+    [
+     7,
+     63
+    ],
+    [
+     7,
+     91
+    ],
+    [
+     7,
+     115
+    ],
+    [
+     11,
+     147
+    ],
+    [
+     13,
+     177
+    ],
+    [
+     13,
+     205
+    ],
+    [
+     15,
+     235
+    ],
+    [
+     17,
+     259
+    ],
+    [
+     19,
+     291
+    ],
+    [
+     19,
+     313
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    47.4,
+    414.9
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    12,
+    12
+   ],
+   "size": [
+    678,
+    596
+   ]
+  },
+  "combo_floater": {
+   "children_frame1": {
+    "Text_Field": [
+     1.6795,
+     0.0,
+     0.0,
+     1.6795,
+     -308.15,
+     -119.35
+    ]
+   },
+   "files": [
+    "combo_floater/001.png",
+    "combo_floater/002.png",
+    "combo_floater/003.png",
+    "combo_floater/004.png",
+    "combo_floater/005.png",
+    "combo_floater/006.png",
+    "combo_floater/007.png",
+    "combo_floater/008.png",
+    "combo_floater/009.png",
+    "combo_floater/010.png",
+    "combo_floater/011.png",
+    "combo_floater/012.png",
+    "combo_floater/013.png",
+    "combo_floater/014.png",
+    "combo_floater/015.png",
+    "combo_floater/016.png",
+    "combo_floater/017.png",
+    "combo_floater/018.png",
+    "combo_floater/019.png",
+    "combo_floater/020.png",
+    "combo_floater/021.png",
+    "combo_floater/022.png",
+    "combo_floater/023.png",
+    "combo_floater/024.png",
+    "combo_floater/025.png",
+    "combo_floater/026.png",
+    "combo_floater/027.png",
+    "combo_floater/028.png",
+    "combo_floater/029.png",
+    "combo_floater/030.png",
+    "combo_floater/031.png",
+    "combo_floater/032.png",
+    "combo_floater/033.png",
+    "combo_floater/034.png",
+    "combo_floater/035.png",
+    "combo_floater/036.png",
+    "combo_floater/037.png",
+    "combo_floater/038.png",
+    "combo_floater/039.png"
+   ],
+   "frames_exported": 40,
+   "frames_total": 40,
+   "id": 123,
+   "labels": {
+    "In": 1,
+    "Loop": 8
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     497,
+     250
+    ],
+    [
+     475,
+     238
+    ],
+    [
+     452,
+     225
+    ],
+    [
+     430,
+     212
+    ],
+    [
+     408,
+     200
+    ],
+    [
+     385,
+     187
+    ],
+    [
+     363,
+     174
+    ],
+    [
+     358,
+     169
+    ],
+    [
+     354,
+     164
+    ],
+    [
+     349,
+     158
+    ],
+    [
+     345,
+     154
+    ],
+    [
+     340,
+     149
+    ],
+    [
+     336,
+     143
+    ],
+    [
+     331,
+     138
+    ],
+    [
+     327,
+     133
+    ],
+    [
+     322,
+     128
+    ],
+    [
+     318,
+     123
+    ],
+    [
+     313,
+     117
+    ],
+    [
+     309,
+     113
+    ],
+    [
+     304,
+     107
+    ],
+    [
+     300,
+     102
+    ],
+    [
+     295,
+     98
+    ],
+    [
+     291,
+     92
+    ],
+    [
+     287,
+     87
+    ],
+    [
+     282,
+     82
+    ],
+    [
+     278,
+     77
+    ],
+    [
+     273,
+     72
+    ],
+    [
+     269,
+     66
+    ],
+    [
+     264,
+     61
+    ],
+    [
+     260,
+     57
+    ],
+    [
+     255,
+     51
+    ],
+    [
+     250,
+     46
+    ],
+    [
+     245,
+     41
+    ],
+    [
+     292,
+     40
+    ],
+    [
+     337,
+     39
+    ],
+    [
+     383,
+     38
+    ],
+    [
+     429,
+     37
+    ],
+    [
+     474,
+     36
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    989.12,
+    483.56
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    0
+   ],
+   "size": [
+    1978,
+    365
+   ]
+  },
+  "crosshair": {
+   "files": [
+    "crosshair.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 120,
+   "labels": null,
+   "offsets": [
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    78.0,
+    78.0
+   ],
+   "sequence": null,
+   "size": [
+    156,
+    156
+   ]
+  },
+  "damage_total_text": {
+   "children_frame1": {
+    "Content": [
+     0.9033,
+     0.0,
+     0.0,
+     0.9034,
+     0.0,
+     -1.05
+    ],
+    "Content/Text": [
+     0.9033,
+     0.0,
+     0.0,
+     0.9034,
+     -68.9662,
+     -13.6978
+    ]
+   },
+   "files": [
+    "damage_total_text/001.png",
+    "damage_total_text/002.png",
+    "damage_total_text/003.png",
+    "damage_total_text/004.png",
+    "damage_total_text/005.png",
+    "damage_total_text/006.png",
+    "damage_total_text/007.png",
+    "damage_total_text/008.png",
+    "damage_total_text/009.png",
+    "damage_total_text/010.png",
+    "damage_total_text/011.png",
+    "damage_total_text/012.png",
+    "damage_total_text/013.png",
+    "damage_total_text/014.png",
+    "damage_total_text/015.png",
+    "damage_total_text/016.png",
+    "damage_total_text/017.png",
+    "damage_total_text/018.png",
+    "damage_total_text/019.png",
+    "damage_total_text/020.png",
+    "damage_total_text/021.png",
+    "damage_total_text/022.png",
+    "damage_total_text/023.png",
+    "damage_total_text/024.png",
+    "damage_total_text/025.png",
+    "damage_total_text/026.png",
+    "damage_total_text/027.png",
+    "damage_total_text/028.png",
+    "damage_total_text/029.png",
+    "damage_total_text/030.png",
+    "damage_total_text/031.png",
+    "damage_total_text/032.png",
+    "damage_total_text/033.png",
+    "damage_total_text/034.png",
+    "damage_total_text/035.png",
+    "damage_total_text/036.png",
+    "damage_total_text/037.png",
+    "damage_total_text/038.png",
+    "damage_total_text/039.png",
+    "damage_total_text/040.png",
+    "damage_total_text/041.png",
+    "damage_total_text/042.png",
+    "damage_total_text/043.png",
+    "damage_total_text/044.png",
+    "damage_total_text/045.png",
+    "damage_total_text/046.png",
+    "damage_total_text/047.png",
+    "damage_total_text/048.png",
+    "damage_total_text/049.png"
+   ],
+   "frames_exported": 50,
+   "frames_total": 50,
+   "id": 335,
+   "labels": {
+    "end": 50,
+    "in": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     150,
+     118
+    ],
+    [
+     149,
+     107
+    ],
+    [
+     149,
+     97
+    ],
+    [
+     149,
+     86
+    ],
+    [
+     148,
+     75
+    ],
+    [
+     148,
+     64
+    ],
+    [
+     148,
+     54
+    ],
+    [
+     148,
+     54
+    ],
+    [
+     148,
+     54
+    ],
+    [
+     148,
+     54
+    ],
+    [
+     147,
+     55
+    ],
+    [
+     147,
+     55
+    ],
+    [
+     147,
+     55
+    ],
+    [
+     147,
+     56
+    ],
+    [
+     147,
+     56
+    ],
+    [
+     146,
+     56
+    ],
+    [
+     146,
+     57
+    ],
+    [
+     146,
+     58
+    ],
+    [
+     146,
+     58
+    ],
+    [
+     145,
+     58
+    ],
+    [
+     145,
+     59
+    ],
+    [
+     145,
+     59
+    ],
+    [
+     145,
+     60
+    ],
+    [
+     145,
+     60
+    ],
+    [
+     144,
+     60
+    ],
+    [
+     144,
+     60
+    ],
+    [
+     144,
+     61
+    ],
+    [
+     144,
+     62
+    ],
+    [
+     144,
+     62
+    ],
+    [
+     143,
+     63
+    ],
+    [
+     143,
+     63
+    ],
+    [
+     143,
+     63
+    ],
+    [
+     144,
+     64
+    ],
+    [
+     144,
+     64
+    ],
+    [
+     144,
+     61
+    ],
+    [
+     144,
+     57
+    ],
+    [
+     144,
+     54
+    ],
+    [
+     144,
+     50
+    ],
+    [
+     144,
+     47
+    ],
+    [
+     144,
+     44
+    ],
+    [
+     144,
+     40
+    ],
+    [
+     144,
+     37
+    ],
+    [
+     144,
+     34
+    ],
+    [
+     144,
+     30
+    ],
+    [
+     144,
+     27
+    ],
+    [
+     144,
+     24
+    ],
+    [
+     144,
+     20
+    ],
+    [
+     144,
+     17
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.39,
+    150.09
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    0
+   ],
+   "size": [
+    361,
+    177
+   ]
+  },
+  "dot_01": {
+   "files": [
+    "dot_01/001.png",
+    "dot_01/002.png",
+    "dot_01/003.png",
+    "dot_01/004.png",
+    "dot_01/005.png",
+    "dot_01/006.png",
+    "dot_01/007.png",
+    "dot_01/008.png",
+    "dot_01/009.png",
+    "dot_01/010.png",
+    "dot_01/011.png",
+    "dot_01/012.png",
+    "dot_01/013.png",
+    "dot_01/014.png",
+    "dot_01/015.png",
+    "dot_01/016.png",
+    "dot_01/017.png",
+    "dot_01/018.png",
+    "dot_01/019.png",
+    "dot_01/020.png",
+    "dot_01/021.png",
+    "dot_01/022.png",
+    "dot_01/023.png",
+    "dot_01/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 117,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_02": {
+   "files": [
+    "dot_02/001.png",
+    "dot_02/002.png",
+    "dot_02/003.png",
+    "dot_02/004.png",
+    "dot_02/005.png",
+    "dot_02/006.png",
+    "dot_02/007.png",
+    "dot_02/008.png",
+    "dot_02/009.png",
+    "dot_02/010.png",
+    "dot_02/011.png",
+    "dot_02/012.png",
+    "dot_02/013.png",
+    "dot_02/014.png",
+    "dot_02/015.png",
+    "dot_02/016.png",
+    "dot_02/017.png",
+    "dot_02/018.png",
+    "dot_02/019.png",
+    "dot_02/020.png",
+    "dot_02/021.png",
+    "dot_02/022.png",
+    "dot_02/023.png",
+    "dot_02/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 110,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_03": {
+   "files": [
+    "dot_03.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 103,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": null,
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_04": {
+   "files": [
+    "dot_04/001.png",
+    "dot_04/002.png",
+    "dot_04/003.png",
+    "dot_04/004.png",
+    "dot_04/005.png",
+    "dot_04/006.png",
+    "dot_04/007.png",
+    "dot_04/008.png",
+    "dot_04/009.png",
+    "dot_04/010.png",
+    "dot_04/011.png",
+    "dot_04/012.png",
+    "dot_04/013.png",
+    "dot_04/014.png",
+    "dot_04/015.png",
+    "dot_04/016.png",
+    "dot_04/017.png",
+    "dot_04/018.png",
+    "dot_04/019.png",
+    "dot_04/020.png",
+    "dot_04/021.png",
+    "dot_04/022.png",
+    "dot_04/023.png",
+    "dot_04/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 96,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_05": {
+   "files": [
+    "dot_05/001.png",
+    "dot_05/002.png",
+    "dot_05/003.png",
+    "dot_05/004.png",
+    "dot_05/005.png",
+    "dot_05/006.png",
+    "dot_05/007.png",
+    "dot_05/008.png",
+    "dot_05/009.png",
+    "dot_05/010.png",
+    "dot_05/011.png",
+    "dot_05/012.png",
+    "dot_05/013.png",
+    "dot_05/014.png",
+    "dot_05/015.png",
+    "dot_05/016.png",
+    "dot_05/017.png",
+    "dot_05/018.png",
+    "dot_05/019.png",
+    "dot_05/020.png",
+    "dot_05/021.png",
+    "dot_05/022.png",
+    "dot_05/023.png",
+    "dot_05/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 91,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_06": {
+   "files": [
+    "dot_06/001.png",
+    "dot_06/002.png",
+    "dot_06/003.png",
+    "dot_06/004.png",
+    "dot_06/005.png",
+    "dot_06/006.png",
+    "dot_06/007.png",
+    "dot_06/008.png",
+    "dot_06/009.png",
+    "dot_06/010.png",
+    "dot_06/011.png",
+    "dot_06/012.png",
+    "dot_06/013.png",
+    "dot_06/014.png",
+    "dot_06/015.png",
+    "dot_06/016.png",
+    "dot_06/017.png",
+    "dot_06/018.png",
+    "dot_06/019.png",
+    "dot_06/020.png",
+    "dot_06/021.png",
+    "dot_06/022.png",
+    "dot_06/023.png",
+    "dot_06/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 84,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_07": {
+   "files": [
+    "dot_07/001.png",
+    "dot_07/002.png",
+    "dot_07/003.png",
+    "dot_07/004.png",
+    "dot_07/005.png",
+    "dot_07/006.png",
+    "dot_07/007.png",
+    "dot_07/008.png",
+    "dot_07/009.png",
+    "dot_07/010.png",
+    "dot_07/011.png",
+    "dot_07/012.png",
+    "dot_07/013.png",
+    "dot_07/014.png",
+    "dot_07/015.png",
+    "dot_07/016.png",
+    "dot_07/017.png",
+    "dot_07/018.png",
+    "dot_07/019.png",
+    "dot_07/020.png",
+    "dot_07/021.png",
+    "dot_07/022.png",
+    "dot_07/023.png",
+    "dot_07/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 77,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_08": {
+   "files": [
+    "dot_08/001.png",
+    "dot_08/002.png",
+    "dot_08/003.png",
+    "dot_08/004.png",
+    "dot_08/005.png",
+    "dot_08/006.png",
+    "dot_08/007.png",
+    "dot_08/008.png",
+    "dot_08/009.png",
+    "dot_08/010.png",
+    "dot_08/011.png",
+    "dot_08/012.png",
+    "dot_08/013.png",
+    "dot_08/014.png",
+    "dot_08/015.png",
+    "dot_08/016.png",
+    "dot_08/017.png",
+    "dot_08/018.png",
+    "dot_08/019.png",
+    "dot_08/020.png",
+    "dot_08/021.png",
+    "dot_08/022.png",
+    "dot_08/023.png",
+    "dot_08/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 70,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_09": {
+   "files": [
+    "dot_09/001.png",
+    "dot_09/002.png",
+    "dot_09/003.png",
+    "dot_09/004.png",
+    "dot_09/005.png",
+    "dot_09/006.png",
+    "dot_09/007.png",
+    "dot_09/008.png",
+    "dot_09/009.png",
+    "dot_09/010.png",
+    "dot_09/011.png",
+    "dot_09/012.png",
+    "dot_09/013.png",
+    "dot_09/014.png",
+    "dot_09/015.png",
+    "dot_09/016.png",
+    "dot_09/017.png",
+    "dot_09/018.png",
+    "dot_09/019.png",
+    "dot_09/020.png",
+    "dot_09/021.png",
+    "dot_09/022.png",
+    "dot_09/023.png",
+    "dot_09/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 63,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_10": {
+   "files": [
+    "dot_10/001.png",
+    "dot_10/002.png",
+    "dot_10/003.png",
+    "dot_10/004.png",
+    "dot_10/005.png",
+    "dot_10/006.png",
+    "dot_10/007.png",
+    "dot_10/008.png",
+    "dot_10/009.png",
+    "dot_10/010.png",
+    "dot_10/011.png",
+    "dot_10/012.png",
+    "dot_10/013.png",
+    "dot_10/014.png",
+    "dot_10/015.png",
+    "dot_10/016.png",
+    "dot_10/017.png",
+    "dot_10/018.png",
+    "dot_10/019.png",
+    "dot_10/020.png",
+    "dot_10/021.png",
+    "dot_10/022.png",
+    "dot_10/023.png",
+    "dot_10/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 56,
+   "labels": {
+    "Active": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    48,
+    48
+   ]
+  },
+  "dot_11": {
+   "files": [
+    "dot_11.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 46,
+   "labels": {
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     1,
+     1
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    24.0
+   ],
+   "sequence": null,
+   "size": [
+    48,
+    48
+   ]
+  },
+  "health_floater": {
+   "children_frame1": {
+    "Text_Field": [
+     1.9703,
+     0.0,
+     0.0,
+     1.9703,
+     -194.55,
+     -62.7
+    ]
+   },
+   "files": [
+    "health_floater/001.png",
+    "health_floater/002.png",
+    "health_floater/003.png",
+    "health_floater/004.png",
+    "health_floater/005.png",
+    "health_floater/006.png",
+    "health_floater/007.png",
+    "health_floater/008.png",
+    "health_floater/009.png",
+    "health_floater/010.png",
+    "health_floater/011.png",
+    "health_floater/012.png",
+    "health_floater/013.png",
+    "health_floater/014.png",
+    "health_floater/015.png",
+    "health_floater/016.png",
+    "health_floater/017.png",
+    "health_floater/018.png",
+    "health_floater/019.png",
+    "health_floater/020.png",
+    "health_floater/021.png",
+    "health_floater/022.png",
+    "health_floater/023.png",
+    "health_floater/024.png",
+    "health_floater/025.png",
+    "health_floater/026.png",
+    "health_floater/027.png",
+    "health_floater/028.png",
+    "health_floater/029.png",
+    "health_floater/030.png",
+    "health_floater/031.png",
+    "health_floater/032.png",
+    "health_floater/033.png",
+    "health_floater/034.png"
+   ],
+   "frames_exported": 35,
+   "frames_total": 35,
+   "id": 42,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     274,
+     307
+    ],
+    [
+     274,
+     295
+    ],
+    [
+     274,
+     284
+    ],
+    [
+     274,
+     272
+    ],
+    [
+     274,
+     260
+    ],
+    [
+     274,
+     249
+    ],
+    [
+     274,
+     239
+    ],
+    [
+     274,
+     229
+    ],
+    [
+     274,
+     220
+    ],
+    [
+     274,
+     210
+    ],
+    [
+     274,
+     200
+    ],
+    [
+     274,
+     191
+    ],
+    [
+     274,
+     181
+    ],
+    [
+     274,
+     171
+    ],
+    [
+     274,
+     164
+    ],
+    [
+     274,
+     157
+    ],
+    [
+     274,
+     150
+    ],
+    [
+     274,
+     143
+    ],
+    [
+     274,
+     136
+    ],
+    [
+     274,
+     129
+    ],
+    [
+     274,
+     121
+    ],
+    [
+     274,
+     114
+    ],
+    [
+     274,
+     107
+    ],
+    [
+     274,
+     100
+    ],
+    [
+     274,
+     93
+    ],
+    [
+     274,
+     86
+    ],
+    [
+     274,
+     79
+    ],
+    [
+     274,
+     71
+    ],
+    [
+     274,
+     64
+    ],
+    [
+     274,
+     56
+    ],
+    [
+     274,
+     49
+    ],
+    [
+     274,
+     41
+    ],
+    [
+     274,
+     34
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    396.99,
+    424.84
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    0
+   ],
+   "size": [
+    796,
+    418
+   ]
+  },
+  "health_total_text": {
+   "children_frame1": {
+    "Content": [
+     0.9033,
+     0.0,
+     0.0,
+     0.9034,
+     0.0,
+     -1.05
+    ],
+    "Content/Text": [
+     0.9033,
+     0.0,
+     0.0,
+     0.9034,
+     -68.9662,
+     -13.6978
+    ]
+   },
+   "files": [
+    "health_total_text/001.png",
+    "health_total_text/002.png",
+    "health_total_text/003.png",
+    "health_total_text/004.png",
+    "health_total_text/005.png",
+    "health_total_text/006.png",
+    "health_total_text/007.png",
+    "health_total_text/008.png",
+    "health_total_text/009.png",
+    "health_total_text/010.png",
+    "health_total_text/011.png",
+    "health_total_text/012.png",
+    "health_total_text/013.png",
+    "health_total_text/014.png",
+    "health_total_text/015.png",
+    "health_total_text/016.png",
+    "health_total_text/017.png",
+    "health_total_text/018.png",
+    "health_total_text/019.png",
+    "health_total_text/020.png",
+    "health_total_text/021.png",
+    "health_total_text/022.png",
+    "health_total_text/023.png",
+    "health_total_text/024.png",
+    "health_total_text/025.png",
+    "health_total_text/026.png",
+    "health_total_text/027.png",
+    "health_total_text/028.png",
+    "health_total_text/029.png",
+    "health_total_text/030.png",
+    "health_total_text/031.png",
+    "health_total_text/032.png",
+    "health_total_text/033.png",
+    "health_total_text/034.png",
+    "health_total_text/035.png",
+    "health_total_text/036.png",
+    "health_total_text/037.png",
+    "health_total_text/038.png",
+    "health_total_text/039.png",
+    "health_total_text/040.png",
+    "health_total_text/041.png",
+    "health_total_text/042.png",
+    "health_total_text/043.png",
+    "health_total_text/044.png",
+    "health_total_text/045.png",
+    "health_total_text/046.png",
+    "health_total_text/047.png",
+    "health_total_text/048.png",
+    "health_total_text/049.png"
+   ],
+   "frames_exported": 50,
+   "frames_total": 50,
+   "id": 338,
+   "labels": {
+    "end": 50,
+    "in": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     101,
+     115
+    ],
+    [
+     99,
+     104
+    ],
+    [
+     98,
+     93
+    ],
+    [
+     97,
+     82
+    ],
+    [
+     96,
+     72
+    ],
+    [
+     95,
+     61
+    ],
+    [
+     94,
+     50
+    ],
+    [
+     94,
+     50
+    ],
+    [
+     94,
+     50
+    ],
+    [
+     93,
+     50
+    ],
+    [
+     93,
+     51
+    ],
+    [
+     92,
+     51
+    ],
+    [
+     92,
+     51
+    ],
+    [
+     91,
+     52
+    ],
+    [
+     91,
+     52
+    ],
+    [
+     90,
+     53
+    ],
+    [
+     90,
+     54
+    ],
+    [
+     89,
+     54
+    ],
+    [
+     89,
+     54
+    ],
+    [
+     88,
+     54
+    ],
+    [
+     87,
+     55
+    ],
+    [
+     87,
+     55
+    ],
+    [
+     86,
+     56
+    ],
+    [
+     86,
+     56
+    ],
+    [
+     85,
+     56
+    ],
+    [
+     85,
+     56
+    ],
+    [
+     84,
+     57
+    ],
+    [
+     84,
+     57
+    ],
+    [
+     83,
+     58
+    ],
+    [
+     83,
+     59
+    ],
+    [
+     82,
+     59
+    ],
+    [
+     82,
+     59
+    ],
+    [
+     82,
+     60
+    ],
+    [
+     82,
+     60
+    ],
+    [
+     82,
+     57
+    ],
+    [
+     82,
+     53
+    ],
+    [
+     82,
+     50
+    ],
+    [
+     82,
+     46
+    ],
+    [
+     82,
+     43
+    ],
+    [
+     82,
+     40
+    ],
+    [
+     82,
+     36
+    ],
+    [
+     82,
+     33
+    ],
+    [
+     82,
+     30
+    ],
+    [
+     82,
+     26
+    ],
+    [
+     82,
+     23
+    ],
+    [
+     82,
+     20
+    ],
+    [
+     82,
+     16
+    ],
+    [
+     82,
+     13
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.39,
+    150.09
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    0
+   ],
+   "size": [
+    361,
+    177
+   ]
+  },
+  "jump_power_bar": {
+   "files": [
+    "jump_power_bar/001.png",
+    "jump_power_bar/002.png",
+    "jump_power_bar/003.png",
+    "jump_power_bar/004.png",
+    "jump_power_bar/005.png",
+    "jump_power_bar/006.png",
+    "jump_power_bar/007.png",
+    "jump_power_bar/008.png",
+    "jump_power_bar/009.png",
+    "jump_power_bar/010.png",
+    "jump_power_bar/011.png"
+   ],
+   "frames_exported": 11,
+   "frames_total": 11,
+   "id": 39,
+   "labels": {
+    "JumpBar01": 1,
+    "JumpBar02": 2,
+    "JumpBar03": 3,
+    "JumpBar04": 4,
+    "JumpBar05": 5,
+    "JumpBar06": 6,
+    "JumpBar07": 7,
+    "JumpBar08": 8,
+    "JumpBar09": 9,
+    "JumpBar10": 10,
+    "JumpBar11": 11
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     3
+    ]
+   ],
+   "origin_px": [
+    36.0,
+    -60.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "size": [
+    72,
+    380
+   ]
+  },
+  "move_ui": {
+   "children_frame1": {
+    "Arrow": [
+     0.3275,
+     0.001,
+     -0.001,
+     0.3275,
+     0.45,
+     -1.0
+    ],
+    "Move_Jump": [
+     0.4355,
+     0.0,
+     0.0,
+     0.4355,
+     0.45,
+     -67.85
+    ],
+    "Move_Left": [
+     0.0,
+     -0.4355,
+     0.4355,
+     0.0,
+     -66.15,
+     -0.45
+    ],
+    "Move_Right": [
+     0.0,
+     0.4355,
+     -0.4355,
+     0.0,
+     67.7,
+     -0.45
+    ]
+   },
+   "files": [
+    "move_ui.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 294,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    180.2,
+    239.9
+   ],
+   "sequence": null,
+   "size": [
+    363,
+    364
+   ]
+  },
+  "plain_dot": {
+   "files": [
+    "plain_dot.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 25,
+   "labels": null,
+   "offsets": [
+    [
+     11,
+     3
+    ]
+   ],
+   "origin_px": [
+    32.0,
+    24.0
+   ],
+   "sequence": null,
+   "size": [
+    64,
+    48
+   ]
+  },
+  "player_tag": {
+   "children_frame1": {
+    "Player_Tag_1": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ],
+    "Player_Tag_1/Life_Bar": [
+     -0.4274,
+     0.0,
+     0.0,
+     0.4274,
+     6.9959,
+     0.0783
+    ],
+    "Player_Tag_1/Life_Bar/Fill": [
+     0.4272,
+     0.0,
+     0.0,
+     0.4274,
+     -73.9088,
+     0.0783
+    ],
+    "Player_Tag_1/Text_Name": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ],
+    "Player_Tag_2": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ],
+    "Player_Tag_2/Life_Bar": [
+     -0.4274,
+     0.0,
+     0.0,
+     0.4274,
+     6.9959,
+     0.0783
+    ],
+    "Player_Tag_2/Life_Bar/Fill": [
+     0.4272,
+     0.0,
+     0.0,
+     0.4274,
+     -73.9088,
+     0.0783
+    ],
+    "Player_Tag_2/Text_Name": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ],
+    "Player_Tag_3": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ],
+    "Player_Tag_3/Life_Bar": [
+     -0.4274,
+     0.0,
+     0.0,
+     0.4274,
+     6.9959,
+     0.0783
+    ],
+    "Player_Tag_3/Life_Bar/Fill": [
+     0.4272,
+     0.0,
+     0.0,
+     0.4274,
+     -73.9088,
+     0.0783
+    ],
+    "Player_Tag_3/Text_Name": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ],
+    "Player_Tag_4": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ],
+    "Player_Tag_4/Life_Bar": [
+     -0.4274,
+     0.0,
+     0.0,
+     0.4274,
+     6.9959,
+     0.0783
+    ],
+    "Player_Tag_4/Life_Bar/Fill": [
+     0.4272,
+     0.0,
+     0.0,
+     0.4274,
+     -73.9088,
+     0.0783
+    ],
+    "Player_Tag_4/Text_Name": [
+     0.5418,
+     0.0,
+     0.0,
+     0.5418,
+     -40.9,
+     -12.6
+    ]
+   },
+   "files": [
+    "player_tag.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 385,
+   "labels": null,
+   "offsets": [
+    [
+     86,
+     3
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    140.29,
+    18.86
+   ],
+   "sequence": null,
+   "size": [
+    226,
+    47
+   ]
+  },
+  "points_floater": {
+   "children_frame1": {
+    "Text_Field": [
+     1.566,
+     0.0,
+     0.0,
+     1.566,
+     -146.2,
+     -57.0
+    ]
+   },
+   "files": [
+    "points_floater/001.png",
+    "points_floater/002.png",
+    "points_floater/003.png",
+    "points_floater/004.png",
+    "points_floater/005.png",
+    "points_floater/006.png",
+    "points_floater/007.png",
+    "points_floater/008.png",
+    "points_floater/009.png",
+    "points_floater/010.png",
+    "points_floater/011.png",
+    "points_floater/012.png",
+    "points_floater/013.png",
+    "points_floater/014.png",
+    "points_floater/015.png",
+    "points_floater/016.png",
+    "points_floater/017.png",
+    "points_floater/018.png",
+    "points_floater/019.png",
+    "points_floater/020.png",
+    "points_floater/021.png",
+    "points_floater/022.png",
+    "points_floater/023.png",
+    "points_floater/024.png",
+    "points_floater/025.png",
+    "points_floater/026.png",
+    "points_floater/027.png",
+    "points_floater/028.png",
+    "points_floater/029.png",
+    "points_floater/030.png",
+    "points_floater/031.png",
+    "points_floater/032.png",
+    "points_floater/033.png",
+    "points_floater/034.png"
+   ],
+   "frames_exported": 35,
+   "frames_total": 35,
+   "id": 22,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     67,
+     306
+    ],
+    [
+     67,
+     293
+    ],
+    [
+     67,
+     281
+    ],
+    [
+     67,
+     268
+    ],
+    [
+     67,
+     255
+    ],
+    [
+     67,
+     243
+    ],
+    [
+     67,
+     233
+    ],
+    [
+     67,
+     224
+    ],
+    [
+     67,
+     215
+    ],
+    [
+     67,
+     205
+    ],
+    [
+     67,
+     196
+    ],
+    [
+     67,
+     187
+    ],
+    [
+     67,
+     178
+    ],
+    [
+     67,
+     168
+    ],
+    [
+     67,
+     161
+    ],
+    [
+     67,
+     153
+    ],
+    [
+     67,
+     146
+    ],
+    [
+     67,
+     138
+    ],
+    [
+     67,
+     131
+    ],
+    [
+     67,
+     123
+    ],
+    [
+     67,
+     116
+    ],
+    [
+     67,
+     109
+    ],
+    [
+     67,
+     101
+    ],
+    [
+     67,
+     94
+    ],
+    [
+     67,
+     86
+    ],
+    [
+     67,
+     79
+    ],
+    [
+     67,
+     71
+    ],
+    [
+     67,
+     64
+    ],
+    [
+     67,
+     57
+    ],
+    [
+     67,
+     50
+    ],
+    [
+     67,
+     42
+    ],
+    [
+     67,
+     35
+    ],
+    [
+     67,
+     28
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    298.44,
+    417.84
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    0
+   ],
+   "size": [
+    597,
+    398
+   ]
+  },
+  "points_total_text_animation": {
+   "children_frame1": {
+    "Content": [
+     0.9033,
+     0.0,
+     0.0,
+     0.9034,
+     0.0,
+     -1.05
+    ],
+    "Content/Text": [
+     0.9033,
+     0.0,
+     0.0,
+     0.9034,
+     -68.9662,
+     -13.6978
+    ]
+   },
+   "files": [
+    "points_total_text_animation/001.png",
+    "points_total_text_animation/002.png",
+    "points_total_text_animation/003.png",
+    "points_total_text_animation/004.png",
+    "points_total_text_animation/005.png",
+    "points_total_text_animation/006.png",
+    "points_total_text_animation/007.png",
+    "points_total_text_animation/008.png",
+    "points_total_text_animation/009.png",
+    "points_total_text_animation/010.png",
+    "points_total_text_animation/011.png",
+    "points_total_text_animation/012.png",
+    "points_total_text_animation/013.png",
+    "points_total_text_animation/014.png",
+    "points_total_text_animation/015.png",
+    "points_total_text_animation/016.png",
+    "points_total_text_animation/017.png",
+    "points_total_text_animation/018.png",
+    "points_total_text_animation/019.png",
+    "points_total_text_animation/020.png",
+    "points_total_text_animation/021.png",
+    "points_total_text_animation/022.png",
+    "points_total_text_animation/023.png",
+    "points_total_text_animation/024.png",
+    "points_total_text_animation/025.png",
+    "points_total_text_animation/026.png",
+    "points_total_text_animation/027.png",
+    "points_total_text_animation/028.png",
+    "points_total_text_animation/029.png",
+    "points_total_text_animation/030.png",
+    "points_total_text_animation/031.png",
+    "points_total_text_animation/032.png",
+    "points_total_text_animation/033.png",
+    "points_total_text_animation/034.png",
+    "points_total_text_animation/035.png",
+    "points_total_text_animation/036.png",
+    "points_total_text_animation/037.png",
+    "points_total_text_animation/038.png",
+    "points_total_text_animation/039.png",
+    "points_total_text_animation/040.png",
+    "points_total_text_animation/041.png",
+    "points_total_text_animation/042.png",
+    "points_total_text_animation/043.png",
+    "points_total_text_animation/044.png",
+    "points_total_text_animation/045.png",
+    "points_total_text_animation/046.png",
+    "points_total_text_animation/047.png",
+    "points_total_text_animation/048.png",
+    "points_total_text_animation/049.png"
+   ],
+   "frames_exported": 50,
+   "frames_total": 50,
+   "id": 339,
+   "labels": {
+    "end": 50,
+    "in": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     101,
+     115
+    ],
+    [
+     99,
+     104
+    ],
+    [
+     98,
+     93
+    ],
+    [
+     97,
+     82
+    ],
+    [
+     96,
+     72
+    ],
+    [
+     95,
+     61
+    ],
+    [
+     94,
+     50
+    ],
+    [
+     94,
+     50
+    ],
+    [
+     94,
+     50
+    ],
+    [
+     93,
+     50
+    ],
+    [
+     93,
+     51
+    ],
+    [
+     92,
+     51
+    ],
+    [
+     92,
+     51
+    ],
+    [
+     91,
+     52
+    ],
+    [
+     91,
+     52
+    ],
+    [
+     90,
+     53
+    ],
+    [
+     90,
+     54
+    ],
+    [
+     89,
+     54
+    ],
+    [
+     89,
+     54
+    ],
+    [
+     88,
+     54
+    ],
+    [
+     87,
+     55
+    ],
+    [
+     87,
+     55
+    ],
+    [
+     86,
+     56
+    ],
+    [
+     86,
+     56
+    ],
+    [
+     85,
+     56
+    ],
+    [
+     85,
+     56
+    ],
+    [
+     84,
+     57
+    ],
+    [
+     84,
+     57
+    ],
+    [
+     83,
+     58
+    ],
+    [
+     83,
+     59
+    ],
+    [
+     82,
+     59
+    ],
+    [
+     82,
+     59
+    ],
+    [
+     82,
+     60
+    ],
+    [
+     82,
+     60
+    ],
+    [
+     82,
+     57
+    ],
+    [
+     82,
+     53
+    ],
+    [
+     82,
+     50
+    ],
+    [
+     82,
+     46
+    ],
+    [
+     82,
+     43
+    ],
+    [
+     82,
+     40
+    ],
+    [
+     82,
+     36
+    ],
+    [
+     82,
+     33
+    ],
+    [
+     82,
+     30
+    ],
+    [
+     82,
+     26
+    ],
+    [
+     82,
+     23
+    ],
+    [
+     82,
+     20
+    ],
+    [
+     82,
+     16
+    ],
+    [
+     82,
+     13
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.39,
+    150.09
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    0
+   ],
+   "size": [
+    361,
+    177
+   ]
+  },
+  "turn_countdown_1": {
+   "children_frame1": {
+    "Content": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     0.05,
+     0.0
+    ],
+    "Content/Text": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     -87.9431,
+     -16.1371
+    ]
+   },
+   "files": [
+    "turn_countdown_1/001.png",
+    "turn_countdown_1/002.png",
+    "turn_countdown_1/003.png",
+    "turn_countdown_1/004.png",
+    "turn_countdown_1/005.png",
+    "turn_countdown_1/006.png",
+    "turn_countdown_1/007.png",
+    "turn_countdown_1/008.png",
+    "turn_countdown_1/009.png",
+    "turn_countdown_1/010.png",
+    "turn_countdown_1/011.png",
+    "turn_countdown_1/012.png",
+    "turn_countdown_1/013.png",
+    "turn_countdown_1/014.png",
+    "turn_countdown_1/015.png",
+    "turn_countdown_1/016.png",
+    "turn_countdown_1/017.png",
+    "turn_countdown_1/018.png",
+    "turn_countdown_1/019.png",
+    "turn_countdown_1/020.png",
+    "turn_countdown_1/021.png",
+    "turn_countdown_1/022.png",
+    "turn_countdown_1/023.png"
+   ],
+   "frames_exported": 23,
+   "frames_total": 23,
+   "id": 16,
+   "labels": {
+    "end": 23
+   },
+   "offsets": [
+    [
+     168,
+     127
+    ],
+    [
+     168,
+     122
+    ],
+    [
+     168,
+     117
+    ],
+    [
+     168,
+     111
+    ],
+    [
+     168,
+     106
+    ],
+    [
+     168,
+     101
+    ],
+    [
+     168,
+     96
+    ],
+    [
+     168,
+     91
+    ],
+    [
+     168,
+     86
+    ],
+    [
+     168,
+     80
+    ],
+    [
+     168,
+     75
+    ],
+    [
+     168,
+     70
+    ],
+    [
+     168,
+     65
+    ],
+    [
+     168,
+     60
+    ],
+    [
+     168,
+     55
+    ],
+    [
+     168,
+     50
+    ],
+    [
+     168,
+     44
+    ],
+    [
+     168,
+     39
+    ],
+    [
+     168,
+     34
+    ],
+    [
+     168,
+     29
+    ],
+    [
+     168,
+     24
+    ],
+    [
+     168,
+     19
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.29,
+    150.04
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ],
+   "size": [
+    361,
+    187
+   ]
+  },
+  "turn_countdown_2": {
+   "children_frame1": {
+    "Content": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     0.05,
+     0.0
+    ],
+    "Content/Text": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     -87.9431,
+     -16.1371
+    ]
+   },
+   "files": [
+    "turn_countdown_2/001.png",
+    "turn_countdown_2/002.png",
+    "turn_countdown_2/003.png",
+    "turn_countdown_2/004.png",
+    "turn_countdown_2/005.png",
+    "turn_countdown_2/006.png",
+    "turn_countdown_2/007.png",
+    "turn_countdown_2/008.png",
+    "turn_countdown_2/009.png",
+    "turn_countdown_2/010.png",
+    "turn_countdown_2/011.png",
+    "turn_countdown_2/012.png",
+    "turn_countdown_2/013.png",
+    "turn_countdown_2/014.png",
+    "turn_countdown_2/015.png",
+    "turn_countdown_2/016.png",
+    "turn_countdown_2/017.png",
+    "turn_countdown_2/018.png",
+    "turn_countdown_2/019.png",
+    "turn_countdown_2/020.png",
+    "turn_countdown_2/021.png",
+    "turn_countdown_2/022.png",
+    "turn_countdown_2/023.png"
+   ],
+   "frames_exported": 23,
+   "frames_total": 23,
+   "id": 13,
+   "labels": {
+    "end": 23
+   },
+   "offsets": [
+    [
+     164,
+     127
+    ],
+    [
+     164,
+     122
+    ],
+    [
+     164,
+     117
+    ],
+    [
+     164,
+     111
+    ],
+    [
+     164,
+     106
+    ],
+    [
+     164,
+     101
+    ],
+    [
+     164,
+     96
+    ],
+    [
+     164,
+     91
+    ],
+    [
+     164,
+     86
+    ],
+    [
+     164,
+     81
+    ],
+    [
+     164,
+     75
+    ],
+    [
+     164,
+     70
+    ],
+    [
+     164,
+     65
+    ],
+    [
+     164,
+     60
+    ],
+    [
+     164,
+     55
+    ],
+    [
+     164,
+     50
+    ],
+    [
+     164,
+     45
+    ],
+    [
+     164,
+     40
+    ],
+    [
+     164,
+     35
+    ],
+    [
+     164,
+     30
+    ],
+    [
+     164,
+     25
+    ],
+    [
+     164,
+     20
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.29,
+    150.04
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ],
+   "size": [
+    361,
+    187
+   ]
+  },
+  "turn_countdown_3": {
+   "children_frame1": {
+    "Content": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     0.05,
+     0.0
+    ],
+    "Content/Text": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     -87.9431,
+     -16.1371
+    ]
+   },
+   "files": [
+    "turn_countdown_3/001.png",
+    "turn_countdown_3/002.png",
+    "turn_countdown_3/003.png",
+    "turn_countdown_3/004.png",
+    "turn_countdown_3/005.png",
+    "turn_countdown_3/006.png",
+    "turn_countdown_3/007.png",
+    "turn_countdown_3/008.png",
+    "turn_countdown_3/009.png",
+    "turn_countdown_3/010.png",
+    "turn_countdown_3/011.png",
+    "turn_countdown_3/012.png",
+    "turn_countdown_3/013.png",
+    "turn_countdown_3/014.png",
+    "turn_countdown_3/015.png",
+    "turn_countdown_3/016.png",
+    "turn_countdown_3/017.png",
+    "turn_countdown_3/018.png",
+    "turn_countdown_3/019.png",
+    "turn_countdown_3/020.png",
+    "turn_countdown_3/021.png",
+    "turn_countdown_3/022.png",
+    "turn_countdown_3/023.png"
+   ],
+   "frames_exported": 23,
+   "frames_total": 23,
+   "id": 10,
+   "labels": {
+    "end": 23
+   },
+   "offsets": [
+    [
+     165,
+     127
+    ],
+    [
+     165,
+     122
+    ],
+    [
+     165,
+     117
+    ],
+    [
+     165,
+     111
+    ],
+    [
+     165,
+     106
+    ],
+    [
+     165,
+     101
+    ],
+    [
+     165,
+     96
+    ],
+    [
+     165,
+     91
+    ],
+    [
+     165,
+     86
+    ],
+    [
+     165,
+     81
+    ],
+    [
+     165,
+     75
+    ],
+    [
+     165,
+     70
+    ],
+    [
+     165,
+     65
+    ],
+    [
+     165,
+     60
+    ],
+    [
+     165,
+     55
+    ],
+    [
+     165,
+     50
+    ],
+    [
+     165,
+     45
+    ],
+    [
+     165,
+     40
+    ],
+    [
+     165,
+     35
+    ],
+    [
+     165,
+     30
+    ],
+    [
+     165,
+     25
+    ],
+    [
+     165,
+     20
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.29,
+    150.04
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ],
+   "size": [
+    361,
+    187
+   ]
+  },
+  "turn_countdown_4": {
+   "children_frame1": {
+    "Content": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     0.05,
+     0.0
+    ],
+    "Content/Text": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     -87.9431,
+     -16.1371
+    ]
+   },
+   "files": [
+    "turn_countdown_4/001.png",
+    "turn_countdown_4/002.png",
+    "turn_countdown_4/003.png",
+    "turn_countdown_4/004.png",
+    "turn_countdown_4/005.png",
+    "turn_countdown_4/006.png",
+    "turn_countdown_4/007.png",
+    "turn_countdown_4/008.png",
+    "turn_countdown_4/009.png",
+    "turn_countdown_4/010.png",
+    "turn_countdown_4/011.png",
+    "turn_countdown_4/012.png",
+    "turn_countdown_4/013.png",
+    "turn_countdown_4/014.png",
+    "turn_countdown_4/015.png",
+    "turn_countdown_4/016.png",
+    "turn_countdown_4/017.png",
+    "turn_countdown_4/018.png",
+    "turn_countdown_4/019.png",
+    "turn_countdown_4/020.png",
+    "turn_countdown_4/021.png",
+    "turn_countdown_4/022.png",
+    "turn_countdown_4/023.png"
+   ],
+   "frames_exported": 23,
+   "frames_total": 23,
+   "id": 7,
+   "labels": {
+    "end": 23
+   },
+   "offsets": [
+    [
+     163,
+     127
+    ],
+    [
+     163,
+     122
+    ],
+    [
+     163,
+     117
+    ],
+    [
+     163,
+     111
+    ],
+    [
+     163,
+     106
+    ],
+    [
+     163,
+     101
+    ],
+    [
+     163,
+     96
+    ],
+    [
+     163,
+     91
+    ],
+    [
+     163,
+     86
+    ],
+    [
+     163,
+     80
+    ],
+    [
+     163,
+     75
+    ],
+    [
+     163,
+     70
+    ],
+    [
+     163,
+     65
+    ],
+    [
+     163,
+     60
+    ],
+    [
+     163,
+     55
+    ],
+    [
+     163,
+     50
+    ],
+    [
+     163,
+     44
+    ],
+    [
+     163,
+     39
+    ],
+    [
+     163,
+     34
+    ],
+    [
+     163,
+     29
+    ],
+    [
+     163,
+     24
+    ],
+    [
+     163,
+     19
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.29,
+    150.04
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ],
+   "size": [
+    361,
+    187
+   ]
+  },
+  "turn_countdown_5": {
+   "children_frame1": {
+    "Content": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     0.05,
+     -31.45
+    ],
+    "Content/Text": [
+     1.1525,
+     0.0,
+     0.0,
+     1.1526,
+     -87.9431,
+     -47.5871
+    ]
+   },
+   "files": [
+    "turn_countdown_5/001.png",
+    "turn_countdown_5/002.png",
+    "turn_countdown_5/003.png",
+    "turn_countdown_5/004.png",
+    "turn_countdown_5/005.png",
+    "turn_countdown_5/006.png",
+    "turn_countdown_5/007.png",
+    "turn_countdown_5/008.png",
+    "turn_countdown_5/009.png",
+    "turn_countdown_5/010.png",
+    "turn_countdown_5/011.png",
+    "turn_countdown_5/012.png",
+    "turn_countdown_5/013.png",
+    "turn_countdown_5/014.png",
+    "turn_countdown_5/015.png",
+    "turn_countdown_5/016.png",
+    "turn_countdown_5/017.png",
+    "turn_countdown_5/018.png",
+    "turn_countdown_5/019.png",
+    "turn_countdown_5/020.png",
+    "turn_countdown_5/021.png",
+    "turn_countdown_5/022.png",
+    "turn_countdown_5/023.png"
+   ],
+   "frames_exported": 23,
+   "frames_total": 23,
+   "id": 4,
+   "labels": {
+    "end": 23
+   },
+   "offsets": [
+    [
+     164,
+     65
+    ],
+    [
+     164,
+     72
+    ],
+    [
+     164,
+     79
+    ],
+    [
+     164,
+     86
+    ],
+    [
+     164,
+     93
+    ],
+    [
+     164,
+     100
+    ],
+    [
+     164,
+     107
+    ],
+    [
+     164,
+     114
+    ],
+    [
+     164,
+     121
+    ],
+    [
+     164,
+     128
+    ],
+    [
+     164,
+     119
+    ],
+    [
+     164,
+     110
+    ],
+    [
+     164,
+     102
+    ],
+    [
+     164,
+     93
+    ],
+    [
+     164,
+     84
+    ],
+    [
+     164,
+     75
+    ],
+    [
+     164,
+     67
+    ],
+    [
+     164,
+     58
+    ],
+    [
+     164,
+     49
+    ],
+    [
+     164,
+     41
+    ],
+    [
+     164,
+     32
+    ],
+    [
+     164,
+     23
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    180.39,
+    150.09
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ],
+   "size": [
+    361,
+    187
+   ]
+  },
+  "weapon_indicator": {
+   "children_frame1": {
+    "Text_Weapon": [
+     1.7104,
+     0.0,
+     0.0,
+     1.7104,
+     -263.85,
+     -79.65
+    ]
+   },
+   "files": [
+    "weapon_indicator/001.png",
+    "weapon_indicator/002.png",
+    "weapon_indicator/003.png",
+    "weapon_indicator/004.png",
+    "weapon_indicator/005.png",
+    "weapon_indicator/006.png",
+    "weapon_indicator/007.png",
+    "weapon_indicator/008.png",
+    "weapon_indicator/009.png",
+    "weapon_indicator/010.png",
+    "weapon_indicator/011.png",
+    "weapon_indicator/012.png",
+    "weapon_indicator/013.png",
+    "weapon_indicator/014.png",
+    "weapon_indicator/015.png",
+    "weapon_indicator/016.png",
+    "weapon_indicator/017.png",
+    "weapon_indicator/018.png",
+    "weapon_indicator/019.png",
+    "weapon_indicator/020.png",
+    "weapon_indicator/021.png",
+    "weapon_indicator/022.png",
+    "weapon_indicator/023.png",
+    "weapon_indicator/024.png",
+    "weapon_indicator/025.png",
+    "weapon_indicator/026.png",
+    "weapon_indicator/027.png",
+    "weapon_indicator/028.png",
+    "weapon_indicator/029.png",
+    "weapon_indicator/030.png",
+    "weapon_indicator/031.png",
+    "weapon_indicator/032.png",
+    "weapon_indicator/033.png",
+    "weapon_indicator/034.png",
+    "weapon_indicator/035.png",
+    "weapon_indicator/036.png",
+    "weapon_indicator/037.png",
+    "weapon_indicator/038.png",
+    "weapon_indicator/039.png"
+   ],
+   "frames_exported": 40,
+   "frames_total": 40,
+   "id": 19,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     203,
+     328
+    ],
+    [
+     203,
+     318
+    ],
+    [
+     203,
+     308
+    ],
+    [
+     203,
+     298
+    ],
+    [
+     203,
+     288
+    ],
+    [
+     203,
+     278
+    ],
+    [
+     203,
+     270
+    ],
+    [
+     203,
+     261
+    ],
+    [
+     203,
+     252
+    ],
+    [
+     203,
+     244
+    ],
+    [
+     203,
+     235
+    ],
+    [
+     203,
+     227
+    ],
+    [
+     203,
+     218
+    ],
+    [
+     203,
+     209
+    ],
+    [
+     203,
+     200
+    ],
+    [
+     203,
+     191
+    ],
+    [
+     203,
+     182
+    ],
+    [
+     203,
+     173
+    ],
+    [
+     203,
+     164
+    ],
+    [
+     203,
+     155
+    ],
+    [
+     203,
+     146
+    ],
+    [
+     203,
+     137
+    ],
+    [
+     203,
+     129
+    ],
+    [
+     203,
+     122
+    ],
+    [
+     203,
+     115
+    ],
+    [
+     203,
+     107
+    ],
+    [
+     203,
+     100
+    ],
+    [
+     203,
+     92
+    ],
+    [
+     203,
+     85
+    ],
+    [
+     203,
+     78
+    ],
+    [
+     203,
+     70
+    ],
+    [
+     203,
+     63
+    ],
+    [
+     203,
+     55
+    ],
+    [
+     203,
+     50
+    ],
+    [
+     203,
+     44
+    ],
+    [
+     203,
+     38
+    ],
+    [
+     203,
+     33
+    ],
+    [
+     203,
+     27
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    534.55,
+    482.42
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    0
+   ],
+   "size": [
+    1069,
+    426
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

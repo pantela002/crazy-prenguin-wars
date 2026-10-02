@@ -1,0 +1,300 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_137.png": {
+   "id": 137,
+   "linkage": null,
+   "size": [
+    761,
+    701
+   ]
+  },
+  "_bitmaps/bitmap_139.png": {
+   "id": 139,
+   "linkage": null,
+   "size": [
+    990,
+    726
+   ]
+  },
+  "_bitmaps/bitmap_143.png": {
+   "id": 143,
+   "linkage": null,
+   "size": [
+    128,
+    66
+   ]
+  },
+  "_bitmaps/bitmap_146.png": {
+   "id": 146,
+   "linkage": null,
+   "size": [
+    47,
+    74
+   ]
+  },
+  "_bitmaps/bitmap_26.png": {
+   "id": 26,
+   "linkage": null,
+   "size": [
+    127,
+    53
+   ]
+  },
+  "_bitmaps/bitmap_29.png": {
+   "id": 29,
+   "linkage": null,
+   "size": [
+    39,
+    73
+   ]
+  },
+  "_bitmaps/bitmap_31.png": {
+   "id": 31,
+   "linkage": null,
+   "size": [
+    126,
+    75
+   ]
+  },
+  "_bitmaps/bitmap_35.png": {
+   "id": 35,
+   "linkage": null,
+   "size": [
+    94,
+    219
+   ]
+  },
+  "_bitmaps/bitmap_38.png": {
+   "id": 38,
+   "linkage": null,
+   "size": [
+    219,
+    386
+   ]
+  },
+  "_bitmaps/bitmap_41.png": {
+   "id": 41,
+   "linkage": null,
+   "size": [
+    115,
+    235
+   ]
+  },
+  "_bitmaps/bitmap_44.png": {
+   "id": 44,
+   "linkage": null,
+   "size": [
+    119,
+    130
+   ]
+  },
+  "_bitmaps/bitmap_47.png": {
+   "id": 47,
+   "linkage": null,
+   "size": [
+    107,
+    91
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/shops.swf",
+ "symbols": {
+  "background": {
+   "files": [
+    "background/001.png",
+    "background/002.png"
+   ],
+   "frames_exported": 7,
+   "frames_total": 1,
+   "id": 135,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": [
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "size": [
+    1520,
+    1400
+   ]
+  },
+  "background_main": {
+   "children_frame1": {
+    "background": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "files": [
+    "background_main/001.png",
+    "background_main/002.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 1,
+   "id": 144,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": [
+    0,
+    1
+   ],
+   "size": [
+    1520,
+    1400
+   ]
+  },
+  "comingsoon": {
+   "files": [
+    "comingsoon.png"
+   ],
+   "frames_exported": 7,
+   "frames_total": 7,
+   "id": 145,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "home_screen": {
+   "children_frame1": {
+    "Container_Character": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "background": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "files": [
+    "home_screen/001.png",
+    "home_screen/002.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 1,
+   "id": 141,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": [
+    0,
+    1
+   ],
+   "size": [
+    1520,
+    1400
+   ]
+  },
+  "top_bar": {
+   "children_frame1": {
+    "comingsoon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     346.5,
+     254.1
+    ]
+   },
+   "files": [
+    "top_bar.png"
+   ],
+   "frames_exported": 7,
+   "frames_total": 1,
+   "id": 140,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    -693.0,
+    -508.2
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

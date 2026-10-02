@@ -1,0 +1,521 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    92,
+    63
+   ]
+  },
+  "_bitmaps/bitmap_10.png": {
+   "id": 10,
+   "linkage": null,
+   "size": [
+    175,
+    168
+   ]
+  },
+  "_bitmaps/bitmap_13.png": {
+   "id": 13,
+   "linkage": null,
+   "size": [
+    107,
+    119
+   ]
+  },
+  "_bitmaps/bitmap_16.png": {
+   "id": 16,
+   "linkage": null,
+   "size": [
+    167,
+    162
+   ]
+  },
+  "_bitmaps/bitmap_19.png": {
+   "id": 19,
+   "linkage": null,
+   "size": [
+    124,
+    169
+   ]
+  },
+  "_bitmaps/bitmap_22.png": {
+   "id": 22,
+   "linkage": null,
+   "size": [
+    143,
+    170
+   ]
+  },
+  "_bitmaps/bitmap_25.png": {
+   "id": 25,
+   "linkage": null,
+   "size": [
+    114,
+    117
+   ]
+  },
+  "_bitmaps/bitmap_28.png": {
+   "id": 28,
+   "linkage": null,
+   "size": [
+    110,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_31.png": {
+   "id": 31,
+   "linkage": null,
+   "size": [
+    169,
+    169
+   ]
+  },
+  "_bitmaps/bitmap_34.png": {
+   "id": 34,
+   "linkage": null,
+   "size": [
+    158,
+    164
+   ]
+  },
+  "_bitmaps/bitmap_37.png": {
+   "id": 37,
+   "linkage": null,
+   "size": [
+    148,
+    170
+   ]
+  },
+  "_bitmaps/bitmap_4.png": {
+   "id": 4,
+   "linkage": null,
+   "size": [
+    77,
+    79
+   ]
+  },
+  "_bitmaps/bitmap_40.png": {
+   "id": 40,
+   "linkage": null,
+   "size": [
+    147,
+    132
+   ]
+  },
+  "_bitmaps/bitmap_43.png": {
+   "id": 43,
+   "linkage": null,
+   "size": [
+    198,
+    161
+   ]
+  },
+  "_bitmaps/bitmap_46.png": {
+   "id": 46,
+   "linkage": null,
+   "size": [
+    150,
+    161
+   ]
+  },
+  "_bitmaps/bitmap_7.png": {
+   "id": 7,
+   "linkage": null,
+   "size": [
+    101,
+    106
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/icons_boosters.swf",
+ "symbols": {
+  "bandage": {
+   "files": [
+    "bandage.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 24,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    42.0,
+    50.0
+   ],
+   "sequence": null,
+   "size": [
+    84,
+    100
+   ]
+  },
+  "burrito": {
+   "files": [
+    "burrito.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 27,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    49.0,
+    50.0
+   ],
+   "sequence": null,
+   "size": [
+    99,
+    101
+   ]
+  },
+  "caltrops": {
+   "files": [
+    "caltrops.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 33,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    51.0
+   ],
+   "sequence": null,
+   "size": [
+    102,
+    102
+   ]
+  },
+  "confetti": {
+   "files": [
+    "confetti.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 48,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    48.0,
+    51.0
+   ],
+   "sequence": null,
+   "size": [
+    96,
+    103
+   ]
+  },
+  "explosionscroll": {
+   "files": [
+    "explosionscroll.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 18,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    50.0,
+    49.0
+   ],
+   "sequence": null,
+   "size": [
+    100,
+    97
+   ]
+  },
+  "flamemine": {
+   "files": [
+    "flamemine.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 39,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    47.0,
+    54.0
+   ],
+   "sequence": null,
+   "size": [
+    93,
+    107
+   ]
+  },
+  "kamikaze": {
+   "files": [
+    "kamikaze.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 30,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    50.0,
+    50.0
+   ],
+   "sequence": null,
+   "size": [
+    100,
+    100
+   ]
+  },
+  "mine": {
+   "files": [
+    "mine.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 36,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    49.0,
+    51.0
+   ],
+   "sequence": null,
+   "size": [
+    97,
+    101
+   ]
+  },
+  "mushroom": {
+   "files": [
+    "mushroom.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 45,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    41.0
+   ],
+   "sequence": null,
+   "size": [
+    101,
+    82
+   ]
+  },
+  "pogostick": {
+   "files": [
+    "pogostick.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 21,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    39.0,
+    53.0
+   ],
+   "sequence": null,
+   "size": [
+    78,
+    107
+   ]
+  },
+  "proteinbar": {
+   "files": [
+    "proteinbar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 42,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    46.0
+   ],
+   "sequence": null,
+   "size": [
+    102,
+    92
+   ]
+  },
+  "salmonsushi": {
+   "files": [
+    "salmonsushi.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 3,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    35.0
+   ],
+   "sequence": null,
+   "size": [
+    101,
+    69
+   ]
+  },
+  "shield": {
+   "files": [
+    "shield.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 12,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    54.0,
+    53.0
+   ],
+   "sequence": null,
+   "size": [
+    109,
+    105
+   ]
+  },
+  "spicysushi": {
+   "files": [
+    "spicysushi.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 6,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    48.0,
+    49.0
+   ],
+   "sequence": null,
+   "size": [
+    96,
+    98
+   ]
+  },
+  "umbrella": {
+   "files": [
+    "umbrella.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 15,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    43.0,
+    48.0
+   ],
+   "sequence": null,
+   "size": [
+    87,
+    97
+   ]
+  },
+  "wasabisushi": {
+   "files": [
+    "wasabisushi.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 9,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    48.0,
+    50.0
+   ],
+   "sequence": null,
+   "size": [
+    96,
+    100
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 1
+}

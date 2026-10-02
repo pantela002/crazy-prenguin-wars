@@ -1,0 +1,230 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_143.png": {
+   "id": 143,
+   "linkage": null,
+   "size": [
+    762,
+    702
+   ]
+  },
+  "_bitmaps/bitmap_147.png": {
+   "id": 147,
+   "linkage": null,
+   "size": [
+    764,
+    66
+   ]
+  },
+  "_bitmaps/bitmap_257.png": {
+   "id": 257,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_261.png": {
+   "id": 261,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_264.png": {
+   "id": 264,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_267.png": {
+   "id": 267,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_270.png": {
+   "id": 270,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_273.png": {
+   "id": 273,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_276.png": {
+   "id": 276,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_279.png": {
+   "id": 279,
+   "linkage": null,
+   "size": [
+    109,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_28.png": {
+   "id": 28,
+   "linkage": null,
+   "size": [
+    94,
+    90
+   ]
+  },
+  "_bitmaps/bitmap_32.png": {
+   "id": 32,
+   "linkage": null,
+   "size": [
+    94,
+    90
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/loading_anim.swf",
+ "symbols": {
+  "dark_back": {
+   "files": [
+    "dark_back/001.png",
+    "dark_back/002.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 141,
+   "labels": {
+    "Active": 2,
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": [
+    0,
+    1
+   ],
+   "size": [
+    1524,
+    1404
+   ]
+  },
+  "loading_anim_icon": {
+   "files": [
+    "loading_anim_icon.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 135,
+   "labels": {
+    "Active": 2,
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    71.1,
+    71.1
+   ],
+   "sequence": null,
+   "size": [
+    142,
+    142
+   ]
+  },
+  "loading_default": {
+   "children_frame1": {
+    "Text_Message": [
+     1.5,
+     0.0,
+     0.0,
+     1.5,
+     -78.25,
+     44.95
+    ]
+   },
+   "files": [
+    "loading_default.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 326,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     103,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    162.43,
+    -12.75
+   ],
+   "sequence": null,
+   "size": [
+    324,
+    256
+   ]
+  },
+  "top_bar": {
+   "files": [
+    "top_bar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 140,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    764.0,
+    -0.1
+   ],
+   "sequence": null,
+   "size": [
+    1528,
+    132
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

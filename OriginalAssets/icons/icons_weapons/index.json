@@ -1,0 +1,1769 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    112,
+    115
+   ]
+  },
+  "_bitmaps/bitmap_10.png": {
+   "id": 10,
+   "linkage": null,
+   "size": [
+    125,
+    132
+   ]
+  },
+  "_bitmaps/bitmap_100.png": {
+   "id": 100,
+   "linkage": null,
+   "size": [
+    80,
+    96
+   ]
+  },
+  "_bitmaps/bitmap_103.png": {
+   "id": 103,
+   "linkage": null,
+   "size": [
+    122,
+    129
+   ]
+  },
+  "_bitmaps/bitmap_106.png": {
+   "id": 106,
+   "linkage": null,
+   "size": [
+    105,
+    111
+   ]
+  },
+  "_bitmaps/bitmap_109.png": {
+   "id": 109,
+   "linkage": null,
+   "size": [
+    120,
+    124
+   ]
+  },
+  "_bitmaps/bitmap_112.png": {
+   "id": 112,
+   "linkage": null,
+   "size": [
+    127,
+    113
+   ]
+  },
+  "_bitmaps/bitmap_115.png": {
+   "id": 115,
+   "linkage": null,
+   "size": [
+    139,
+    105
+   ]
+  },
+  "_bitmaps/bitmap_118.png": {
+   "id": 118,
+   "linkage": null,
+   "size": [
+    110,
+    117
+   ]
+  },
+  "_bitmaps/bitmap_121.png": {
+   "id": 121,
+   "linkage": null,
+   "size": [
+    101,
+    106
+   ]
+  },
+  "_bitmaps/bitmap_124.png": {
+   "id": 124,
+   "linkage": null,
+   "size": [
+    111,
+    112
+   ]
+  },
+  "_bitmaps/bitmap_127.png": {
+   "id": 127,
+   "linkage": null,
+   "size": [
+    127,
+    126
+   ]
+  },
+  "_bitmaps/bitmap_13.png": {
+   "id": 13,
+   "linkage": null,
+   "size": [
+    86,
+    116
+   ]
+  },
+  "_bitmaps/bitmap_130.png": {
+   "id": 130,
+   "linkage": null,
+   "size": [
+    105,
+    110
+   ]
+  },
+  "_bitmaps/bitmap_133.png": {
+   "id": 133,
+   "linkage": null,
+   "size": [
+    78,
+    95
+   ]
+  },
+  "_bitmaps/bitmap_136.png": {
+   "id": 136,
+   "linkage": null,
+   "size": [
+    86,
+    112
+   ]
+  },
+  "_bitmaps/bitmap_139.png": {
+   "id": 139,
+   "linkage": null,
+   "size": [
+    143,
+    130
+   ]
+  },
+  "_bitmaps/bitmap_142.png": {
+   "id": 142,
+   "linkage": null,
+   "size": [
+    156,
+    138
+   ]
+  },
+  "_bitmaps/bitmap_145.png": {
+   "id": 145,
+   "linkage": null,
+   "size": [
+    100,
+    84
+   ]
+  },
+  "_bitmaps/bitmap_148.png": {
+   "id": 148,
+   "linkage": null,
+   "size": [
+    143,
+    128
+   ]
+  },
+  "_bitmaps/bitmap_151.png": {
+   "id": 151,
+   "linkage": null,
+   "size": [
+    99,
+    124
+   ]
+  },
+  "_bitmaps/bitmap_154.png": {
+   "id": 154,
+   "linkage": null,
+   "size": [
+    106,
+    115
+   ]
+  },
+  "_bitmaps/bitmap_157.png": {
+   "id": 157,
+   "linkage": null,
+   "size": [
+    98,
+    114
+   ]
+  },
+  "_bitmaps/bitmap_16.png": {
+   "id": 16,
+   "linkage": null,
+   "size": [
+    90,
+    90
+   ]
+  },
+  "_bitmaps/bitmap_160.png": {
+   "id": 160,
+   "linkage": null,
+   "size": [
+    110,
+    114
+   ]
+  },
+  "_bitmaps/bitmap_163.png": {
+   "id": 163,
+   "linkage": null,
+   "size": [
+    101,
+    105
+   ]
+  },
+  "_bitmaps/bitmap_19.png": {
+   "id": 19,
+   "linkage": null,
+   "size": [
+    107,
+    118
+   ]
+  },
+  "_bitmaps/bitmap_22.png": {
+   "id": 22,
+   "linkage": null,
+   "size": [
+    90,
+    90
+   ]
+  },
+  "_bitmaps/bitmap_25.png": {
+   "id": 25,
+   "linkage": null,
+   "size": [
+    114,
+    112
+   ]
+  },
+  "_bitmaps/bitmap_28.png": {
+   "id": 28,
+   "linkage": null,
+   "size": [
+    107,
+    121
+   ]
+  },
+  "_bitmaps/bitmap_31.png": {
+   "id": 31,
+   "linkage": null,
+   "size": [
+    112,
+    113
+   ]
+  },
+  "_bitmaps/bitmap_34.png": {
+   "id": 34,
+   "linkage": null,
+   "size": [
+    101,
+    124
+   ]
+  },
+  "_bitmaps/bitmap_37.png": {
+   "id": 37,
+   "linkage": null,
+   "size": [
+    98,
+    107
+   ]
+  },
+  "_bitmaps/bitmap_4.png": {
+   "id": 4,
+   "linkage": null,
+   "size": [
+    99,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_40.png": {
+   "id": 40,
+   "linkage": null,
+   "size": [
+    102,
+    120
+   ]
+  },
+  "_bitmaps/bitmap_43.png": {
+   "id": 43,
+   "linkage": null,
+   "size": [
+    101,
+    114
+   ]
+  },
+  "_bitmaps/bitmap_46.png": {
+   "id": 46,
+   "linkage": null,
+   "size": [
+    112,
+    81
+   ]
+  },
+  "_bitmaps/bitmap_49.png": {
+   "id": 49,
+   "linkage": null,
+   "size": [
+    93,
+    116
+   ]
+  },
+  "_bitmaps/bitmap_52.png": {
+   "id": 52,
+   "linkage": null,
+   "size": [
+    127,
+    114
+   ]
+  },
+  "_bitmaps/bitmap_55.png": {
+   "id": 55,
+   "linkage": null,
+   "size": [
+    116,
+    113
+   ]
+  },
+  "_bitmaps/bitmap_58.png": {
+   "id": 58,
+   "linkage": null,
+   "size": [
+    107,
+    120
+   ]
+  },
+  "_bitmaps/bitmap_61.png": {
+   "id": 61,
+   "linkage": null,
+   "size": [
+    102,
+    119
+   ]
+  },
+  "_bitmaps/bitmap_64.png": {
+   "id": 64,
+   "linkage": null,
+   "size": [
+    115,
+    112
+   ]
+  },
+  "_bitmaps/bitmap_67.png": {
+   "id": 67,
+   "linkage": null,
+   "size": [
+    118,
+    131
+   ]
+  },
+  "_bitmaps/bitmap_7.png": {
+   "id": 7,
+   "linkage": null,
+   "size": [
+    107,
+    95
+   ]
+  },
+  "_bitmaps/bitmap_70.png": {
+   "id": 70,
+   "linkage": null,
+   "size": [
+    118,
+    117
+   ]
+  },
+  "_bitmaps/bitmap_73.png": {
+   "id": 73,
+   "linkage": null,
+   "size": [
+    116,
+    113
+   ]
+  },
+  "_bitmaps/bitmap_76.png": {
+   "id": 76,
+   "linkage": null,
+   "size": [
+    101,
+    105
+   ]
+  },
+  "_bitmaps/bitmap_79.png": {
+   "id": 79,
+   "linkage": null,
+   "size": [
+    103,
+    111
+   ]
+  },
+  "_bitmaps/bitmap_82.png": {
+   "id": 82,
+   "linkage": null,
+   "size": [
+    106,
+    123
+   ]
+  },
+  "_bitmaps/bitmap_85.png": {
+   "id": 85,
+   "linkage": null,
+   "size": [
+    119,
+    125
+   ]
+  },
+  "_bitmaps/bitmap_88.png": {
+   "id": 88,
+   "linkage": null,
+   "size": [
+    99,
+    92
+   ]
+  },
+  "_bitmaps/bitmap_91.png": {
+   "id": 91,
+   "linkage": null,
+   "size": [
+    136,
+    126
+   ]
+  },
+  "_bitmaps/bitmap_94.png": {
+   "id": 94,
+   "linkage": null,
+   "size": [
+    103,
+    113
+   ]
+  },
+  "_bitmaps/bitmap_97.png": {
+   "id": 97,
+   "linkage": null,
+   "size": [
+    120,
+    124
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/icons_weapons.swf",
+ "symbols": {
+  "icon_wpn_acid_lemon": {
+   "files": [
+    "icon_wpn_acid_lemon.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 165,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    50.0,
+    52.0
+   ],
+   "sequence": null,
+   "size": [
+    101,
+    105
+   ]
+  },
+  "icon_wpn_armor_piercing_rocket": {
+   "files": [
+    "icon_wpn_armor_piercing_rocket.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 162,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    55.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    110,
+    114
+   ]
+  },
+  "icon_wpn_artillery_barrage": {
+   "files": [
+    "icon_wpn_artillery_barrage.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 159,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    49.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    98,
+    114
+   ]
+  },
+  "icon_wpn_bazooka": {
+   "files": [
+    "icon_wpn_bazooka.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 156,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    53.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    106,
+    115
+   ]
+  },
+  "icon_wpn_beanbag_gun": {
+   "files": [
+    "icon_wpn_beanbag_gun.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 153,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    49.0,
+    62.0
+   ],
+   "sequence": null,
+   "size": [
+    99,
+    124
+   ]
+  },
+  "icon_wpn_blunderbuss": {
+   "files": [
+    "icon_wpn_blunderbuss.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 150,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    72.0,
+    65.0
+   ],
+   "sequence": null,
+   "size": [
+    143,
+    128
+   ]
+  },
+  "icon_wpn_broom": {
+   "files": [
+    "icon_wpn_broom.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 147,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    44.0
+   ],
+   "sequence": null,
+   "size": [
+    100,
+    84
+   ]
+  },
+  "icon_wpn_chocolate_cannon": {
+   "files": [
+    "icon_wpn_chocolate_cannon.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 144,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    73.0,
+    79.0
+   ],
+   "sequence": null,
+   "size": [
+    156,
+    138
+   ]
+  },
+  "icon_wpn_chocolate_cannon2": {
+   "files": [
+    "icon_wpn_chocolate_cannon2.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 141,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    72.0,
+    65.0
+   ],
+   "sequence": null,
+   "size": [
+    143,
+    130
+   ]
+  },
+  "icon_wpn_cinder_grenade": {
+   "files": [
+    "icon_wpn_cinder_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 138,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    43.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    86,
+    112
+   ]
+  },
+  "icon_wpn_cluster_grenade": {
+   "files": [
+    "icon_wpn_cluster_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 135,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    39.0,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    78,
+    95
+   ]
+  },
+  "icon_wpn_cluster_rocket": {
+   "files": [
+    "icon_wpn_cluster_rocket.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 132,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    52.0,
+    55.0
+   ],
+   "sequence": null,
+   "size": [
+    105,
+    110
+   ]
+  },
+  "icon_wpn_doomsday_device": {
+   "files": [
+    "icon_wpn_doomsday_device.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 129,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    63.0,
+    63.0
+   ],
+   "sequence": null,
+   "size": [
+    127,
+    126
+   ]
+  },
+  "icon_wpn_drillbot": {
+   "files": [
+    "icon_wpn_drillbot.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 126,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    55.0,
+    56.0
+   ],
+   "sequence": null,
+   "size": [
+    111,
+    112
+   ]
+  },
+  "icon_wpn_dynamite": {
+   "files": [
+    "icon_wpn_dynamite.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 123,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    50.0,
+    53.0
+   ],
+   "sequence": null,
+   "size": [
+    101,
+    106
+   ]
+  },
+  "icon_wpn_easter_eggs": {
+   "files": [
+    "icon_wpn_easter_eggs.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 120,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    55.0,
+    59.0
+   ],
+   "sequence": null,
+   "size": [
+    110,
+    117
+   ]
+  },
+  "icon_wpn_fire_hose": {
+   "files": [
+    "icon_wpn_fire_hose.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 117,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    70.0,
+    53.0
+   ],
+   "sequence": null,
+   "size": [
+    139,
+    105
+   ]
+  },
+  "icon_wpn_fire_plasma": {
+   "files": [
+    "icon_wpn_fire_plasma.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 114,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    63.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    127,
+    113
+   ]
+  },
+  "icon_wpn_fireworks": {
+   "files": [
+    "icon_wpn_fireworks.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 3,
+   "labels": null,
+   "offsets": [
+    [
+     2,
+     1
+    ]
+   ],
+   "origin_px": [
+    56.0,
+    58.0
+   ],
+   "sequence": null,
+   "size": [
+    112,
+    115
+   ]
+  },
+  "icon_wpn_flak_missile": {
+   "files": [
+    "icon_wpn_flak_missile.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 111,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    60.0,
+    61.0
+   ],
+   "sequence": null,
+   "size": [
+    120,
+    124
+   ]
+  },
+  "icon_wpn_flamethrower": {
+   "files": [
+    "icon_wpn_flamethrower.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 108,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    53.0,
+    55.0
+   ],
+   "sequence": null,
+   "size": [
+    105,
+    111
+   ]
+  },
+  "icon_wpn_flaregun": {
+   "files": [
+    "icon_wpn_flaregun.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 105,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    61.0,
+    64.0
+   ],
+   "sequence": null,
+   "size": [
+    122,
+    129
+   ]
+  },
+  "icon_wpn_frag_grenade": {
+   "files": [
+    "icon_wpn_frag_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 102,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    41.0,
+    48.05
+   ],
+   "sequence": null,
+   "size": [
+    80,
+    96
+   ]
+  },
+  "icon_wpn_fragmentation_rocket": {
+   "files": [
+    "icon_wpn_fragmentation_rocket.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 99,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    60.0,
+    62.0
+   ],
+   "sequence": null,
+   "size": [
+    120,
+    124
+   ]
+  },
+  "icon_wpn_gas_grenade": {
+   "files": [
+    "icon_wpn_gas_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 96,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    56.0
+   ],
+   "sequence": null,
+   "size": [
+    103,
+    113
+   ]
+  },
+  "icon_wpn_grenade_launcher": {
+   "files": [
+    "icon_wpn_grenade_launcher.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 93,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    68.0,
+    63.0
+   ],
+   "sequence": null,
+   "size": [
+    136,
+    126
+   ]
+  },
+  "icon_wpn_halloween_cat": {
+   "files": [
+    "icon_wpn_halloween_cat.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 90,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    44.0
+   ],
+   "sequence": null,
+   "size": [
+    99,
+    92
+   ]
+  },
+  "icon_wpn_impact_cannon": {
+   "files": [
+    "icon_wpn_impact_cannon.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 87,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    59.0,
+    62.0
+   ],
+   "sequence": null,
+   "size": [
+    119,
+    125
+   ]
+  },
+  "icon_wpn_jatimatic": {
+   "files": [
+    "icon_wpn_jatimatic.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 84,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    53.0,
+    61.0
+   ],
+   "sequence": null,
+   "size": [
+    106,
+    123
+   ]
+  },
+  "icon_wpn_laser_pistol": {
+   "files": [
+    "icon_wpn_laser_pistol.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 81,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    56.0
+   ],
+   "sequence": null,
+   "size": [
+    103,
+    111
+   ]
+  },
+  "icon_wpn_lemon_grenade": {
+   "files": [
+    "icon_wpn_lemon_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 78,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    50.0,
+    52.0
+   ],
+   "sequence": null,
+   "size": [
+    101,
+    105
+   ]
+  },
+  "icon_wpn_mega_nuke": {
+   "files": [
+    "icon_wpn_mega_nuke.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 75,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    59.0,
+    55.0
+   ],
+   "sequence": null,
+   "size": [
+    116,
+    113
+   ]
+  },
+  "icon_wpn_minigun_bazooka": {
+   "files": [
+    "icon_wpn_minigun_bazooka.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 72,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    59.0,
+    58.0
+   ],
+   "sequence": null,
+   "size": [
+    118,
+    117
+   ]
+  },
+  "icon_wpn_mining_laser": {
+   "files": [
+    "icon_wpn_mining_laser.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 69,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    56.0,
+    66.0
+   ],
+   "sequence": null,
+   "size": [
+    118,
+    131
+   ]
+  },
+  "icon_wpn_molotov": {
+   "files": [
+    "icon_wpn_molotov.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 66,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    57.0,
+    56.0
+   ],
+   "sequence": null,
+   "size": [
+    115,
+    112
+   ]
+  },
+  "icon_wpn_mortar": {
+   "files": [
+    "icon_wpn_mortar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 63,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    59.0
+   ],
+   "sequence": null,
+   "size": [
+    102,
+    119
+   ]
+  },
+  "icon_wpn_napalm": {
+   "files": [
+    "icon_wpn_napalm.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 60,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    53.0,
+    60.0
+   ],
+   "sequence": null,
+   "size": [
+    107,
+    120
+   ]
+  },
+  "icon_wpn_nuke": {
+   "files": [
+    "icon_wpn_nuke.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 57,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    58.0,
+    56.0
+   ],
+   "sequence": null,
+   "size": [
+    116,
+    113
+   ]
+  },
+  "icon_wpn_orbital_laser": {
+   "files": [
+    "icon_wpn_orbital_laser.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 54,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    63.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    127,
+    114
+   ]
+  },
+  "icon_wpn_pistol": {
+   "files": [
+    "icon_wpn_pistol.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 51,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    47.0,
+    59.0
+   ],
+   "sequence": null,
+   "size": [
+    93,
+    116
+   ]
+  },
+  "icon_wpn_plasma_bomb": {
+   "files": [
+    "icon_wpn_plasma_bomb.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 48,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    57.0,
+    40.0
+   ],
+   "sequence": null,
+   "size": [
+    112,
+    81
+   ]
+  },
+  "icon_wpn_plasma_cannon": {
+   "files": [
+    "icon_wpn_plasma_cannon.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 45,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    50.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    101,
+    114
+   ]
+  },
+  "icon_wpn_plasma_mortar": {
+   "files": [
+    "icon_wpn_plasma_mortar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 42,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    59.0
+   ],
+   "sequence": null,
+   "size": [
+    102,
+    120
+   ]
+  },
+  "icon_wpn_punch": {
+   "files": [
+    "icon_wpn_punch.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 39,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    49.0,
+    53.0
+   ],
+   "sequence": null,
+   "size": [
+    98,
+    107
+   ]
+  },
+  "icon_wpn_railgun": {
+   "files": [
+    "icon_wpn_railgun.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 36,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    62.0
+   ],
+   "sequence": null,
+   "size": [
+    101,
+    124
+   ]
+  },
+  "icon_wpn_rock": {
+   "files": [
+    "icon_wpn_rock.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 33,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    57.0,
+    57.0
+   ],
+   "sequence": null,
+   "size": [
+    112,
+    113
+   ]
+  },
+  "icon_wpn_shotgun": {
+   "files": [
+    "icon_wpn_shotgun.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 30,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    53.0,
+    60.0
+   ],
+   "sequence": null,
+   "size": [
+    107,
+    121
+   ]
+  },
+  "icon_wpn_sniper_rifle": {
+   "files": [
+    "icon_wpn_sniper_rifle.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 27,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    57.0,
+    56.0
+   ],
+   "sequence": null,
+   "size": [
+    114,
+    112
+   ]
+  },
+  "icon_wpn_snowball": {
+   "files": [
+    "icon_wpn_snowball.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 24,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    44.0
+   ],
+   "sequence": null,
+   "size": [
+    90,
+    90
+   ]
+  },
+  "icon_wpn_sticky_bomb": {
+   "files": [
+    "icon_wpn_sticky_bomb.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 21,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    53.0,
+    59.0
+   ],
+   "sequence": null,
+   "size": [
+    107,
+    118
+   ]
+  },
+  "icon_wpn_teleport_grenade": {
+   "files": [
+    "icon_wpn_teleport_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 18,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    45.0,
+    45.0
+   ],
+   "sequence": null,
+   "size": [
+    90,
+    90
+   ]
+  },
+  "icon_wpn_teleport_gun": {
+   "files": [
+    "icon_wpn_teleport_gun.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 15,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    43.0,
+    58.0
+   ],
+   "sequence": null,
+   "size": [
+    86,
+    116
+   ]
+  },
+  "icon_wpn_void_generator": {
+   "files": [
+    "icon_wpn_void_generator.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 12,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    63.0,
+    66.0
+   ],
+   "sequence": null,
+   "size": [
+    125,
+    132
+   ]
+  },
+  "icon_wpn_water_balloon": {
+   "files": [
+    "icon_wpn_water_balloon.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 9,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    53.0,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    107,
+    95
+   ]
+  },
+  "icon_wpn_wind_wand": {
+   "files": [
+    "icon_wpn_wind_wand.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 6,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.0,
+    44.0
+   ],
+   "sequence": null,
+   "size": [
+    99,
+    86
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 1
+}
