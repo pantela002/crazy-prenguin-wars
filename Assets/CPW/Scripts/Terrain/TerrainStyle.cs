@@ -137,6 +137,20 @@ namespace CPW
         {
             var st = Info(materialTheme);
             if (st.texture) return st;
+            // 1. the original landmass_bg_tile (Resources/Original): world-space UVs at 20 Flash px per unit, like
+            //    TerrainDisplayObject's bitmap fill
+            var bg = LandmassSprite(st.id, "landmass_bg_tile");
+            if (bg != null && RepeatableTexture(bg))
+            {
+                var t = bg.texture;
+                t.wrapMode = TextureWrapMode.Repeat;
+                st.texture = t;
+                st.tileWorld = bg.rect.width / bg.pixelsPerUnit;
+                // compressed textures are not readable: the mean color comes from the art manifest
+                st.texMean = OriginalArt("Terrain/" + st.id, out _, out var fo) ? OriginalColor(fo, 3, st.texMean) : Color.Lerp(st.baseColor, Color.white, 0.1f);
+                return st;
+            }
+            // 2. the map-editor copy in Resources/Textures, 3. a procedural texture
             var tex = Resources.Load<Texture2D>("Textures/Terrain/" + st.id);
             if (tex != null)
             {
@@ -158,6 +172,44 @@ namespace CPW
                 st.texMean = Color.Lerp(dark, light, 0.5f);
             }
             return st;
+        }
+
+        /// <summary>Material themes drawn with an original landmass set (MaterialTheme.LandmassSWF). Metal, OilRig,
+        /// CustomObjects and the remake's Lava/Mud keep their own textures (no original set, never used as terrain).</summary>
+        static bool HasOriginalLandmass(string id)
+        {
+            switch (id)
+            {
+                case "Wood": case "Forest": case "Stone": case "Mountain": case "Ice": case "Winter": case "Desert": return true;
+                default: return false;
+            }
+        }
+
+        /// <summary>
+        /// A bitmap of a material theme's original landmass set (landmass_bg_tile, landmass_tile, landmass_end_left,
+        /// landmass_end_right, landmass_filler, particle_1..5), or null (no art, or a theme without an original set).
+        /// </summary>
+        public static Sprite LandmassSprite(string materialTheme, string name)
+        {
+            if (string.IsNullOrEmpty(materialTheme) || !HasOriginalLandmass(materialTheme)) return null;
+            return CPW.OriginalArt.Landmass(materialTheme, name);
+        }
+
+        /// <summary>True when a sprite covers its whole texture (not packed into an atlas), so the texture can be
+        /// tiled with UVs outside 0..1.</summary>
+        public static bool RepeatableTexture(Sprite s)
+        {
+            if (s == null || s.texture == null || s.packed) return false;
+            var r = s.textureRect;
+            return r.x < 0.5f && r.y < 0.5f && Mathf.Abs(r.width - s.texture.width) < 0.5f && Mathf.Abs(r.height - s.texture.height) < 0.5f;
+        }
+
+        /// <summary>UV rectangle of a sprite inside its texture (whole texture unless it was packed into an atlas).</summary>
+        public static Rect SpriteUV(Sprite s)
+        {
+            var r = s.textureRect;
+            float w = Mathf.Max(1, s.texture.width), h = Mathf.Max(1, s.texture.height);
+            return Rect.MinMaxRect(r.xMin / w, r.yMin / h, r.xMax / w, r.yMax / h);
         }
 
         /// <summary>Colors and parameters of a material theme without creating its texture (previews, debris colors).</summary>

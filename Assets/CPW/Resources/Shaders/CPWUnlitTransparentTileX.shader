@@ -1,0 +1,36 @@
+// CPW/UnlitTransparent that repeats only part of its texture along u: uv.x = _TileX.x + frac(uv.x) * _TileX.y.
+// For the original liquid tiles, whose PNGs carry a few overlap columns at their edges (the Flash game overlapped
+// the tiles): the strip scrolls and repeats the clean span without seams. Use with wrap mode Clamp, no mipmaps.
+Shader "CPW/UnlitTransparentTileX"
+{
+    Properties
+    {
+        _Color ("Color", Color) = (1,1,1,1)
+        _MainTex ("Texture", 2D) = "white" {}
+        _TileX ("Tile span (x = start u, y = width u)", Vector) = (0,1,0,0)
+    }
+    SubShader
+    {
+        Tags { "RenderType"="Transparent" "Queue"="Transparent" "IgnoreProjector"="True" }
+        Pass
+        {
+            Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite Off
+            Cull Off
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+            struct appdata { float4 vertex : POSITION; float2 uv : TEXCOORD0; float4 color : COLOR; };
+            struct v2f { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; float4 color : COLOR; };
+            sampler2D _MainTex; float4 _MainTex_ST; half4 _Color; float4 _TileX;
+            v2f vert (appdata i) { v2f o; o.pos = UnityObjectToClipPos(i.vertex); o.uv = TRANSFORM_TEX(i.uv, _MainTex); o.color = i.color; return o; }
+            fixed4 frag (v2f i) : SV_Target
+            {
+                float2 uv = float2(_TileX.x + frac(i.uv.x) * _TileX.y, i.uv.y);
+                return (fixed4)(tex2D(_MainTex, uv) * _Color * (half4)i.color);
+            }
+            ENDCG
+        }
+    }
+}

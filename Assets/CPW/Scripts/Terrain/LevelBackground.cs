@@ -43,6 +43,7 @@ namespace CPW
         Material skyMat;
         Camera cam;
         static readonly Dictionary<string, Texture2D> parallaxTex = new Dictionary<string, Texture2D>();
+        readonly Dictionary<string, string> layerFolders = new Dictionary<string, string>();
 
         // environment models available for this theme, by category
         readonly List<string> envNear = new List<string>(), envFar = new List<string>(), envSky = new List<string>();
@@ -59,21 +60,19 @@ namespace CPW
             TerrainStyle.SkyColors(look, out skyTop, out skyBottom);
             silhouette = TerrainStyle.SilhouetteColor(look);
             // an ice cave is dark inside: it keeps its own procedural sky instead of the open-air gradient
-            gradient = look == "IceCave" ? null : Resources.Load<Texture2D>("Textures/Sky/" + bgTheme + "_Gradient");
+            gradient = look == "IceCave" ? null : SkyGradient(bgTheme);
             if (gradient != null) gradient.wrapMode = TextureWrapMode.Clamp;
             FindEnvModels();
             BuildSky();
 
-            // the level's own layers; far (high pan) first, and among equal pans the later layer behind (the original
-            // drew its layer list last to first)
+            // the level's own layers, drawn like PhysicsWorld.createParallaxes: the list from last to first, so the
+            // first layer is the front one (the pans only move them)
             var ordered = new List<LevelData.ParallaxLayerData>(lvl.parallaxLayers);
-            var index = new Dictionary<LevelData.ParallaxLayerData, int>();
-            for (int i = 0; i < ordered.Count; i++) index[ordered[i]] = i;
-            ordered.Sort((a, b) => a.cameraXPan != b.cameraXPan ? b.cameraXPan.CompareTo(a.cameraXPan) : index[b].CompareTo(index[a]));
+            ordered.Reverse();
             bool originals = false;
             foreach (var pl in ordered)
                 foreach (var e in pl.exports)
-                    if (ParallaxTexture(pl, e, out _) != null) originals = true;
+                    if (ParallaxArt(pl, e, out _, out _, out _)) originals = true;
             int rank = 0;
             if (!originals)
             {
@@ -222,7 +221,8 @@ namespace CPW
             m.bounds = new Bounds(Vector3.zero, new Vector3(1, 1, 1) * 10000f);
             go.AddComponent<MeshFilter>().sharedMesh = m;
             var mr = go.AddComponent<MeshRenderer>();
-            var mat = new Material(Mats.TransparentShader) { color = Color.white, name = "Sky", renderQueue = TerrainStyle.QueueSky };
+            // opaque: it covers the whole screen, so no blending (phones)
+            var mat = new Material(Mats.UnlitShader) { color = Color.white, name = "Sky", renderQueue = TerrainStyle.QueueSky };
             if (gradient != null) mat.mainTexture = gradient;
             skyMat = mat;
             owned.Add(mat);
@@ -530,6 +530,61 @@ namespace CPW
             Finish(L, mb, rank);
         }
 
+        /// <summary>
+        /// Sky gradient of a background theme: the original background_gradient (Resources/Original/levels), else the
+        /// map-editor copy (Textures/Sky/{Theme}_Gradient), else null (procedural sky colors).
+        /// </summary>
+        static Texture2D SkyGradient(string bgTheme)
+        {
+            var s = OriginalArt.BackgroundGradient(bgTheme);
+            if (TerrainStyle.RepeatableTexture(s)) return s.texture;
+            return Resources.Load<Texture2D>("Textures/Sky/" + bgTheme + "_Gradient");
+        }
+
+        /// <summary>Folder of the original background art named by a layer's graphics_swf ("level_graphics/level_bg_forest.swf").</summary>
+        string LayerFolder(LevelData.ParallaxLayerData pl)
+        {
+            string key = pl.swf ?? "";
+            if (layerFolders.TryGetValue(key, out var f)) return f;
+            // the swf's own folder (a level may borrow another theme's layers), else the theme's
+            f = null;
+            if (!string.IsNullOrEmpty(pl.swf))
+            {
+                string stem = pl.swf;
+                int slash = stem.LastIndexOf('/'), dot = stem.LastIndexOf('.');
+                if (dot > slash) stem = stem.Substring(0, dot);
+                stem = "levels/" + stem.Substring(slash + 1);
+                foreach (var folder in OriginalArt.Folders)
+                    if (folder == stem) { f = folder; break; }
+            }
+            if (f == null) f = OriginalArt.BackgroundFolder(bgTheme);
+            layerFolders[key] = f;
+            return f;
+        }
+
+        /// <summary>
+        /// Art of a layer graphic and its size in world units (20 Flash px per unit): the original bitmap
+        /// (Resources/Original/levels/level_bg_*), else the map-editor copy (Textures/Parallax/{Theme}/{export}).
+        /// uv is the bitmap's rectangle in its texture. False when neither exists (parallax_7_1, OilRig).
+        /// </summary>
+        bool ParallaxArt(LevelData.ParallaxLayerData pl, string export, out Texture2D tex, out Vector2 size, out Rect uv)
+        {
+            tex = null; size = Vector2.zero; uv = new Rect(0, 0, 1, 1);
+            if (string.IsNullOrEmpty(export)) return false;
+            string folder = LayerFolder(pl);
+            var sp = folder != null ? OriginalArt.Sprite(folder + "/" + export) : null;
+            if (sp != null && sp.texture != null && (!sp.packed || sp.packingMode == SpritePackingMode.Rectangle))
+            {
+                tex = sp.texture;
+                if (!sp.packed) tex.wrapMode = TextureWrapMode.Clamp;   // quads use 0..1: no wrapped edge rows
+                size = sp.rect.size / sp.pixelsPerUnit;
+                uv = TerrainStyle.SpriteUV(sp);
+                return true;
+            }
+            tex = ParallaxTexture(pl, export, out size);
+            return tex != null;
+        }
+
         /// <summary>Original art of a layer graphic (Textures/Parallax/{Theme}/{export}) and its size in world units.</summary>
         Texture2D ParallaxTexture(LevelData.ParallaxLayerData pl, string export, out Vector2 size)
         {
@@ -568,8 +623,9 @@ namespace CPW
             if (n == 0) return false;
             var tex = new Texture2D[n];
             var size = new Vector2[n];
+            var uvs = new Rect[n];
             bool any = false;
-            for (int i = 0; i < n; i++) { tex[i] = ParallaxTexture(pl, pl.exports[i], out size[i]); any |= tex[i] != null; }
+            for (int i = 0; i < n; i++) any |= ParallaxArt(pl, pl.exports[i], out tex[i], out size[i], out uvs[i]);
             if (!any) return false;
             var L = NewLayer(pl.id, pl.cameraXPan, pl.cameraYPan, rank, out _);
             float zoom = pl.zoom > 0.01f ? pl.zoom : 1f;
@@ -581,7 +637,7 @@ namespace CPW
                 if (tex[e] == null) return;
                 if (!batches.TryGetValue(tex[e], out var b)) batches[tex[e]] = b = new SpriteBatch();
                 var s = size[e] * zoom;
-                b.Add(new Vector2(x - s.x * 0.5f, pl.position.y), new Vector2(x + s.x * 0.5f, pl.position.y + s.y));
+                b.Add(new Vector2(x - s.x * 0.5f, pl.position.y), new Vector2(x + s.x * 0.5f, pl.position.y + s.y), uvs[e]);
             }
             if (pl.tileHorizontally && gap > 0.5f)
             {
@@ -658,12 +714,12 @@ namespace CPW
             readonly List<Color> c = new List<Color>();
             readonly List<int> t = new List<int>();
 
-            public void Add(Vector2 min, Vector2 max)
+            public void Add(Vector2 min, Vector2 max, Rect r)
             {
                 int i = v.Count;
                 v.Add(new Vector3(min.x, min.y, 0)); v.Add(new Vector3(max.x, min.y, 0));
                 v.Add(new Vector3(max.x, max.y, 0)); v.Add(new Vector3(min.x, max.y, 0));
-                uv.Add(new Vector2(0, 0)); uv.Add(new Vector2(1, 0)); uv.Add(new Vector2(1, 1)); uv.Add(new Vector2(0, 1));
+                uv.Add(new Vector2(r.xMin, r.yMin)); uv.Add(new Vector2(r.xMax, r.yMin)); uv.Add(new Vector2(r.xMax, r.yMax)); uv.Add(new Vector2(r.xMin, r.yMax));
                 for (int k = 0; k < 4; k++) c.Add(Color.white);
                 t.Add(i); t.Add(i + 2); t.Add(i + 1);
                 t.Add(i); t.Add(i + 3); t.Add(i + 2);

@@ -7,7 +7,8 @@ namespace CPW
     /// A breakable physics prop placed by the level (DynamicObject element: crates, balls, planks, triangles of
     /// Wood/Stone/Ice/Metal). Shape, density, friction and restitution come from the original PhysicsEditor files
     /// (DynamicObjectDefs), hit points from LevelObject.Toughness (HP = Toughness * 3 like LevelGameObject.as),
-    /// with 3 visible damage stages. Registered in BattleWorld.Objects; breaks into debris when HP reaches 0.
+    /// with 3 visible damage stages. Drawn with the original flat sprite ({shape}_{size}_1..3 by damage stage) when it
+    /// exists, else the 3D prop. Registered in BattleWorld.Objects; breaks into debris when HP reaches 0.
     /// </summary>
     public class DynamicObjectEntity : MonoBehaviour, IDamageable
     {
@@ -50,7 +51,15 @@ namespace CPW
         public Vector2 Position => Body ? Body.position : (Vector2)transform.position;
         public bool Alive { get; private set; }
 
+        /// <summary>Draw level objects with the original 2D sprites when they exist (false: always the 3D props).</summary>
+        public static bool UseOriginalSprites = true;
+        /// <summary>Sorting order of the object sprites: after the terrain crust (0..1), before penguins and fx.</summary>
+        public const int SpriteSortingOrder = 2;
+        static readonly Color FlashTint = new Color(1f, 0.62f, 0.55f, 1f);
+
         Transform visual;
+        SpriteRenderer spriteRenderer;
+        Sprite[] stageSprites;          // damage stage 1..3
         Renderer[] renderers;
         Color[] baseColors;
         MaterialPropertyBlock mpb;
@@ -177,6 +186,7 @@ namespace CPW
             var root = new GameObject("Visual").transform;
             root.SetParent(transform, false);
             visual = root;
+            if (BuildSprite(root)) return;
             float depth = Mathf.Clamp(Mathf.Min(Size.x, Size.y), 0.8f, 2.6f);
             string path = "Props/" + LevelObjectId;
             if (ModelLibrary.Exists(path))
@@ -296,8 +306,41 @@ namespace CPW
             return m;
         }
 
+        /// <summary>
+        /// The original flat sprite (level_obstacles_{material}/{shape}_{size}_1..3) at native size on the body origin,
+        /// like LevelGameObject: the bitmaps are the collider plus a 1 px ink border, centred on the PhysicsEditor
+        /// anchor. False when the object has no original art (metal planks, custom objects): use the 3D prop.
+        /// </summary>
+        bool BuildSprite(Transform root)
+        {
+            if (!UseOriginalSprites) return false;
+            var s1 = OriginalArt.LevelObjectSprite(LevelObjectId, 1);
+            if (s1 == null) return false;
+            stageSprites = new Sprite[3];
+            stageSprites[0] = s1;
+            for (int k = 1; k < 3; k++) stageSprites[k] = OriginalArt.LevelObjectSprite(LevelObjectId, k + 1) ?? stageSprites[k - 1];
+            var go = new GameObject("Sprite_" + LevelObjectId);
+            go.transform.SetParent(root, false);
+            go.transform.localPosition = new Vector3(0, 0, -0.05f);   // a hair in front of the terrain it rests on
+            spriteRenderer = go.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = s1;
+            spriteRenderer.sortingOrder = SpriteSortingOrder;
+            renderers = new Renderer[0];
+            baseColors = new Color[0];
+            mpb = new MaterialPropertyBlock();
+            return true;
+        }
+
         void ApplyLook()
         {
+            if (spriteRenderer != null)
+            {
+                var s = stageSprites[Mathf.Clamp(DamageStage, 1, 3) - 1];
+                if (spriteRenderer.sprite != s) spriteRenderer.sprite = s;
+                // sprites cannot go brighter than their art: hits flash a warm tint instead
+                spriteRenderer.color = Color.Lerp(Color.white, FlashTint, Mathf.Clamp01(flash * 1.4f));
+                return;
+            }
             if (renderers == null) return;
             float dark = 1f - 0.16f * (DamageStage - 1);
             for (int i = 0; i < renderers.Length; i++)
@@ -334,7 +377,7 @@ namespace CPW
             {
                 DamageStage = stage;
                 PlaySound("Damage", 0.8f);
-                Fx.Debris(Position, materialColor, 4);
+                if (!SpriteDebris.LevelObject(Position, Material, 4, Size.magnitude * 0.25f)) Fx.Debris(Position, materialColor, 4);
             }
             ApplyLook();
         }
@@ -351,7 +394,8 @@ namespace CPW
             if (!Alive) return;
             Alive = false;
             var pos = Position;
-            Fx.Debris(pos, materialColor, Mathf.Clamp(Mathf.RoundToInt(6 + Area * 2), 8, 20));
+            int chips = Mathf.Clamp(Mathf.RoundToInt(6 + Area * 2), 8, 20);
+            if (!SpriteDebris.LevelObject(pos, Material, chips, Size.magnitude * 0.3f)) Fx.Debris(pos, materialColor, chips);
             Fx.Smoke(pos, Mathf.Clamp(Size.magnitude * 0.5f, 0.6f, 3f));
             PlaySound("End", 1f);
             Destroyed?.Invoke(this, LastAttacker, LastItem);

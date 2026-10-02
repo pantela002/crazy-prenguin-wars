@@ -16,6 +16,10 @@ namespace CPW
         public static Shader UnlitShader => unlit ? unlit : (unlit = Shader.Find("CPW/Unlit") ?? Shader.Find("Unlit/Texture"));
         public static Shader TransparentShader => unlitT ? unlitT : (unlitT = Shader.Find("CPW/UnlitTransparent") ?? Shader.Find("Sprites/Default"));
         public static Shader AdditiveShader => additive ? additive : (additive = Shader.Find("CPW/Additive") ?? Shader.Find("Sprites/Default"));
+        /// <summary>CPW/UnlitTransparent repeating only the u span _TileX (x = start, y = width) of its texture; null when
+        /// the shader is missing from the build.</summary>
+        public static Shader TileXShader => tileX ? tileX : (tileX = Shader.Find("CPW/UnlitTransparentTileX"));
+        static Shader tileX;
 
         static Material Cached(string key, Shader sh, Color c, Texture tex = null)
         {

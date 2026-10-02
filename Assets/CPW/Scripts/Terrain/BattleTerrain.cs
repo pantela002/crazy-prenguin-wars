@@ -111,7 +111,7 @@ namespace CPW
             decor = new Grid(w, h, false);
 
             foreach (var poly in lvl.polygons) Rasterize(poly, poly.noFixtures ? decor : solid, PaletteFor(poly));
-            ComputeCaps();
+            ComputeCrust();
             origDensity = (byte[])solid.density.Clone();
             origMat = (byte[])solid.mat.Clone();
             origCap = (byte[])solid.cap.Clone();
@@ -131,6 +131,7 @@ namespace CPW
                 chunks[ci].Rebuild();
                 decorChunks[ci].Rebuild();
             }
+            RebuildCrust();
 
             var wgo = new GameObject("Water");
             wgo.transform.SetParent(transform, false);
@@ -270,27 +271,6 @@ namespace CPW
             return (byte)Mathf.Clamp(Mathf.RoundToInt(127.5f + 127.5f * t + (t >= 0 ? 0.5f : -0.5f)), 0, 255);
         }
 
-        /// <summary>Flag solid samples just below an upward-facing original surface (for grass/snow caps).</summary>
-        void ComputeCaps()
-        {
-            var g = solid;
-            for (int j = 0; j < g.h; j++)
-            for (int i = 0; i < g.w; i++)
-            {
-                int gi = j * g.w + i;
-                if (g.density[gi] < 128) continue;
-                var p = palette[g.mat[gi]];
-                if (p == null || p.cap == null) continue;
-                bool open = false;
-                for (int k = 1; k <= 3 && !open; k++)
-                {
-                    int jj = j + k;
-                    if (jj >= g.h || g.density[jj * g.w + i] < 128) open = true;
-                }
-                if (open) g.cap[gi] = 1;
-            }
-        }
-
         // ------------------------------------------------------------------ editing
 
         /// <summary>Remove terrain in a circle (explosions). Unbreakable terrain is kept.</summary>
@@ -303,8 +283,11 @@ namespace CPW
                 WakeBodies(center, radius + 1.5f);
                 if (CarveDebris && Application.isPlaying)
                 {
-                    var c = MaterialColorAt(center, radius);
-                    Fx.Debris(center, c, Mathf.Clamp(Mathf.RoundToInt(removed * 1.5f), 3, 16));
+                    // the original's MissileExplosion{Material}: particle_1..5 of the landmass set; else colored chips
+                    var pe = PaletteNear(center, radius + 0.5f);
+                    int n = Mathf.Clamp(Mathf.RoundToInt(removed * 1.5f), 3, 16);
+                    if (pe == null || !SpriteDebris.Terrain(center, pe.style.id, Mathf.Clamp(n / 2 + 3, 5, 10), radius, pe.tint))
+                        Fx.Debris(center, MaterialColorAt(center, radius), n);
                 }
             }
             Carved?.Invoke(center, radius, removed);
@@ -424,6 +407,7 @@ namespace CPW
             }
             dirty.Clear();
             anyDirty = false;
+            RebuildCrust();
         }
 
         void LateUpdate() => FlushDirty();
@@ -659,6 +643,7 @@ namespace CPW
             if (I == this) I = null;
             if (chunks != null) foreach (var c in chunks) c?.Dispose();
             if (decorChunks != null) foreach (var c in decorChunks) c?.Dispose();
+            if (crustMesh) Destroy(crustMesh);
         }
     }
 }

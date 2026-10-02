@@ -341,7 +341,9 @@ namespace CPW
                         float len = d.magnitude;
                         if (len < 1e-4f) continue;
                         float ny = -d.x / len;   // outward normal = right-hand normal (d.y, -d.x)
-                        if (ny < Mathf.Cos((p.cap.capAngle + 15f) * Mathf.Deg2Rad)) continue;
+                        // the cap flags already follow the original's top runs (TerrainCrust); this only keeps the
+                        // strip off steep sides and undersides next to a run
+                        if (ny < Mathf.Cos((p.cap.capAngle + 25f) * Mathf.Deg2Rad)) continue;
                         AddCap(A, B, p);
                     }
                 }
