@@ -43,7 +43,9 @@ namespace CPW
             block.gameObject.AddComponent<BackdropCloser>().close = onClose;
             var win = UI.Panel(layer, Theme.PanelDark, true, "Window");
             UI.Place(win.rectTransform, new Vector2(0.5f, 0.5f), size, Vector2.zero);
-            var t = UI.Label(win.transform, title, 56, Theme.Primary, TextAnchor.MiddleCenter, true);
+            bool art = UI.Skin.Apply(win, "window");   // the original blue popup frame
+            var t = UI.Label(win.transform, title, 56, art ? Color.white : Theme.Primary, TextAnchor.MiddleCenter, true);
+            if (art) UI.StyleText(t, new Color32(12, 52, 110, 255), 4f);
             UI.Place(t.rectTransform, new Vector2(0.5f, 1), new Vector2(size.x - 240, 90), new Vector2(0, -10));
             layer.gameObject.AddComponent<PopIn>().target = win.rectTransform;
             // the X sits on its own rect over the window (a sibling added after it), so content the caller builds
@@ -52,6 +54,7 @@ namespace CPW
             UI.Place(top, new Vector2(0.5f, 0.5f), size, Vector2.zero);
             var x = TapButton(top, "X", onClose, UI.ButtonStyle.Danger, 48);
             UI.Place((RectTransform)x.transform, new Vector2(1, 1), new Vector2(100, 100), new Vector2(-14, -14));
+            MetaUI.SkinClose(x);   // original orange X (TapAction unchanged)
             layer.gameObject.AddComponent<PopIn>().target = top;
             return win.rectTransform;
         }
@@ -60,6 +63,7 @@ namespace CPW
         Button ItemCell(Transform parent, string id, Sprite icon, string count, bool selected, bool enabled, Action click)
         {
             var b = UI.Button(parent, null, click, selected ? UI.ButtonStyle.Primary : UI.ButtonStyle.Secondary);
+            bool art = UI.Skin.Apply(b.GetComponent<Image>(), selected ? "slot.yellow" : "slot.blue");   // original item squares
             if (icon != null)
             {
                 var img = UI.Image(b.transform, icon);
@@ -77,6 +81,15 @@ namespace CPW
             UI.Anchor(name.rectTransform, 0.04f, 0.02f, 0.7f, 0.26f);
             var cnt = UI.Label(b.transform, count, 30, Theme.Primary, TextAnchor.MiddleRight, true);
             UI.Anchor(cnt.rectTransform, 0.55f, 0.02f, 0.96f, 0.28f);
+            if (art)
+            {
+                // the squares are pale: dark-outlined white captions read on both
+                Color ol = selected ? new Color(0.48f, 0.24f, 0.02f) : new Color(0.02f, 0.16f, 0.34f);
+                UI.StyleText(name, ol, 2f);
+                UI.StyleText(cnt, ol, 2.5f, Color.white);
+                UI.Anchor(name.rectTransform, 0.08f, 0.06f, 0.7f, 0.28f);
+                UI.Anchor(cnt.rectTransform, 0.55f, 0.06f, 0.92f, 0.3f);
+            }
             b.interactable = enabled;
             return b;
         }
@@ -134,7 +147,7 @@ namespace CPW
                 int n = a.Ammo.Count(w);
                 shown++;
                 if (n == 0 && shop && ShopRecord(id) != null) { BuyCell(weaponGrid, a, id); continue; }
-                var cell = ItemCell(weaponGrid, id, BattleItems.Icon(id), CountText(n), id == cur, n != 0, () =>
+                var cell = ItemCell(weaponGrid, id, ItemIcon(id), CountText(n), id == cur, n != 0, () =>
                 {
                     c.ActSelectWeapon(id);
                     CloseTransientPanels();
@@ -166,7 +179,7 @@ namespace CPW
             {
                 string id = bId;
                 int n = a.Ammo.Count(id);
-                ItemCell(grid, id, BattleItems.Icon(id), CountText(n), false, n != 0 && !c.BoosterUsedThisTurn, () =>
+                ItemCell(grid, id, ItemIcon(id), CountText(n), false, n != 0 && !c.BoosterUsedThisTurn, () =>
                 {
                     if (!c.ActBooster(id)) Banner("Can't use that now", Color.white, 1f);
                     CloseTransientPanels();
@@ -281,12 +294,14 @@ namespace CPW
             overPanel = layer.gameObject;
             var win = UI.Panel(layer, new Color(0.05f, 0.1f, 0.2f, 0.88f), true, "Window");
             UI.Place(win.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(1100, 260 + r.players.Count * 90), new Vector2(0, -40));
+            bool overArt = UI.Skin.Apply(win, "window");
             var winner = r.players.Find(p => p.rank == 1);
             var local = r.Local;
             string title = c.PassAndPlay || local == null ? (winner != null ? winner.name + " wins!" : "Match over")
                 : (local.rank == 1 ? "Victory!" : "Match over");
             var t = UI.Label(win.transform, title, 80, Theme.Primary, TextAnchor.MiddleCenter, true);
             UI.Place(t.rectTransform, new Vector2(0.5f, 1), new Vector2(1000, 120), new Vector2(0, -20));
+            if (overArt) UI.StyleText(t, new Color32(12, 52, 110, 255), 5f, MetaUI.Gold);
             var sorted = new List<PlayerResult>(r.players);
             sorted.Sort((a, b) => a.rank.CompareTo(b.rank));
             for (int i = 0; i < sorted.Count; i++)
@@ -303,6 +318,12 @@ namespace CPW
                 UI.Anchor(k.rectTransform, 0.58f, 0, 0.8f, 1);
                 var s = UI.Label(row.transform, pr.score.ToString(), 44, Theme.Primary, TextAnchor.MiddleRight, true);
                 UI.Anchor(s.rectTransform, 0.8f, 0, 0.97f, 1);
+                if (overArt)
+                {
+                    // readable on the light original frame
+                    var ol = new Color32(8, 36, 80, 255);
+                    UI.StyleText(rank, ol, 3f); UI.StyleText(n, ol, 3f); UI.StyleText(k, ol, 2.5f, Color.white); UI.StyleText(s, ol, 3f);
+                }
             }
             var cont = UI.Button(layer, "Continue", c.ContinueAfterMatch, UI.ButtonStyle.Primary, 44);
             UI.Place((RectTransform)cont.transform, new Vector2(0.5f, 0), new Vector2(420, 120), new Vector2(0, 40));
