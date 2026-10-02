@@ -157,12 +157,15 @@ namespace CPW
             return list;
         }
 
-        /// <summary>Practice items: everything in the "Practice" category, plenty of ammo, nothing is spent.</summary>
+        /// <summary>
+        /// Practice items: every weapon and booster in the game with plenty of ammo, nothing is spent.
+        /// (The original only offered its "Practice" category; the remake makes Practice the place to try every gun.)
+        /// </summary>
         public static List<ItemStack> PracticeLoadout()
         {
             var list = new List<ItemStack>();
             foreach (var r in GameData.Section("Item").Values)
-                if (ItemCatalog.HasCategory(r, "Practice") && ItemCatalog.IsWeapon(r)) list.Add(new ItemStack(r.Id, 99));
+                if (ItemCatalog.IsWeapon(r) || ItemCatalog.IsBooster(r)) list.Add(new ItemStack(r.Id, 99));
             return list;
         }
 
