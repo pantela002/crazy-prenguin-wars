@@ -1,0 +1,336 @@
+{
+ "bitmaps": {
+  "_bitmaps/ball_medium_1.png": {
+   "id": 41,
+   "linkage": "ball_medium_1",
+   "size": [
+    53,
+    53
+   ]
+  },
+  "_bitmaps/ball_medium_2.png": {
+   "id": 40,
+   "linkage": "ball_medium_2",
+   "size": [
+    53,
+    53
+   ]
+  },
+  "_bitmaps/ball_medium_3.png": {
+   "id": 39,
+   "linkage": "ball_medium_3",
+   "size": [
+    53,
+    53
+   ]
+  },
+  "_bitmaps/ball_small_1.png": {
+   "id": 38,
+   "linkage": "ball_small_1",
+   "size": [
+    27,
+    27
+   ]
+  },
+  "_bitmaps/ball_small_2.png": {
+   "id": 37,
+   "linkage": "ball_small_2",
+   "size": [
+    27,
+    27
+   ]
+  },
+  "_bitmaps/ball_small_3.png": {
+   "id": 36,
+   "linkage": "ball_small_3",
+   "size": [
+    27,
+    27
+   ]
+  },
+  "_bitmaps/cube_large_1.png": {
+   "id": 35,
+   "linkage": "cube_large_1",
+   "size": [
+    100,
+    99
+   ]
+  },
+  "_bitmaps/cube_large_2.png": {
+   "id": 34,
+   "linkage": "cube_large_2",
+   "size": [
+    100,
+    99
+   ]
+  },
+  "_bitmaps/cube_large_3.png": {
+   "id": 33,
+   "linkage": "cube_large_3",
+   "size": [
+    100,
+    99
+   ]
+  },
+  "_bitmaps/cube_medium_1.png": {
+   "id": 32,
+   "linkage": "cube_medium_1",
+   "size": [
+    52,
+    53
+   ]
+  },
+  "_bitmaps/cube_medium_2.png": {
+   "id": 31,
+   "linkage": "cube_medium_2",
+   "size": [
+    52,
+    53
+   ]
+  },
+  "_bitmaps/cube_medium_3.png": {
+   "id": 30,
+   "linkage": "cube_medium_3",
+   "size": [
+    52,
+    53
+   ]
+  },
+  "_bitmaps/cube_small_1.png": {
+   "id": 29,
+   "linkage": "cube_small_1",
+   "size": [
+    26,
+    27
+   ]
+  },
+  "_bitmaps/cube_small_2.png": {
+   "id": 28,
+   "linkage": "cube_small_2",
+   "size": [
+    26,
+    27
+   ]
+  },
+  "_bitmaps/cube_small_3.png": {
+   "id": 27,
+   "linkage": "cube_small_3",
+   "size": [
+    26,
+    27
+   ]
+  },
+  "_bitmaps/object_particle_1.png": {
+   "id": 1,
+   "linkage": "object_particle_1",
+   "size": [
+    16,
+    16
+   ]
+  },
+  "_bitmaps/object_particle_2.png": {
+   "id": 2,
+   "linkage": "object_particle_2",
+   "size": [
+    14,
+    14
+   ]
+  },
+  "_bitmaps/object_particle_3.png": {
+   "id": 3,
+   "linkage": "object_particle_3",
+   "size": [
+    20,
+    20
+   ]
+  },
+  "_bitmaps/object_particle_4.png": {
+   "id": 4,
+   "linkage": "object_particle_4",
+   "size": [
+    22,
+    18
+   ]
+  },
+  "_bitmaps/object_particle_5.png": {
+   "id": 5,
+   "linkage": "object_particle_5",
+   "size": [
+    28,
+    27
+   ]
+  },
+  "_bitmaps/plank_large_1.png": {
+   "id": 26,
+   "linkage": "plank_large_1",
+   "size": [
+    401,
+    30
+   ]
+  },
+  "_bitmaps/plank_large_2.png": {
+   "id": 25,
+   "linkage": "plank_large_2",
+   "size": [
+    401,
+    30
+   ]
+  },
+  "_bitmaps/plank_large_3.png": {
+   "id": 24,
+   "linkage": "plank_large_3",
+   "size": [
+    401,
+    30
+   ]
+  },
+  "_bitmaps/plank_medium_1.png": {
+   "id": 23,
+   "linkage": "plank_medium_1",
+   "size": [
+    194,
+    30
+   ]
+  },
+  "_bitmaps/plank_medium_2.png": {
+   "id": 22,
+   "linkage": "plank_medium_2",
+   "size": [
+    194,
+    30
+   ]
+  },
+  "_bitmaps/plank_medium_3.png": {
+   "id": 21,
+   "linkage": "plank_medium_3",
+   "size": [
+    194,
+    30
+   ]
+  },
+  "_bitmaps/plank_small_1.png": {
+   "id": 20,
+   "linkage": "plank_small_1",
+   "size": [
+    149,
+    30
+   ]
+  },
+  "_bitmaps/plank_small_2.png": {
+   "id": 19,
+   "linkage": "plank_small_2",
+   "size": [
+    149,
+    30
+   ]
+  },
+  "_bitmaps/plank_small_3.png": {
+   "id": 18,
+   "linkage": "plank_small_3",
+   "size": [
+    149,
+    30
+   ]
+  },
+  "_bitmaps/rectangle_large_1.png": {
+   "id": 17,
+   "linkage": "rectangle_large_1",
+   "size": [
+    194,
+    53
+   ]
+  },
+  "_bitmaps/rectangle_large_2.png": {
+   "id": 16,
+   "linkage": "rectangle_large_2",
+   "size": [
+    194,
+    53
+   ]
+  },
+  "_bitmaps/rectangle_large_3.png": {
+   "id": 15,
+   "linkage": "rectangle_large_3",
+   "size": [
+    194,
+    53
+   ]
+  },
+  "_bitmaps/rectangle_medium_1.png": {
+   "id": 14,
+   "linkage": "rectangle_medium_1",
+   "size": [
+    100,
+    53
+   ]
+  },
+  "_bitmaps/rectangle_medium_2.png": {
+   "id": 13,
+   "linkage": "rectangle_medium_2",
+   "size": [
+    100,
+    53
+   ]
+  },
+  "_bitmaps/rectangle_medium_3.png": {
+   "id": 12,
+   "linkage": "rectangle_medium_3",
+   "size": [
+    100,
+    53
+   ]
+  },
+  "_bitmaps/triangle_medium_1.png": {
+   "id": 11,
+   "linkage": "triangle_medium_1",
+   "size": [
+    52,
+    53
+   ]
+  },
+  "_bitmaps/triangle_medium_2.png": {
+   "id": 10,
+   "linkage": "triangle_medium_2",
+   "size": [
+    52,
+    53
+   ]
+  },
+  "_bitmaps/triangle_medium_3.png": {
+   "id": 9,
+   "linkage": "triangle_medium_3",
+   "size": [
+    52,
+    53
+   ]
+  },
+  "_bitmaps/triangle_small_1.png": {
+   "id": 8,
+   "linkage": "triangle_small_1",
+   "size": [
+    26,
+    27
+   ]
+  },
+  "_bitmaps/triangle_small_2.png": {
+   "id": 7,
+   "linkage": "triangle_small_2",
+   "size": [
+    26,
+    27
+   ]
+  },
+  "_bitmaps/triangle_small_3.png": {
+   "id": 6,
+   "linkage": "triangle_small_3",
+   "size": [
+    26,
+    27
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/level_graphics/level_obstacles_wood.swf",
+ "symbols": {},
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

@@ -1,0 +1,49 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_2.png": {
+   "id": 2,
+   "linkage": null,
+   "size": [
+    198,
+    106
+   ]
+  },
+  "_bitmaps/bitmap_5.png": {
+   "id": 5,
+   "linkage": null,
+   "size": [
+    198,
+    92
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/level_graphics/level_water_winter.swf",
+ "symbols": {
+  "winter_water_tile": {
+   "files": [
+    "winter_water_tile.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 9,
+   "labels": null,
+   "offsets": [
+    [
+     396,
+     54
+    ]
+   ],
+   "origin_px": [
+    396.4,
+    53.8
+   ],
+   "sequence": null,
+   "size": [
+    1189,
+    340
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

@@ -1,0 +1,41 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    303,
+    196
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/icons_maps.swf",
+ "symbols": {
+  "icon_map_random": {
+   "files": [
+    "icon_map_random.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 3,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    216.0,
+    136.0
+   ],
+   "sequence": null,
+   "size": [
+    426,
+    275
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 4
+}

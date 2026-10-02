@@ -1,0 +1,153 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_15.png": {
+   "id": 15,
+   "linkage": null,
+   "size": [
+    9,
+    510
+   ]
+  },
+  "_bitmaps/parallax_1_1.png": {
+   "id": 14,
+   "linkage": "parallax_1_1",
+   "size": [
+    291,
+    610
+   ]
+  },
+  "_bitmaps/parallax_1_2.png": {
+   "id": 13,
+   "linkage": "parallax_1_2",
+   "size": [
+    342,
+    424
+   ]
+  },
+  "_bitmaps/parallax_1_3.png": {
+   "id": 12,
+   "linkage": "parallax_1_3",
+   "size": [
+    832,
+    430
+   ]
+  },
+  "_bitmaps/parallax_1_4.png": {
+   "id": 11,
+   "linkage": "parallax_1_4",
+   "size": [
+    407,
+    376
+   ]
+  },
+  "_bitmaps/parallax_2_1.png": {
+   "id": 10,
+   "linkage": "parallax_2_1",
+   "size": [
+    353,
+    161
+   ]
+  },
+  "_bitmaps/parallax_3_1.png": {
+   "id": 9,
+   "linkage": "parallax_3_1",
+   "size": [
+    301,
+    269
+   ]
+  },
+  "_bitmaps/parallax_3_2.png": {
+   "id": 8,
+   "linkage": "parallax_3_2",
+   "size": [
+    336,
+    338
+   ]
+  },
+  "_bitmaps/parallax_4_1.png": {
+   "id": 7,
+   "linkage": "parallax_4_1",
+   "size": [
+    173,
+    288
+   ]
+  },
+  "_bitmaps/parallax_4_2.png": {
+   "id": 6,
+   "linkage": "parallax_4_2",
+   "size": [
+    231,
+    313
+   ]
+  },
+  "_bitmaps/parallax_5_1.png": {
+   "id": 5,
+   "linkage": "parallax_5_1",
+   "size": [
+    298,
+    273
+   ]
+  },
+  "_bitmaps/parallax_5_2.png": {
+   "id": 4,
+   "linkage": "parallax_5_2",
+   "size": [
+    230,
+    283
+   ]
+  },
+  "_bitmaps/parallax_6_1.png": {
+   "id": 3,
+   "linkage": "parallax_6_1",
+   "size": [
+    221,
+    53
+   ]
+  },
+  "_bitmaps/parallax_6_2.png": {
+   "id": 2,
+   "linkage": "parallax_6_2",
+   "size": [
+    249,
+    81
+   ]
+  },
+  "_bitmaps/parallax_6_3.png": {
+   "id": 1,
+   "linkage": "parallax_6_3",
+   "size": [
+    155,
+    36
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/level_graphics/level_bg_winter.swf",
+ "symbols": {
+  "background_gradient": {
+   "files": [
+    "background_gradient.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 18,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    9,
+    510
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 1
+}

@@ -1,0 +1,4583 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    676,
+    609
+   ]
+  },
+  "_bitmaps/bitmap_10.png": {
+   "id": 10,
+   "linkage": null,
+   "size": [
+    312,
+    126
+   ]
+  },
+  "_bitmaps/bitmap_103.png": {
+   "id": 103,
+   "linkage": null,
+   "size": [
+    130,
+    141
+   ]
+  },
+  "_bitmaps/bitmap_108.png": {
+   "id": 108,
+   "linkage": null,
+   "size": [
+    151,
+    151
+   ]
+  },
+  "_bitmaps/bitmap_112.png": {
+   "id": 112,
+   "linkage": null,
+   "size": [
+    313,
+    313
+   ]
+  },
+  "_bitmaps/bitmap_114.png": {
+   "id": 114,
+   "linkage": null,
+   "size": [
+    232,
+    212
+   ]
+  },
+  "_bitmaps/bitmap_12.png": {
+   "id": 12,
+   "linkage": null,
+   "size": [
+    312,
+    114
+   ]
+  },
+  "_bitmaps/bitmap_120.png": {
+   "id": 120,
+   "linkage": null,
+   "size": [
+    313,
+    313
+   ]
+  },
+  "_bitmaps/bitmap_128.png": {
+   "id": 128,
+   "linkage": null,
+   "size": [
+    214,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_131.png": {
+   "id": 131,
+   "linkage": null,
+   "size": [
+    81,
+    62
+   ]
+  },
+  "_bitmaps/bitmap_132.png": {
+   "id": 132,
+   "linkage": null,
+   "size": [
+    214,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_135.png": {
+   "id": 135,
+   "linkage": null,
+   "size": [
+    214,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_138.png": {
+   "id": 138,
+   "linkage": null,
+   "size": [
+    214,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_151.png": {
+   "id": 151,
+   "linkage": null,
+   "size": [
+    214,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_157.png": {
+   "id": 157,
+   "linkage": null,
+   "size": [
+    43,
+    44
+   ]
+  },
+  "_bitmaps/bitmap_16.png": {
+   "id": 16,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_195.png": {
+   "id": 195,
+   "linkage": null,
+   "size": [
+    546,
+    924
+   ]
+  },
+  "_bitmaps/bitmap_198.png": {
+   "id": 198,
+   "linkage": null,
+   "size": [
+    400,
+    626
+   ]
+  },
+  "_bitmaps/bitmap_20.png": {
+   "id": 20,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_200.png": {
+   "id": 200,
+   "linkage": null,
+   "size": [
+    400,
+    626
+   ]
+  },
+  "_bitmaps/bitmap_202.png": {
+   "id": 202,
+   "linkage": null,
+   "size": [
+    400,
+    626
+   ]
+  },
+  "_bitmaps/bitmap_205.png": {
+   "id": 205,
+   "linkage": null,
+   "size": [
+    425,
+    197
+   ]
+  },
+  "_bitmaps/bitmap_208.png": {
+   "id": 208,
+   "linkage": null,
+   "size": [
+    425,
+    197
+   ]
+  },
+  "_bitmaps/bitmap_210.png": {
+   "id": 210,
+   "linkage": null,
+   "size": [
+    886,
+    502
+   ]
+  },
+  "_bitmaps/bitmap_215.png": {
+   "id": 215,
+   "linkage": null,
+   "size": [
+    249,
+    197
+   ]
+  },
+  "_bitmaps/bitmap_217.png": {
+   "id": 217,
+   "linkage": null,
+   "size": [
+    294,
+    311
+   ]
+  },
+  "_bitmaps/bitmap_222.png": {
+   "id": 222,
+   "linkage": null,
+   "size": [
+    249,
+    197
+   ]
+  },
+  "_bitmaps/bitmap_224.png": {
+   "id": 224,
+   "linkage": null,
+   "size": [
+    533,
+    502
+   ]
+  },
+  "_bitmaps/bitmap_229.png": {
+   "id": 229,
+   "linkage": null,
+   "size": [
+    275,
+    213
+   ]
+  },
+  "_bitmaps/bitmap_23.png": {
+   "id": 23,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_230.png": {
+   "id": 230,
+   "linkage": null,
+   "size": [
+    55,
+    55
+   ]
+  },
+  "_bitmaps/bitmap_231.png": {
+   "id": 231,
+   "linkage": null,
+   "size": [
+    338,
+    94
+   ]
+  },
+  "_bitmaps/bitmap_241.png": {
+   "id": 241,
+   "linkage": null,
+   "size": [
+    71,
+    77
+   ]
+  },
+  "_bitmaps/bitmap_244.png": {
+   "id": 244,
+   "linkage": null,
+   "size": [
+    71,
+    77
+   ]
+  },
+  "_bitmaps/bitmap_247.png": {
+   "id": 247,
+   "linkage": null,
+   "size": [
+    71,
+    77
+   ]
+  },
+  "_bitmaps/bitmap_28.png": {
+   "id": 28,
+   "linkage": null,
+   "size": [
+    352,
+    167
+   ]
+  },
+  "_bitmaps/bitmap_3.png": {
+   "id": 3,
+   "linkage": null,
+   "size": [
+    282,
+    78
+   ]
+  },
+  "_bitmaps/bitmap_30.png": {
+   "id": 30,
+   "linkage": null,
+   "size": [
+    156,
+    127
+   ]
+  },
+  "_bitmaps/bitmap_32.png": {
+   "id": 32,
+   "linkage": null,
+   "size": [
+    91,
+    66
+   ]
+  },
+  "_bitmaps/bitmap_34.png": {
+   "id": 34,
+   "linkage": null,
+   "size": [
+    91,
+    66
+   ]
+  },
+  "_bitmaps/bitmap_36.png": {
+   "id": 36,
+   "linkage": null,
+   "size": [
+    101,
+    106
+   ]
+  },
+  "_bitmaps/bitmap_38.png": {
+   "id": 38,
+   "linkage": null,
+   "size": [
+    91,
+    66
+   ]
+  },
+  "_bitmaps/bitmap_42.png": {
+   "id": 42,
+   "linkage": null,
+   "size": [
+    352,
+    167
+   ]
+  },
+  "_bitmaps/bitmap_44.png": {
+   "id": 44,
+   "linkage": null,
+   "size": [
+    352,
+    167
+   ]
+  },
+  "_bitmaps/bitmap_49.png": {
+   "id": 49,
+   "linkage": null,
+   "size": [
+    352,
+    167
+   ]
+  },
+  "_bitmaps/bitmap_54.png": {
+   "id": 54,
+   "linkage": null,
+   "size": [
+    1024,
+    603
+   ]
+  },
+  "_bitmaps/bitmap_62.png": {
+   "id": 62,
+   "linkage": null,
+   "size": [
+    300,
+    100
+   ]
+  },
+  "_bitmaps/bitmap_65.png": {
+   "id": 65,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_68.png": {
+   "id": 68,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_7.png": {
+   "id": 7,
+   "linkage": null,
+   "size": [
+    10,
+    10
+   ]
+  },
+  "_bitmaps/bitmap_76.png": {
+   "id": 76,
+   "linkage": null,
+   "size": [
+    151,
+    151
+   ]
+  },
+  "_bitmaps/bitmap_79.png": {
+   "id": 79,
+   "linkage": null,
+   "size": [
+    309,
+    282
+   ]
+  },
+  "_bitmaps/bitmap_88.png": {
+   "id": 88,
+   "linkage": null,
+   "size": [
+    385,
+    385
+   ]
+  },
+  "_bitmaps/bitmap_95.png": {
+   "id": 95,
+   "linkage": null,
+   "size": [
+    59,
+    71
+   ]
+  },
+  "_bitmaps/bitmap_99.png": {
+   "id": 99,
+   "linkage": null,
+   "size": [
+    53,
+    71
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/shops_new.swf",
+ "symbols": {
+  "Button_Add_Cash": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Add_Cash.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 234,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Button_Add_Coins": {
+   "children_frame1": {
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -52.05,
+     -21.7
+    ]
+   },
+   "files": [
+    "Button_Add_Coins.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 61,
+   "labels": {
+    "Close": 1,
+    "Visible": 2
+   },
+   "offsets": [
+    [
+     15,
+     11
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    108.05,
+    47.0
+   ],
+   "sequence": null,
+   "size": [
+    216,
+    75
+   ]
+  },
+  "Saldo": {
+   "children_frame1": {
+    "Button_Add_Cash": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     378.0,
+     74.0
+    ],
+    "Button_Add_Cash/Text": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     346.7713,
+     60.9805
+    ],
+    "Button_Add_Coins": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     163.0,
+     74.0
+    ],
+    "Button_Add_Coins/Text": [
+     0.6,
+     0.0,
+     0.0,
+     0.6,
+     131.7713,
+     60.9805
+    ],
+    "Text_Cash": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     284.95,
+     12.8
+    ],
+    "Text_Coins": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     149.45,
+     12.8
+    ]
+   },
+   "files": [
+    "Saldo.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 238,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     15,
+     8
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    -146.4,
+    -6.02
+   ],
+   "sequence": null,
+   "size": [
+    674,
+    159
+   ]
+  },
+  "shop_screen_new": {
+   "children_frame1": {
+    "Button_Close": [
+     0.5744,
+     0.0,
+     0.0,
+     0.5743,
+     261.9,
+     -264.15
+    ],
+    "Button_Home": [
+     0.4003,
+     0.0,
+     0.0,
+     0.4003,
+     -90.85,
+     271.85
+    ],
+    "Button_Home/Hit_Area": [
+     13.6011,
+     0.0,
+     0.0,
+     3.8334,
+     1856.2331,
+     440.669
+    ],
+    "Button_Play": [
+     0.3467,
+     0.0,
+     0.0,
+     0.3467,
+     110.55,
+     268.45
+    ],
+    "Button_Play/Hit_Area": [
+     13.6127,
+     0.0,
+     0.0,
+     3.7162,
+     2052.6855,
+     436.7382
+    ],
+    "Container_Tabs": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     5.8,
+     34.3
+    ],
+    "Container_Tabs/Tab_01": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -201.15,
+     -185.7
+    ],
+    "Container_Tabs/Tab_01/Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -234.5,
+     -187.9
+    ],
+    "Container_Tabs/Tab_01/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -217.85,
+     -195.0
+    ],
+    "Container_Tabs/Tab_02": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -96.75,
+     -185.7
+    ],
+    "Container_Tabs/Tab_02/Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -130.1,
+     -187.9
+    ],
+    "Container_Tabs/Tab_02/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -113.45,
+     -195.0
+    ],
+    "Container_Tabs/Tab_03": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     7.65,
+     -185.7
+    ],
+    "Container_Tabs/Tab_03/Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -25.7,
+     -187.9
+    ],
+    "Container_Tabs/Tab_03/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -9.05,
+     -195.0
+    ],
+    "Container_Tabs/Tab_04": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     112.05,
+     -185.7
+    ],
+    "Container_Tabs/Tab_04/Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     78.7,
+     -187.9
+    ],
+    "Container_Tabs/Tab_04/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     95.35,
+     -195.0
+    ],
+    "Container_Tabs/Tab_05": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     216.45,
+     -185.7
+    ],
+    "Container_Tabs/Tab_05/Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     183.1,
+     -187.9
+    ],
+    "Container_Tabs/Tab_05/Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     199.75,
+     -195.0
+    ],
+    "Content": [
+     0.6355,
+     0.0,
+     0.0,
+     0.6355,
+     49.2,
+     -69.7
+    ],
+    "Content/Content_Supplies": [
+     0.6355,
+     0.0,
+     0.0,
+     0.6355,
+     4.2067,
+     59.3317
+    ],
+    "Content/Content_Supplies/Button_Scroll_Left": [
+     -0.1593,
+     0.0,
+     0.0,
+     0.1593,
+     -210.0514,
+     -84.3793
+    ],
+    "Content/Content_Supplies/Button_Scroll_Left/Text": [
+     -0.1593,
+     0.0,
+     0.0,
+     0.1593,
+     -275.0145,
+     49.6658
+    ],
+    "Content/Content_Supplies/Button_Scroll_Right": [
+     0.1593,
+     0.0,
+     0.0,
+     0.1593,
+     215.4781,
+     -84.3793
+    ],
+    "Content/Content_Supplies/Button_Scroll_Right/Text": [
+     0.1593,
+     0.0,
+     0.0,
+     0.1593,
+     280.4411,
+     49.6658
+    ],
+    "Content/Content_Supplies/Container_Slots": [
+     0.6355,
+     0.0,
+     0.0,
+     0.6355,
+     133.6259,
+     122.5607
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -19.8151,
+     51.6743
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     -40.0889,
+     -39.2716
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Container_Banner": [
+     5.4788,
+     0.0,
+     0.0,
+     4.9822,
+     1.2704,
+     -30.8458
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     -19.0544,
+     -39.2716
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message/Button_Buy_Cash": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     99.496,
+     1.9547
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message/Button_Buy_Cash/Text": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     77.1065,
+     -7.3738
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message/Button_Buy_Coins": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     99.496,
+     1.9547
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message/Button_Buy_Coins/Text": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     77.1065,
+     -7.3738
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message/Button_Generic": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     174.6868,
+     31.574
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message/Button_Generic/Hit_Area": [
+     14.2988,
+     0.0,
+     0.0,
+     3.6216,
+     2221.6594,
+     186.3339
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Banner/Message/Text": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     101.4532,
+     -61.5613
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     14.2237,
+     54.6813
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -241.3945,
+     -64.5241
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Banner": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -243.646,
+     -94.1337
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Banner/Container_Banner": [
+     2.607,
+     0.0,
+     0.0,
+     2.3707,
+     -223.9657,
+     -90.1243
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Banner/Message": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -233.637,
+     -94.1337
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Banner/Message/Button_Buy_Cash": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -177.2264,
+     -74.5167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Banner/Message/Button_Buy_Coins": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -177.2264,
+     -74.5167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Banner/Message/Button_Generic": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -141.4479,
+     -60.4227
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Banner/Message/Text": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -176.2951,
+     -104.7399
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -163.5331,
+     -36.5612
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Container_Buttons": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -466.2293,
+     -3.9465
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Cash": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0092,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Coins": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0092,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Membership": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0255,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Unlock": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0092,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -166.1746,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -166.1746,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -171.5652,
+     -18.84
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable/Container_Icon": [
+     0.6176,
+     0.0,
+     0.0,
+     0.6182,
+     -166.1537,
+     -26.3573
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -286.19,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -166.1746,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -171.5652,
+     -18.84
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -209.5868,
+     -59.9625
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_01": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -208.662,
+     -75.0164
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_01/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -382.4416,
+     -67.9608
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_01/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_01/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_01/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_01/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_02": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -125.6856,
+     -75.0164
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_02/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -299.4652,
+     -67.9608
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_02/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_02/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_02/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_02/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_03": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -208.662,
+     12.6603
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_03/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -382.4416,
+     19.7159
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_03/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_03/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_03/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_03/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_04": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -125.6856,
+     12.6603
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_04/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -299.4652,
+     19.7159
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_04/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_04/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_04/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_01/Slots_Pack/Slot_04/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -76.2871,
+     -64.5241
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Banner": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -78.5386,
+     -94.1337
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Banner/Container_Banner": [
+     2.607,
+     0.0,
+     0.0,
+     2.3707,
+     -58.8583,
+     -90.1243
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Banner/Message": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -68.5296,
+     -94.1337
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Banner/Message/Button_Buy_Cash": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -12.119,
+     -74.5167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Banner/Message/Button_Buy_Coins": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -12.119,
+     -74.5167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Banner/Message/Button_Generic": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     23.6595,
+     -60.4227
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Banner/Message/Text": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -11.1877,
+     -104.7399
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     1.5743,
+     -36.5612
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Container_Buttons": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -301.1219,
+     -3.9465
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Cash": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9018,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Coins": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9018,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Membership": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9181,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Unlock": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9018,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -1.0672,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -1.0672,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -6.4578,
+     -18.84
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable/Container_Icon": [
+     0.6176,
+     0.0,
+     0.0,
+     0.6182,
+     -1.0463,
+     -26.3573
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -121.0826,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -1.0672,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -6.4578,
+     -18.84
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -44.4794,
+     -59.9625
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_01": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -43.5547,
+     -75.0164
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_01/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -217.3342,
+     -67.9608
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_01/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_01/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_01/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_01/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_02": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     39.4218,
+     -75.0164
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_02/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -134.3578,
+     -67.9608
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_02/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_02/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_02/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_02/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_03": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -43.5547,
+     12.6603
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_03/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -217.3342,
+     19.7159
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_03/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_03/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_03/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_03/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_04": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     39.4218,
+     12.6603
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_04/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -134.3578,
+     19.7159
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_04/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_04/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_04/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_02/Slots_Pack/Slot_04/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     88.8203,
+     -64.5241
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Banner": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     86.5688,
+     -94.1337
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Banner/Container_Banner": [
+     2.607,
+     0.0,
+     0.0,
+     2.3707,
+     106.2491,
+     -90.1243
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Banner/Message": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     96.5778,
+     -94.1337
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Banner/Message/Button_Buy_Cash": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     152.9884,
+     -74.5167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Banner/Message/Button_Buy_Coins": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     152.9884,
+     -74.5167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Banner/Message/Button_Generic": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     188.7669,
+     -60.4227
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Banner/Message/Text": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     153.9197,
+     -104.7399
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     166.6817,
+     -36.5612
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Container_Buttons": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -136.0145,
+     -3.9465
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Cash": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.2055,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Coins": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.2055,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Membership": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.1893,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Unlock": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.2055,
+     -54.1754
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     164.0402,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     164.0402,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     158.6495,
+     -18.84
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable/Container_Icon": [
+     0.6176,
+     0.0,
+     0.0,
+     0.6182,
+     164.0611,
+     -26.3573
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     44.0248,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     -121.7425
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     164.0402,
+     -26.3781
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     158.6495,
+     -18.84
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     -134.48
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     -89.1469
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     -94.6805
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     120.628,
+     -59.9625
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_01": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     121.5527,
+     -75.0164
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_01/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -52.2268,
+     -67.9608
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_01/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_01/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_01/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_01/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_02": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     204.5292,
+     -75.0164
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_02/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     30.7496,
+     -67.9608
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_02/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_02/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_02/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_02/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -118.093
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_03": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     121.5527,
+     12.6603
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_03/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -52.2268,
+     19.7159
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_03/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_03/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_03/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_03/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_04": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     204.5292,
+     12.6603
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_04/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     30.7496,
+     19.7159
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_04/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_04/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_04/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_01/Slots/Container_03/Slots_Pack/Slot_04/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     -30.4163
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -19.8151,
+     225.2522
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     -40.0889,
+     134.3064
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Container_Banner": [
+     5.4788,
+     0.0,
+     0.0,
+     4.9822,
+     1.2704,
+     142.7322
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     -19.0544,
+     134.3064
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message/Button_Buy_Cash": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     99.496,
+     175.5327
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message/Button_Buy_Cash/Text": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     77.1065,
+     166.2041
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message/Button_Buy_Coins": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     99.496,
+     175.5327
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message/Button_Buy_Coins/Text": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     77.1065,
+     166.2041
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message/Button_Generic": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     174.6868,
+     205.152
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message/Button_Generic/Hit_Area": [
+     14.2988,
+     0.0,
+     0.0,
+     3.6216,
+     2221.6594,
+     359.9119
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Banner/Message/Text": [
+     0.4302,
+     0.0,
+     0.0,
+     0.4299,
+     101.4532,
+     112.0167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     14.2237,
+     228.2592
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -241.3945,
+     109.0539
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Banner": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -243.646,
+     79.4443
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Banner/Container_Banner": [
+     2.607,
+     0.0,
+     0.0,
+     2.3707,
+     -223.9657,
+     83.4536
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Banner/Message": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -233.637,
+     79.4443
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Banner/Message/Button_Buy_Cash": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -177.2264,
+     99.0613
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Banner/Message/Button_Buy_Coins": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -177.2264,
+     99.0613
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Banner/Message/Button_Generic": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -141.4479,
+     113.1552
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Banner/Message/Text": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -176.2951,
+     68.838
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -163.5331,
+     137.0167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Container_Buttons": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -466.2293,
+     169.6314
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Cash": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0092,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Coins": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0092,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Membership": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0255,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Container_Buttons/Button_Unlock": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -292.0092,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -166.1746,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -166.1746,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -171.5652,
+     154.7379
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Unusable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable/Container_Icon": [
+     0.6176,
+     0.0,
+     0.0,
+     0.6182,
+     -166.1537,
+     147.2207
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -286.19,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -267.0093,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -166.1746,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -171.5652,
+     154.7379
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -359.2565,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -224.9078,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Huge_Slot/Slot_Usable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -279.6084,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -209.5868,
+     113.6155
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_01": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -208.662,
+     98.5615
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_01/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -382.4416,
+     105.6172
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_01/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_01/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_01/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_01/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_02": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -125.6856,
+     98.5615
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_02/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -299.4652,
+     105.6172
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_02/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_02/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_02/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_02/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_03": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -208.662,
+     186.2382
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_03/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -382.4416,
+     193.2939
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_03/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_03/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_03/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_03/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -250.7127,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_04": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -125.6856,
+     186.2382
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_04/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -299.4652,
+     193.2939
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_04/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_04/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_04/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_01/Slots_Pack/Slot_04/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -167.7363,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -76.2871,
+     109.0539
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Banner": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -78.5386,
+     79.4443
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Banner/Container_Banner": [
+     2.607,
+     0.0,
+     0.0,
+     2.3707,
+     -58.8583,
+     83.4536
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Banner/Message": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -68.5296,
+     79.4443
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Banner/Message/Button_Buy_Cash": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -12.119,
+     99.0613
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Banner/Message/Button_Buy_Coins": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -12.119,
+     99.0613
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Banner/Message/Button_Generic": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     23.6595,
+     113.1552
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Banner/Message/Text": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     -11.1877,
+     68.838
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     1.5743,
+     137.0167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Container_Buttons": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -301.1219,
+     169.6314
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Cash": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9018,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Coins": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9018,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Membership": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9181,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Container_Buttons/Button_Unlock": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     -126.9018,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -1.0672,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -1.0672,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -6.4578,
+     154.7379
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Unusable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable/Container_Icon": [
+     0.6176,
+     0.0,
+     0.0,
+     0.6182,
+     -1.0463,
+     147.2207
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -121.0826,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -101.9019,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     -1.0672,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -6.4578,
+     154.7379
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -194.1491,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -59.8004,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Huge_Slot/Slot_Usable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     -114.501,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -44.4794,
+     113.6155
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_01": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -43.5547,
+     98.5615
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_01/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -217.3342,
+     105.6172
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_01/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_01/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_01/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_01/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_02": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     39.4218,
+     98.5615
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_02/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -134.3578,
+     105.6172
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_02/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_02/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_02/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_02/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_03": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -43.5547,
+     186.2382
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_03/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -217.3342,
+     193.2939
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_03/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_03/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_03/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_03/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -85.6053,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_04": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     39.4218,
+     186.2382
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_04/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -134.3578,
+     193.2939
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_04/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_04/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_04/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_02/Slots_Pack/Slot_04/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -2.6289,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     88.8203,
+     109.0539
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Banner": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     86.5688,
+     79.4443
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Banner/Container_Banner": [
+     2.607,
+     0.0,
+     0.0,
+     2.3707,
+     106.2491,
+     83.4536
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Banner/Message": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     96.5778,
+     79.4443
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Banner/Message/Button_Buy_Cash": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     152.9884,
+     99.0613
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Banner/Message/Button_Buy_Coins": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     152.9884,
+     99.0613
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Banner/Message/Button_Generic": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     188.7669,
+     113.1552
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Banner/Message/Text": [
+     0.2047,
+     0.0,
+     0.0,
+     0.2046,
+     153.9197,
+     68.838
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     166.6817,
+     137.0167
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Container_Buttons": [
+     0.3249,
+     0.0,
+     0.0,
+     0.3247,
+     -136.0145,
+     169.6314
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Cash": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.2055,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Coins": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.2055,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Membership": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.1893,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Container_Buttons/Button_Unlock": [
+     0.368,
+     0.0,
+     0.0,
+     0.3678,
+     38.2055,
+     119.4026
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     164.0402,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     164.0402,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     158.6495,
+     154.7379
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Unusable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable/Container_Icon": [
+     0.6176,
+     0.0,
+     0.0,
+     0.6182,
+     164.0611,
+     147.2207
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     44.0248,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     63.2055,
+     51.8355
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Container_Icon": [
+     0.9186,
+     0.0,
+     0.0,
+     0.9195,
+     164.0402,
+     147.1998
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Icon_Lock": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     158.6495,
+     154.7379
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Icon_Sale": [
+     1.2861,
+     0.0,
+     0.0,
+     1.2016,
+     -29.0417,
+     39.098
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text_Lock": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text_New": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     105.307,
+     84.431
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Huge_Slot/Slot_Usable_Locked/Text_Sold_Out": [
+     0.4179,
+     0.0,
+     0.0,
+     0.4176,
+     50.6064,
+     78.8975
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     120.628,
+     113.6155
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_01": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     121.5527,
+     98.5615
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_01/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -52.2268,
+     105.6172
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_01/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_01/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_01/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_01/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_02": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     204.5292,
+     98.5615
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_02/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     30.7496,
+     105.6172
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_02/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_02/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_02/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_02/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     55.4849
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_03": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     121.5527,
+     186.2382
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_03/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     -52.2268,
+     193.2939
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_03/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_03/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_03/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_03/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     79.5021,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_04": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     204.5292,
+     186.2382
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_04/Container_Buttons": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     30.7496,
+     193.2939
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_04/Slot_Unusable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_04/Slot_Unusable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_04/Slot_Usable": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Slots/Slot_02/Slots/Container_03/Slots_Pack/Slot_04/Slot_Usable_Locked": [
+     0.1907,
+     0.0,
+     0.0,
+     0.1904,
+     162.4785,
+     143.1616
+    ],
+    "Content/Content_Supplies/Container_Sort_Tabs": [
+     0.5796,
+     0.0,
+     0.0,
+     0.5796,
+     -228.5126,
+     -75.165
+    ],
+    "Content/Content_Supplies/Container_Sort_Tabs/Tab_01": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -337.1596,
+     -221.4503
+    ],
+    "Content/Content_Supplies/Container_Sort_Tabs/Tab_01/Icon": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -264.9642,
+     -87.6984
+    ],
+    "Content/Content_Supplies/Container_Sort_Tabs/Tab_02": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -337.1596,
+     -185.1977
+    ],
+    "Content/Content_Supplies/Container_Sort_Tabs/Tab_02/Icon": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -264.9642,
+     -51.4459
+    ],
+    "Content/Content_Supplies/Container_Sort_Tabs/Text": [
+     0.0,
+     -0.5796,
+     0.5796,
+     0.0,
+     -260.8256,
+     -63.4286
+    ],
+    "Content/Content_Supplies/Container_Subtabs": [
+     0.5796,
+     0.0,
+     0.0,
+     0.5796,
+     -228.5126,
+     -75.165
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_01": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -279.1411,
+     -266.7152
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_01/Text": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -216.7083,
+     -138.3295
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_02": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -217.0655,
+     -266.7152
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_02/Text": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -154.6326,
+     -138.3295
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_03": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -154.9898,
+     -266.7152
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_03/Text": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -92.5569,
+     -138.3295
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_04": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -92.9141,
+     -266.7152
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_04/Text": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -30.4812,
+     -138.3295
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_05": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     -30.8384,
+     -266.7152
+    ],
+    "Content/Content_Supplies/Container_Subtabs/Tab_05/Text": [
+     0.154,
+     0.0,
+     0.0,
+     0.154,
+     31.5945,
+     -138.3295
+    ],
+    "Content/Content_Supplies/Saldo": [
+     0.5719,
+     0.0,
+     0.0,
+     0.5718,
+     17.6475,
+     -272.0011
+    ],
+    "Content/Content_Supplies/Saldo/Button_Add_Cash": [
+     0.3431,
+     0.0,
+     0.0,
+     0.3431,
+     233.8168,
+     -229.6843
+    ],
+    "Content/Content_Supplies/Saldo/Button_Add_Cash/Text": [
+     0.3431,
+     0.0,
+     0.0,
+     0.3431,
+     215.9579,
+     -237.1294
+    ],
+    "Content/Content_Supplies/Saldo/Button_Add_Coins": [
+     0.3431,
+     0.0,
+     0.0,
+     0.3431,
+     110.8634,
+     -229.6843
+    ],
+    "Content/Content_Supplies/Saldo/Button_Add_Coins/Text": [
+     0.3431,
+     0.0,
+     0.0,
+     0.3431,
+     93.0044,
+     -237.1294
+    ],
+    "Content/Content_Supplies/Saldo/Text_Cash": [
+     0.5719,
+     0.0,
+     0.0,
+     0.5718,
+     180.6037,
+     -264.6814
+    ],
+    "Content/Content_Supplies/Saldo/Text_Coins": [
+     0.5719,
+     0.0,
+     0.0,
+     0.5718,
+     103.1145,
+     -264.6814
+    ],
+    "Icon": [
+     1.7597,
+     0.0,
+     0.0,
+     1.7597,
+     -265.05,
+     -238.9
+    ],
+    "Text_Header": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -228.85,
+     -260.4
+    ]
+   },
+   "files": [
+    "shop_screen_new/001.png",
+    "shop_screen_new/002.png",
+    "shop_screen_new/003.png"
+   ],
+   "frames_exported": 3,
+   "frames_total": 3,
+   "id": 252,
+   "labels": {
+    "Close": 2,
+    "Hidden": 3,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     60,
+     34
+    ],
+    [
+     60,
+     34
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    714.32,
+    605.95
+   ],
+   "sequence": [
+    0,
+    1,
+    2
+   ],
+   "size": [
+    1390,
+    1255
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

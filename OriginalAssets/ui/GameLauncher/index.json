@@ -1,0 +1,56 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    760,
+    700
+   ]
+  },
+  "_bitmaps/bitmap_10.png": {
+   "id": 10,
+   "linkage": null,
+   "size": [
+    12,
+    25
+   ]
+  },
+  "_bitmaps/bitmap_14.png": {
+   "id": 14,
+   "linkage": null,
+   "size": [
+    146,
+    25
+   ]
+  },
+  "_bitmaps/bitmap_19.png": {
+   "id": 19,
+   "linkage": null,
+   "size": [
+    455,
+    283
+   ]
+  },
+  "_bitmaps/bitmap_4.png": {
+   "id": 4,
+   "linkage": null,
+   "size": [
+    535,
+    233
+   ]
+  },
+  "_bitmaps/bitmap_8.png": {
+   "id": 8,
+   "linkage": null,
+   "size": [
+    166,
+    21
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/GameLauncher.swf",
+ "symbols": {},
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

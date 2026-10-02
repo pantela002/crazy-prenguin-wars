@@ -1,0 +1,177 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_18.png": {
+   "id": 18,
+   "linkage": null,
+   "size": [
+    9,
+    510
+   ]
+  },
+  "_bitmaps/parallax_1_1.png": {
+   "id": 17,
+   "linkage": "parallax_1_1",
+   "size": [
+    165,
+    166
+   ]
+  },
+  "_bitmaps/parallax_1_2.png": {
+   "id": 16,
+   "linkage": "parallax_1_2",
+   "size": [
+    234,
+    170
+   ]
+  },
+  "_bitmaps/parallax_1_3.png": {
+   "id": 15,
+   "linkage": "parallax_1_3",
+   "size": [
+    297,
+    454
+   ]
+  },
+  "_bitmaps/parallax_1_4.png": {
+   "id": 14,
+   "linkage": "parallax_1_4",
+   "size": [
+    259,
+    329
+   ]
+  },
+  "_bitmaps/parallax_1_5.png": {
+   "id": 13,
+   "linkage": "parallax_1_5",
+   "size": [
+    235,
+    684
+   ]
+  },
+  "_bitmaps/parallax_1_6.png": {
+   "id": 12,
+   "linkage": "parallax_1_6",
+   "size": [
+    491,
+    671
+   ]
+  },
+  "_bitmaps/parallax_1_7.png": {
+   "id": 11,
+   "linkage": "parallax_1_7",
+   "size": [
+    557,
+    406
+   ]
+  },
+  "_bitmaps/parallax_2_1.png": {
+   "id": 10,
+   "linkage": "parallax_2_1",
+   "size": [
+    97,
+    112
+   ]
+  },
+  "_bitmaps/parallax_2_2.png": {
+   "id": 9,
+   "linkage": "parallax_2_2",
+   "size": [
+    130,
+    225
+   ]
+  },
+  "_bitmaps/parallax_2_3.png": {
+   "id": 8,
+   "linkage": "parallax_2_3",
+   "size": [
+    129,
+    180
+   ]
+  },
+  "_bitmaps/parallax_3_1.png": {
+   "id": 7,
+   "linkage": "parallax_3_1",
+   "size": [
+    390,
+    218
+   ]
+  },
+  "_bitmaps/parallax_3_2.png": {
+   "id": 6,
+   "linkage": "parallax_3_2",
+   "size": [
+    382,
+    171
+   ]
+  },
+  "_bitmaps/parallax_4_1.png": {
+   "id": 5,
+   "linkage": "parallax_4_1",
+   "size": [
+    84,
+    209
+   ]
+  },
+  "_bitmaps/parallax_4_2.png": {
+   "id": 4,
+   "linkage": "parallax_4_2",
+   "size": [
+    203,
+    321
+   ]
+  },
+  "_bitmaps/parallax_5_1.png": {
+   "id": 3,
+   "linkage": "parallax_5_1",
+   "size": [
+    226,
+    196
+   ]
+  },
+  "_bitmaps/parallax_6_1.png": {
+   "id": 2,
+   "linkage": "parallax_6_1",
+   "size": [
+    368,
+    217
+   ]
+  },
+  "_bitmaps/parallax_6_2.png": {
+   "id": 1,
+   "linkage": "parallax_6_2",
+   "size": [
+    164,
+    116
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/level_graphics/level_bg_desert.swf",
+ "symbols": {
+  "background_gradient": {
+   "files": [
+    "background_gradient.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 21,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    9,
+    510
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 1
+}

@@ -1,0 +1,800 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_11.png": {
+   "id": 11,
+   "linkage": null,
+   "size": [
+    212,
+    39
+   ]
+  },
+  "_bitmaps/bitmap_14.png": {
+   "id": 14,
+   "linkage": null,
+   "size": [
+    152,
+    82
+   ]
+  },
+  "_bitmaps/bitmap_19.png": {
+   "id": 19,
+   "linkage": null,
+   "size": [
+    127,
+    53
+   ]
+  },
+  "_bitmaps/bitmap_22.png": {
+   "id": 22,
+   "linkage": null,
+   "size": [
+    94,
+    90
+   ]
+  },
+  "_bitmaps/bitmap_24.png": {
+   "id": 24,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_27.png": {
+   "id": 27,
+   "linkage": null,
+   "size": [
+    94,
+    219
+   ]
+  },
+  "_bitmaps/bitmap_30.png": {
+   "id": 30,
+   "linkage": null,
+   "size": [
+    219,
+    386
+   ]
+  },
+  "_bitmaps/bitmap_33.png": {
+   "id": 33,
+   "linkage": null,
+   "size": [
+    115,
+    235
+   ]
+  },
+  "_bitmaps/bitmap_36.png": {
+   "id": 36,
+   "linkage": null,
+   "size": [
+    119,
+    130
+   ]
+  },
+  "_bitmaps/bitmap_39.png": {
+   "id": 39,
+   "linkage": null,
+   "size": [
+    107,
+    91
+   ]
+  },
+  "_bitmaps/bitmap_44.png": {
+   "id": 44,
+   "linkage": null,
+   "size": [
+    767,
+    706
+   ]
+  },
+  "_bitmaps/bitmap_47.png": {
+   "id": 47,
+   "linkage": null,
+   "size": [
+    764,
+    66
+   ]
+  },
+  "_bitmaps/bitmap_50.png": {
+   "id": 50,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_54.png": {
+   "id": 54,
+   "linkage": null,
+   "size": [
+    10,
+    10
+   ]
+  },
+  "_bitmaps/bitmap_57.png": {
+   "id": 57,
+   "linkage": null,
+   "size": [
+    330,
+    102
+   ]
+  },
+  "_bitmaps/bitmap_61.png": {
+   "id": 61,
+   "linkage": null,
+   "size": [
+    71,
+    77
+   ]
+  },
+  "_bitmaps/bitmap_64.png": {
+   "id": 64,
+   "linkage": null,
+   "size": [
+    71,
+    77
+   ]
+  },
+  "_bitmaps/bitmap_67.png": {
+   "id": 67,
+   "linkage": null,
+   "size": [
+    71,
+    77
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/ui/hud_shared.swf",
+ "symbols": {
+  "Button_Close": {
+   "files": [
+    "Button_Close/001.png",
+    "Button_Close/002.png",
+    "Button_Close/003.png"
+   ],
+   "frames_exported": 3,
+   "frames_total": 3,
+   "id": 70,
+   "labels": {
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     7
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": [
+    0,
+    1,
+    2
+   ],
+   "size": [
+    142,
+    154
+   ]
+  },
+  "button_blue_medium": {
+   "children_frame1": {
+    "Hit_Area": [
+     15.6391,
+     0.0,
+     0.0,
+     4.9681,
+     -76.75,
+     -24.35
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -47.1,
+     -9.8
+    ]
+   },
+   "files": [
+    "button_blue_medium/001.png",
+    "button_blue_medium/002.png",
+    "button_blue_medium/003.png"
+   ],
+   "frames_exported": 3,
+   "frames_total": 3,
+   "id": 60,
+   "labels": {
+    "Down": 3,
+    "Hover": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     48,
+     16
+    ],
+    [
+     48,
+     16
+    ],
+    [
+     48,
+     16
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    153.11,
+    48.52
+   ],
+   "sequence": [
+    0,
+    1,
+    2
+   ],
+   "size": [
+    312,
+    99
+   ]
+  },
+  "buy_anim": {
+   "children_frame1": {
+    "Container_Icon": [
+     2.4223,
+     0.0,
+     0.0,
+     2.4223,
+     172.25,
+     23.7
+    ],
+    "Text": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     2.0,
+     -142.6
+    ]
+   },
+   "files": [
+    "buy_anim/001.png",
+    "buy_anim/002.png",
+    "buy_anim/003.png",
+    "buy_anim/004.png",
+    "buy_anim/005.png",
+    "buy_anim/006.png",
+    "buy_anim/007.png",
+    "buy_anim/008.png",
+    "buy_anim/009.png",
+    "buy_anim/010.png",
+    "buy_anim/011.png",
+    "buy_anim/012.png",
+    "buy_anim/013.png",
+    "buy_anim/014.png",
+    "buy_anim/015.png",
+    "buy_anim/016.png",
+    "buy_anim/017.png",
+    "buy_anim/018.png",
+    "buy_anim/019.png",
+    "buy_anim/020.png",
+    "buy_anim/021.png",
+    "buy_anim/022.png",
+    "buy_anim/023.png",
+    "buy_anim/024.png"
+   ],
+   "frames_exported": 24,
+   "frames_total": 24,
+   "id": 75,
+   "labels": {
+    "end": 23,
+    "start": 1
+   },
+   "offsets": [
+    [
+     89,
+     1230
+    ],
+    [
+     89,
+     1184
+    ],
+    [
+     89,
+     1137
+    ],
+    [
+     89,
+     1090
+    ],
+    [
+     89,
+     1043
+    ],
+    [
+     89,
+     997
+    ],
+    [
+     89,
+     950
+    ],
+    [
+     89,
+     903
+    ],
+    [
+     89,
+     856
+    ],
+    [
+     89,
+     810
+    ],
+    [
+     89,
+     763
+    ],
+    [
+     89,
+     716
+    ],
+    [
+     89,
+     669
+    ],
+    [
+     89,
+     623
+    ],
+    [
+     89,
+     576
+    ],
+    [
+     89,
+     529
+    ],
+    [
+     89,
+     482
+    ],
+    [
+     89,
+     436
+    ],
+    [
+     89,
+     389
+    ],
+    [
+     89,
+     342
+    ],
+    [
+     89,
+     295
+    ],
+    [
+     89,
+     249
+    ],
+    [
+     89,
+     202
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    91.5,
+    1463.8
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "size": [
+    872,
+    1947
+   ]
+  },
+  "dark_back": {
+   "files": [
+    "dark_back.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 46,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1534,
+    1412
+   ]
+  },
+  "loading_anim_icon": {
+   "children_frame1": {
+    "facial_expression": [
+     0.0418,
+     -0.0021,
+     0.0021,
+     0.0418,
+     2.25,
+     -23.65
+    ]
+   },
+   "files": [
+    "loading_anim_icon.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 43,
+   "labels": null,
+   "offsets": [
+    [
+     4,
+     6
+    ]
+   ],
+   "origin_px": [
+    29.5,
+    70.0
+   ],
+   "sequence": null,
+   "size": [
+    69,
+    134
+   ]
+  },
+  "tooltip_generic": {
+   "children_frame1": {
+    "Base": [
+     0.3438,
+     0.0,
+     0.0,
+     0.5005,
+     0.0,
+     -29.15
+    ],
+    "Text": [
+     0.245,
+     0.0,
+     0.0,
+     0.245,
+     -23.7,
+     -47.35
+    ]
+   },
+   "files": [
+    "tooltip_generic.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 18,
+   "labels": {
+    "Hidden": 2,
+    "Visible": 1
+   },
+   "offsets": [
+    [
+     0,
+     3
+    ]
+   ],
+   "origin_estimated": true,
+   "origin_px": [
+    72.47,
+    95.39
+   ],
+   "sequence": null,
+   "size": [
+    145,
+    75
+   ]
+  },
+  "top_bar": {
+   "files": [
+    "top_bar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 49,
+   "labels": {
+    "Close": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    764.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1528,
+    132
+   ]
+  },
+  "transition_slots_left_close": {
+   "children_frame1": {
+    "Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Icon/Placeholder": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "files": [
+    "transition_slots_left_close.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 8,
+   "labels": {
+    "transition_end": 2,
+    "transition_start": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "transition_slots_left_open": {
+   "children_frame1": {
+    "Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Icon/Placeholder": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "files": [
+    "transition_slots_left_open.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 7,
+   "labels": {
+    "transition_end": 2,
+    "transition_start": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "transition_slots_right_close": {
+   "children_frame1": {
+    "Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Icon/Placeholder": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "files": [
+    "transition_slots_right_close.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 6,
+   "labels": {
+    "transition_end": 2,
+    "transition_start": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "transition_slots_right_open": {
+   "children_frame1": {
+    "Icon": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "Icon/Placeholder": [
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ]
+   },
+   "files": [
+    "transition_slots_right_open.png"
+   ],
+   "frames_exported": 2,
+   "frames_total": 2,
+   "id": 5,
+   "labels": {
+    "transition_end": 2,
+    "transition_start": 1
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "tutorial_arrow_top": {
+   "files": [
+    "tutorial_arrow_top.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 10,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "tutorial_controls": {
+   "files": [
+    "tutorial_controls.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 9,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 2
+}

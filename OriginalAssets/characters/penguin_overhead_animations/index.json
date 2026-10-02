@@ -1,0 +1,96 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    38,
+    47
+   ]
+  },
+  "_bitmaps/bitmap_4.png": {
+   "id": 4,
+   "linkage": null,
+   "size": [
+    40,
+    45
+   ]
+  },
+  "_bitmaps/bitmap_7.png": {
+   "id": 7,
+   "linkage": null,
+   "size": [
+    41,
+    45
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/characters/penguin_overhead_animations.swf",
+ "symbols": {
+  "chicken_out": {
+   "files": [
+    "chicken_out/001.png",
+    "chicken_out/002.png",
+    "chicken_out/003.png"
+   ],
+   "frames_exported": 28,
+   "frames_total": 28,
+   "id": 10,
+   "labels": null,
+   "offsets": [
+    [
+     3,
+     3
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    30.0,
+    166.65
+   ],
+   "sequence": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    2,
+    2,
+    2,
+    2,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    2
+   ],
+   "size": [
+    61,
+    70
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 3
+}

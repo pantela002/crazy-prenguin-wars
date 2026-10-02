@@ -1,0 +1,2900 @@
+{
+ "bitmaps": {
+  "_bitmaps/bitmap_1.png": {
+   "id": 1,
+   "linkage": null,
+   "size": [
+    62,
+    40
+   ]
+  },
+  "_bitmaps/bitmap_102.png": {
+   "id": 102,
+   "linkage": null,
+   "size": [
+    62,
+    87
+   ]
+  },
+  "_bitmaps/bitmap_105.png": {
+   "id": 105,
+   "linkage": null,
+   "size": [
+    46,
+    84
+   ]
+  },
+  "_bitmaps/bitmap_108.png": {
+   "id": 108,
+   "linkage": null,
+   "size": [
+    53,
+    109
+   ]
+  },
+  "_bitmaps/bitmap_11.png": {
+   "id": 11,
+   "linkage": null,
+   "size": [
+    106,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_111.png": {
+   "id": 111,
+   "linkage": null,
+   "size": [
+    38,
+    84
+   ]
+  },
+  "_bitmaps/bitmap_114.png": {
+   "id": 114,
+   "linkage": null,
+   "size": [
+    46,
+    72
+   ]
+  },
+  "_bitmaps/bitmap_117.png": {
+   "id": 117,
+   "linkage": null,
+   "size": [
+    98,
+    132
+   ]
+  },
+  "_bitmaps/bitmap_120.png": {
+   "id": 120,
+   "linkage": null,
+   "size": [
+    97,
+    170
+   ]
+  },
+  "_bitmaps/bitmap_122.png": {
+   "id": 122,
+   "linkage": null,
+   "size": [
+    24,
+    28
+   ]
+  },
+  "_bitmaps/bitmap_123.png": {
+   "id": 123,
+   "linkage": null,
+   "size": [
+    24,
+    28
+   ]
+  },
+  "_bitmaps/bitmap_124.png": {
+   "id": 124,
+   "linkage": null,
+   "size": [
+    25,
+    25
+   ]
+  },
+  "_bitmaps/bitmap_126.png": {
+   "id": 126,
+   "linkage": null,
+   "size": [
+    14,
+    16
+   ]
+  },
+  "_bitmaps/bitmap_127.png": {
+   "id": 127,
+   "linkage": null,
+   "size": [
+    14,
+    16
+   ]
+  },
+  "_bitmaps/bitmap_128.png": {
+   "id": 128,
+   "linkage": null,
+   "size": [
+    14,
+    14
+   ]
+  },
+  "_bitmaps/bitmap_13.png": {
+   "id": 13,
+   "linkage": null,
+   "size": [
+    101,
+    75
+   ]
+  },
+  "_bitmaps/bitmap_131.png": {
+   "id": 131,
+   "linkage": null,
+   "size": [
+    54,
+    92
+   ]
+  },
+  "_bitmaps/bitmap_134.png": {
+   "id": 134,
+   "linkage": null,
+   "size": [
+    113,
+    105
+   ]
+  },
+  "_bitmaps/bitmap_137.png": {
+   "id": 137,
+   "linkage": null,
+   "size": [
+    97,
+    90
+   ]
+  },
+  "_bitmaps/bitmap_140.png": {
+   "id": 140,
+   "linkage": null,
+   "size": [
+    31,
+    37
+   ]
+  },
+  "_bitmaps/bitmap_143.png": {
+   "id": 143,
+   "linkage": null,
+   "size": [
+    48,
+    89
+   ]
+  },
+  "_bitmaps/bitmap_146.png": {
+   "id": 146,
+   "linkage": null,
+   "size": [
+    17,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_149.png": {
+   "id": 149,
+   "linkage": null,
+   "size": [
+    17,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_15.png": {
+   "id": 15,
+   "linkage": null,
+   "size": [
+    123,
+    82
+   ]
+  },
+  "_bitmaps/bitmap_152.png": {
+   "id": 152,
+   "linkage": null,
+   "size": [
+    17,
+    24
+   ]
+  },
+  "_bitmaps/bitmap_155.png": {
+   "id": 155,
+   "linkage": null,
+   "size": [
+    81,
+    164
+   ]
+  },
+  "_bitmaps/bitmap_160.png": {
+   "id": 160,
+   "linkage": null,
+   "size": [
+    73,
+    107
+   ]
+  },
+  "_bitmaps/bitmap_162.png": {
+   "id": 162,
+   "linkage": null,
+   "size": [
+    324,
+    191
+   ]
+  },
+  "_bitmaps/bitmap_165.png": {
+   "id": 165,
+   "linkage": null,
+   "size": [
+    98,
+    51
+   ]
+  },
+  "_bitmaps/bitmap_168.png": {
+   "id": 168,
+   "linkage": null,
+   "size": [
+    158,
+    62
+   ]
+  },
+  "_bitmaps/bitmap_173.png": {
+   "id": 173,
+   "linkage": null,
+   "size": [
+    60,
+    81
+   ]
+  },
+  "_bitmaps/bitmap_176.png": {
+   "id": 176,
+   "linkage": null,
+   "size": [
+    82,
+    81
+   ]
+  },
+  "_bitmaps/bitmap_179.png": {
+   "id": 179,
+   "linkage": null,
+   "size": [
+    91,
+    92
+   ]
+  },
+  "_bitmaps/bitmap_18.png": {
+   "id": 18,
+   "linkage": null,
+   "size": [
+    4,
+    35
+   ]
+  },
+  "_bitmaps/bitmap_182.png": {
+   "id": 182,
+   "linkage": null,
+   "size": [
+    111,
+    124
+   ]
+  },
+  "_bitmaps/bitmap_185.png": {
+   "id": 185,
+   "linkage": null,
+   "size": [
+    32,
+    37
+   ]
+  },
+  "_bitmaps/bitmap_188.png": {
+   "id": 188,
+   "linkage": null,
+   "size": [
+    34,
+    40
+   ]
+  },
+  "_bitmaps/bitmap_191.png": {
+   "id": 191,
+   "linkage": null,
+   "size": [
+    75,
+    75
+   ]
+  },
+  "_bitmaps/bitmap_194.png": {
+   "id": 194,
+   "linkage": null,
+   "size": [
+    33,
+    33
+   ]
+  },
+  "_bitmaps/bitmap_197.png": {
+   "id": 197,
+   "linkage": null,
+   "size": [
+    51,
+    51
+   ]
+  },
+  "_bitmaps/bitmap_200.png": {
+   "id": 200,
+   "linkage": null,
+   "size": [
+    33,
+    33
+   ]
+  },
+  "_bitmaps/bitmap_203.png": {
+   "id": 203,
+   "linkage": null,
+   "size": [
+    42,
+    61
+   ]
+  },
+  "_bitmaps/bitmap_206.png": {
+   "id": 206,
+   "linkage": null,
+   "size": [
+    70,
+    113
+   ]
+  },
+  "_bitmaps/bitmap_209.png": {
+   "id": 209,
+   "linkage": null,
+   "size": [
+    35,
+    38
+   ]
+  },
+  "_bitmaps/bitmap_22.png": {
+   "id": 22,
+   "linkage": null,
+   "size": [
+    57,
+    57
+   ]
+  },
+  "_bitmaps/bitmap_25.png": {
+   "id": 25,
+   "linkage": null,
+   "size": [
+    55,
+    157
+   ]
+  },
+  "_bitmaps/bitmap_27.png": {
+   "id": 27,
+   "linkage": null,
+   "size": [
+    55,
+    170
+   ]
+  },
+  "_bitmaps/bitmap_29.png": {
+   "id": 29,
+   "linkage": null,
+   "size": [
+    62,
+    169
+   ]
+  },
+  "_bitmaps/bitmap_36.png": {
+   "id": 36,
+   "linkage": null,
+   "size": [
+    50,
+    47
+   ]
+  },
+  "_bitmaps/bitmap_4.png": {
+   "id": 4,
+   "linkage": null,
+   "size": [
+    33,
+    77
+   ]
+  },
+  "_bitmaps/bitmap_40.png": {
+   "id": 40,
+   "linkage": null,
+   "size": [
+    120,
+    39
+   ]
+  },
+  "_bitmaps/bitmap_43.png": {
+   "id": 43,
+   "linkage": null,
+   "size": [
+    65,
+    60
+   ]
+  },
+  "_bitmaps/bitmap_47.png": {
+   "id": 47,
+   "linkage": null,
+   "size": [
+    32,
+    95
+   ]
+  },
+  "_bitmaps/bitmap_50.png": {
+   "id": 50,
+   "linkage": null,
+   "size": [
+    46,
+    83
+   ]
+  },
+  "_bitmaps/bitmap_53.png": {
+   "id": 53,
+   "linkage": null,
+   "size": [
+    63,
+    58
+   ]
+  },
+  "_bitmaps/bitmap_56.png": {
+   "id": 56,
+   "linkage": null,
+   "size": [
+    71,
+    92
+   ]
+  },
+  "_bitmaps/bitmap_6.png": {
+   "id": 6,
+   "linkage": null,
+   "size": [
+    33,
+    71
+   ]
+  },
+  "_bitmaps/bitmap_61.png": {
+   "id": 61,
+   "linkage": null,
+   "size": [
+    40,
+    40
+   ]
+  },
+  "_bitmaps/bitmap_64.png": {
+   "id": 64,
+   "linkage": null,
+   "size": [
+    46,
+    46
+   ]
+  },
+  "_bitmaps/bitmap_67.png": {
+   "id": 67,
+   "linkage": null,
+   "size": [
+    52,
+    52
+   ]
+  },
+  "_bitmaps/bitmap_70.png": {
+   "id": 70,
+   "linkage": null,
+   "size": [
+    42,
+    42
+   ]
+  },
+  "_bitmaps/bitmap_74.png": {
+   "id": 74,
+   "linkage": null,
+   "size": [
+    114,
+    110
+   ]
+  },
+  "_bitmaps/bitmap_79.png": {
+   "id": 79,
+   "linkage": null,
+   "size": [
+    110,
+    150
+   ]
+  },
+  "_bitmaps/bitmap_81.png": {
+   "id": 81,
+   "linkage": null,
+   "size": [
+    21,
+    21
+   ]
+  },
+  "_bitmaps/bitmap_85.png": {
+   "id": 85,
+   "linkage": null,
+   "size": [
+    214,
+    253
+   ]
+  },
+  "_bitmaps/bitmap_9.png": {
+   "id": 9,
+   "linkage": null,
+   "size": [
+    123,
+    86
+   ]
+  },
+  "_bitmaps/bitmap_90.png": {
+   "id": 90,
+   "linkage": null,
+   "size": [
+    21,
+    19
+   ]
+  },
+  "_bitmaps/bitmap_93.png": {
+   "id": 93,
+   "linkage": null,
+   "size": [
+    110,
+    80
+   ]
+  },
+  "_bitmaps/bitmap_96.png": {
+   "id": 96,
+   "linkage": null,
+   "size": [
+    130,
+    123
+   ]
+  },
+  "_bitmaps/bitmap_99.png": {
+   "id": 99,
+   "linkage": null,
+   "size": [
+    52,
+    108
+   ]
+  }
+ },
+ "swf": "cpw-server/assets/flash/weapons/ammo.swf",
+ "symbols": {
+  "ammo_acid_lemon_grenade": {
+   "files": [
+    "ammo_acid_lemon_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 211,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    25.2,
+    27.9
+   ],
+   "sequence": null,
+   "size": [
+    50,
+    55
+   ]
+  },
+  "ammo_armor_piercing_rocket": {
+   "files": [
+    "ammo_armor_piercing_rocket.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 208,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    44.1,
+    126.45
+   ],
+   "sequence": null,
+   "size": [
+    87,
+    141
+   ]
+  },
+  "ammo_artillery_barrage": {
+   "files": [
+    "ammo_artillery_barrage/001.png",
+    "ammo_artillery_barrage/002.png"
+   ],
+   "frames_exported": 8,
+   "frames_total": 8,
+   "id": 8,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     7
+    ]
+   ],
+   "origin_px": [
+    21.15,
+    106.2
+   ],
+   "sequence": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1
+   ],
+   "size": [
+    44,
+    104
+   ]
+  },
+  "ammo_bazooka": {
+   "files": [
+    "ammo_bazooka.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 205,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    31.5,
+    93.0
+   ],
+   "sequence": null,
+   "size": [
+    63,
+    91
+   ]
+  },
+  "ammo_bean_bag": {
+   "files": [
+    "ammo_bean_bag.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 202,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    31.35,
+    31.05
+   ],
+   "sequence": null,
+   "size": [
+    63,
+    63
+   ]
+  },
+  "ammo_blunderbuss": {
+   "files": [
+    "ammo_blunderbuss/001.png",
+    "ammo_blunderbuss/002.png"
+   ],
+   "frames_exported": 5,
+   "frames_total": 5,
+   "id": 199,
+   "labels": {
+    "aim": 2,
+    "draw": 1,
+    "fire": 3,
+    "launch": 4,
+    "out": 5
+   },
+   "offsets": [
+    [
+     18,
+     18
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    54.0,
+    53.85
+   ],
+   "sequence": [
+    0,
+    1,
+    1,
+    1,
+    1
+   ],
+   "size": [
+    108,
+    108
+   ]
+  },
+  "ammo_broom": {
+   "files": [
+    "ammo_broom.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 42,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    145.35,
+    45.3
+   ],
+   "sequence": null,
+   "size": [
+    249,
+    80
+   ]
+  },
+  "ammo_caltrops": {
+   "files": [
+    "ammo_caltrops.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 196,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    48.0,
+    48.9
+   ],
+   "sequence": null,
+   "size": [
+    99,
+    99
+   ]
+  },
+  "ammo_chocolate_cannonball": {
+   "files": [
+    "ammo_chocolate_cannonball.png"
+   ],
+   "frames_exported": 5,
+   "frames_total": 5,
+   "id": 193,
+   "labels": {
+    "aim": 2,
+    "draw": 1,
+    "fire": 3,
+    "launch": 4,
+    "out": 5
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    54.0,
+    53.85
+   ],
+   "sequence": null,
+   "size": [
+    108,
+    108
+   ]
+  },
+  "ammo_cinder_grenade": {
+   "files": [
+    "ammo_cinder_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 190,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    21.3,
+    25.8
+   ],
+   "sequence": null,
+   "size": [
+    43,
+    51
+   ]
+  },
+  "ammo_cluster_grenade": {
+   "files": [
+    "ammo_cluster_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 187,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    20.85,
+    24.3
+   ],
+   "sequence": null,
+   "size": [
+    41,
+    48
+   ]
+  },
+  "ammo_cluster_rocket_01": {
+   "files": [
+    "ammo_cluster_rocket_01.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 184,
+   "labels": null,
+   "offsets": [
+    [
+     28,
+     0
+    ]
+   ],
+   "origin_px": [
+    76.2,
+    168.45
+   ],
+   "sequence": null,
+   "size": [
+    151,
+    169
+   ]
+  },
+  "ammo_cluster_rocket_02": {
+   "files": [
+    "ammo_cluster_rocket_02.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 181,
+   "labels": null,
+   "offsets": [
+    [
+     35,
+     0
+    ]
+   ],
+   "origin_px": [
+    61.5,
+    121.35
+   ],
+   "sequence": null,
+   "size": [
+    123,
+    124
+   ]
+  },
+  "ammo_doomsday_device": {
+   "files": [
+    "ammo_doomsday_device.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 178,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    67.65,
+    67.95
+   ],
+   "sequence": null,
+   "size": [
+    136,
+    135
+   ]
+  },
+  "ammo_doomsday_device_shard": {
+   "files": [
+    "ammo_doomsday_device_shard.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 175,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    49.5,
+    134.4
+   ],
+   "sequence": null,
+   "size": [
+    100,
+    135
+   ]
+  },
+  "ammo_drillbot": {
+   "files": [
+    "ammo_drillbot/001.png",
+    "ammo_drillbot/002.png",
+    "ammo_drillbot/003.png",
+    "ammo_drillbot/004.png",
+    "ammo_drillbot/005.png",
+    "ammo_drillbot/006.png",
+    "ammo_drillbot/007.png",
+    "ammo_drillbot/008.png",
+    "ammo_drillbot/009.png",
+    "ammo_drillbot/010.png"
+   ],
+   "frames_exported": 10,
+   "frames_total": 10,
+   "id": 171,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    40.8,
+    120.75
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "size": [
+    82,
+    120
+   ]
+  },
+  "ammo_drillbotshard": {
+   "files": [
+    "ammo_drillbotshard.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 172,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    120.75,
+    41.4
+   ],
+   "sequence": null,
+   "size": [
+    120,
+    82
+   ]
+  },
+  "ammo_dynamite": {
+   "files": [
+    "ammo_dynamite.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 159,
+   "labels": null,
+   "offsets": [
+    [
+     30,
+     6
+    ]
+   ],
+   "origin_px": [
+    52.95,
+    81.9
+   ],
+   "sequence": null,
+   "size": [
+    75,
+    112
+   ]
+  },
+  "ammo_easter_egg": {
+   "files": [
+    "ammo_easter_egg.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 154,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    20.85,
+    24.3
+   ],
+   "sequence": null,
+   "size": [
+    40,
+    57
+   ]
+  },
+  "ammo_easter_egg2": {
+   "files": [
+    "ammo_easter_egg2.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 151,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    20.85,
+    24.3
+   ],
+   "sequence": null,
+   "size": [
+    40,
+    57
+   ]
+  },
+  "ammo_easter_egg3": {
+   "files": [
+    "ammo_easter_egg3.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 148,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    20.85,
+    24.3
+   ],
+   "sequence": null,
+   "size": [
+    40,
+    57
+   ]
+  },
+  "ammo_fire_plasma": {
+   "files": [
+    "ammo_fire_plasma.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 145,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    45.0
+   ],
+   "sequence": null,
+   "size": [
+    49,
+    92
+   ]
+  },
+  "ammo_fireworks_rocket": {
+   "files": [
+    "ammo_fireworks_rocket.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 49,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    40.65,
+    120.75
+   ],
+   "sequence": null,
+   "size": [
+    80,
+    238
+   ]
+  },
+  "ammo_flaregun_sparkle": {
+   "files": [
+    "ammo_flaregun_sparkle/001.png",
+    "ammo_flaregun_sparkle/002.png",
+    "ammo_flaregun_sparkle/003.png",
+    "ammo_flaregun_sparkle/004.png",
+    "ammo_flaregun_sparkle/005.png",
+    "ammo_flaregun_sparkle/006.png",
+    "ammo_flaregun_sparkle/007.png",
+    "ammo_flaregun_sparkle/008.png",
+    "ammo_flaregun_sparkle/009.png",
+    "ammo_flaregun_sparkle/010.png",
+    "ammo_flaregun_sparkle/011.png",
+    "ammo_flaregun_sparkle/012.png",
+    "ammo_flaregun_sparkle/013.png",
+    "ammo_flaregun_sparkle/014.png",
+    "ammo_flaregun_sparkle/015.png",
+    "ammo_flaregun_sparkle/016.png",
+    "ammo_flaregun_sparkle/017.png",
+    "ammo_flaregun_sparkle/018.png",
+    "ammo_flaregun_sparkle/019.png",
+    "ammo_flaregun_sparkle/020.png",
+    "ammo_flaregun_sparkle/021.png",
+    "ammo_flaregun_sparkle/022.png",
+    "ammo_flaregun_sparkle/023.png",
+    "ammo_flaregun_sparkle/024.png"
+   ],
+   "frames_exported": 25,
+   "frames_total": 25,
+   "id": 46,
+   "labels": null,
+   "offsets": [
+    [
+     24,
+     29
+    ],
+    [
+     17,
+     29
+    ],
+    [
+     13,
+     27
+    ],
+    [
+     11,
+     24
+    ],
+    [
+     13,
+     24
+    ],
+    [
+     17,
+     26
+    ],
+    [
+     23,
+     26
+    ],
+    [
+     29,
+     23
+    ],
+    [
+     24,
+     16
+    ],
+    [
+     21,
+     12
+    ],
+    [
+     22,
+     12
+    ],
+    [
+     25,
+     14
+    ],
+    [
+     24,
+     21
+    ],
+    [
+     24,
+     29
+    ],
+    [
+     19,
+     24
+    ],
+    [
+     17,
+     22
+    ],
+    [
+     19,
+     22
+    ],
+    [
+     23,
+     26
+    ],
+    [
+     26,
+     24
+    ],
+    [
+     29,
+     22
+    ],
+    [
+     28,
+     17
+    ],
+    [
+     24,
+     18
+    ],
+    [
+     24,
+     22
+    ],
+    [
+     27,
+     24
+    ]
+   ],
+   "origin_px": [
+    91.8,
+    91.8
+   ],
+   "sequence": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    0
+   ],
+   "size": [
+    183,
+    183
+   ]
+  },
+  "ammo_frag_grenade": {
+   "files": [
+    "ammo_frag_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 142,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    23.25,
+    24.75
+   ],
+   "sequence": null,
+   "size": [
+    46,
+    55
+   ]
+  },
+  "ammo_fragmentation_missile": {
+   "files": [
+    "ammo_fragmentation_missile.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 139,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    51.9,
+    47.7
+   ],
+   "sequence": null,
+   "size": [
+    103,
+    96
+   ]
+  },
+  "ammo_fragmentation_missile_child": {
+   "files": [
+    "ammo_fragmentation_missile_child.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 136,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    49.95,
+    45.6
+   ],
+   "sequence": null,
+   "size": [
+    100,
+    93
+   ]
+  },
+  "ammo_gas_grenade": {
+   "files": [
+    "ammo_gas_grenade.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 133,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    18.0,
+    33.15
+   ],
+   "sequence": null,
+   "size": [
+    35,
+    60
+   ]
+  },
+  "ammo_halloween_cat": {
+   "files": [
+    "ammo_halloween_cat.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 38,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    54.0,
+    51.0
+   ],
+   "sequence": null,
+   "size": [
+    111,
+    102
+   ]
+  },
+  "ammo_heat_seeker": {
+   "files": [
+    "ammo_heat_seeker/001.png",
+    "ammo_heat_seeker/002.png"
+   ],
+   "frames_exported": 8,
+   "frames_total": 8,
+   "id": 130,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    34.5,
+    60.45
+   ],
+   "sequence": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1
+   ],
+   "size": [
+    68,
+    120
+   ]
+  },
+  "ammo_meganuke": {
+   "files": [
+    "ammo_meganuke.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 119,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    50.25,
+    135.15
+   ],
+   "sequence": null,
+   "size": [
+    100,
+    135
+   ]
+  },
+  "ammo_minigun_bazooka": {
+   "files": [
+    "ammo_minigun_bazooka.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 116,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    24.45,
+    71.7
+   ],
+   "sequence": null,
+   "size": [
+    48,
+    76
+   ]
+  },
+  "ammo_molotov": {
+   "files": [
+    "ammo_molotov.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 113,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    14.7,
+    35.25
+   ],
+   "sequence": null,
+   "size": [
+    29,
+    64
+   ]
+  },
+  "ammo_mortar": {
+   "files": [
+    "ammo_mortar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 110,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    28.5,
+    116.1
+   ],
+   "sequence": null,
+   "size": [
+    56,
+    117
+   ]
+  },
+  "ammo_napalm": {
+   "files": [
+    "ammo_napalm.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 107,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    24.0,
+    43.8
+   ],
+   "sequence": null,
+   "size": [
+    47,
+    87
+   ]
+  },
+  "ammo_pistol": {
+   "files": [
+    "ammo_pistol.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 104,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    14.4,
+    19.65
+   ],
+   "sequence": null,
+   "size": [
+    28,
+    40
+   ]
+  },
+  "ammo_plasma_bomb": {
+   "files": [
+    "ammo_plasma_bomb.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 3,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    43.65,
+    57.6
+   ],
+   "sequence": null,
+   "size": [
+    89,
+    57
+   ]
+  },
+  "ammo_plasma_mortar": {
+   "files": [
+    "ammo_plasma_mortar.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 101,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    28.5,
+    116.1
+   ],
+   "sequence": null,
+   "size": [
+    55,
+    115
+   ]
+  },
+  "ammo_rock": {
+   "files": [
+    "ammo_rock.png"
+   ],
+   "frames_exported": 5,
+   "frames_total": 5,
+   "id": 98,
+   "labels": {
+    "aim": 2,
+    "draw": 1,
+    "fire": 3,
+    "launch": 4,
+    "out": 5
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    55.5,
+    53.85
+   ],
+   "sequence": null,
+   "size": [
+    112,
+    106
+   ]
+  },
+  "ammo_shield_generator": {
+   "files": [
+    "ammo_shield_generator.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 95,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    54.6,
+    79.65
+   ],
+   "sequence": null,
+   "size": [
+    109,
+    79
+   ]
+  },
+  "ammo_snowball": {
+   "files": [
+    "ammo_snowball.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 92,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    30.75,
+    25.95
+   ],
+   "sequence": null,
+   "size": [
+    63,
+    57
+   ]
+  },
+  "ammo_sticky_bomb": {
+   "files": [
+    "ammo_sticky_bomb.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 89,
+   "labels": null,
+   "offsets": [
+    [
+     9,
+     0
+    ]
+   ],
+   "origin_px": [
+    47.25,
+    45.45
+   ],
+   "sequence": null,
+   "size": [
+    94,
+    91
+   ]
+  },
+  "ammo_teleport_grenade": {
+   "files": [
+    "ammo_teleport_grenade/001.png",
+    "ammo_teleport_grenade/002.png",
+    "ammo_teleport_grenade/003.png",
+    "ammo_teleport_grenade/004.png",
+    "ammo_teleport_grenade/005.png",
+    "ammo_teleport_grenade/006.png",
+    "ammo_teleport_grenade/007.png",
+    "ammo_teleport_grenade/008.png",
+    "ammo_teleport_grenade/009.png",
+    "ammo_teleport_grenade/010.png",
+    "ammo_teleport_grenade/011.png",
+    "ammo_teleport_grenade/012.png",
+    "ammo_teleport_grenade/013.png",
+    "ammo_teleport_grenade/014.png",
+    "ammo_teleport_grenade/015.png",
+    "ammo_teleport_grenade/016.png",
+    "ammo_teleport_grenade/017.png",
+    "ammo_teleport_grenade/018.png",
+    "ammo_teleport_grenade/019.png",
+    "ammo_teleport_grenade/020.png",
+    "ammo_teleport_grenade/021.png",
+    "ammo_teleport_grenade/022.png",
+    "ammo_teleport_grenade/023.png",
+    "ammo_teleport_grenade/024.png",
+    "ammo_teleport_grenade/025.png",
+    "ammo_teleport_grenade/026.png",
+    "ammo_teleport_grenade/027.png",
+    "ammo_teleport_grenade/028.png",
+    "ammo_teleport_grenade/029.png"
+   ],
+   "frames_exported": 50,
+   "frames_total": 50,
+   "id": 84,
+   "labels": null,
+   "offsets": [
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "origin_px": [
+    37.8,
+    48.3
+   ],
+   "sequence": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "size": [
+    75,
+    102
+   ]
+  },
+  "ammo_void_generator": {
+   "files": [
+    "ammo_void_generator.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 78,
+   "labels": null,
+   "offsets": [
+    [
+     370,
+     375
+    ]
+   ],
+   "origin_px": [
+    436.95,
+    440.85
+   ],
+   "sequence": null,
+   "size": [
+    876,
+    881
+   ]
+  },
+  "ammo_waterBalloon": {
+   "files": [
+    "ammo_waterBalloon.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 60,
+   "labels": null,
+   "offsets": [
+    [
+     21,
+     0
+    ]
+   ],
+   "origin_px": [
+    72.15,
+    45.45
+   ],
+   "sequence": null,
+   "size": [
+    125,
+    94
+   ]
+  },
+  "ammo_waterHose": {
+   "files": [
+    "ammo_waterHose.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 52,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    25.5,
+    89.1
+   ],
+   "sequence": null,
+   "size": [
+    49,
+    89
+   ]
+  },
+  "ammo_whirl_wind": {
+   "files": [
+    "ammo_whirl_wind/001.png",
+    "ammo_whirl_wind/002.png",
+    "ammo_whirl_wind/003.png",
+    "ammo_whirl_wind/004.png"
+   ],
+   "frames_exported": 8,
+   "frames_total": 8,
+   "id": 17,
+   "labels": null,
+   "offsets": [
+    [
+     6,
+     25
+    ],
+    [
+     31,
+     25
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     6,
+     37
+    ]
+   ],
+   "origin_px": [
+    190.5,
+    282.9
+   ],
+   "sequence": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    3,
+    3
+   ],
+   "size": [
+    381,
+    282
+   ]
+  },
+  "molotovburning": {
+   "files": [
+    "molotovburning.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 35,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.0,
+    0.0
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "molotovshard": {
+   "files": [
+    "molotovshard.png"
+   ],
+   "frames_exported": 1,
+   "frames_total": 1,
+   "id": 34,
+   "labels": null,
+   "offsets": [
+    [
+     0,
+     0
+    ]
+   ],
+   "origin_px": [
+    0.15,
+    3.6
+   ],
+   "sequence": null,
+   "size": [
+    1,
+    1
+   ]
+  },
+  "orbital_bomb": {
+   "files": [
+    "orbital_bomb/001.png",
+    "orbital_bomb/002.png",
+    "orbital_bomb/003.png",
+    "orbital_bomb/004.png",
+    "orbital_bomb/005.png",
+    "orbital_bomb/006.png",
+    "orbital_bomb/007.png",
+    "orbital_bomb/008.png",
+    "orbital_bomb/009.png",
+    "orbital_bomb/010.png",
+    "orbital_bomb/011.png",
+    "orbital_bomb/012.png",
+    "orbital_bomb/013.png",
+    "orbital_bomb/014.png",
+    "orbital_bomb/015.png",
+    "orbital_bomb/016.png",
+    "orbital_bomb/017.png",
+    "orbital_bomb/018.png",
+    "orbital_bomb/019.png",
+    "orbital_bomb/020.png",
+    "orbital_bomb/021.png",
+    "orbital_bomb/022.png",
+    "orbital_bomb/023.png",
+    "orbital_bomb/024.png",
+    "orbital_bomb/025.png",
+    "orbital_bomb/026.png",
+    "orbital_bomb/027.png",
+    "orbital_bomb/028.png",
+    "orbital_bomb/029.png",
+    "orbital_bomb/030.png",
+    "orbital_bomb/031.png",
+    "orbital_bomb/032.png",
+    "orbital_bomb/033.png",
+    "orbital_bomb/034.png",
+    "orbital_bomb/035.png",
+    "orbital_bomb/036.png",
+    "orbital_bomb/037.png",
+    "orbital_bomb/038.png",
+    "orbital_bomb/039.png",
+    "orbital_bomb/040.png",
+    "orbital_bomb/041.png",
+    "orbital_bomb/042.png",
+    "orbital_bomb/043.png",
+    "orbital_bomb/044.png",
+    "orbital_bomb/045.png",
+    "orbital_bomb/046.png",
+    "orbital_bomb/047.png",
+    "orbital_bomb/048.png",
+    "orbital_bomb/049.png",
+    "orbital_bomb/050.png",
+    "orbital_bomb/051.png",
+    "orbital_bomb/052.png",
+    "orbital_bomb/053.png",
+    "orbital_bomb/054.png",
+    "orbital_bomb/055.png",
+    "orbital_bomb/056.png",
+    "orbital_bomb/057.png",
+    "orbital_bomb/058.png",
+    "orbital_bomb/059.png",
+    "orbital_bomb/060.png",
+    "orbital_bomb/061.png",
+    "orbital_bomb/062.png",
+    "orbital_bomb/063.png",
+    "orbital_bomb/064.png",
+    "orbital_bomb/065.png",
+    "orbital_bomb/066.png",
+    "orbital_bomb/067.png",
+    "orbital_bomb/068.png",
+    "orbital_bomb/069.png",
+    "orbital_bomb/070.png",
+    "orbital_bomb/071.png",
+    "orbital_bomb/072.png",
+    "orbital_bomb/073.png",
+    "orbital_bomb/074.png",
+    "orbital_bomb/075.png",
+    "orbital_bomb/076.png",
+    "orbital_bomb/077.png",
+    "orbital_bomb/078.png",
+    "orbital_bomb/079.png",
+    "orbital_bomb/080.png",
+    "orbital_bomb/081.png",
+    "orbital_bomb/082.png",
+    "orbital_bomb/083.png",
+    "orbital_bomb/084.png",
+    "orbital_bomb/085.png",
+    "orbital_bomb/086.png",
+    "orbital_bomb/087.png",
+    "orbital_bomb/088.png",
+    "orbital_bomb/089.png",
+    "orbital_bomb/090.png",
+    "orbital_bomb/091.png",
+    "orbital_bomb/092.png",
+    "orbital_bomb/093.png",
+    "orbital_bomb/094.png",
+    "orbital_bomb/095.png",
+    "orbital_bomb/096.png",
+    "orbital_bomb/097.png",
+    "orbital_bomb/098.png",
+    "orbital_bomb/099.png",
+    "orbital_bomb/100.png",
+    "orbital_bomb/101.png",
+    "orbital_bomb/102.png",
+    "orbital_bomb/103.png",
+    "orbital_bomb/104.png",
+    "orbital_bomb/105.png",
+    "orbital_bomb/106.png",
+    "orbital_bomb/107.png",
+    "orbital_bomb/108.png",
+    "orbital_bomb/109.png",
+    "orbital_bomb/110.png"
+   ],
+   "frames_exported": 113,
+   "frames_total": 113,
+   "id": 32,
+   "labels": {
+    "end": 113,
+    "trigger": 80
+   },
+   "offsets": [
+    [
+     0,
+     0
+    ],
+    [
+     243,
+     4933
+    ],
+    [
+     243,
+     4921
+    ],
+    [
+     243,
+     4915
+    ],
+    [
+     243,
+     4908
+    ],
+    [
+     243,
+     4904
+    ],
+    [
+     75,
+     4896
+    ],
+    [
+     93,
+     4891
+    ],
+    [
+     111,
+     4885
+    ],
+    [
+     43,
+     4878
+    ],
+    [
+     43,
+     4870
+    ],
+    [
+     43,
+     4863
+    ],
+    [
+     43,
+     4854
+    ],
+    [
+     42,
+     4845
+    ],
+    [
+     42,
+     4833
+    ],
+    [
+     42,
+     4823
+    ],
+    [
+     42,
+     4813
+    ],
+    [
+     42,
+     4802
+    ],
+    [
+     41,
+     4790
+    ],
+    [
+     41,
+     4778
+    ],
+    [
+     40,
+     4765
+    ],
+    [
+     40,
+     4751
+    ],
+    [
+     40,
+     4737
+    ],
+    [
+     41,
+     4723
+    ],
+    [
+     41,
+     4707
+    ],
+    [
+     42,
+     4692
+    ],
+    [
+     42,
+     4675
+    ],
+    [
+     89,
+     4658
+    ],
+    [
+     76,
+     4641
+    ],
+    [
+     63,
+     4623
+    ],
+    [
+     50,
+     4604
+    ],
+    [
+     38,
+     4587
+    ],
+    [
+     27,
+     4570
+    ],
+    [
+     16,
+     4553
+    ],
+    [
+     7,
+     4535
+    ],
+    [
+     0,
+     4517
+    ],
+    [
+     1,
+     4498
+    ],
+    [
+     18,
+     4479
+    ],
+    [
+     39,
+     4460
+    ],
+    [
+     60,
+     4440
+    ],
+    [
+     82,
+     4419
+    ],
+    [
+     103,
+     4398
+    ],
+    [
+     121,
+     4377
+    ],
+    [
+     121,
+     4357
+    ],
+    [
+     121,
+     4335
+    ],
+    [
+     120,
+     4313
+    ],
+    [
+     120,
+     4702
+    ],
+    [
+     120,
+     4698
+    ],
+    [
+     119,
+     4694
+    ],
+    [
+     119,
+     4690
+    ],
+    [
+     119,
+     4686
+    ],
+    [
+     118,
+     4680
+    ],
+    [
+     118,
+     4662
+    ],
+    [
+     118,
+     4642
+    ],
+    [
+     117,
+     4622
+    ],
+    [
+     117,
+     4602
+    ],
+    [
+     117,
+     4582
+    ],
+    [
+     117,
+     4563
+    ],
+    [
+     118,
+     4543
+    ],
+    [
+     108,
+     4523
+    ],
+    [
+     119,
+     4502
+    ],
+    [
+     119,
+     4480
+    ],
+    [
+     119,
+     4458
+    ],
+    [
+     120,
+     4435
+    ],
+    [
+     120,
+     4412
+    ],
+    [
+     121,
+     4388
+    ],
+    [
+     121,
+     4363
+    ],
+    [
+     122,
+     4341
+    ],
+    [
+     122,
+     4316
+    ],
+    [
+     160,
+     4553
+    ],
+    [
+     159,
+     4535
+    ],
+    [
+     160,
+     4517
+    ],
+    [
+     162,
+     4498
+    ],
+    [
+     94,
+     4479
+    ],
+    [
+     94,
+     4460
+    ],
+    [
+     93,
+     4440
+    ],
+    [
+     93,
+     4419
+    ],
+    [
+     93,
+     4398
+    ],
+    [
+     70,
+     4377
+    ],
+    [
+     92,
+     4357
+    ],
+    [
+     92,
+     4335
+    ],
+    [
+     91,
+     4313
+    ],
+    [
+     91,
+     4555
+    ],
+    [
+     91,
+     4553
+    ],
+    [
+     92,
+     4551
+    ],
+    [
+     93,
+     4549
+    ],
+    [
+     184,
+     7
+    ],
+    [
+     54,
+     255
+    ],
+    [
+     99,
+     468
+    ],
+    [
+     137,
+     703
+    ],
+    [
+     18,
+     941
+    ],
+    [
+     47,
+     1176
+    ],
+    [
+     66,
+     1427
+    ],
+    [
+     65,
+     1609
+    ],
+    [
+     64,
+     1722
+    ],
+    [
+     65,
+     1906
+    ],
+    [
+     76,
+     2094
+    ],
+    [
+     82,
+     2278
+    ],
+    [
+     112,
+     2518
+    ],
+    [
+     117,
+     2699
+    ],
+    [
+     134,
+     2825
+    ],
+    [
+     133,
+     3009
+    ],
+    [
+     110,
+     3196
+    ],
+    [
+     116,
+     3380
+    ],
+    [
+     130,
+     3608
+    ],
+    [
+     147,
+     3790
+    ],
+    [
+     162,
+     3928
+    ],
+    [
+     167,
+     4111
+    ],
+    [
+     145,
+     4298
+    ],
+    [
+     151,
+     4479
+    ]
+   ],
+   "origin_px": [
+    248.85,
+    4968.45
+   ],
+   "sequence": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109
+   ],
+   "size": [
+    493,
+    5038
+   ]
+  }
+ },
+ "units": "size = full render canvas (identical for every frame of a symbol), origin_px = registration point in that canvas, offsets[k] = where trimmed file k sits in the canvas (pivot inside file k = origin_px - offsets[k], y down), sequence = file index per timeline frame; children_frame1 matrices are Flash px at zoom 1 relative to the registration point (a, b, c, d, tx, ty)",
+ "zoom": 3
+}
