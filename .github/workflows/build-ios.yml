@@ -1,0 +1,84 @@
+# Builds the iOS Xcode project with GameCI on Linux, then (optionally) compiles it unsigned on a Mac runner
+# to prove it builds. To run it on an iPhone, download the Xcode project artifact and follow Docs/BUILD.md.
+# Needs the same Unity license secrets as build-android.yml.
+name: Build iOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      xcode_check:
+        description: "Also compile the Xcode project (unsigned) on macOS"
+        type: boolean
+        default: false
+  push:
+    tags: ["v*"]
+
+jobs:
+  xcode-project:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL || true
+
+      - name: Read Unity version
+        id: unity
+        run: echo "version=$(grep 'm_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-iOS-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: Library-iOS-
+
+      - name: Firebase config (optional secret FIREBASE_CONFIG_JSON, see Docs/FIREBASE.md)
+        env:
+          CFG: ${{ secrets.FIREBASE_CONFIG_JSON }}
+        run: if [ -n "$CFG" ]; then echo "$CFG" > Assets/CPW/Resources/firebase_config.json; fi
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ steps.unity.outputs.version }}
+          targetPlatform: iOS
+          buildMethod: BuildScript.BuildIOS
+          buildName: CrazyPenguinWars
+
+      - name: Zip Xcode project (keeps file permissions)
+        run: |
+          sudo chown -R "$(id -u)" build Builds 2>/dev/null || true
+          P=$(find build Builds -maxdepth 4 -name Unity-iPhone.xcodeproj 2>/dev/null | head -1)
+          [ -n "$P" ] || { echo "Xcode project not found"; exit 1; }
+          D=$(dirname "$P")
+          (cd "$(dirname "$D")" && zip -qry "$GITHUB_WORKSPACE/CrazyPenguinWars-iOS-Xcode.zip" "$(basename "$D")")
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CrazyPenguinWars-iOS-Xcode
+          path: CrazyPenguinWars-iOS-Xcode.zip
+          if-no-files-found: error
+
+  xcode-build-unsigned:
+    needs: xcode-project
+    if: ${{ github.event.inputs.xcode_check == 'true' }}
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: CrazyPenguinWars-iOS-Xcode
+      - name: Build unsigned
+        run: |
+          unzip -q CrazyPenguinWars-iOS-Xcode.zip
+          cd "$(dirname "$(find . -maxdepth 3 -name Unity-iPhone.xcodeproj | head -1)")"
+          xcodebuild -project Unity-iPhone.xcodeproj -scheme Unity-iPhone -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build | tail -50

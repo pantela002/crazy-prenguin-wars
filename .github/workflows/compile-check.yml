@@ -1,0 +1,29 @@
+# Compiles all C# outside Unity (Unity 2021.3 reference assemblies + uGUI from source).
+# Catches syntax and type errors on every push without needing a Unity license.
+name: Compile check
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Cache reference assemblies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cpw-refs
+          key: cpw-refs-${{ hashFiles('Tools/compile_check.sh') }}
+      - name: Compile
+        run: |
+          chmod +x Tools/compile_check.sh
+          Tools/compile_check.sh | tee compile.log
+          # The script prints compiler errors; fail the job if there are any.
+          if grep -q "error" compile.log; then exit 1; fi
