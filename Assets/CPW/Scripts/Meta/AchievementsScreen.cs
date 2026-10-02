@@ -25,6 +25,9 @@ namespace CPW
         void Fill()
         {
             UI.Clear(body);
+            // the challenges tab puts a layout group on body; the other tabs must not inherit it
+            var lg = body.GetComponent<LayoutGroup>();
+            if (lg) Object.DestroyImmediate(lg);
             if (tab == 0) Challenges();
             else if (tab == 1) Achievements();
             else Trophies();

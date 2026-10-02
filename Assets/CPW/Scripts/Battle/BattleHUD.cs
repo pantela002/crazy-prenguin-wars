@@ -12,6 +12,7 @@ namespace CPW
     /// one finger pans when not aiming. Keyboard (editor): A/D or arrows walk, W/Space jump, Enter fire,
     /// Q/E change weapon, Esc pause, mouse wheel zoom, right mouse pans.
     /// </summary>
+    [DefaultExecutionOrder(1000)]   // after BattleCamera, so tags/aim use this frame's camera
     public partial class BattleHUD : MonoBehaviour
     {
         BattleController c;
@@ -51,12 +52,16 @@ namespace CPW
         readonly Vector3[] lineBuf = new Vector3[256];
         float shownAimAngle = float.NaN, shownAimPower = float.NaN;
         string shownTrajItem;
+        Vector2 shownTrajOrigin;
         Vector2 pointTarget;
         bool pointSet;
 
         // input state
         readonly bool[] fingerOverUI = new bool[16];
         bool pinching, mouseOverUI, mouseDown;
+        PointerEventData uiPointer;
+        EventSystem uiPointerEs;
+        static readonly List<RaycastResult> uiHits = new List<RaycastResult>(8);
         float lastPinchDist;
         Vector2 lastPinchMid, lastMouse;
         int lastDir;
@@ -261,7 +266,7 @@ namespace CPW
             go.transform.SetParent(c.transform, false);
             var lr = go.AddComponent<LineRenderer>();
             lr.useWorldSpace = true;
-            lr.sharedMaterial = Mats.Transparent(col);
+            lr.sharedMaterial = Mats.Transparent(Color.white);   // tint comes from vertex colors only
             lr.startColor = lr.endColor = col;
             lr.startWidth = width;
             lr.endWidth = width * 0.6f;
@@ -404,7 +409,7 @@ namespace CPW
                 bool show = p.Alive && c.CurrentPhase != BattleController.Phase.Over;
                 if (t.go.activeSelf != show) t.go.SetActive(show);
                 if (!show) continue;
-                Vector2 sp = cam.WorldToScreen(p.Position + Vector2.up * lift);
+                Vector2 sp = cam.WorldToScreen((Vector2)p.transform.position + Vector2.up * lift);
                 t.rt.position = new Vector3(sp.x, sp.y, 0);
                 float f = Mathf.Clamp01(p.HP / Mathf.Max(1, p.MaxHP));
                 t.hp.fillAmount = f;
@@ -469,7 +474,7 @@ namespace CPW
                 {
                     var t = Input.GetTouch(i);
                     int id = Mathf.Clamp(t.fingerId, 0, fingerOverUI.Length - 1);
-                    if (t.phase == TouchPhase.Began) fingerOverUI[id] = es != null && es.IsPointerOverGameObject(t.fingerId);
+                    if (t.phase == TouchPhase.Began) fingerOverUI[id] = OverUI(es, t.position);
                     if (fingerOverUI[id]) continue;
                     if (n == 0) t0 = t; else if (n == 1) t1 = t;
                     n++;
@@ -499,13 +504,27 @@ namespace CPW
 
             // mouse (editor / desktop)
             Vector2 mp = Input.mousePosition;
-            if (Input.GetMouseButtonDown(0)) { mouseOverUI = es != null && es.IsPointerOverGameObject(); mouseDown = true; lastMouse = mp; }
+            if (Input.GetMouseButtonDown(0)) { mouseOverUI = OverUI(es, mp); mouseDown = true; lastMouse = mp; }
             if (Input.GetMouseButtonUp(0)) mouseDown = false;
             if (mouseDown && Input.GetMouseButton(0) && !mouseOverUI) OnePointer(mp, mp - lastMouse, Input.GetMouseButtonDown(0));
             if (Input.GetMouseButton(1) && !Input.GetMouseButtonDown(1)) cam.Pan(-(mp - lastMouse) * cam.WorldPerPixel);
             float wheel = Input.mouseScrollDelta.y;
             if (Mathf.Abs(wheel) > 0.01f) cam.ZoomBy(1f + wheel * 0.1f);
             lastMouse = mp;
+        }
+
+        /// <summary>Manual UI raycast: IsPointerOverGameObject is unreliable on TouchPhase.Began.</summary>
+        bool OverUI(EventSystem es, Vector2 screen)
+        {
+            if (es == null) return false;
+            if (uiPointer == null || uiPointerEs != es) { uiPointer = new PointerEventData(es); uiPointerEs = es; }
+            uiPointer.Reset();
+            uiPointer.position = screen;
+            uiHits.Clear();
+            es.RaycastAll(uiPointer, uiHits);
+            int n = uiHits.Count;
+            uiHits.Clear();
+            return n > 0;
         }
 
         void OnePointer(Vector2 screen, Vector2 delta, bool began)
@@ -521,7 +540,7 @@ namespace CPW
             if (a == null) return;
             var item = CurrentItem;
             var mode = WeaponSystem.Targeting(item);
-            Vector2 ps = cam.WorldToScreen(a.Position);
+            Vector2 ps = cam.WorldToScreen((Vector2)a.transform.position);
             Vector2 d = screen - ps;
             if (mode == TargetingMode.Point)
             {
@@ -585,8 +604,7 @@ namespace CPW
             bool show = a != null && CanAimNow && a.Aiming;
             if (!show) { if (traj.enabled || arrow.enabled || cross.enabled) HideAimVisuals(); return; }
             var mode = WeaponSystem.Targeting(item);
-            var mount = a.WeaponMount;
-            Vector2 origin = mount != null ? (Vector2)mount.position : a.Position;
+            Vector2 origin = BattleController.ShotOrigin(a);   // same clamped origin DoFire uses
             float rad = a.AimAngle * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
@@ -619,9 +637,9 @@ namespace CPW
 
             // trajectory guide (only recomputed when the aim changes)
             if (!ProfileService.P.showTrajectory) { traj.enabled = false; return; }
-            if (a.AimAngle != shownAimAngle || a.AimPower != shownAimPower || item != shownTrajItem)
+            if (a.AimAngle != shownAimAngle || a.AimPower != shownAimPower || item != shownTrajItem || origin != shownTrajOrigin)
             {
-                shownAimAngle = a.AimAngle; shownAimPower = a.AimPower; shownTrajItem = item;
+                shownAimAngle = a.AimAngle; shownAimPower = a.AimPower; shownTrajItem = item; shownTrajOrigin = origin;
                 bool ok = WeaponSystem.PredictTrajectory(item, origin, a.AimAngle, a.AimPower, trajPts);
                 int n = ok ? Mathf.Min(trajPts.Count, lineBuf.Length) : 0;
                 for (int i = 0; i < n; i++) lineBuf[i] = new Vector3(trajPts[i].x, trajPts[i].y, -1f);

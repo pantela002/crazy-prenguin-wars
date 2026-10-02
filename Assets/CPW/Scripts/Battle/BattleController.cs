@@ -12,7 +12,7 @@ namespace CPW
 
         public static void Begin(BattleConfig config, Action<BattleResult> onEnd)
         {
-            if (I != null) Destroy(I.gameObject);
+            if (I != null) { I.Cleanup(); Destroy(I.gameObject); }
             var go = new GameObject("Battle");
             I = go.AddComponent<BattleController>();
             I.Config = config;
@@ -29,7 +29,8 @@ namespace CPW
         {
             var cb = onEnd;
             onEnd = null;
-            I = null;
+            if (I == this) I = null;
+            Cleanup();
             Destroy(gameObject);
             cb?.Invoke(result);
         }

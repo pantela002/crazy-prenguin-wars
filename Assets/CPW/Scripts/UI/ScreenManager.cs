@@ -100,8 +100,10 @@ namespace CPW
             try { s.Build(); }
             catch (Exception e) { Debug.LogException(e); }
             if (!string.IsNullOrEmpty(s.Music)) AudioManager.Music(s.Music);
-            s.OnShow();
-            ScreenShown?.Invoke(s);
+            try { s.OnShow(); }
+            catch (Exception e) { Debug.LogException(e); }
+            // OnShow may already have opened another screen
+            if (Current == s) ScreenShown?.Invoke(s);
         }
 
         /// <summary>Rebuild the current screen in place (after a purchase etc.).</summary>
@@ -119,8 +121,11 @@ namespace CPW
                 // close the top popup first
                 if (UI.PopupLayer && UI.PopupLayer.childCount > 0)
                 {
-                    var top = UI.PopupLayer.GetChild(UI.PopupLayer.childCount - 1);
-                    if (top.name.StartsWith("Popup")) { Destroy(top.gameObject); return; }
+                    for (int i = UI.PopupLayer.childCount - 1; i >= 0; i--)
+                    {
+                        var c = UI.PopupLayer.GetChild(i);
+                        if (c.name.StartsWith("Popup")) { Destroy(c.gameObject); return; }
+                    }
                 }
                 if (Current != null) Back();
             }

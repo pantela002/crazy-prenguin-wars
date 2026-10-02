@@ -120,13 +120,14 @@ namespace CPW
                 if (!p.Slot.usesProfileInventory || p.PlayerIndex != net.LocalSlot) p.Ammo.FillCounts(st.ammo);
                 s.penguins.Add(st);
             }
-            if (Terrain != null) s.craters.AddRange(Terrain.History);
+            if (Terrain != null) { s.craters.AddRange(Terrain.History); Terrain.CaptureObjects(s.objects); }
             return s;
         }
 
         void ApplySnapshot(BattleSnapshot s)
         {
             if (Terrain != null && s.craters != null) Terrain.ApplyHistory(s.craters);
+            if (Terrain != null && s.objects != null) Terrain.ApplyObjects(s.objects);
             MatchTimeLeft = s.matchTimeLeft;
             foreach (var st in s.penguins)
             {

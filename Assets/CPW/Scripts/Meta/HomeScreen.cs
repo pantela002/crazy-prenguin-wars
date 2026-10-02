@@ -74,6 +74,8 @@ namespace CPW
     public class HomeScreen : UIScreen
     {
         static bool offeredThisRun, dailyShownThisRun;
+        /// <summary>Forget per-session flags (after a progress reset).</summary>
+        public static void ResetSession() { offeredThisRun = false; dailyShownThisRun = false; }
         Text tipText;
         float tipTimer;
         readonly List<KeyValuePair<Text, Func<int>>> badges = new List<KeyValuePair<Text, Func<int>>>();

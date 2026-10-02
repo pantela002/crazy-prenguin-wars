@@ -42,6 +42,7 @@ public static class BuildScript
     {
         CPW.EditorTools.ProjectSetup.Apply();
         EditorUserBuildSettings.buildAppBundle = appBundle;
+        ApplyVersionCode();
         ConfigureKeystore();
         string ext = appBundle ? ".aab" : ".apk";
         string path = OutputPath("Builds/Android/" + Name + "-" + PlayerSettings.bundleVersion + ext, ext);
@@ -62,6 +63,25 @@ public static class BuildScript
         PlayerSettings.Android.keystorePass = Environment.GetEnvironmentVariable("CPW_KEYSTORE_PASS") ?? "";
         PlayerSettings.Android.keyaliasName = Environment.GetEnvironmentVariable("CPW_KEY_ALIAS") ?? "";
         PlayerSettings.Android.keyaliasPass = Environment.GetEnvironmentVariable("CPW_KEY_PASS") ?? "";
+    }
+
+    /// <summary>
+    /// Google Play needs a higher versionCode for every upload: use GameCI's -androidVersionCode,
+    /// else the GitHub Actions run number, else keep the current value.
+    /// </summary>
+    static void ApplyVersionCode()
+    {
+        var args = Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length - 1; i++)
+        {
+            if (args[i] == "-androidVersionCode" && int.TryParse(args[i + 1], out var code) && code > 0)
+            {
+                PlayerSettings.Android.bundleVersionCode = code;
+                return;
+            }
+        }
+        if (int.TryParse(Environment.GetEnvironmentVariable("GITHUB_RUN_NUMBER"), out var run) && run > 0)
+            PlayerSettings.Android.bundleVersionCode = run;
     }
 
     /// <summary>Default path, unless the command line has -customBuildPath (GameCI) to use instead.</summary>

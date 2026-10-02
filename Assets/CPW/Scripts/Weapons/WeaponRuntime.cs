@@ -456,7 +456,25 @@ namespace CPW
                         if (t is IPenguin hp) hp.Heal(-dmg);
                         Fx.FloatText(tpos + Vector2.up * 1.2f, "+" + Mathf.RoundToInt(-dmg), new Color(0.4f, 1f, 0.4f), 0.8f);
                     }
-                    if (dv != Vector2.zero) Push(t, dv);
+                    if (dv != Vector2.zero)
+                    {
+                        // penguins: route shoves through TakeDamage(0) so LastTagger and the walk-material/settle
+                        // handling apply (a shove into the water must credit the attacker)
+                        if (t is IPenguin)
+                        {
+                            float mass = t.Body ? t.Body.mass : 1f;
+                            t.TakeDamage(new DamageInfo
+                            {
+                                amount = 0,
+                                type = x.DamageType,
+                                attacker = attacker,
+                                itemId = shot != null ? shot.ItemId : e.Id,
+                                point = pos,
+                                impulse = dv * mass
+                            });
+                        }
+                        else Push(t, dv);
+                    }
                 }
             }
 

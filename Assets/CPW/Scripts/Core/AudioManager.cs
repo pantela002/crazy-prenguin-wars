@@ -79,7 +79,7 @@ namespace CPW
             if (I == null || !ProfileService.P.sfxOn) return;
             var r = GameData.Get("Sound", soundId);
             if (r == null) return;
-            var clip = I.Clip(Pick(r.List("Loop")));
+            var clip = I.Clip(Pick(r.List("Loop"))) ?? I.Clip(Pick(r.List("Start")));
             if (clip == null) return;
             StopLoop(handle);
             var src = I.gameObject.AddComponent<AudioSource>();

@@ -1,0 +1,8 @@
+<!-- Keep classes the game finds by reflection (menus, online lobby, map previews) safe from code stripping. -->
+<linker>
+  <assembly fullname="Assembly-CSharp">
+    <type fullname="CPW.MetaRegistry" preserve="all"/>
+    <type fullname="CPW.OnlineLobbyScreen" preserve="all"/>
+    <type fullname="CPW.LevelPreview" preserve="all"/>
+  </assembly>
+</linker>

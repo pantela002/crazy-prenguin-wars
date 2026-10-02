@@ -108,7 +108,7 @@ namespace CPW
         public static void OpenOnline()
         {
             var t = Type.GetType("CPW.OnlineLobbyScreen");
-            if (!Online.Service.Available || t == null)
+            if (t == null || Online.Service is OfflineService)
             {
                 UI.Message("Online", "Online battles need a Firebase project.\nConnect one (see Docs/FIREBASE.md) and restart the game.\n\nStatus: " + Online.Service.Status);
                 return;
@@ -178,6 +178,8 @@ namespace CPW
         class Seat { public string name; public int type; } // type: 0 human, 1 AI easy, 2 AI normal, 3 AI hard
         static readonly string[] TypeNames = { "Human", "AI Easy", "AI Normal", "AI Hard" };
         static List<Seat> seats;
+        /// <summary>Forget the remembered seats (after a progress reset).</summary>
+        public static void ClearRemembered() => seats = null;
         static string levelId = "";
         static int matchTime = 240, turnTime = 20, winScore = 200;
         static bool powerUps = true;

@@ -100,6 +100,9 @@ namespace CPW
             {
                 Debug.LogException(e);
                 I.InBattle = false;
+                // BattleStarted was already raised: pair it with an aborted BattleEnded
+                try { BattleEvents.RaiseBattleEnded(new BattleResult { config = config, aborted = true }); }
+                catch (Exception e2) { Debug.LogException(e2); }
                 GoHome();
                 UI.Message("Oops", "The battle could not start.\n" + e.Message);
             }
@@ -111,7 +114,8 @@ namespace CPW
             I.MenuCamera.gameObject.SetActive(true);
             BattleEvents.RaiseBattleEnded(result);
             if (result == null || result.aborted) { GoHome(); return; }
-            MetaHooks.ApplyRewards(result);
+            try { MetaHooks.ApplyRewards(result); }
+            catch (Exception e) { Debug.LogException(e); }
             ScreenManager.Reset(() => MetaHooks.ResultsScreen(result));
         }
 

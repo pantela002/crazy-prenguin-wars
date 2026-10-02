@@ -130,8 +130,8 @@ namespace CPW
                 levelText.text = P.level.ToString();
                 int next = GameData.XpForLevel(P.level + 1);
                 xpText.text = next == int.MaxValue ? "MAX" : P.xp.ToString("N0") + " / " + next.ToString("N0");
-                nameText.text = P.displayName;
             }
+            nameText.text = P.displayName;
             if (vip != lastVip || snap)
             {
                 lastVip = vip;

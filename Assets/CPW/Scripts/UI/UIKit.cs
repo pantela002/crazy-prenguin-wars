@@ -174,14 +174,22 @@ namespace CPW
 
         public static LayoutElement Layout(Component c, float prefW = -1, float prefH = -1, float flexW = -1, float flexH = -1)
         {
-            var le = c.GetComponent<LayoutElement>() ?? c.gameObject.AddComponent<LayoutElement>();
+            if (!c.TryGetComponent<LayoutElement>(out var le)) le = c.gameObject.AddComponent<LayoutElement>();
             le.preferredWidth = prefW; le.preferredHeight = prefH; le.flexibleWidth = flexW; le.flexibleHeight = flexH;
             return le;
         }
 
+        /// <summary>Only one LayoutGroup is allowed per object; replace any existing one so builders can be re-run.</summary>
+        static T NewLayout<T>(RectTransform rt) where T : LayoutGroup
+        {
+            var old = rt.GetComponent<LayoutGroup>();
+            if (old) UnityEngine.Object.DestroyImmediate(old);
+            return rt.gameObject.AddComponent<T>();
+        }
+
         public static HorizontalLayoutGroup HBox(RectTransform rt, float spacing = 16, TextAnchor align = TextAnchor.MiddleCenter, int pad = 0, bool expandW = false)
         {
-            var g = rt.gameObject.AddComponent<HorizontalLayoutGroup>();
+            var g = NewLayout<HorizontalLayoutGroup>(rt);
             g.spacing = spacing; g.childAlignment = align; g.padding = new RectOffset(pad, pad, pad, pad);
             g.childControlWidth = true; g.childControlHeight = true; g.childForceExpandWidth = expandW; g.childForceExpandHeight = false;
             return g;
@@ -189,7 +197,7 @@ namespace CPW
 
         public static VerticalLayoutGroup VBox(RectTransform rt, float spacing = 16, TextAnchor align = TextAnchor.UpperCenter, int pad = 0, bool expandH = false)
         {
-            var g = rt.gameObject.AddComponent<VerticalLayoutGroup>();
+            var g = NewLayout<VerticalLayoutGroup>(rt);
             g.spacing = spacing; g.childAlignment = align; g.padding = new RectOffset(pad, pad, pad, pad);
             g.childControlWidth = true; g.childControlHeight = true; g.childForceExpandWidth = true; g.childForceExpandHeight = expandH;
             return g;
@@ -197,7 +205,7 @@ namespace CPW
 
         public static GridLayoutGroup Grid(RectTransform rt, Vector2 cell, Vector2 spacing, int pad = 0)
         {
-            var g = rt.gameObject.AddComponent<GridLayoutGroup>();
+            var g = NewLayout<GridLayoutGroup>(rt);
             g.cellSize = cell; g.spacing = spacing; g.padding = new RectOffset(pad, pad, pad, pad);
             g.childAlignment = TextAnchor.UpperCenter;
             return g;
@@ -312,7 +320,7 @@ namespace CPW
             return b;
         }
 
-        public static void Click() => AudioManager.SfxPath("music/menu/click.mp3", 0.8f);
+        public static void Click() => AudioManager.Sfx("ButtonClick", 0.8f);
 
         public static ScrollRect ScrollList(Transform parent, out RectTransform content, bool vertical = true, float spacing = 16, int pad = 12)
         {

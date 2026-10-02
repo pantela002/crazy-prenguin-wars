@@ -118,6 +118,7 @@ namespace CPW
                     var e = Deployable.Synthetic("Scroll", Affects.Enemy | Affects.Object | Affects.Weapon, null, "Scroll");
                     EmissionEngine.Run(e, new Src { Pos = pos, HasDir = true, Dir = Vector2.up }, Shot.For(p, id));
                     Fx.Explosion(pos, 3f, "Wind");
+                    AudioManager.Sfx(id);
                     return true;
                 }
                 case "Burrito":
@@ -142,6 +143,7 @@ namespace CPW
                             p.TakeDamage(new DamageInfo { amount = 100000f, type = "Normal", attacker = p.PlayerIndex, itemId = id, point = p.Position, impulse = Vector2.zero });
                     });
                     rt.Track(shot);
+                    AudioManager.Sfx(id);
                     return true;
                 }
                 case "Caltrops":
@@ -206,8 +208,11 @@ namespace CPW
             if (a.Stats == null && a.Timer > 1f && a.Id.EndsWith("Sushi") && a.P?.Stats != null) a.P.Stats.attackMultiplier /= a.Timer;
             if (a.Id == "Umbrella") a.P?.Stats?.flags.Remove("NoFall");
             if (a.Visual) Object.Destroy(a.Visual);
-            if (a.Id == "Shield" && a.P != null) Fx.Sparks(a.P.Position, new Color(0.5f, 0.85f, 1f), 18);
+            if (a.Id == "Shield" && Live(a.P)) Fx.Sparks(a.P.Position, new Color(0.5f, 0.85f, 1f), 18);
         }
+
+        /// <summary>Not null, not a destroyed Unity object (battle teardown) and alive.</summary>
+        static bool Live(IPenguin p) => p is Object o ? o != null && p.Alive : p != null && p.Alive;
 
         /// <summary>The shield booster blocks the next damaging hit completely. True = hit absorbed.</summary>
         public static bool Absorb(IDamageable t)
@@ -246,7 +251,7 @@ namespace CPW
             for (int i = active.Count - 1; i >= 0; i--)
             {
                 var a = active[i];
-                if (!a.Ended && (a.P == null || !a.P.Alive || !a.P.gameObject)) End(a);
+                if (!a.Ended && !Live(a.P)) End(a);
                 if (a.Ended) { active.RemoveAt(i); continue; }
                 var pos = a.P.Position;
                 if (a.Visual) a.Visual.transform.position = new Vector3(pos.x, pos.y, 0) + a.VisualOffset;

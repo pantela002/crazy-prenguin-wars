@@ -97,7 +97,7 @@ namespace CPW
                     break;
 
                 case Step.Search:
-                    int budget = 16;
+                    int budget = 6;   // simulations per frame (mobile budget)
                     while (budget-- > 0 && step == Step.Search) SearchStep();
                     if (hurry && step == Step.Search) FinishSearch();
                     break;
@@ -237,11 +237,7 @@ namespace CPW
             step = Step.Search;
         }
 
-        Vector2 Origin()
-        {
-            var m = me.WeaponMount;
-            return m != null ? (Vector2)m.position : me.Position;
-        }
+        Vector2 Origin() => BattleController.ShotOrigin(me);   // same clamped origin DoFire uses
 
         string ChooseWeapon()
         {
@@ -315,16 +311,18 @@ namespace CPW
             return best;
         }
 
-        /// <summary>Predicted impact point of a shot (WeaponSystem.PredictImpact, falling back to the last trajectory point).</summary>
+        /// <summary>Predicted impact point of a shot. One simulation per call: with a buffer the path is simulated
+        /// (WeaponSystem.PredictTrajectory) and its last point is the impact; without one only PredictImpact runs.</summary>
         public static bool AimPredict(string item, Vector2 origin, float angle, float power, List<Vector2> buffer, out Vector2 impact)
         {
             impact = origin;
-            // trajectory points are still needed by callers that score the whole path
-            WeaponSystem.PredictTrajectory(item, origin, angle, power, buffer);
-            if (WeaponSystem.PredictImpact(item, origin, angle, power, out impact, out _)) return true;
-            if (buffer.Count == 0) return false;
-            impact = buffer[buffer.Count - 1];
-            return true;
+            if (buffer != null && WeaponSystem.PredictTrajectory(item, origin, angle, power, buffer) && buffer.Count > 0)
+            {
+                impact = buffer[buffer.Count - 1];
+                return true;
+            }
+            // no path (activation items, no buffer): impact only
+            return WeaponSystem.PredictImpact(item, origin, angle, power, out impact, out _);
         }
 
         void FinishSearch()

@@ -67,6 +67,9 @@ namespace CPW
                     UI.Confirm("Really?", "Last chance! Start over as a brand new penguin?", () =>
                     {
                         ProfileService.ResetAll();
+                        CraftingScreen.ClearPending();
+                        HomeScreen.ResetSession();
+                        CustomGameScreen.ClearRemembered();
                         GameManager.GoHome();
                     }, null, "Reset", "Keep"), null, "Yes", "No"), UI.ButtonStyle.Danger, 36);
             UI.Layout(reset, -1, 90);

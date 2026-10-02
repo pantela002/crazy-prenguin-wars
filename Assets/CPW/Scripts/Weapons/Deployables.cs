@@ -163,8 +163,15 @@ namespace CPW
             if (removed || lamp == null) return;
             blink += Time.deltaTime * (triggered ? 14f : armTimer > 0 ? 0f : 2.5f);
             bool on = armTimer <= 0 && Mathf.Sin(blink * Mathf.PI) > 0;
-            lamp.sharedMaterial = Mats.Unlit(on ? new Color(1f, 0.15f, 0.1f) : new Color(0.3f, 0.1f, 0.1f));
+            if (on == lampShown && lampSet) return;   // assign only on change (Mats lookup allocates a key string)
+            lampShown = on; lampSet = true;
+            if (!lampOnMat) lampOnMat = Mats.Unlit(new Color(1f, 0.15f, 0.1f));
+            if (!lampOffMat) lampOffMat = Mats.Unlit(new Color(0.3f, 0.1f, 0.1f));
+            lamp.sharedMaterial = on ? lampOnMat : lampOffMat;
         }
+
+        static Material lampOnMat, lampOffMat;
+        bool lampShown, lampSet;
 
         static float Sq(float x) => x * x;
 

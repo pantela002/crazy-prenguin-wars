@@ -501,7 +501,14 @@ namespace CPW
             float r = BattleRules.Radius;
             int n = Physics2D.OverlapCircle(pos + Vector2.down * (r * 0.55f), r * 0.6f, groundFilter, overlap);
             bool g = false;
-            for (int i = 0; i < n; i++) if (overlap[i] != col && !overlap[i].isTrigger) { g = true; break; }
+            for (int i = 0; i < n; i++)
+            {
+                var o = overlap[i];
+                if (o == col || o.isTrigger) continue;
+                // missiles and mines are not ground (no jumping mid-air off your own projectile)
+                if (o.GetComponentInParent<Projectile>() != null || o.GetComponentInParent<Deployable>() != null) continue;
+                g = true; break;
+            }
             Grounded = g && rb.Vel().y < 4f;
 
             if (!alive) return;

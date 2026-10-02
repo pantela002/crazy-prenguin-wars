@@ -18,6 +18,8 @@ namespace CPW
         readonly int[] lastSeconds = new int[CraftingCatalog.Labs];
         // ingredients placed in each idle lab (not yet started)
         static readonly List<string>[] pending = { new List<string>(), new List<string>() };
+        /// <summary>Drop queued ingredients (after a progress reset).</summary>
+        public static void ClearPending() { foreach (var l in pending) l.Clear(); }
         int selectedLab;
 
         protected override void BuildContent()

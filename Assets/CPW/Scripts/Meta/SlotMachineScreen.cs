@@ -363,6 +363,16 @@ namespace CPW
             }
         }
 
+        /// <summary>Leaving mid-spin (top bar buttons) still pays out the spin that was already paid for.</summary>
+        public override void OnHide()
+        {
+            AudioManager.StopLoop("slot");
+            if (!spinning) return;
+            spinning = false;
+            foreach (var w in SlotMachineLogic.Evaluate(stops)) SlotMachineLogic.Give(w.win);
+            ProfileService.Save();
+        }
+
         void Finish()
         {
             spinning = false;
@@ -395,7 +405,6 @@ namespace CPW
             UpdateSpinButton();
         }
 
-        public override void OnHide() => AudioManager.StopLoop("slot");
         public override bool OnBack() => spinning;   // finish the spin first
     }
 }

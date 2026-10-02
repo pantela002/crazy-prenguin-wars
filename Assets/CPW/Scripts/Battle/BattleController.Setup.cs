@@ -594,6 +594,18 @@ namespace CPW
             return true;
         }
 
+        /// <summary>Weapon mount position, pulled back toward the penguin if the mount sits inside terrain
+        /// (so shots never start inside the ground). Used by firing (human, AI, network) and aim prediction.</summary>
+        public static Vector2 ShotOrigin(Penguin a)
+        {
+            var mount = a.WeaponMount;
+            Vector2 penguinPos = a.Position;
+            Vector2 origin = mount != null ? (Vector2)mount.position : penguinPos;
+            if (BattleTerrain.I != null && BattleTerrain.I.Raycast(penguinPos, origin, out var hit))
+                origin = penguinPos + (hit - penguinPos) * 0.9f;
+            return origin;
+        }
+
         void DoFire(Penguin a, string item, float angle, float power, Vector2 target)
         {
             if (a.HeldItem != item) a.HoldItem(item);
@@ -603,8 +615,7 @@ namespace CPW
             Fired = true;
             // original practice simulation: after firing the turn has TimeAfterFiring left to retreat
             TurnTimeLeft = BattleRules.TimeAfterFiring;
-            var mount = a.WeaponMount;
-            Vector2 origin = mount != null ? (Vector2)mount.position : a.Position;
+            Vector2 origin = ShotOrigin(a);
             CurrentShot = WeaponSystem.Fire(a, item, origin, angle, power, target);
             Cam.FollowShot(CurrentShot);
             BattleEvents.RaiseWeaponFired(a.PlayerIndex, item);
@@ -618,8 +629,7 @@ namespace CPW
             Active.Ammo.Consume(itemId);
             BoosterUsedThisTurn = true;
             Record("booster", s: itemId);
-            BattleEvents.RaiseBoosterUsed(ActiveIndex, itemId);
-            AudioManager.Sfx(itemId);
+            BattleEvents.RaiseBoosterUsed(ActiveIndex, itemId);   // Boosters.Use plays the sound
             Tutorial?.OnBooster();
             return true;
         }
@@ -857,8 +867,13 @@ namespace CPW
             if (I == this) I = null;
         }
 
+        bool cleaned;
+
+        /// <summary>Idempotent: runs synchronously from Finish/Begin, and again (no-op) from OnDestroy.</summary>
         void Cleanup()
         {
+            if (cleaned) return;
+            cleaned = true;
             Time.timeScale = 1f;
             if (prevGravity != Vector2.zero) Physics2D.gravity = prevGravity;
             if (net != null)
