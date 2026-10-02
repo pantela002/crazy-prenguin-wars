@@ -263,5 +263,147 @@ namespace CPW
             var P = ProfileService.P;
             return !string.IsNullOrEmpty(id) && (P.wornHead == id || P.wornChest == id || P.wornFeet == id || P.wornTrophy == id);
         }
+
+        /// <summary>What the profile wears in a slot ("" when nothing).</summary>
+        public static string Worn(ClothesSlot slot)
+        {
+            var P = ProfileService.P;
+            switch (slot)
+            {
+                case ClothesSlot.Head: return P.wornHead ?? "";
+                case ClothesSlot.Chest: return P.wornChest ?? "";
+                case ClothesSlot.Feet: return P.wornFeet ?? "";
+                default: return P.wornTrophy ?? "";
+            }
+        }
+
+        static void SetWorn(ClothesSlot slot, string id)
+        {
+            var P = ProfileService.P;
+            id = id ?? "";
+            switch (slot)
+            {
+                case ClothesSlot.Head: P.wornHead = id; break;
+                case ClothesSlot.Chest: P.wornChest = id; break;
+                case ClothesSlot.Feet: P.wornFeet = id; break;
+                default: P.wornTrophy = id; break;
+            }
+        }
+
+        /// <summary>Put on an owned item (replacing whatever is in its slot). Saves.</summary>
+        public static void Wear(ClothesDef d)
+        {
+            if (d == null || !Progression.OwnsClothes(d.id)) return;
+            SetWorn(d.slot, d.id);
+            ProfileService.Save();
+            AudioManager.Sfx("Clothes_2");
+        }
+
+        /// <summary>Put on every owned piece of a list (a whole set) with one save.</summary>
+        public static void WearAll(List<ClothesDef> pieces)
+        {
+            if (pieces == null) return;
+            foreach (var d in pieces) if (d != null && Progression.OwnsClothes(d.id)) SetWorn(d.slot, d.id);
+            ProfileService.Save();
+            AudioManager.Sfx("Clothes_2");
+        }
+
+        /// <summary>Empty one or more slots (one save).</summary>
+        public static void TakeOff(params ClothesSlot[] slots)
+        {
+            bool any = false;
+            foreach (var s in slots) if (!string.IsNullOrEmpty(Worn(s))) { SetWorn(s, ""); any = true; }
+            if (!any) return;
+            ProfileService.Save();
+            AudioManager.Sfx("Clothes_2");
+        }
+
+        /// <summary>Back to the bare penguin: nothing on head, body, feet or medal slot. Saves.</summary>
+        public static void RemoveAll()
+        {
+            foreach (ClothesSlot s in System.Enum.GetValues(typeof(ClothesSlot))) SetWorn(s, "");
+            ProfileService.Save();
+            AudioManager.Sfx("Clothes_2");
+        }
+
+        public static bool WearingAnything()
+        {
+            foreach (ClothesSlot s in System.Enum.GetValues(typeof(ClothesSlot))) if (!string.IsNullOrEmpty(Worn(s))) return true;
+            return false;
+        }
+
+        // ---------- sets ----------
+        public static string SlotName(ClothesSlot s) => s == ClothesSlot.Head ? "Hat" : s == ClothesSlot.Chest ? "Outfit" : s == ClothesSlot.Feet ? "Shoes" : "Medal";
+
+        /// <summary>A real outfit set (head + chest + feet sharing a set id), not a single piece or trophy.</summary>
+        public static bool IsSetPiece(ClothesDef d) => d != null && d.slot != ClothesSlot.Trophy && d.setId != d.id;
+
+        /// <summary>Set ids in shop order (cheapest first), only sets with at least two pieces in the data.</summary>
+        public static List<string> SetIds()
+        {
+            Build();
+            var res = new List<string>();
+            foreach (var d in all)
+                if (IsSetPiece(d) && !res.Contains(d.setId) && SetPieces(d.setId).Count >= 2) res.Add(d.setId);
+            return res;
+        }
+
+        /// <summary>The pieces of a set ordered head, chest, feet.</summary>
+        public static List<ClothesDef> SetPieces(string setId)
+        {
+            Build();
+            var res = new List<ClothesDef>();
+            if (string.IsNullOrEmpty(setId)) return res;
+            foreach (var d in all) if (IsSetPiece(d) && d.setId == setId) res.Add(d);
+            res.Sort((a, b) => a.slot.CompareTo(b.slot));
+            return res;
+        }
+
+        /// <summary>
+        /// Set id when head, chest and feet all come from the same set (the original WornItems.hasSet check), else null.
+        /// The original set bonus stats (SetReference.StatBonuses) are not in the surviving config, so a complete
+        /// set is shown in the wardrobe but adds no extra stats.
+        /// </summary>
+        public static string FullSet(string head, string chest, string feet)
+        {
+            var h = Get(head);
+            var c = Get(chest);
+            var f = Get(feet);
+            if (!IsSetPiece(h) || !IsSetPiece(c) || !IsSetPiece(f)) return null;
+            return h.setId == c.setId && c.setId == f.setId ? h.setId : null;
+        }
+
+        public static string SetName(string setId)
+        {
+            var p = SetPieces(setId);
+            return p.Count > 0 ? p[0].setName : Loc.Prettify(setId);
+        }
+
+        /// <summary>
+        /// Buy several pieces at once (missing pieces of a set) with one payment. Every piece must be buyable
+        /// (unlocked, not VIP-only for non-VIPs); otherwise nothing is bought and the reason is shown.
+        /// </summary>
+        public static bool BuyMany(List<ClothesDef> pieces)
+        {
+            if (pieces == null) return false;
+            int coins = 0, cash = 0;
+            var toBuy = new List<ClothesDef>();
+            foreach (var d in pieces)
+            {
+                if (d == null || d.slot == ClothesSlot.Trophy || Progression.OwnsClothes(d.id)) continue;
+                if (d.vipOnly && !Progression.IsVip) { UI.Message("VIP only", "This outfit is only for VIP members.", () => ScreenManager.Show(() => new VipScreen())); return false; }
+                if (!IsUnlocked(d)) { UI.Toast(DisplayName(d.id) + ": reach level " + d.level + " or unlock it with fish."); return false; }
+                coins += d.coins; cash += d.cash;
+                toBuy.Add(d);
+            }
+            if (toBuy.Count == 0) return false;
+            if (!Progression.Spend(coins, cash)) { AudioManager.Sfx("Nomoney"); Progression.NotEnough(cash > 0); return false; }
+            foreach (var d in toBuy) Progression.GiveClothes(d.id);
+            ChallengeTracker.Report("shopBuys", toBuy.Count);
+            ProfileService.Save();
+            AudioManager.Sfx("Clothes_1");
+            UI.Toast(toBuy.Count == 1 ? DisplayName(toBuy[0].id) + " is yours!" : toBuy[0].setName + " set is yours!", Theme.Good);
+            return true;
+        }
     }
 }

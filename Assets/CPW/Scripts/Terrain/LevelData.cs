@@ -12,6 +12,14 @@ namespace CPW
     public class LevelData
     {
         public string id, name, theme;               // theme: Forest, Winter, Mountain, Desert
+        /// <summary>
+        /// Optional finer look id for remake-only levels ("style" key: Volcano, IceCave). The art code may style a level
+        /// by it; anything that doesn't know it falls back to <see cref="theme"/>. Equals theme when the file has none.
+        /// </summary>
+        public string style;
+        /// <summary>What fills the level below waterY: "Water", "Lava" (Mountain levels, burns props) or "Mud" (Desert/OilRig).</summary>
+        public string liquid;
+        public bool IsLava => liquid == "Lava";
         public string resourcePath;                   // e.g. "Data/Levels/forest_01_easy"
         public float widthPx, heightPx;
         public Vector2 size;                          // world units
@@ -96,6 +104,7 @@ namespace CPW
         /// </summary>
         public static LevelData Load(string levelIdOrPath)
         {
+            ExtraLevels.Ensure();
             string path = ResolvePath(levelIdOrPath);
             var ta = string.IsNullOrEmpty(path) ? null : Resources.Load<TextAsset>(path);
             if (ta == null)
@@ -119,6 +128,7 @@ namespace CPW
         public static string ResolvePath(string levelIdOrPath)
         {
             if (string.IsNullOrEmpty(levelIdOrPath)) return null;
+            ExtraLevels.Ensure();
             var rec = GameData.Get("Level", levelIdOrPath) ?? GameData.Get("PracticeLevel", levelIdOrPath);
             if (rec != null && rec.Has("LevelFile")) return StripExt(rec.Str("LevelFile"));
             if (levelIdOrPath.Contains("/")) return StripExt(levelIdOrPath);
@@ -137,6 +147,7 @@ namespace CPW
             var d = new LevelData();
             d.name = Str(root, "level_name", "level");
             d.theme = Str(root, "theme", "Forest");
+            d.style = Str(root, "style", d.theme);
             d.widthPx = Num(root, "width", 1600);
             d.heightPx = Num(root, "height", 1200);
             float H = d.heightPx;
@@ -151,6 +162,7 @@ namespace CPW
             d.waterAngularDrag = Num(root, "water_angulardrag", 1);
             d.waterVelocity = new Vector2(Units.W(Num(root, "water_velocity_x", 0)), -Units.W(Num(root, "water_velocity_y", 0)));
             d.waterTheme = Str(root, "water_theme", "NotDefined");
+            d.liquid = LiquidFor(Str(root, "liquid", null) ?? d.waterTheme, d.theme);
             d.powerUpPercentage = Num(root, "power_up_percentage", 0);
 
             foreach (var sp in Objects(root, "spawn_points"))
@@ -269,11 +281,26 @@ namespace CPW
             d.polygons.Add(poly);
         }
 
+        /// <summary>Liquid of a level: an explicit Water/Lava/Mud id, else the theme's (Mountain = lava sea, Desert/OilRig = mud).</summary>
+        public static string LiquidFor(string explicitLiquid, string theme)
+        {
+            switch (explicitLiquid)
+            {
+                case "Water": case "Lava": case "Mud": return explicitLiquid;
+            }
+            switch (theme)
+            {
+                case "Mountain": case "Volcano": return "Lava";
+                case "Desert": case "OilRig": return "Mud";
+                default: return "Water";
+            }
+        }
+
         static float OffsetMul(int offset) => Mathf.Clamp(1f + offset / (255f * 1.1f), 0.3f, 1.6f);
 
         static LevelData Fallback(string id)
         {
-            var d = new LevelData { id = id, name = id, theme = "Forest", widthPx = 1600, heightPx = 1200, size = new Vector2(80, 60), waterY = 5, zoomSide = "width" };
+            var d = new LevelData { id = id, name = id, theme = "Forest", style = "Forest", liquid = "Water", widthPx = 1600, heightPx = 1200, size = new Vector2(80, 60), waterY = 5, zoomSide = "width" };
             d.waterDensity = 32; d.waterLinearDrag = 15; d.waterAngularDrag = 15;
             var ground = new TerrainPolygon { id = "fallback", materialTheme = "Wood", grassTheme = "Wood" };
             ground.points.AddRange(new[] { new Vector2(8, 3), new Vector2(72, 3), new Vector2(70, 22), new Vector2(55, 26), new Vector2(40, 24), new Vector2(25, 27), new Vector2(10, 22) });
@@ -292,6 +319,7 @@ namespace CPW
         /// <summary>All battle levels (Level section ids), in config order.</summary>
         public static List<string> AllLevelIds()
         {
+            ExtraLevels.Ensure();
             var res = new List<string>();
             foreach (var r in GameData.Section("Level").Values) if (r.Has("LevelFile")) res.Add(r.Id);
             return res;
@@ -300,6 +328,7 @@ namespace CPW
         /// <summary>Level ids that can be played at a player level (MinLevel ≤ level ≤ MaxLevel), like the original "Play Now".</summary>
         public static List<string> PlayableLevels(int playerLevel)
         {
+            ExtraLevels.Ensure();
             var res = new List<string>();
             foreach (var r in GameData.Section("Level").Values)
             {
@@ -313,6 +342,7 @@ namespace CPW
         /// <summary>Level ids unlocked at a player level (MinRequired, or MinLevel, ≤ level) — for custom games / the map picker.</summary>
         public static List<string> UnlockedLevels(int playerLevel)
         {
+            ExtraLevels.Ensure();
             var res = new List<string>();
             foreach (var r in GameData.Section("Level").Values)
             {

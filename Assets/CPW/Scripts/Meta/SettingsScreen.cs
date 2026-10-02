@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CPW
 {
-    /// <summary>Settings: audio, graphics quality, trajectory guide, player name, online status, reset and credits.</summary>
+    /// <summary>Settings: audio, graphics quality, trajectory guide, map unlock for testing, player name, online status, reset and credits.</summary>
     public class SettingsScreen : MetaScreen
     {
         protected override string Title => Loc.T("GAME_SETTINGS_HEADER");
@@ -18,17 +18,19 @@ namespace CPW
             // ---- left: audio + gameplay ----
             var left = MetaUI.CardPanel(Content);
             UI.Anchor(left.rectTransform, 0, 0, 0.49f, 1);
-            var lv = UI.VBox(left.rectTransform, 14, TextAnchor.UpperLeft, 30);
+            var lv = UI.VBox(left.rectTransform, 8, TextAnchor.UpperLeft, 22);
             lv.childForceExpandHeight = false;
             Header(left.rectTransform, "Audio");
-            UI.Layout(UI.Toggle(left.transform, "Music", P.musicOn, b => { P.musicOn = b; ApplyAudio(); }), -1, 70);
+            UI.Layout(UI.Toggle(left.transform, "Music", P.musicOn, b => { P.musicOn = b; ApplyAudio(); }), -1, 62);
             Slider(left.rectTransform, "Music volume", P.musicVolume, v => { P.musicVolume = v; ApplyAudio(false); });
-            UI.Layout(UI.Toggle(left.transform, "Sound effects", P.sfxOn, b => { P.sfxOn = b; ApplyAudio(); }), -1, 70);
+            UI.Layout(UI.Toggle(left.transform, "Sound effects", P.sfxOn, b => { P.sfxOn = b; ApplyAudio(); }), -1, 62);
             Slider(left.rectTransform, "Effects volume", P.sfxVolume, v => { P.sfxVolume = v; ApplyAudio(false); });
             Header(left.rectTransform, "Gameplay");
-            UI.Layout(UI.Toggle(left.transform, "Aiming trajectory guide", P.showTrajectory, b => { P.showTrajectory = b; ProfileService.Save(); }), -1, 70);
+            UI.Layout(UI.Toggle(left.transform, "Aiming trajectory guide", P.showTrajectory, b => { P.showTrajectory = b; ProfileService.Save(); }), -1, 62);
+            // testing: every map pickable in Custom / Practice / online hosting (MapLocks, saved in PlayerPrefs)
+            UI.Layout(UI.Toggle(left.transform, "Unlock all maps (testing)", MapLocks.UnlockAll, b => MapLocks.UnlockAll = b), -1, 62);
             var qrow = UI.Rect(left.transform, "Quality");
-            UI.Layout(qrow, -1, 90);
+            UI.Layout(qrow, -1, 80);
             var ql = UI.Label(qrow, "Graphics", 36, Theme.Text, TextAnchor.MiddleLeft);
             UI.Anchor(ql.rectTransform, 0, 0, 0.3f, 1);
             var qt = UI.Rect(qrow, "Tabs");
@@ -41,7 +43,7 @@ namespace CPW
                 MetaUI.SetTabSelected(qualityTabs, i);
             }, 32);
             var tut = UI.Button(left.transform, "Replay tutorial", () => BattleFactory.Launch(BattleFactory.Tutorial()), UI.ButtonStyle.Secondary, 36);
-            UI.Layout(tut, -1, 90);
+            UI.Layout(tut, -1, 76);
 
             // ---- right: account + about ----
             var right = MetaUI.CardPanel(Content);

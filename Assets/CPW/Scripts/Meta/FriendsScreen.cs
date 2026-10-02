@@ -59,6 +59,8 @@ namespace CPW
             UI.Layout(l, -1, 360);
             var t = UI.Label(side, "Offline", 48, MetaUI.Gold, TextAnchor.MiddleCenter, true);
             UI.Layout(t, -1, 80);
+            var info = UI.Label(side, "Your friend code shows here once you're online. Share it so friends can add you, send gifts and invite you to private games.", 30, Theme.Muted);
+            UI.Layout(info, -1, 300);
             if (Online.Service is OfflineService) return;
             var retry = UI.Button(side, "Try again", () =>
             {
