@@ -598,3 +598,6 @@ def run():
         col = hexc(top)[None, None] * (1 - t) + hexc(bot)[None, None] * t
         write_rgb(os.path.join(sky, name + ".png"), np.repeat(col, 4, axis=1))
     print("[textures] %d terrain, %d caps, %d detail, %d sky" % (len(TERRAIN), len(CAPS), len(DETAIL), len(SKY)))
+    # the original game's own art replaces the procedural fill/cap textures where it exists (see original_art.py)
+    import original_art
+    original_art.run()
