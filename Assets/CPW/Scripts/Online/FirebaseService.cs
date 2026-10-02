@@ -89,6 +89,7 @@ namespace CPW
                     if (r.ok) fb.LearnServerTime(r.Json);
                     if (r.ok) Finish(true, "Online (Firebase), player id " + Short(fb.Uid));
                     else Finish(false, "Offline: database error: " + r.error);
+                    if (r.ok) SweepAbandoned();
                 });
             });
         }

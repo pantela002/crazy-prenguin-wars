@@ -49,7 +49,7 @@ The rules decide who may read and write what. Ours make sure players can only ch
 leaderboard entry, and only people in a match can write its moves.
 
 > **Updating the game?** Do this step again whenever `database.rules.json` changed (it did for friends, inbox,
-> leaderboards per period, the league and rematch). Old clients keep working with the new rules except for the
+> leaderboards per period, the league, rematch, battle chat and the clean-up of old matches). Old clients keep working with the new rules except for the
 > leaderboard, which moved from `leaderboard/{uid}` to `leaderboard/all/{uid}`: you may delete the old
 > `leaderboard/<uid>` entries (the ones directly under `leaderboard` that are not `all` or a period) in the console.
 
@@ -107,7 +107,8 @@ into the project before building.
    **"Online (Firebase), player id ..."**.
    If it says *Offline: ...* the rest of the line tells you why (see [Troubleshooting](#troubleshooting)).
 3. In the Firebase console under **Realtime Database > Data** you should now see `users/<id>/lastSeen`.
-   After you play or buy something, `users/<id>/profile` and `leaderboard/<id>` appear too.
+   After you play or buy something, `users/<id>/profile` and `leaderboard/all/<id>` appear too, and within a minute
+   `players/<id>` and `friendCodes/<CODE>` (your friend code).
 4. To try online battles you need two devices (or the editor plus a phone): on one, **Online > Host Private** shows a
    5-letter code; on the other, type the code and tap **Join**. The host taps **Start!**.
 
@@ -118,6 +119,7 @@ into the project before building.
 | `Anonymous sign-in is not enabled` | Step 2. |
 | `the apiKey in firebase_config.json is wrong` | Copy the apiKey again (step 5), no spaces or quotes inside. |
 | `database error: Permission denied` | Publish the rules (step 4). |
+| `Index not defined, add ".indexOn"...` in the Unity Console | The published rules are older than the game: publish them again (step 4). |
 | `database error: ... 404` or `Can't reach Firebase` | Check `databaseURL` (it must start with `https://` and be your database address); check internet. |
 | Settings shows *Offline (Firebase not connected)* | The file is missing, misnamed (`firebase_config.json`) or still has `YOUR_...` placeholders. |
 | Online list is always empty | Normal when nobody else is hosting. Use Quick Match: it hosts a game when it finds none. |
@@ -160,6 +162,7 @@ matches/{matchId}
     turn                   { index, player, by, at } index = finished turns, player = whose turn
     actions/{turn}/aNNNNN  [ {p, t, k, x, y, px, py, s}, ... ]   batched TurnActions
     snapshots/{turn}       { from, json: "<BattleSnapshot JSON>" }
+    chat/{pushId}          { p: slot, u: uid, at, x: text (max 80) | k: taunt id }   battle chat (POST)
     rematch/{uid}          { s: "ready" | "left", next: newMatchId }   after the match (see below)
 ```
 
@@ -178,9 +181,15 @@ week the first time they are online after it ended. Old `league/<week>` nodes ca
 so basic ammo is used: Basic Nuke x3, Grenade x2, Pistol x3, Shotgun x2, Cluster Rocket x1). The receiver's game caps
 the amount, so a modified client can't send more.
 
-Finished matches are deleted by the host's device 20 s after the end; actions and snapshots older than two turns are
-removed as the match goes. Abandoned rooms disappear from the list after 30 s and may be removed by anybody after
-2 minutes.
+**Clean-up** (there is no server code; the free plan has no Cloud Functions, so the players' devices do it and the
+rules allow exactly that):
+- actions and snapshots older than two turns are removed as the match goes;
+- a finished match is deleted 60 s after the end by the device of the lowest slot still in it (any player of a
+  `finished` match may delete it; the delay leaves time for the rematch votes);
+- a cancelled waiting room is deleted by its host after 10 s;
+- abandoned lobby entries disappear from the list after 30 s and may be removed by anybody after 2 minutes;
+- matches nobody cleaned up (everybody closed the app) may be deleted by anybody once they are 3 hours old: every
+  device looks for up to 3 of them when it signs in, at most every 6 hours.
 
 ## Costs
 
@@ -190,5 +199,30 @@ thousands of matches per month. If you ever hit the limit, the database stops an
 are **not** charged on Spark); the game then simply behaves as offline. You only pay if you deliberately upgrade
 to the Blaze plan.
 
-Optional housekeeping: if old `matches/` entries pile up (players closing the app mid-match), delete the `matches`
-node in the console now and then. Nobody loses progress; profiles live under `users/`.
+Everything runs on the free plan: anonymous Auth and the Realtime Database only, no Cloud Functions, Firestore,
+Storage or scheduled jobs. Old matches clean themselves up (see *Clean-up* above). What grows slowly forever are the
+small per-week and per-month nodes (`leaderboard/2026-W40`, `leaderboard/2026-10`, `league/2026-W40`, about 150 bytes
+per player each); delete old ones in the console once a year if you like. Deleting the `matches` node in the console
+is always safe too. Nobody loses progress; profiles live under `users/`.
+
+## Testing the rules locally
+
+`Tools/firebase_tests/rules_test.js` replays every database call the game makes (the same URLs, bodies and queries as
+`FirebaseClient.cs`) for four anonymous players against the **Firebase Local Emulator Suite** on your computer:
+sign-in and token refresh, cloud save, leaderboards, friends, gifts, invites, the league, hosting / joining /
+quick match / private codes, a whole match with turns, chat and rematch, and the clean-up. It also checks that
+cheating is refused (writing another player's save, joining a running match, chatting in somebody else's match...).
+It needs no Firebase project and no internet once installed.
+
+1. Install [Node.js](https://nodejs.org) 18 or newer and Java 11 or newer (`java -version`).
+2. In a terminal:
+   ```sh
+   cd Tools/firebase_tests
+   npm install        # once: installs firebase-tools into this folder only
+   npm test
+   ```
+3. It ends with `N passed, 0 failed`. Anything else lists the calls that were wrongly allowed or refused.
+
+Run it after every change to `Docs/firebase/database.rules.json` (the script uploads that file to the emulator itself)
+or to a database call in `Assets/CPW/Scripts/Online/`; add the new call to the script too. The emulator behaves like the
+real database here, including the `.indexOn` checks.
