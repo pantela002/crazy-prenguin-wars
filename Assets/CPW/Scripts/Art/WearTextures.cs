@@ -44,8 +44,7 @@ namespace CPW
         public static string TextureName(string materialName)
         {
             if (string.IsNullOrEmpty(materialName) || !materialName.StartsWith(Prefix, System.StringComparison.Ordinal)) return null;
-            int sp = materialName.IndexOf(' ');
-            string n = sp > 0 ? materialName.Substring(0, sp) : materialName;
+            string n = Mats.BaseName(materialName);
             int end = n.IndexOf("__", Prefix.Length, System.StringComparison.Ordinal);
             return end > Prefix.Length ? n.Substring(Prefix.Length, end - Prefix.Length) : n.Substring(Prefix.Length);
         }

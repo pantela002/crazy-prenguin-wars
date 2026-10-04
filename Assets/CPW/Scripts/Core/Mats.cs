@@ -47,7 +47,18 @@ namespace CPW
         public static void ApplyToon(GameObject go) => ApplyToon(go, true);
 
         /// <summary>As <see cref="ApplyToon(GameObject)"/>; outline false keeps the plain toon pass (one draw per material).</summary>
-        public static void ApplyToon(GameObject go, bool outline)
+        public static void ApplyToon(GameObject go, bool outline) => ApplyToon(go, outline, null);
+
+        /// <summary>
+        /// As <see cref="ApplyToon(GameObject, bool)"/>. textureFolder (a Resources path such as
+        /// "Models/Weapons/Textures") resolves the texture of a material that came in without one by its name:
+        /// "W_steel" / "Glow_glow_ff3a2a" / "steel" -> {textureFolder}/steel (see Blender/scripts/weapons.py TM).
+        ///
+        /// Cache key: colour + texture + outline, plus the source material NAME for materials whose name carries
+        /// meaning downstream ("T_{texture}__{tint}" for WearTextures), so a cached toon material never
+        /// hands one model's name to another model's material.
+        /// </summary>
+        public static void ApplyToon(GameObject go, bool outline, string textureFolder)
         {
             foreach (var r in go.GetComponentsInChildren<Renderer>(true))
             {
@@ -66,13 +77,22 @@ namespace CPW
                         else if (s.HasProperty("_BaseColor")) c = s.GetColor("_BaseColor");
                         if (s.HasProperty("_MainTex")) t = s.mainTexture;
                         glow = s.name.StartsWith("Glow", System.StringComparison.Ordinal);
+                        if (t == null && textureFolder != null) t = NamedTexture(textureFolder, s.name);
                     }
                     bool ol = outline && !glow;
-                    var key = "toonfbx" + c + (t ? t.GetInstanceID().ToString() : "") + (glow ? "g" : ol ? "o" : "");
+                    string srcName = s != null ? BaseName(s.name) : "toon";
+                    bool named = srcName.StartsWith("T_", System.StringComparison.Ordinal);
+                    var key = "toonfbx" + c + (t ? t.GetInstanceID().ToString() : "") + (glow ? "g" : ol ? "o" : "") +
+                              (named ? "|" + srcName : "");
                     if (!cache.TryGetValue(key, out var m) || !m)
                     {
-                        m = new Material(ol ? ToonOutlineShader : ToonShader) { color = c, name = s != null ? s.name : "toon" };
-                        if (t) m.mainTexture = t;
+                        m = new Material(ol ? ToonOutlineShader : ToonShader) { color = c, name = srcName };
+                        if (t)
+                        {
+                            m.mainTexture = t;
+                            // a painted texture already has its own surface detail
+                            if (m.HasProperty("_Detail")) m.SetFloat("_Detail", 0f);
+                        }
                         if (glow)
                         {
                             // emissive look: no shadow side, no AO, a hot rim
@@ -81,7 +101,7 @@ namespace CPW
                             m.SetColor("_RimColor", new Color(1, 1, 0.85f, 0.6f));
                             m.SetFloat("_Detail", 0f);
                         }
-                        else if (m.HasProperty("_DetailTex"))
+                        else if (!t && m.HasProperty("_DetailTex"))
                         {
                             var fam = DetailFamily(s != null ? s.name : "");
                             var dt = fam != null ? DetailTexture(fam) : null;
@@ -108,6 +128,42 @@ namespace CPW
                 r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 r.receiveShadows = false;
             }
+        }
+
+        /// <summary>"T_knit__red (Instance)" -> "T_knit__red"; Blender duplicate suffixes (".001") are dropped too.</summary>
+        public static string BaseName(string materialName)
+        {
+            if (string.IsNullOrEmpty(materialName)) return "";
+            string n = materialName;
+            int sp = n.IndexOf(" (", System.StringComparison.Ordinal);
+            if (sp > 0) n = n.Substring(0, sp);
+            int dot = n.LastIndexOf('.');
+            if (dot > 0 && dot == n.Length - 4 && char.IsDigit(n[dot + 1]) && char.IsDigit(n[dot + 2]) && char.IsDigit(n[dot + 3]))
+                n = n.Substring(0, dot);
+            return n;
+        }
+
+        static readonly Dictionary<string, Texture2D> namedTextures = new Dictionary<string, Texture2D>();
+
+        /// <summary>Texture for a model material by name from Resources/{folder}: "W_x" / "Glow_x" / "x" -> {folder}/x.
+        /// Null when there is none (results, misses included, are cached).</summary>
+        public static Texture2D NamedTexture(string folder, string materialName)
+        {
+            string n = BaseName(materialName);
+            if (n.Length == 0) return null;
+            string key = folder + "/" + n;
+            if (namedTextures.TryGetValue(key, out var t)) return t;
+            string bare = n.StartsWith("W_", System.StringComparison.Ordinal) ? n.Substring(2)
+                : n.StartsWith("Glow_", System.StringComparison.Ordinal) ? n.Substring(5) : n;
+            t = Resources.Load<Texture2D>(folder + "/" + bare);
+            if (t == null && bare != n) t = Resources.Load<Texture2D>(folder + "/" + n);
+            if (t != null)
+            {
+                t.wrapMode = TextureWrapMode.Repeat;   // UV0 is object space: one tile per unit
+                t.anisoLevel = Mathf.Max(t.anisoLevel, 2);
+            }
+            namedTextures[key] = t;
+            return t;
         }
 
         public static Texture2D White
