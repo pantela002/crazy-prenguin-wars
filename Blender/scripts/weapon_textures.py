@@ -316,8 +316,7 @@ def cinder(seed=14):
 def snow(seed=15):
     n = noise(seed, 6, 5)
     img = mixc(solid("#b8d4ec"), solid("#ffffff"), np.clip(n * 1.6 - 0.3, 0, 1))
-    d1, edge, cid = T.voronoi(N, 60, seed + 2)
-    img = tint(img, 0.96 + 0.04 * np.clip(edge / 6.0, 0, 1))
+    img = tint(img, 0.92 + 0.1 * noise(seed + 4, 24, 2))
     sp = _spots(seed + 1, 300, 0.5, 1.6, 0.6)
     img = mixc(img, solid("#7fb0dc"), sp * 0.45)
     sp2 = _spots(seed + 3, 200, 0.5, 1.2, 0.6)
@@ -385,7 +384,7 @@ def fur(col, seed=22, stripe=None):
     st2 = _stamp_lines(seed + 2, 1800, (4, 12), (-1.9, -1.2), alpha=(0.3, 1.0))
     img = tint(img, 1 - st2 * 0.35)
     if stripe is not None:
-        sm = (np.sin((U * 6 + noise(seed + 3, 4, 2) * 0.6) * 2 * np.pi) > 0.55).astype(np.float32)
+        sm = (np.sin((U * 6 + noise(seed + 3, 4, 2) * 0.6) * 2 * np.pi) > 0.3).astype(np.float32)
         img = mixc(img, solid(stripe), T.wrap_blur(sm, 2, 1) * 0.8)
     return np.clip(img, 0, 1)
 

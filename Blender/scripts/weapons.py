@@ -1630,7 +1630,13 @@ def w_egg(n):
 
 
 def w_snowball(n):
-    o = [blob_ball(n + "_s", (0.1, 0, 0.1), 0.16, TM("snow", "snow", rough=0.6, bump=0.8), seed=6, lumps=0.07)]
+    sn = TM("snow", "snow", rough=0.6, bump=0.8)
+    o = [blob_ball(n + "_s", (0.1, 0, 0.1), 0.16, sn, seed=6, lumps=0.1)]
+    rnd = random.Random(8)
+    for i in range(7):
+        d = V((rnd.uniform(-1, 1), rnd.uniform(-1, -0.2), rnd.uniform(-0.6, 1))).normalized()
+        o.append(blob_ball(n + "_cl%d" % i, V((0.1, 0, 0.1)) + d * 0.152, rnd.uniform(0.014, 0.026), sn, seed=i, lumps=0.15,
+                           segs=12, rings=8))
     return o, V((0.18, 0, 0.12))
 
 
@@ -1669,8 +1675,10 @@ def w_cat(n):
                      paint("#ff8fa8", chips=0.0), 8))
         o.append(ball(n + "_eye%d" % s, (0.3 + s * 0.05, -0.115, 0.3), (0.035, 0.02, 0.04), paint("#f5f7fb", chips=0.0, coat=0.8), 14, 8))
         o.append(ball(n + "_pup%d" % s, (0.3 + s * 0.05, -0.132, 0.3), (0.015, 0.008, 0.024), dark(), 10, 6))
-        o.append(blob_ball(n + "_paw%d" % s, (0.12 + s * 0.09, -0.08, -0.03), 0.045, white, seed=4 + s, lumps=0.02))
+        o.append(blob_ball(n + "_paw%d" % s, (0.15 + s * 0.07, -0.09, -0.03), 0.042, white, seed=4 + s, lumps=0.02))
+        o.append(cyl(n + "_leg%d" % s, (0.17 + s * 0.06, -0.07, 0.07), (0.15 + s * 0.07, -0.09, -0.01), 0.04, 0.038, fur_m, 12))
     o.append(ball(n + "_nose", (0.33, -0.16, 0.255), 0.014, paint("#ff6a8a", chips=0.0), 8, 6))
+    o.append(blob_ball(n + "_haunch", (0.0, -0.06, 0.05), 0.09, fur_m, seed=9, lumps=0.02))
     o.append(sweep(n + "_tail", [(-0.03, 0.03, 0.08), (-0.12, 0.05, 0.12), (-0.14, 0.04, 0.25), (-0.08, 0.02, 0.32)],
                    0.03, fur_m, 10, r_end=0.02, smooth_k=5))
     for s in (-1, 1):
