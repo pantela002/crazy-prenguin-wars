@@ -161,6 +161,8 @@ namespace CPW
                 iconRef = r != null ? r.Str("Icon") : null;
             }
             string iid = string.IsNullOrEmpty(iconRef) ? itemId : Strip(iconRef);
+            var textured = FirstIcon("WeaponsTextured/" + itemId, "WeaponsTextured/" + iid);
+            if (textured != null) return textured;
             if (iconRef != null && iconRef.StartsWith("#BoosterIcon")) return FirstIcon(BoosterIconPath(iid), WeaponIconPath(iid));
             if (iconRef != null && iconRef.StartsWith("#EmoticonIcon")) return EmoticonIcon(itemId);
             return FirstIcon(WeaponIconPath(iid), BoosterIconPath(iid), WeaponIconPath(itemId), BoosterIconPath(itemId));

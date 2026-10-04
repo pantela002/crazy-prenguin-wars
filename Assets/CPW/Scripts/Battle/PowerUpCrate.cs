@@ -111,7 +111,7 @@ namespace CPW
                 case "Treasure": return OriginalArt.Sprite("icons/icons_drops/drop_coins");
                 case "PointsCrate": return OriginalArt.Sprite("icons/icons_drops/drop_exp");
                 case "HealthCrate": return OriginalArt.Icon("Bandage");
-                case "AmmoCrate": return OriginalArt.Icon("Grenade") ?? OriginalArt.Icon("BasicNuke");
+                case "AmmoCrate": return BattleItems.Icon("Grenade") ?? OriginalArt.Icon("Grenade") ?? OriginalArt.Icon("BasicNuke");
             }
             return null;
         }

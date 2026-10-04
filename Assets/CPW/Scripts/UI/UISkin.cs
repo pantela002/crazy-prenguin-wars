@@ -226,8 +226,17 @@ namespace CPW
                 return s;
             }
 
-            /// <summary>Original icon when there is one, else the Blender render (ModelLibrary.Icon), else null.</summary>
-            public static Sprite Icon(string path) => OriginalIcon(path) ?? ModelLibrary.Icon(path);
+            /// <summary>Weapon paths ("Weapons/{id}") prefer the textured weapon render (Icons/WeaponsTextured/{id});
+            /// otherwise the original icon when there is one, else the Blender render (ModelLibrary.Icon), else null.</summary>
+            public static Sprite Icon(string path)
+            {
+                if (path != null && path.StartsWith("Weapons/", StringComparison.Ordinal))
+                {
+                    var tex = ModelLibrary.Icon("WeaponsTextured/" + path.Substring(8));
+                    if (tex != null) return tex;
+                }
+                return OriginalIcon(path) ?? ModelLibrary.Icon(path);
+            }
 
             /// <summary>An embedded UI bitmap by SWF folder and id: Bitmap("home_screen", 122).</summary>
             public static Sprite Bitmap(string swf, int id) => Off ? null : OriginalArt.UiSprite(swf, "bitmap_" + id);

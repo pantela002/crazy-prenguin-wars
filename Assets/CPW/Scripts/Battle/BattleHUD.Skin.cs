@@ -23,11 +23,11 @@ namespace CPW
         int shownPowerFrame = -1;
         string yourTurnText, minuteLeftText;
 
-        /// <summary>Weapon / booster icon: the original item icon, else the 3D-rendered one.</summary>
+        /// <summary>Weapon / booster icon via BattleItems.Icon (textured renders first), else the original item icon.</summary>
         static Sprite ItemIcon(string id)
         {
             if (string.IsNullOrEmpty(id)) return null;
-            return (UI.Skin.Off ? null : OriginalArt.Icon(id)) ?? BattleItems.Icon(id);
+            return BattleItems.Icon(id) ?? (UI.Skin.Off ? null : OriginalArt.Icon(id));
         }
 
         static Sprite HudArt(string swf, int bitmap) => UI.Skin.Bitmap(swf, bitmap);
