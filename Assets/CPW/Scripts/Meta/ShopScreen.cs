@@ -125,7 +125,11 @@ namespace CPW
             h.childForceExpandWidth = false;
             if (locked && ItemCatalog.UnlockCash(r) > 0)
             {
-                MetaUI.Amount(f, "cash", ItemCatalog.UnlockCash(r) + " to unlock", 26, Theme.Text);
+                // white with a dark outline: the locked card is dark grey
+                var ul = MetaUI.Amount(f, "cash", ItemCatalog.UnlockCash(r) + " to unlock", 26, Color.white);
+                var ol = ul.GetComponent<Outline>() ?? ul.gameObject.AddComponent<Outline>();
+                ol.effectColor = new Color(0.1f, 0.06f, 0.02f, 0.95f);
+                ol.effectDistance = new Vector2(2f, -2f);
                 ItemCards.LockOverlay(card.transform, "Lv " + ItemCatalog.RequiredLevel(r));
             }
             else
