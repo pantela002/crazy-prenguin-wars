@@ -230,7 +230,7 @@ namespace CPW
             /// otherwise the original icon when there is one, else the Blender render (ModelLibrary.Icon), else null.</summary>
             public static Sprite Icon(string path)
             {
-                if (path != null && path.StartsWith("Weapons/", StringComparison.Ordinal))
+                if (ArtCatalog.UseTexturedItemIcons && path != null && path.StartsWith("Weapons/", StringComparison.Ordinal))
                 {
                     var tex = ModelLibrary.Icon("WeaponsTextured/" + path.Substring(8));
                     if (tex != null) return tex;

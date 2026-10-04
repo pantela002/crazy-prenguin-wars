@@ -47,8 +47,16 @@ namespace CPW
         public static string IconPath(Record item)
         {
             if (item == null) return null;
-            if (IsBooster(item) && ModelLibrary.Icon("Supplies/" + item.Id) != null) return "Supplies/" + item.Id;
-            if (IsWeapon(item) && ModelLibrary.Icon("WeaponsTextured/" + item.Id) != null) return "WeaponsTextured/" + item.Id;
+            string own = IsBooster(item) ? "Supplies/" + item.Id : IsWeapon(item) ? "WeaponsTextured/" + item.Id : null;
+            if (ArtCatalog.UseTexturedItemIcons && own != null && ModelLibrary.Icon(own) != null) return own;
+            var std = StandardIconPath(item);
+            // original look: the textured render only for items with no original or older icon (e.g. Repulse Shield)
+            if (!ArtCatalog.UseTexturedItemIcons && own != null && UI.Skin.Icon(std) == null && ModelLibrary.Icon(own) != null) return own;
+            return std;
+        }
+
+        static string StandardIconPath(Record item)
+        {
             var icon = item.Str("Icon", "");
             var id = GameData.RefId(icon);
             if (icon.StartsWith("#BoosterIcon")) return "Boosters/" + id;

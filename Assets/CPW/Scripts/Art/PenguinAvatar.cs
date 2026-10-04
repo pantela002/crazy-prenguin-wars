@@ -35,7 +35,7 @@ namespace CPW
         public static bool UseOriginalSprite = true;
         /// <summary>Hold the textured 3D weapon models (true) or the original 2D Flash weapon clips (false). Either one
         /// falls back to the other when it is missing.</summary>
-        public static bool Prefer3DWeapons = true;
+        public static bool Prefer3DWeapons = false;
         /// <summary>Held model size relative to its Blender size (the models are made for the 2.6 unit penguin).</summary>
         public const float WeaponScale = 1.1f;
 

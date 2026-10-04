@@ -10,6 +10,11 @@ namespace CPW
     /// </summary>
     public static class ArtCatalog
     {
+        /// <summary>Show the textured Blender renders of weapons and supplies (Icons/WeaponsTextured, Icons/Supplies)
+        /// instead of the original game's icons. Off: the user wants the original look; the renders are then only used
+        /// for items the original art has no icon for.</summary>
+        public static bool UseTexturedItemIcons = false;
+
         public const string Penguin = "Penguin/Penguin";
         public const string DefaultWeapon = "Weapons/MiniBazooka";
         public const string DefaultMissile = "Missiles/Grenade";
@@ -161,7 +166,7 @@ namespace CPW
                 iconRef = r != null ? r.Str("Icon") : null;
             }
             string iid = string.IsNullOrEmpty(iconRef) ? itemId : Strip(iconRef);
-            var textured = FirstIcon("WeaponsTextured/" + itemId, "WeaponsTextured/" + iid);
+            var textured = UseTexturedItemIcons ? FirstIcon("WeaponsTextured/" + itemId, "WeaponsTextured/" + iid) : null;
             if (textured != null) return textured;
             if (iconRef != null && iconRef.StartsWith("#BoosterIcon")) return FirstIcon(BoosterIconPath(iid), WeaponIconPath(iid));
             if (iconRef != null && iconRef.StartsWith("#EmoticonIcon")) return EmoticonIcon(itemId);

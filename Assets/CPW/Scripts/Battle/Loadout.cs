@@ -19,23 +19,23 @@ namespace CPW
             return false;
         }
 
-        /// <summary>Item icon. Supplies: the textured render Icons/Supplies/{id} (Blender/scripts/supplies.py);
-        /// weapons: the textured render Icons/WeaponsTextured/{id} when there is one. Then the original Flash icon,
-        /// then the older renders "Weapons/{WeaponIcon id}" / "Boosters/{BoosterIcon id}".</summary>
+        /// <summary>Item icon: the original Flash icon, then the older renders "Weapons/{WeaponIcon id}" /
+        /// "Boosters/{BoosterIcon id}", then the textured render (Icons/Supplies/{id}, Icons/WeaponsTextured/{id}). With
+        /// ArtCatalog.UseTexturedItemIcons the textured render comes first.</summary>
         public static Sprite Icon(string id)
         {
             if (string.IsNullOrEmpty(id)) return null;
             var own = IsBooster(id) ? ModelLibrary.Icon("Supplies/" + id) : IsWeapon(id) ? ModelLibrary.Icon("WeaponsTextured/" + id) : null;
-            if (own != null) return own;
+            if (own != null && ArtCatalog.UseTexturedItemIcons) return own;
             var orig = OriginalArt.Icon(id);
             if (orig != null) return orig;
             var r = GameData.Item(id);
-            if (r == null) return null;
+            if (r == null) return own;
             var icon = r.Str("Icon");
-            if (string.IsNullOrEmpty(icon)) return null;
+            if (string.IsNullOrEmpty(icon)) return own;
             var iconId = GameData.RefId(icon);
-            if (icon.Contains("BoosterIcon")) return ModelLibrary.Icon("Boosters/" + iconId) ?? ModelLibrary.Icon("Weapons/" + iconId);
-            return ModelLibrary.Icon("Weapons/" + iconId);
+            if (icon.Contains("BoosterIcon")) return ModelLibrary.Icon("Boosters/" + iconId) ?? ModelLibrary.Icon("Weapons/" + iconId) ?? own;
+            return ModelLibrary.Icon("Weapons/" + iconId) ?? own;
         }
 
         /// <summary>WeaponGraphic id the avatar holds for this item (Item.Graphics).</summary>
