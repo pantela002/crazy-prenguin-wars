@@ -109,10 +109,12 @@ namespace CPW
             BuildControls();
             BuildFeatures();
             BuildBanner();
-            panelLayer = UI.Stretch(UI.Rect(root, "Panels"));
-            // above the panels (never takes touches): tutorial hints must stay readable over the weapon menu
+            // tutorial hints (never take touches). Under the panels, so the pause menu and other windows cover them;
+            // raised above the panels only while the weapon / booster picker is open, which the tutorial points into
+            // (UpdateHintLayer)
             overlay = UI.Stretch(UI.Rect(root, "Overlay"));
             overlay.gameObject.AddComponent<SafeAreaFitter>();
+            panelLayer = UI.Stretch(UI.Rect(root, "Panels"));
             BuildHint();
             BuildAimVisuals();
             SkinHud();   // original Flash HUD art over the procedural HUD (BattleHUD.Skin)
@@ -255,7 +257,10 @@ namespace CPW
 
         void AddPulse(string key, Component b) => highlights[key] = b.gameObject.AddComponent<Pulse>();
 
-        const float BannerY = 170f, BannerYBelowHint = -70f;
+        const float BannerY = 170f;
+        // the full hint is a band at the bottom centre, between the walk / jump buttons and the weapon / boost buttons
+        // and above the energy bar: clear of the penguin, its power bar and the crosshair in the middle of the screen
+        const float HintW = 860f, HintH = 170f, HintY = 120f;
 
         void BuildBanner()
         {
@@ -275,14 +280,14 @@ namespace CPW
             var hint = UI.Panel(overlay, Theme.Panel, true, "Hint");
             hint.raycastTarget = false;
             hintBox = hint.rectTransform;
-            hintTitle = UI.Label(hintBox, "", 44, Theme.Secondary, TextAnchor.MiddleCenter, true);
-            hintBody = UI.Label(hintBox, "", 34, Theme.Text, TextAnchor.MiddleCenter);
+            hintTitle = UI.Label(hintBox, "", 40, Theme.Secondary, TextAnchor.MiddleCenter, true);
+            hintBody = UI.Label(hintBox, "", 30, Theme.Text, TextAnchor.MiddleCenter);
             hintCompact = true;
             LayoutHint(false);
             hintBox.gameObject.SetActive(false);
         }
 
-        /// <summary>Full hint under the turn timer, or a slim strip above the window while a panel is open.</summary>
+        /// <summary>Full hint in the bottom band (above the energy bar), or a slim strip above the window while a panel is open.</summary>
         void LayoutHint(bool compact)
         {
             if (compact == hintCompact) return;
@@ -295,10 +300,10 @@ namespace CPW
             }
             else
             {
-                UI.Place(hintBox, new Vector2(0.5f, 1), new Vector2(1040, 220), new Vector2(0, -290));
+                UI.Place(hintBox, new Vector2(0.5f, 0), new Vector2(HintW, HintH), new Vector2(0, HintY));
                 hintTitle.gameObject.SetActive(true);
-                UI.Anchor(hintTitle.rectTransform, 0.03f, 0.66f, 0.97f, 0.97f);
-                UI.Anchor(hintBody.rectTransform, 0.04f, 0.05f, 0.96f, 0.68f);
+                UI.Anchor(hintTitle.rectTransform, 0.03f, 0.68f, 0.97f, 0.97f);
+                UI.Anchor(hintBody.rectTransform, 0.03f, 0.04f, 0.97f, 0.7f);
             }
         }
 
@@ -375,15 +380,19 @@ namespace CPW
             bannerText.text = text;
             bannerText.color = color;
             BannerArt(text);
-            PlaceBanner();
             banner.Restart(hold);
         }
 
-        /// <summary>The banner and the tutorial hint share the upper middle: move the banner under the hint while one shows.</summary>
-        void PlaceBanner()
+        /// <summary>
+        /// The hint layer sits under the panels (pause menu, emotes, chat, curtain) and goes above them only while the
+        /// weapon / booster picker alone is open, so the "tap the pistol" step stays readable over the menu.
+        /// </summary>
+        void UpdateHintLayer()
         {
-            float y = hintBox != null && hintBox.gameObject.activeSelf && !hintCompact ? BannerYBelowHint : BannerY;
-            if (bannerRt.anchoredPosition.y != y) bannerRt.anchoredPosition = new Vector2(0, y);
+            bool over = (weaponPanel || boosterPanel) && !(pausePanel || emotePanel || chatPanel || curtain);
+            int panels = panelLayer.GetSiblingIndex(), mine = overlay.GetSiblingIndex();
+            if (over && mine < panels) overlay.SetSiblingIndex(panels);
+            else if (!over && mine > panels) overlay.SetSiblingIndex(panels);
         }
 
         public void ShowHint(string title, string body)
@@ -409,8 +418,11 @@ namespace CPW
             UpdateInput();
             UpdateTop();
             UpdateControls();
-            if (hintBox.gameObject.activeSelf) LayoutHint(AnyPanelOpen);
-            if (bannerRt.gameObject.activeSelf) PlaceBanner();
+            if (hintBox.gameObject.activeSelf) { LayoutHint(AnyPanelOpen); UpdateHintLayer(); }
+            // the turn-change banner ("Penguin's turn.", "Your turn!") names the penguin right where the turn label
+            // under the stopwatch is: show one name at a time, not two overlapping
+            bool nameOn = !bannerRt.gameObject.activeSelf;
+            if (turnName.enabled != nameOn) turnName.enabled = nameOn;
             UpdateFeatures(Time.unscaledDeltaTime);
         }
 
