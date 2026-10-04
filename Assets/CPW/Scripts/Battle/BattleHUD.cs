@@ -419,10 +419,6 @@ namespace CPW
             UpdateTop();
             UpdateControls();
             if (hintBox.gameObject.activeSelf) { LayoutHint(AnyPanelOpen); UpdateHintLayer(); }
-            // the turn-change banner ("Penguin's turn.", "Your turn!") names the penguin right where the turn label
-            // under the stopwatch is: show one name at a time, not two overlapping
-            bool nameOn = !bannerRt.gameObject.activeSelf;
-            if (turnName.enabled != nameOn) turnName.enabled = nameOn;
             UpdateFeatures(Time.unscaledDeltaTime);
         }
 
@@ -555,6 +551,7 @@ namespace CPW
             if (cam == null) cam = c.Cam;
             bool turn = c.CurrentPhase == BattleController.Phase.Turn;
             float lift = BattleRules.Radius * 2.8f;
+            Tag activeTag = null;
             for (int i = 0; i < tags.Count; i++)
             {
                 var p = c.Penguins[i];
@@ -569,7 +566,32 @@ namespace CPW
                 bool act = turn && i == c.ActiveIndex;
                 if (t.arrow.gameObject.activeSelf != act) t.arrow.gameObject.SetActive(act);
                 if (act) t.arrow.rectTransform.anchoredPosition = new Vector2(0, 56 + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 4f)) * 14f);
+                if (act) activeTag = t;
             }
+            UpdateTurnName(activeTag);
+        }
+
+        static readonly Vector3[] nameCorners = new Vector3[4];
+
+        /// <summary>
+        /// One name at a time under the stopwatch: the turn label hides while the turn-change banner ("Penguin's
+        /// turn.", "Your turn!") names the penguin over it, and while the active penguin's own name tag is right
+        /// there (a penguin standing high on screen, like the tutorial's first spawn: "PENGUIN PENGUIN").
+        /// </summary>
+        void UpdateTurnName(Tag active)
+        {
+            bool on = !bannerRt.gameObject.activeSelf;
+            if (on && active != null && active.name.enabled)
+            {
+                turnName.rectTransform.GetWorldCorners(nameCorners);
+                float scale = root.lossyScale.x;
+                float cx = (nameCorners[0].x + nameCorners[2].x) / 2, halfW = (turnName.preferredWidth * scale) / 2 + 30 * scale;
+                var label = Rect.MinMaxRect(cx - halfW, nameCorners[0].y - 10 * scale, cx + halfW, nameCorners[2].y + 10 * scale);
+                active.rt.GetWorldCorners(nameCorners);   // the whole tag: name, HP bar and the bobbing arrow's band
+                var tag = Rect.MinMaxRect(nameCorners[0].x, nameCorners[0].y, nameCorners[2].x, nameCorners[2].y + 70 * scale);
+                if (label.Overlaps(tag)) on = false;
+            }
+            if (turnName.enabled != on) turnName.enabled = on;
         }
 
         // ================================================================ input
