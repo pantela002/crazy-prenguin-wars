@@ -20,7 +20,7 @@ namespace CPW
         Penguin me, target;
         Step step;
         float timer, stuckTimer, lastX, emoteCooldown, turnClock, planWait;
-        int skill, walkDir, replans;
+        int skill, walkDir, replans, lessonTries;
         bool fallbackTried;
 
         const float WalkBudget = 4.5f;     // seconds of the turn in which the AI may still walk
@@ -66,6 +66,7 @@ namespace CPW
             turnClock = 0;
             planWait = 0;
             fallbackTried = false;
+            lessonTries = 0;
         }
 
         public void EndTurn()
@@ -79,7 +80,8 @@ namespace CPW
             if (me == null || !me.Alive || step == Step.Idle) return;
             if (emoteCooldown > 0) emoteCooldown -= dt;
             turnClock += dt;
-            bool hurry = !c.Fired && (c.TurnTimeLeft < HurryTime || turnClock > ThinkBudget);
+            // the tutorial's lesson shot takes the time it needs (the turn has 30 s); only the turn clock hurries it
+            bool hurry = !c.Fired && (c.TurnTimeLeft < HurryTime || (turnClock > ThinkBudget && !Lesson));
             bool mayWalk = !hurry && turnClock < WalkBudget;
 
             switch (step)
@@ -133,6 +135,9 @@ namespace CPW
                     if (aimT >= 1f || c.TurnTimeLeft < 0.8f)
                     {
                         c.ActAim(goalAngle, goalPower);
+                        // lesson: check the shot from where the muzzle really is now (it moves with the aim) and
+                        // re-plan, or move, until it lands on the player
+                        if (Lesson && c.TurnTimeLeft > HurryTime && !LessonHits(goalAngle, goalPower) && LessonReplan()) break;
                         if (c.ActFire(targetPos)) AfterFire();
                         else if (!FallbackFire()) step = Step.Done;
                     }
@@ -388,14 +393,117 @@ namespace CPW
             impact = me.Position;
             if (!AimPredict(weapon, Origin(), angle, power, pts, out impact)) return float.MaxValue;
             float best = Vector2.Distance(impact, targetPos);
-            // a path passing right through the target also counts
+            // a missile that ends in the water or off the level is removed without exploding: a shot landing in the
+            // water right beside a penguin on the shore used to rate as a near hit and did no damage at all
+            if (Dud(impact)) return best + 1000f;
+            // a path grazing the target's body also counts (the prediction's penguin collision can miss a sliver);
+            // passing a few metres over its head does not
+            float graze = BattleRules.Radius * 1.2f;
             for (int i = 0; i < pts.Count; i += 2)
             {
                 float d = Vector2.Distance(pts[i], targetPos);
-                if (d < best) best = d;
+                if (d < graze && d < best) best = d;
             }
             if (Vector2.Distance(impact, me.Position) < 3.5f) best += 25f;
             return best;
+        }
+
+        static bool Dud(Vector2 impact) => WorldQuery.InWater(impact) || WorldQuery.OutOfWorld(impact);
+
+        // ---------------------------------------------------------------- tutorial lesson shot
+
+        /// <summary>Lesson hit: the shot explodes this close to the player (the bazooka's damage radius is 7.5).</summary>
+        const float LessonHitRadius = 2.5f;
+
+        /// <summary>The lesson shot, fired from the muzzle's current position, explodes on the player.</summary>
+        bool LessonHits(float angle, float power)
+        {
+            if (target == null || !target.Alive || weapon == null) return true;   // nothing to verify against
+            if (!AimPredict(weapon, Origin(), angle, power, pts, out var impact) || Dud(impact)) return false;
+            return Vector2.Distance(impact, target.Position) <= LessonHitRadius;
+        }
+
+        /// <summary>
+        /// The planned lesson shot would miss: first a fine search around it from the real muzzle position, then
+        /// move the AI to a spot with a clear lob at the player, then a fine search again. False = fire as planned.
+        /// </summary>
+        bool LessonReplan()
+        {
+            lessonTries++;
+            if (lessonTries > 3 || target == null) return false;
+            if (lessonTries == 2) return LessonReposition();
+            targetPos = target.Position + Vector2.up * 0.2f;
+            float a0 = goalAngle, p0 = goalPower;
+            angles.Clear(); powers.Clear();
+            for (int i = -8; i <= 8; i++) angles.Add(a0 + i * 0.75f);
+            if (mode == TargetingMode.Aiming) powers.Add(1f);
+            else for (int i = -5; i <= 5; i++) powers.Add(Mathf.Clamp01(p0 + i * 0.015f));
+            searchIndex = 0;
+            refining = true;   // straight to FinishSearch -> StartAim after this grid
+            bestErr = float.MaxValue;
+            bestAngle = a0; bestPower = p0;
+            step = Step.Search;
+            return true;
+        }
+
+        /// <summary>
+        /// No hitting shot from here (a hill, an island or the AI's own ledge in the way): move the AI to firm
+        /// ground 9-20 m beside the player from where a lob lands on the player (checked with the prediction).
+        /// </summary>
+        bool LessonReposition()
+        {
+            var t = BattleTerrain.I;
+            if (t == null || t.Level == null || target == null || mode != TargetingMode.PowerBar) return LessonReplan();
+            Vector2 tp = target.Position;
+            int near = me.Position.x >= tp.x ? 1 : -1;   // try the AI's own side first
+            float r = BattleRules.Radius;
+            float[] dists = { 12f, 15f, 9f, 18f, 20f };
+            foreach (int side in new[] { near, -near })
+                foreach (float d in dists)
+                {
+                    float x = tp.x + side * d;
+                    if (x < 2f || x > t.Level.size.x - 2f) continue;
+                    if (!t.GroundBelow(x, tp.y + 8f, out var g) || g.y < t.WaterY + 1f) continue;
+                    var pos = g + Vector2.up * (r * 1.15f);
+                    if (t.IsSolid(pos) || t.IsSolid(pos + Vector2.up * (r * 1.6f))) continue;   // buried or no headroom
+                    int face = tp.x >= pos.x ? 1 : -1;
+                    var origin = pos + new Vector2(r * 0.8f * face, r * 0.2f);
+                    if (!FindLob(origin, tp)) continue;
+                    Fx.Smoke(me.Position, 1.6f);
+                    me.Teleport(pos);
+                    me.SetFacing(face);
+                    Fx.Glow(pos, 1.6f, Color.white);
+                    // land, settle and plan again from here (the search finds this lob; the fire check still applies)
+                    step = Step.Plan;
+                    timer = 0.5f;
+                    planWait = 0;
+                    return true;
+                }
+            return LessonReplan();   // no spot: the fine search from here is the last try
+        }
+
+        /// <summary>A lob (the analytic angles for a few powers, checked with the prediction) from origin onto tp.</summary>
+        bool FindLob(Vector2 origin, Vector2 tp)
+        {
+            float g = Mathf.Abs(Physics2D.gravity.y);
+            var d = tp - origin;
+            float x = Mathf.Abs(d.x);
+            if (g < 0.01f || x < 0.5f) return false;
+            for (float p = 1f; p >= 0.35f; p -= 0.1f)
+            {
+                float v = WeaponSystem.LaunchSpeed(weapon, p);
+                float v2 = v * v, disc = v2 * v2 - g * (g * x * x + 2f * d.y * v2);
+                if (v <= 0f || disc < 0f) continue;
+                float s = Mathf.Sqrt(disc);
+                for (int k = 0; k < 2; k++)
+                {
+                    float a = Mathf.Atan2(k == 0 ? v2 + s : v2 - s, g * x) * Mathf.Rad2Deg;   // high lob first
+                    if (d.x < 0) a = 180f - a;
+                    if (AimPredict(weapon, origin, a, p, pts, out var impact) && !Dud(impact)
+                        && Vector2.Distance(impact, tp) <= LessonHitRadius) return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>Predicted impact point of a shot. One simulation per call: with a buffer the path is simulated
@@ -416,7 +524,7 @@ namespace CPW
         {
             bool reachable = bestErr < 6f;
             int toward = target.Position.x > me.Position.x ? 1 : -1;
-            if (!reachable && replans == 0 && me.ActionPoints > 150 && c.TurnTimeLeft > HurryTime + 2.5f
+            if (!reachable && !Lesson && replans == 0 && me.ActionPoints > 150 && c.TurnTimeLeft > HurryTime + 2.5f
                 && turnClock < WalkBudget - 1f && !DangerAhead(toward))
             {
                 // can't reach from here: walk toward the target and try again
