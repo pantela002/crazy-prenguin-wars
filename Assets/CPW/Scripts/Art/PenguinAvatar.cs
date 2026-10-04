@@ -6,24 +6,31 @@ namespace CPW
     public enum AvatarState { Idle, Walk, Jump, Fall, Aim, Fire, Hurt, Dead, Celebrate, Drown, Sad }
 
     /// <summary>
-    /// The player's penguin with clothes, animation, a held weapon, emotes and a team colour.
-    /// Used by battles (Battle/Penguin) and menus (customization preview, home screen).
+    /// The player's penguin with clothes, gloves, a skin, animation, a held weapon, emotes and a team colour.
+    /// Used by battles (Battle/Penguin) and menus (home screen, wardrobe).
     ///
-    /// Two looks behind one API: the ORIGINAL 2D Flash penguin (PenguinSprite: 46 sprite animations at 24 fps, clothes
-    /// rendered from the Blender models and the original weapon clips on the animation's slots, see
-    /// Docs/ORIGINAL_ART.md) whenever Resources/Original has the penguin; otherwise the 3D penguin described below.
+    /// The look is the textured 3D penguin from Blender (Blender/scripts/penguin.py, clothes.py; textures applied by
+    /// WearTextures): a simple cartoon bird whose fixed sockets carry hats, outfits, shoes and gloves through every
+    /// animation, and whose skin is a texture swap. The held weapon is the ORIGINAL Flash weapon clip (draw / aim / fire)
+    /// riding the right flipper, with the Blender weapon model as the fallback for the few missing clips. The original 2D
+    /// sprite penguin (PenguinSprite) is still available behind <see cref="UseOriginalSprite"/>.
     ///
-    /// 3D fallback:
-    /// Model contract (see Docs/ART.md): parts Body, Belly, Head, Beak, EyeL/R, PupilL/R, FlipperL/R, FootL/R, Scarf and
-    /// empties HeadSocket, ChestSocket, FootSocketL/R, HandSocket, all exported as root objects with origins at their joints;
-    /// the hierarchy is rebuilt here. The model is 2.6 units tall, feet at the origin, beak towards +X, belly towards -Z.
-    /// Everything falls back to primitives when the FBX (or a part of it) is missing.
+    /// Model contract (see Docs/ART.md): parts Body, Head, Beak, EyeL/R, PupilL/R, FlipperL/R, FootL/R and empties
+    /// HeadSocket, ChestSocket, Belly, FootSocketL/R, HandSocket, GloveSocketL/R, all exported as root objects with origins
+    /// at their joints; the hierarchy is rebuilt here. The model is 2.6 units tall, feet at the origin, beak towards +X,
+    /// belly towards -Z. Everything falls back to primitives when the FBX (or a part of it) is missing.
     ///
-    /// Transform layout: this (unscaled; HeadTop, emote bubble) / Facing (mirror + size) / Pose (whole-body pose) / model.
+    /// Transform layout: this (unscaled; HeadTop, emote bubble, team ring) / Facing (mirror + size) / Pose (whole-body
+    /// pose) / model.
     /// </summary>
     public class PenguinAvatar : MonoBehaviour
     {
         public const float ModelHeight = 2.6f;
+        /// <summary>Battle size: the original Flash penguin's height (PenguinSprite.NaturalHeight), so hit boxes, HUD anchors,
+        /// the original weapon clips and effects keep the proportions of the original game.</summary>
+        public static float BattleHeight => PenguinSprite.NaturalHeight;
+        /// <summary>Show the original 2D sprite penguin instead of the 3D one (when its art is imported).</summary>
+        public static bool UseOriginalSprite = false;
 
         public AvatarState State { get; private set; }
         public int Facing { get; private set; } = 1;
@@ -36,21 +43,31 @@ namespace CPW
         /// <summary>Aim angle in degrees relative to the facing direction (0 = forward, 90 = up).</summary>
         public float AimDegrees => aimTarget;
         public string HeldWeapon { get; private set; }
-        /// <summary>True when the original 2D sprite penguin is shown (false = 3D fallback model).</summary>
+        /// <summary>Worn gloves (ClothesSlot.Hands id) and skin (ClothesSlot.Skin id, "" = classic).</summary>
+        public string Gloves { get; private set; } = "";
+        public string Skin { get; private set; } = "";
+        /// <summary>True when the original 2D sprite penguin is shown (false = the 3D penguin).</summary>
         public bool IsSprite => sprite != null;
-        /// <summary>Play the original "spawn" animation whenever the avatar is re-enabled (respawn). Off in menus.</summary>
+        /// <summary>Play the spawn pop (sprite: the original "spawn" animation) whenever the avatar is re-enabled
+        /// (respawn). Off in menus.</summary>
         public bool PlaySpawnOnEnable = true;
         /// <summary>Animate with unscaled time (menus).</summary>
         public bool UnscaledTime;
-        /// <summary>Team colour ellipse under the feet (sprite penguin). Off in menus.</summary>
+        /// <summary>Team colour ellipse under the feet. Off in menus.</summary>
         public bool ShowTeamRing
         {
             get => showRing;
-            set { showRing = value; if (sprite != null) sprite.ShowRing = value; }
+            set
+            {
+                showRing = value;
+                if (sprite != null) sprite.ShowRing = value;
+                if (ring != null) ring.enabled = value;
+            }
         }
         bool showRing = true;
         PenguinSprite sprite;
         SpriteAnim emoteAnim;
+        SpriteRenderer ring;
 
         // ------------------------------------------------------------------ parts
         class Part
@@ -64,27 +81,34 @@ namespace CPW
         // child -> parent (mirrors Blender/scripts/penguin.py HIERARCHY)
         static readonly string[,] Hierarchy =
         {
-            { "Belly", "Body" }, { "Head", "Body" }, { "FlipperL", "Body" }, { "FlipperR", "Body" }, { "Scarf", "Body" },
-            { "ChestSocket", "Body" }, { "Beak", "Head" }, { "EyeL", "Head" }, { "EyeR", "Head" }, { "HeadSocket", "Head" },
-            { "PupilL", "EyeL" }, { "PupilR", "EyeR" }, { "HandSocket", "FlipperR" }, { "FootSocketL", "FootL" }, { "FootSocketR", "FootR" },
+            { "Head", "Body" }, { "FlipperL", "Body" }, { "FlipperR", "Body" }, { "ChestSocket", "Body" }, { "Belly", "Body" },
+            { "Beak", "Head" }, { "EyeL", "Head" }, { "EyeR", "Head" }, { "HeadSocket", "Head" },
+            { "PupilL", "EyeL" }, { "PupilR", "EyeR" }, { "HandSocket", "FlipperR" },
+            { "GloveSocketL", "FlipperL" }, { "GloveSocketR", "FlipperR" },
+            { "FootSocketL", "FootL" }, { "FootSocketR", "FootR" },
         };
 
         Transform facingNode, poseNode, model;
-        Part body, head, flipL, flipR, footL, footR, eyeL, eyeR, pupilL, pupilR, beak, belly;
+        Part body, head, flipL, flipR, footL, footR, eyeL, eyeR, pupilL, pupilR, beak;
         Transform tip;                         // weapon tip in the hand (Muzzle follows it, clamped near the body)
-        Transform headSocket, chestSocket, footSocketL, footSocketR, handSocket, weaponHolder, scarf;
+        Transform headSocket, chestSocket, footSocketL, footSocketR, handSocket, gloveSocketL, gloveSocketR, weaponHolder;
         float restFlipR = -100f;               // rest direction of the right flipper (shoulder -> tip), degrees in the XY plane
         readonly List<Renderer> renderers = new List<Renderer>();
-        Renderer scarfRenderer;
         MaterialPropertyBlock mpb;
         static readonly int FlashId = Shader.PropertyToID("_Flash");
-        static readonly int ColorId = Shader.PropertyToID("_Color");
+
+        // held weapon: the original clip on a SpriteRenderer (3D model fallback)
+        SpriteRenderer weaponSr;
+        readonly SpriteAnimPlayer weaponPlayer = new SpriteAnimPlayer();
+        string hold;
+        bool allowRotation = true;
+        System.Action onWeaponFired;
 
         // ------------------------------------------------------------------ animation state
-        float t, stateTime, flash, blinkTimer = 2f, blinkPhase = -1f, landSquash, fireKick;
-        float aimTarget, aimCurrent, flipRCurrent = float.NaN;
+        float t, stateTime, flash, blinkTimer = 2f, blinkPhase = -1f, landSquash, fireKick, spawnPop = -1f;
+        float aimTarget, flipRCurrent = float.NaN;
         AvatarState prevState;
-        GameObject weapon, headWear, chestWear, feetWearL, feetWearR, ghost, bubble;
+        GameObject weapon, headWear, chestWear, feetWearL, feetWearR, gloveWear, gloveLeft, ghost, bubble;
         float bubbleUntil, bubbleStart;
         readonly System.Random rng = new System.Random();
 
@@ -102,8 +126,9 @@ namespace CPW
         void Build(float height)
         {
             Height = Mathf.Max(0.1f, height);
-            if (PenguinSprite.Available) { BuildSprite(); return; }
+            if (UseOriginalSprite && PenguinSprite.Available) { BuildSprite(); return; }
             mpb = new MaterialPropertyBlock();
+            onWeaponFired = HoldWeaponPose;
             facingNode = new GameObject("Facing").transform;
             facingNode.SetParent(transform, false);
             poseNode = new GameObject("Pose").transform;
@@ -111,7 +136,11 @@ namespace CPW
             ApplyFacingScale();
 
             var m = ModelLibrary.Prefab("Penguin/Penguin") != null ? ModelLibrary.Spawn("Penguin/Penguin", poseNode) : null;
-            if (m != null && FindDeep(m.transform, "Body") != null) model = m.transform;
+            if (m != null && FindDeep(m.transform, "Body") != null)
+            {
+                model = m.transform;
+                WearTextures.Apply(m, ClothesCatalog.SkinTexture(Skin));
+            }
             else
             {
                 if (m != null) Destroy(m);
@@ -126,11 +155,27 @@ namespace CPW
             weaponHolder = new GameObject("WeaponHolder").transform;
             weaponHolder.SetParent(handSocket, false);
             weaponHolder.localRotation = Quaternion.AngleAxis(restFlipR, Vector3.forward);
+            weaponSr = new GameObject("WeaponClip").AddComponent<SpriteRenderer>();
+            weaponSr.transform.SetParent(weaponHolder, false);
+            // the clips are drawn for the original penguin (NaturalHeight tall at scale 1); in front of the flipper
+            weaponSr.transform.localScale = Vector3.one * (ModelHeight / PenguinSprite.NaturalHeight);
+            weaponSr.transform.localPosition = new Vector3(0, 0, -0.3f);
+            weaponSr.sortingOrder = PenguinSprite.SortingOrder + 1;
             tip = new GameObject("WeaponTip").transform;
             tip.SetParent(weaponHolder, false);
             tip.localPosition = new Vector3(0.25f, 0, 0);
             Muzzle = new GameObject("Muzzle").transform;
             Muzzle.SetParent(transform, false);
+
+            ring = new GameObject("TeamRing").AddComponent<SpriteRenderer>();
+            ring.transform.SetParent(transform, false);
+            ring.sprite = PenguinSprite.RingSprite;
+            float k = Height / PenguinSprite.NaturalHeight;
+            ring.transform.localPosition = new Vector3(0.05f * k, 0.05f * k, 0.45f * k);   // behind the feet
+            ring.transform.localScale = Vector3.one * k;
+            ring.sortingOrder = PenguinSprite.SortingOrder - 1;
+            ring.enabled = showRing;
+
             UpdateMuzzle();
             RefreshRenderers();
             SetState(AvatarState.Idle);
@@ -151,7 +196,9 @@ namespace CPW
 
         void OnEnable()
         {
-            if (sprite != null && PlaySpawnOnEnable) sprite.PlaySpawn();
+            if (!PlaySpawnOnEnable) return;
+            if (sprite != null) sprite.PlaySpawn();
+            else if (poseNode != null) spawnPop = 0f;
         }
 
         void ApplyFacingScale()
@@ -189,24 +236,26 @@ namespace CPW
         {
             var bodyT = Find("Body");
             // missing sockets/parts get an empty at a sensible place so nothing downstream breaks
-            EnsurePart("HeadSocket", "Head", new Vector3(0, 1.93f, 0));
+            EnsurePart("HeadSocket", "Head", new Vector3(0, 1.98f, 0));
             EnsurePart("ChestSocket", "Body", new Vector3(0, 0.95f, 0));
-            EnsurePart("FootSocketL", "FootL", new Vector3(0.25f, 0.13f, 0.2f));
-            EnsurePart("FootSocketR", "FootR", new Vector3(-0.2f, 0.13f, -0.25f));
-            EnsurePart("HandSocket", "FlipperR", new Vector3(-0.67f, 0.62f, -0.72f));
+            EnsurePart("Belly", "Body", new Vector3(0.42f, 0.85f, -0.5f));
+            EnsurePart("FootSocketL", "FootL", new Vector3(0.25f, 0.12f, 0.2f));
+            EnsurePart("FootSocketR", "FootR", new Vector3(-0.2f, 0.12f, -0.25f));
+            EnsurePart("HandSocket", "FlipperR", new Vector3(-0.6f, 0.6f, -0.69f));
+            EnsurePart("GloveSocketR", "FlipperR", new Vector3(-0.56f, 0.78f, -0.6f));
+            EnsurePart("GloveSocketL", "FlipperL", new Vector3(0.62f, 0.78f, 0.38f));
             for (int i = 0; i < Hierarchy.GetLength(0); i++)
             {
                 var c = Find(Hierarchy[i, 0]);
                 var p = Find(Hierarchy[i, 1]);
                 if (c != null && p != null && c.parent != p) c.SetParent(p, true);
             }
-            body = P("Body"); head = P("Head"); belly = P("Belly"); beak = P("Beak");
+            body = P("Body"); head = P("Head"); beak = P("Beak");
             flipL = P("FlipperL"); flipR = P("FlipperR"); footL = P("FootL"); footR = P("FootR");
             eyeL = P("EyeL"); eyeR = P("EyeR"); pupilL = P("PupilL"); pupilR = P("PupilR");
             headSocket = Find("HeadSocket"); chestSocket = Find("ChestSocket");
             footSocketL = Find("FootSocketL"); footSocketR = Find("FootSocketR"); handSocket = Find("HandSocket");
-            scarf = Find("Scarf");
-            scarfRenderer = scarf != null ? scarf.GetComponent<Renderer>() : null;
+            gloveSocketL = Find("GloveSocketL"); gloveSocketR = Find("GloveSocketR");
             if (flipR != null && handSocket != null)
             {
                 Vector3 a = poseNode.InverseTransformPoint(flipR.t.position), b = poseNode.InverseTransformPoint(handSocket.position);
@@ -260,9 +309,9 @@ namespace CPW
         {
             var root = new GameObject("Penguin (fallback)");
             root.transform.SetParent(parent, false);
-            var black = new Color(0.15f, 0.16f, 0.21f);
+            var black = new Color(0.11f, 0.23f, 0.29f);
             var white = new Color(0.96f, 0.97f, 0.98f);
-            var orange = new Color(1f, 0.6f, 0.13f);
+            var orange = new Color(1f, 0.65f, 0.12f);
             Transform Pivot(string name, Vector3 pos)
             {
                 var t = new GameObject(name).transform;
@@ -271,40 +320,37 @@ namespace CPW
                 return t;
             }
             var bodyP = Pivot("Body", new Vector3(0, 0.1f, 0));
-            Prim(PrimitiveType.Sphere, "BodyMesh", bodyP, new Vector3(0, 0.82f, 0), new Vector3(1.55f, 1.65f, 1.4f), black);
-            var bellyP = Pivot("Belly", C2U(0, 0, 0.95f));
-            Prim(PrimitiveType.Sphere, "BellyMesh", bellyP, C2U(0, -0.3f, 0.76f) - C2U(0, 0, 0.95f), new Vector3(1.2f, 1.35f, 1.0f), white);
-            var headP = Pivot("Head", C2U(0, 0, 1.45f));
-            Prim(PrimitiveType.Sphere, "HeadMesh", headP, C2U(0, -0.02f, 1.93f) - C2U(0, 0, 1.45f), Vector3.one * 1.22f, black);
-            Prim(PrimitiveType.Sphere, "FaceMesh", headP, C2U(0, -0.22f, 1.85f) - C2U(0, 0, 1.45f), new Vector3(0.9f, 0.82f, 0.8f), white);
-            var beakP = Pivot("Beak", C2U(0, -0.55f, 1.8f));
-            var bk = Prim(PrimitiveType.Cube, "BeakMesh", beakP, C2U(0, -0.18f, -0.02f), new Vector3(0.22f, 0.16f, 0.22f), orange);
-            bk.transform.localRotation = Quaternion.Euler(0, -40f, 45f);
+            Prim(PrimitiveType.Sphere, "BodyMesh", bodyP, new Vector3(0, 0.82f, 0), new Vector3(1.4f, 1.72f, 1.25f), black);
+            Prim(PrimitiveType.Sphere, "BellyMesh", bodyP, C2U(0, -0.3f, 0.76f) - new Vector3(0, 0.1f, 0), new Vector3(1.1f, 1.3f, 0.9f), white);
+            var headP = Pivot("Head", C2U(0, 0, 1.5f));
+            Prim(PrimitiveType.Sphere, "HeadMesh", headP, C2U(0, -0.02f, 1.98f) - C2U(0, 0, 1.5f), Vector3.one * 1.14f, black);
+            var beakP = Pivot("Beak", C2U(0, -0.5f, 1.86f));
+            var bk = Prim(PrimitiveType.Sphere, "BeakMesh", beakP, C2U(0, -0.24f, -0.01f), new Vector3(0.5f, 0.2f, 0.74f), orange);
+            bk.transform.localRotation = Quaternion.Euler(0, -40f, 0);
             foreach (var s in new[] { 1, -1 })
             {
                 string side = s > 0 ? "L" : "R";
-                var ec = C2U(0.2f * s, -0.555f, 2.01f);
+                var ec = C2U(0.19f * s, -0.4f, 2.25f);
                 var eye = Pivot("Eye" + side, ec);
-                Prim(PrimitiveType.Sphere, "EyeMesh", eye, Vector3.zero, new Vector3(0.32f, 0.42f, 0.18f), white);
+                Prim(PrimitiveType.Sphere, "EyeMesh", eye, Vector3.zero, new Vector3(0.34f, 0.46f, 0.26f), white);
                 var pup = Pivot("Pupil" + side, ec);
-                Prim(PrimitiveType.Sphere, "PupilMesh", pup, C2U(0.04f, -0.06f, -0.02f), new Vector3(0.17f, 0.23f, 0.1f), Color.black);
-                var sh = C2U(0.66f * s, -0.02f, 1.32f);
+                Prim(PrimitiveType.Sphere, "PupilMesh", pup, C2U(0.045f, -0.1f, -0.015f), new Vector3(0.18f, 0.24f, 0.1f), Color.black);
+                var sh = C2U(0.6f * s, -0.02f, 1.3f);
                 var fl = Pivot("Flipper" + side, sh);
-                var tip = C2U(0.98f * s, -0.12f, 0.62f);
-                var fm = Prim(PrimitiveType.Sphere, "FlipperMesh", fl, (tip - sh) * 0.5f, new Vector3(0.24f, 0.95f, 0.5f), black);
+                var tip = C2U(0.9f * s, -0.14f, 0.6f);
+                var fm = Prim(PrimitiveType.Sphere, "FlipperMesh", fl, (tip - sh) * 0.5f, new Vector3(0.22f, 0.95f, 0.5f), black);
                 fm.transform.localRotation = Quaternion.FromToRotation(Vector3.up, tip - sh);
-                var ank = C2U(0.32f * s, -0.05f, 0.13f);
+                var ank = C2U(0.3f * s, -0.05f, 0.12f);
                 var ft = Pivot("Foot" + side, ank);
                 Prim(PrimitiveType.Sphere, "FootMesh", ft, C2U(0, -0.25f, -0.07f), new Vector3(0.42f, 0.16f, 0.8f), orange)
                     .transform.localRotation = Quaternion.Euler(0, -40f, 0);
                 Pivot("FootSocket" + side, ank);
+                Pivot("GloveSocket" + side, sh + (tip - sh) * 0.74f);
                 if (s < 0) Pivot("HandSocket", tip);
             }
-            var scarfP = Pivot("Scarf", C2U(0, 0, 1.45f));
-            Prim(PrimitiveType.Cylinder, "ScarfMesh", scarfP, new Vector3(0, -0.03f, 0), new Vector3(1.25f, 0.08f, 1.15f), Color.white).name = "Scarf";
-            scarfP.name = "ScarfPivot";
-            Pivot("HeadSocket", C2U(0, -0.02f, 1.93f));
+            Pivot("HeadSocket", C2U(0, -0.02f, 1.98f));
             Pivot("ChestSocket", C2U(0, 0, 0.95f));
+            Pivot("Belly", C2U(0, -0.66f, 0.85f));
             return root;
         }
 
@@ -321,6 +367,56 @@ namespace CPW
             RefreshRenderers();
         }
 
+        /// <summary>Gloves (ClothesSlot.Hands id) and skin (ClothesSlot.Skin id, "" = classic). The sprite penguin ignores both.</summary>
+        public void SetLook(string gloves, string skin)
+        {
+            SetGloves(gloves);
+            SetSkin(skin);
+        }
+
+        public void SetGloves(string id)
+        {
+            id = id ?? "";
+            if (sprite != null || (id == Gloves && (gloveWear != null || id == ""))) { Gloves = id; return; }
+            Gloves = id;
+            if (gloveWear != null) { Destroy(gloveWear); gloveWear = null; }
+            if (gloveLeft != null) { Destroy(gloveLeft); gloveLeft = null; }
+            string path = ArtCatalog.ClothesModel(id);
+            if (path != null && gloveSocketR != null)
+            {
+                // one FBX, two objects: GloveR rides GloveSocketR, GloveL moves to GloveSocketL
+                gloveWear = ModelLibrary.Spawn(path, gloveSocketR);
+                gloveWear.transform.localPosition = Vector3.zero;
+                gloveWear.transform.localRotation = Quaternion.identity;
+                gloveWear.transform.localScale = Vector3.one;
+                WearTextures.Apply(gloveWear);
+                var left = FindDeep(gloveWear.transform, "GloveL");
+                if (left != null && gloveSocketL != null)
+                {
+                    var lp = left.localPosition;
+                    var lr = left.localRotation;
+                    var ls = left.localScale;
+                    left.SetParent(gloveSocketL, false);
+                    left.localPosition = lp;
+                    left.localRotation = lr;
+                    left.localScale = ls;
+                    left.name = "GloveL (worn)";
+                    gloveLeft = left.gameObject;
+                }
+            }
+            RefreshRenderers();
+        }
+
+        public void SetSkin(string id)
+        {
+            id = id ?? "";
+            if (id == Skin) return;
+            Skin = id;
+            if (sprite != null || model == null) return;
+            WearTextures.Apply(model.gameObject, ClothesCatalog.SkinTexture(id));
+            RefreshRenderers();
+        }
+
         void Wear(ref GameObject slot, string id, Transform socket)
         {
             if (slot != null) { Destroy(slot); slot = null; }
@@ -331,6 +427,7 @@ namespace CPW
             slot.transform.localPosition = Vector3.zero;
             slot.transform.localRotation = Quaternion.identity;
             slot.transform.localScale = Vector3.one;
+            WearTextures.Apply(slot);
         }
 
         public void SetState(AvatarState s)
@@ -342,10 +439,17 @@ namespace CPW
             if (sprite != null) { sprite.SetState(s); return; }
             if ((prevState == AvatarState.Fall || prevState == AvatarState.Jump) && (s == AvatarState.Idle || s == AvatarState.Walk || s == AvatarState.Aim))
                 landSquash = 1f;
-            if (s == AvatarState.Fire) fireKick = 1f;
+            if (s == AvatarState.Fire)
+            {
+                fireKick = 1f;
+                // the clip's "fire" section (muzzle flash / recoil), then back to the "aim" pose
+                var w = weaponPlayer.Set;
+                if (w != null && w.Segment("fire", out int fa, out int fb)) { weaponPlayer.Play(w, fa, fb, false, onWeaponFired); ShowWeaponFrame(); }
+            }
             if (s == AvatarState.Hurt) Flash();
             if (s == AvatarState.Dead) SpawnGhost();
             else if (ghost != null) { Destroy(ghost); ghost = null; }
+            RefreshWeaponVisibility();
         }
 
         public void SetFacing(int dir)
@@ -362,10 +466,11 @@ namespace CPW
             if (sprite != null) { sprite.ApplyAim(aimTarget); UpdateMuzzle(); }
         }
 
-        /// <summary>Show a weapon model by WeaponGraphic id (null/empty = flippers empty).</summary>
+        /// <summary>Show a weapon by WeaponGraphic id (null/empty = flippers empty): the original clip, else the 3D model.</summary>
         public void HoldWeapon(string weaponGraphicId)
         {
-            if (HeldWeapon == weaponGraphicId && (weapon != null || (sprite != null && sprite.HasWeapon) || string.IsNullOrEmpty(weaponGraphicId))) return;
+            bool showing = weapon != null || (weaponSr != null && weaponSr.sprite != null) || (sprite != null && sprite.HasWeapon);
+            if (HeldWeapon == weaponGraphicId && (showing || string.IsNullOrEmpty(weaponGraphicId))) return;
             HeldWeapon = weaponGraphicId;
             if (sprite != null)
             {
@@ -375,28 +480,86 @@ namespace CPW
                 return;
             }
             if (weapon != null) { Destroy(weapon); weapon = null; }
+            weaponSr.sprite = null;
+            weaponPlayer.Hold(null, 0);
+            hold = null;
+            allowRotation = true;
             tip.localPosition = new Vector3(0.25f, 0, 0);
             if (!string.IsNullOrEmpty(weaponGraphicId))
             {
-                string path = ArtCatalog.WeaponModel(weaponGraphicId);
-                weapon = ModelLibrary.Spawn(path, weaponHolder, PrimitiveType.Cube, 1f, new Color(0.3f, 0.33f, 0.38f));
-                weapon.transform.localRotation = Quaternion.identity;
-                if (weapon.name.EndsWith("(fallback)"))
+                hold = ArtCatalog.WeaponHoldType(weaponGraphicId);
+                allowRotation = ArtCatalog.WeaponAllowsRotation(weaponGraphicId);
+                var set = OriginalArt.WeaponAnim(weaponGraphicId);
+                if (set != null)
                 {
-                    weapon.transform.localScale = new Vector3(0.9f, 0.18f, 0.18f);
-                    weapon.transform.localPosition = new Vector3(0.35f, 0.1f, 0);
-                    tip.localPosition = new Vector3(0.8f, 0.1f, 0);
+                    // draw, then hold the "aim" pose (Weapon.as: AIM_LABEL)
+                    if (set.Segment("draw", out int a, out int b) && set.HasLabel("aim")) weaponPlayer.Play(set, a, b, false, onWeaponFired);
+                    else weaponPlayer.Hold(set, set.Label("aim", 0));
+                    ShowWeaponFrame();
+                    MeasureTip(set.Still("aim"));
                 }
                 else
                 {
-                    weapon.transform.localPosition = Vector3.zero;
-                    weapon.transform.localScale = Vector3.one;
-                    var mz = FindPrefix(weapon.transform, "Muzzle");
-                    if (mz != null) tip.position = mz.position;
+                    string path = ArtCatalog.WeaponModel(weaponGraphicId);
+                    weapon = ModelLibrary.Spawn(path, weaponHolder, PrimitiveType.Cube, 1f, new Color(0.3f, 0.33f, 0.38f));
+                    weapon.transform.localRotation = Quaternion.identity;
+                    if (weapon.name.EndsWith("(fallback)"))
+                    {
+                        weapon.transform.localScale = new Vector3(0.9f, 0.18f, 0.18f);
+                        weapon.transform.localPosition = new Vector3(0.35f, 0.1f, 0);
+                        tip.localPosition = new Vector3(0.8f, 0.1f, 0);
+                    }
+                    else
+                    {
+                        weapon.transform.localPosition = Vector3.zero;
+                        weapon.transform.localScale = Vector3.one;
+                        var mz = FindPrefix(weapon.transform, "Muzzle");
+                        if (mz != null) tip.position = mz.position;
+                    }
                 }
             }
+            RefreshWeaponVisibility();
             UpdateMuzzle();
             RefreshRenderers();
+        }
+
+        void HoldWeaponPose()
+        {
+            var set = weaponPlayer.Set;
+            if (set != null) weaponPlayer.Hold(set, set.Label("aim", 0));
+            ShowWeaponFrame();
+        }
+
+        void ShowWeaponFrame()
+        {
+            var set = weaponPlayer.Set;
+            if (weaponSr != null) weaponSr.sprite = set != null ? set.FrameAt(weaponPlayer.Frame) : null;
+        }
+
+        /// <summary>Muzzle from the "aim" frame bounds: the right-most point of the clip (barrel tip). Throwables are
+        /// thrown from a point ahead of the flipper.</summary>
+        void MeasureTip(Sprite aim)
+        {
+            float k = weaponSr.transform.localScale.x;
+            tip.localPosition = new Vector3(0.6f * k, 0, 0);
+            if (aim == null || hold == "small_object" || hold == "large_object") return;
+            var v = aim.vertices;
+            if (v == null || v.Length == 0) return;
+            float maxX = float.MinValue;
+            for (int i = 0; i < v.Length; i++) maxX = Mathf.Max(maxX, v[i].x);
+            float sy = 0; int n = 0;
+            for (int i = 0; i < v.Length; i++)
+                if (v[i].x > maxX - 0.25f) { sy += v[i].y; n++; }
+            if (maxX < 0.2f) return;
+            tip.localPosition = new Vector3(maxX * k, (n > 0 ? sy / n : 0f) * k, 0);
+        }
+
+        void RefreshWeaponVisibility()
+        {
+            if (weaponHolder == null) return;
+            bool show = !string.IsNullOrEmpty(HeldWeapon) && State != AvatarState.Dead && State != AvatarState.Drown &&
+                        State != AvatarState.Celebrate && State != AvatarState.Sad;
+            if (weaponHolder.gameObject.activeSelf != show) weaponHolder.gameObject.SetActive(show);
         }
 
         /// <summary>Flash white when hit.</summary>
@@ -452,7 +615,7 @@ namespace CPW
             var a = SpriteAnim.Create(transform, set, "Emote", EmoteSortingOrder, false);
             a.UnscaledTime = UnscaledTime;
             float k = sprite != null ? sprite.Scale : Height / PenguinSprite.NaturalHeight;
-            a.transform.localPosition = new Vector3(0.15f * k, Height * 0.97f, -0.2f);
+            a.transform.localPosition = new Vector3(0.15f * k, Height * 0.97f, -0.2f - (sprite != null ? 0f : 0.8f * k));
             a.transform.localScale = Vector3.one * (EmoteScale * k);
             int from = set.Label("Hidden_To_Visible", 0), to = set.Label("Visible", set.Length) - 1;
             var go = a.gameObject;
@@ -470,7 +633,7 @@ namespace CPW
         {
             TeamColor = c;
             if (sprite != null) { sprite.SetTeamColor(c); return; }
-            ApplyBlocks(0);
+            if (ring != null) ring.color = new Color(c.r, c.g, c.b, 0.9f);
         }
 
         // ------------------------------------------------------------------ renderers / flash
@@ -479,6 +642,7 @@ namespace CPW
         {
             renderers.Clear();
             if (facingNode != null) facingNode.GetComponentsInChildren(true, renderers);
+            renderers.RemoveAll(r => r is SpriteRenderer);
             ApplyBlocks(flash);
         }
 
@@ -491,9 +655,9 @@ namespace CPW
                 if (r == null) continue;
                 r.GetPropertyBlock(mpb);
                 mpb.SetFloat(FlashId, f);
-                if (r == scarfRenderer) mpb.SetColor(ColorId, TeamColor);
                 r.SetPropertyBlock(mpb);
             }
+            if (weaponSr != null) weaponSr.color = Color.Lerp(Color.white, new Color(1f, 0.45f, 0.42f, 1f), f);
         }
 
         // ------------------------------------------------------------------ animation
@@ -514,6 +678,7 @@ namespace CPW
             float dt = Mathf.Min(UnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime, 0.05f);
             t += dt;
             stateTime += dt;
+            if (weaponPlayer.Tick(dt)) ShowWeaponFrame();
 
             // pose defaults
             Vector3 posePos = Vector3.zero;
@@ -522,7 +687,8 @@ namespace CPW
             float headRoll = 0f, headBob = 0f;
             float flL = 0f, flR = 0f;                // flipper raise angles (outward), degrees
             bool aimR = !string.IsNullOrEmpty(HeldWeapon);
-            float aimAngle = aimTarget;
+            float aimDeg = allowRotation ? aimTarget : 0f;
+            float aimAngle = aimDeg;
             float footLift = 0f, footPhase = 0f;
             float eyeSquash = 1f;
             Vector2 look = new Vector2(0.4f, 0f);
@@ -533,8 +699,10 @@ namespace CPW
                 case AvatarState.Idle:
                     sy = 1f + 0.025f * breath; sx = 1f - 0.012f * breath;
                     flL = 4f + 3f * Mathf.Sin(t * 2.2f + 0.5f); flR = flL;
-                    headRoll = 2f * Mathf.Sin(t * 0.9f);
-                    if (aimR) aimAngle = Mathf.Lerp(-25f, aimTarget, 0.5f);
+                    headRoll = 2.5f * Mathf.Sin(t * 0.9f);
+                    // now and then a little look around
+                    look = new Vector2(0.4f + 0.5f * Mathf.Sin(t * 0.37f), 0.15f * Mathf.Sin(t * 0.53f));
+                    if (aimR) aimAngle = Mathf.Lerp(-25f, aimDeg, 0.5f);
                     break;
                 case AvatarState.Walk:
                 {
@@ -544,6 +712,7 @@ namespace CPW
                     headRoll = -4f * Mathf.Sin(w);
                     flL = 18f + 10f * Mathf.Sin(w); flR = 18f - 10f * Mathf.Sin(w);
                     footLift = 0.14f; footPhase = w;
+                    look = new Vector2(1f, 0f);
                     if (aimR) aimAngle = -15f;
                     break;
                 }
@@ -568,14 +737,14 @@ namespace CPW
                     sy = 1f + 0.015f * breath;
                     flL = 10f;
                     aimR = true;
-                    headRoll = -aimTarget * 0.12f;
-                    look = new Vector2(Mathf.Cos(aimTarget * Mathf.Deg2Rad), Mathf.Sin(aimTarget * Mathf.Deg2Rad));
+                    headRoll = -aimDeg * 0.12f;
+                    look = new Vector2(Mathf.Cos(aimDeg * Mathf.Deg2Rad), Mathf.Sin(aimDeg * Mathf.Deg2Rad));
                     break;
                 case AvatarState.Fire:
                     aimR = true;
                     flL = 15f;
-                    headRoll = -aimTarget * 0.12f;
-                    look = new Vector2(Mathf.Cos(aimTarget * Mathf.Deg2Rad), Mathf.Sin(aimTarget * Mathf.Deg2Rad));
+                    headRoll = -aimDeg * 0.12f;
+                    look = new Vector2(Mathf.Cos(aimDeg * Mathf.Deg2Rad), Mathf.Sin(aimDeg * Mathf.Deg2Rad));
                     eyeSquash = 0.6f;
                     break;
                 case AvatarState.Hurt:
@@ -661,9 +830,21 @@ namespace CPW
             }
             eyeSquash *= Mathf.Max(0.08f, blink);
 
+            // spawn: pop in with a little overshoot
+            float pop = 1f;
+            if (spawnPop >= 0f)
+            {
+                spawnPop += dt / 0.4f;
+                float x = Mathf.Clamp01(spawnPop);
+                const float c1 = 1.70158f, c3 = c1 + 1f;
+                pop = 1f + c3 * Mathf.Pow(x - 1f, 3f) + c1 * Mathf.Pow(x - 1f, 2f);
+                if (spawnPop >= 1f) spawnPop = -1f;
+            }
+
             // apply
             poseNode.localPosition = posePos;
             poseNode.localRotation = Quaternion.AngleAxis(poseRoll, Vector3.forward);
+            poseNode.localScale = Vector3.one * Mathf.Max(0.01f, pop);
             if (body != null)
             {
                 body.t.localPosition = body.pos + new Vector3(0, bodyBob, 0);
@@ -715,8 +896,7 @@ namespace CPW
             float max = MuzzleReach * Mathf.Max(0.5f, Height / ModelHeight);
             if (d.magnitude > max) d = d.normalized * max;
             Muzzle.position = new Vector3(c.x + d.x, c.y + d.y, transform.position.z);
-            if (sprite != null) Muzzle.rotation = Quaternion.Euler(0, 0, Facing > 0 ? aimTarget : 180f - aimTarget);
-            else Muzzle.rotation = tip.rotation;
+            Muzzle.rotation = Quaternion.Euler(0, 0, Facing > 0 ? aimTarget : 180f - aimTarget);
         }
 
         static void Foot(Part f, float lift, float phase)
@@ -737,7 +917,7 @@ namespace CPW
         {
             if (p == null) return;
             if (look.sqrMagnitude > 1f) look.Normalize();
-            p.t.localPosition = p.pos + new Vector3(look.x * 0.045f, look.y * 0.05f, 0);
+            p.t.localPosition = p.pos + new Vector3(look.x * 0.04f, look.y * 0.05f, 0);
         }
 
         // ------------------------------------------------------------------ ghost / bubble

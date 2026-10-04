@@ -5,7 +5,8 @@ Usage (from the repo root):
     python3 Blender/scripts/build_all.py models          # all models only
     python3 Blender/scripts/build_all.py penguin clothes # some steps
     python3 Blender/scripts/build_all.py icons:Weapons,Clothes   # some icon sections
-Steps: penguin clothes weapons missiles props env textures icons docs verify  (models = the first six)
+Steps: penguin clothes weapons missiles props env textures icons skin_icons docs verify  (models = the first six)
+       penguin also writes the penguin skin atlases (penguin_skins.py), clothes the wearable textures (wear_kit.py)
        clothes_sprites[:id,id] (not in "all": clothes on the original 2D penguin, see clothes_sprites.py)
 Env: CPW_SAMPLES=32 (Cycles samples for icons).
 """
@@ -20,7 +21,7 @@ import bpy  # noqa: E402,F401
 import common as C  # noqa: E402
 
 MODEL_STEPS = ["penguin", "clothes", "weapons", "missiles", "props", "env"]
-ALL_STEPS = MODEL_STEPS + ["textures", "icons", "docs", "verify"]
+ALL_STEPS = MODEL_STEPS + ["textures", "icons", "skin_icons", "docs", "verify"]
 
 
 def step(name, arg=None):
@@ -49,6 +50,9 @@ def step(name, arg=None):
     elif name == "icons":
         import icons
         icons.run(arg.split(",") if arg else None)
+    elif name == "skin_icons":
+        import wear_icons
+        wear_icons.skin_icons(arg.split(",") if arg else None)
     elif name == "clothes_sprites":
         import penguin_rig_fill
         penguin_rig_fill.main()
@@ -113,9 +117,11 @@ def write_docs():
     w("  FBX export: `axis_forward='-Z', axis_up='Y', bake_space_transform=True, apply_scale_options='FBX_SCALE_ALL'`, modifiers")
     w("  applied, MESH+EMPTY only. Unity mirrors X on import, so the scripts turn the scene 180 degrees around Z just before")
     w("  exporting; in Unity +X is right, +Y up and -Z faces the camera. `build_all.py verify` re-imports the penguin and checks it.")
-    w("- Flat colors only: one material per color, color in the Principled base color (exported as sRGB values so")
-    w("  `Mats.ApplyToon` reproduces them). Team color: the penguin's `Scarf` uses a white material named `Team` (tint it).")
-    w("- Poly budget: penguin about 5.5k triangles, clothes/weapons/props under 1.5k.")
+    w("- Materials: one per color, color in the Principled base color (exported as sRGB values so `Mats.ApplyToon`")
+    w("  reproduces them). Textured materials (penguin and wearables) are named `T_{texture}__{tint}`: the FBX keeps only the")
+    w("  tint as diffuse color and `WearTextures.Apply` puts `Textures/Clothes/{texture}.png` (or the penguin skin) on `_MainTex`;")
+    w("  their UV0 is the real texture layout (see Penguin and Wearables below).")
+    w("- Poly budget: penguin about 5.5k triangles, clothes/weapons/props under 1.5k (gloves: 2.5k for the pair).")
     w("- Export-time data for the toon shader (`common._bake_vertex_data`): vertex color `Col` = baked ambient occlusion")
     w("  (hemisphere rays against the whole asset, contact shadows between parts) times a soft top-down gradient; UV0 = Unity")
     w("  object-space x/y (planar, used by `_DetailTex` and by the original sprites on props); UV1.xy/UV2.x = smoothed normal for")
@@ -128,9 +134,24 @@ def write_docs():
     w("## Penguin (`Models/Penguin/Penguin.fbx`)")
     w("About %.1f units tall, feet at the origin, beak towards +X, belly towards -Z (turned %d degrees from facing the camera)." % (
         penguin.HEIGHT, penguin.YAW))
-    w("Parts (origins at their joints): Body (pivot at the bottom), Belly, Head (pivot at the neck), Beak, EyeL, EyeR, PupilL, PupilR,")
-    w("FlipperL, FlipperR (pivots at the shoulders), FootL, FootR (pivots at the ankles), Scarf. Empties: HeadSocket (head center),")
-    w("ChestSocket (body axis), FootSocketL/R (ankles), HandSocket (tip of the right flipper, the one nearer the camera).")
+    w("A simple chubby cartoon penguin made for dressing up: tall egg body, big round head with a 3-feather tuft, googly eyes, a")
+    w("big bill, tapered flippers and three-toed feet. Every part uses the one material `T_penguin__white`, so the whole penguin")
+    w("is one draw call and a skin is a texture swap.")
+    w("Parts (origins at their joints): Body (pivot at the bottom), Head (pivot at the neck), Beak, EyeL, EyeR, PupilL, PupilR,")
+    w("FlipperL, FlipperR (pivots at the shoulders), FootL, FootR (pivots at the ankles). Empties: Belly (front of the belly),")
+    w("HeadSocket (head center), ChestSocket (body axis), FootSocketL/R (ankles), HandSocket (tip of the right flipper, the one")
+    w("nearer the camera; the held weapon), GloveSocketL/R (on each flipper, %d%% of the way from shoulder to tip; gloves)." % (
+        round(penguin.GLOVE_T * 100)))
+    w("No scarf any more: the team color is a ring under the feet (`PenguinAvatar`).")
+    w("")
+    w("### Skins (`Textures/Penguin/{skin}.png`, written by `penguin_skins.py`)")
+    w("One 1024x1024 atlas per skin. Regions (u0, v0, u1, v1, v up): body (0, .5, 1, 1) unwrapped around the body (u = angle,")
+    w("0.5 = front, seam at the back; v = height), head (0, 0, .5, .5), flippers (.5, .25, .75, .5), feet (.75, .25, 1, .5),")
+    w("upper bill (.5, .125, .75, .25), lower bill (.5, 0, .75, .125), eye white (.75, .125, .875, .25), pupil (.875, .125, 1, .25).")
+    w("Each region has a 3%% border against bilinear bleeding. Skins: %s (classic is the default; the others are the" % (
+        ", ".join(__import__("penguin_skins").SKINS)))
+    w("wardrobe items `skin_{name}`). To add one: a palette + pattern entry in `penguin_skins.SKINS` and an item in")
+    w("`ClothesCatalog.Cosmetics`.")
     w("**Every part is a root object in the FBX** (Blender 4.2's exporter writes wrong transforms for objects nested two levels")
     w("deep when `bake_space_transform` is on). `PenguinAvatar` rebuilds this hierarchy at runtime (`worldPositionStays`):")
     w("")
@@ -139,8 +160,15 @@ def write_docs():
     w("")
     w("## Clothes (`Models/Clothes/{Bonus id}.fbx`)")
     w("Origin = socket. Head items -> HeadSocket, chest items -> ChestSocket, feet items -> FootSocketL and the same model on")
-    w("FootSocketR (feet items are symmetric around the foot axis, no mirroring needed). Already turned like the penguin, so attach")
-    w("with identity local rotation. Icons: `Icons/Clothes/{id}.png`.")
+    w("FootSocketR (feet items are symmetric around the foot axis, no mirroring needed). Gloves (`gloves_*`) hold two objects:")
+    w("`GloveR` (origin = GloveSocketR) and `GloveL` (already mirrored; PenguinAvatar moves it to GloveSocketL). Already turned")
+    w("like the penguin, so attach with identity local rotation. Icons: `Icons/Clothes/{id}.png` (`wear_icons.py`; skins too).")
+    w("")
+    w("Wearable textures (`Textures/Clothes/{name}.png`, 256x256 seamless tiles from `wear_kit.py`): gray ones multiplied by the")
+    w("material tint (cotton, knit, wool, felt, denim, canvas, leather, fur, rubber, plastic, satin, metal, hammered, paper, sequin,")
+    w("quilted, stripes, scales, wood, glass) and colored ones used with a white tint (plaid, camo, polka, starry). UVs are")
+    w("cylindrical/spherical/box projections in world units (`wear_kit.TEX_SCALE` per texture), seam at the back.")
+    w("Previews: `python3 Blender/scripts/wear_preview.py out.png --sets flannel,army --view 34` or `--skins`.")
     w("")
     w(", ".join(_listing("Models/Clothes", ".fbx")))
     w("")
@@ -201,9 +229,11 @@ def write_docs():
     w("- `Textures/Detail/*.png`: 256x256 gray detail tiles for the 3D models (0.5 = neutral).")
     w("")
     w("## Code")
-    w("- `Scripts/Art/PenguinAvatar.cs`: spawns the penguin, rebuilds the hierarchy, procedural animation per `AvatarState`,")
-    w("  clothes on sockets, held weapon on HandSocket (Muzzle), team-colored scarf, hit flash (`_Flash` via MaterialPropertyBlock),")
-    w("  emote bubble. Works with primitive fallbacks when models are missing.")
+    w("- `Scripts/Art/PenguinAvatar.cs`: spawns the 3D penguin (battle height = `PenguinSprite.NaturalHeight`), rebuilds the")
+    w("  hierarchy, procedural animation per `AvatarState`, clothes on sockets, gloves, skins (`SetLook`), the original weapon")
+    w("  clip on the flipper (3D weapon model as fallback, Muzzle at its tip), team ring under the feet, hit flash (`_Flash` via")
+    w("  MaterialPropertyBlock), emote bubble. Works with primitive fallbacks when models are missing.")
+    w("- `Scripts/Art/WearTextures.cs`: puts the textures on the `T_*` materials (and swaps penguin skins).")
     w("- `Scripts/Art/ArtCatalog.cs`: id -> model/icon path helpers with fallbacks.")
     w("- `Scripts/Art/PropSkin.cs`: original item sprites (and damage stages) on the level object models.")
     w("- `Scripts/Terrain/LevelBackground.cs`, `WaterVolume.cs`, `TerrainStyle.cs`: original backgrounds, liquids and terrain")

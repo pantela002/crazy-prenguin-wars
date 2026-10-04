@@ -5,7 +5,8 @@ using UnityEngine.Rendering;
 namespace CPW
 {
     /// <summary>
-    /// The original 2D Flash penguin for PenguinAvatar (which keeps the public API and the 3D fallback): body =
+    /// The original 2D Flash penguin, shown by PenguinAvatar only when PenguinAvatar.UseOriginalSprite is set (the game
+    /// uses the textured 3D penguin; the team ring sprite below is shared with it): body =
     /// one SpriteRenderer playing the 46 original animations at 24 fps; clothes (sprites rendered from the Blender
     /// models) and the held weapon (original weapon clip, or the 3D model when the clip is missing) ride the
     /// animation's slots (PenguinRigData) like the original PaperDoll's addChild into "head_gear", "tool"...
@@ -477,7 +478,7 @@ namespace CPW
         static Sprite ringSprite;
         /// <summary>Flat ellipse outline drawn under the feet in the team colour (the original tinted the body's
         /// "colorable" clip, which the flattened sprites cannot do without a colour mask).</summary>
-        static Sprite RingSprite
+        internal static Sprite RingSprite
         {
             get
             {

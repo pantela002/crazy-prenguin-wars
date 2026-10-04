@@ -3,7 +3,9 @@ using UnityEngine;
 
 namespace CPW
 {
-    public enum ClothesSlot { Head, Chest, Feet, Trophy }
+    /// <summary>Wardrobe slots. The values are stored/compared as ints (ShopScreen casts its sub tab), so new slots go last.
+    /// Hands = gloves on both flippers, Skin = the penguin's feather texture (Textures/Penguin/{skin}).</summary>
+    public enum ClothesSlot { Head, Chest, Feet, Trophy, Hands, Skin }
 
     /// <summary>One wearable: a Bonus row (stats) plus shop info.</summary>
     public class ClothesDef
@@ -33,6 +35,9 @@ namespace CPW
     ///   wizard         16    2400         |  dark_assassin  34    30 fish
     ///                                     |  gladiator      40    45 fish
     ///   Singles: RedSweater/Skates/RedHat lv1 150 coins; army_* lv 42-50, 35-60 fish each.
+    ///
+    /// Gloves and skins (new in the remake, cosmetic only: no Bonus rows, no stats) are listed in Cosmetics below.
+    /// The bare penguin wears the "classic" skin.
     ///
     /// The order follows the summed Attack+Defence+Luck of each set so stronger gear costs more and unlocks later.
     /// Like weapons, a level-locked piece can be unlocked early for fish (UnlockCash = 2 + level/2).
@@ -93,6 +98,31 @@ namespace CPW
             new object[] { "army_boots_blue", "Blue Army Boots", ClothesSlot.Feet, 50, 0, 40 },
         };
 
+        // gloves and skins: id, display name, slot, level, coins, cash, vip (models/textures by Blender/scripts/clothes.py
+        // GLOVES and penguin_skins.py SKINS)
+        static readonly object[][] Cosmetics =
+        {
+            new object[] { "gloves_cartoon", "Cartoon Gloves", ClothesSlot.Hands, 2, 350, 0, false },
+            new object[] { "gloves_mittens", "Winter Mittens", ClothesSlot.Hands, 5, 700, 0, false },
+            new object[] { "gloves_work", "Work Gloves", ClothesSlot.Hands, 9, 1200, 0, false },
+            new object[] { "gloves_boxing", "Boxing Gloves", ClothesSlot.Hands, 15, 2200, 0, false },
+            new object[] { "gloves_gold", "Golden Gauntlets", ClothesSlot.Hands, 25, 0, 30, false },
+            new object[] { "skin_arctic", "Arctic Penguin", ClothesSlot.Skin, 3, 900, 0, false },
+            new object[] { "skin_emperor", "Emperor Penguin", ClothesSlot.Skin, 7, 1500, 0, false },
+            new object[] { "skin_camo", "Camo Penguin", ClothesSlot.Skin, 12, 2500, 0, false },
+            new object[] { "skin_zombie", "Zombie Penguin", ClothesSlot.Skin, 18, 3500, 0, false },
+            new object[] { "skin_robot", "Robo Penguin", ClothesSlot.Skin, 24, 0, 35, false },
+            new object[] { "skin_galaxy", "Galaxy Penguin", ClothesSlot.Skin, 30, 0, 40, false },
+            new object[] { "skin_golden", "Golden Penguin", ClothesSlot.Skin, 35, 0, 50, true },
+            new object[] { "skin_lava", "Lava Penguin", ClothesSlot.Skin, 40, 0, 45, false },
+        };
+
+        /// <summary>Texture name under Textures/Penguin for a skin item id ("skin_golden" -> "golden"); "" = classic.</summary>
+        public static string SkinTexture(string skinId) =>
+            !string.IsNullOrEmpty(skinId) && skinId.StartsWith("skin_") ? skinId.Substring(5) : "";
+
+        public static bool IsCosmetic(ClothesDef d) => d != null && (d.slot == ClothesSlot.Hands || d.slot == ClothesSlot.Skin);
+
         static void Build()
         {
             if (all != null) return;
@@ -113,6 +143,11 @@ namespace CPW
                 string id = (string)s[0];
                 if (GameData.Get("Bonus", id) == null) continue;
                 Add(new ClothesDef { id = id, setId = id, setName = (string)s[1], slot = (ClothesSlot)s[2], level = (int)s[3], coins = (int)s[4], cash = (int)s[5] });
+            }
+            foreach (var s in Cosmetics)
+            {
+                string id = (string)s[0];
+                Add(new ClothesDef { id = id, setId = id, setName = (string)s[1], slot = (ClothesSlot)s[2], level = (int)s[3], coins = (int)s[4], cash = (int)s[5], vipOnly = (bool)s[6] });
             }
             foreach (var t in Trophies)
             {
@@ -201,7 +236,7 @@ namespace CPW
         public static string StatLine(string id)
         {
             var b = GameData.Get("Bonus", id);
-            if (b == null) return "";
+            if (b == null) return IsCosmetic(Get(id)) ? "Cosmetic" : "";
             var sb = new System.Text.StringBuilder();
             foreach (var kv in b.Raw)
             {
@@ -253,6 +288,8 @@ namespace CPW
                 case ClothesSlot.Chest: P.wornChest = P.wornChest == d.id ? "" : d.id; break;
                 case ClothesSlot.Feet: P.wornFeet = P.wornFeet == d.id ? "" : d.id; break;
                 case ClothesSlot.Trophy: P.wornTrophy = P.wornTrophy == d.id ? "" : d.id; break;
+                case ClothesSlot.Hands: P.wornHands = P.wornHands == d.id ? "" : d.id; break;
+                case ClothesSlot.Skin: P.wornSkin = P.wornSkin == d.id ? "" : d.id; break;
             }
             ProfileService.Save();
             AudioManager.Sfx("Clothes_2");
@@ -261,7 +298,8 @@ namespace CPW
         public static bool IsWorn(string id)
         {
             var P = ProfileService.P;
-            return !string.IsNullOrEmpty(id) && (P.wornHead == id || P.wornChest == id || P.wornFeet == id || P.wornTrophy == id);
+            return !string.IsNullOrEmpty(id) && (P.wornHead == id || P.wornChest == id || P.wornFeet == id || P.wornTrophy == id ||
+                                                 P.wornHands == id || P.wornSkin == id);
         }
 
         /// <summary>What the profile wears in a slot ("" when nothing).</summary>
@@ -273,6 +311,8 @@ namespace CPW
                 case ClothesSlot.Head: return P.wornHead ?? "";
                 case ClothesSlot.Chest: return P.wornChest ?? "";
                 case ClothesSlot.Feet: return P.wornFeet ?? "";
+                case ClothesSlot.Hands: return P.wornHands ?? "";
+                case ClothesSlot.Skin: return P.wornSkin ?? "";
                 default: return P.wornTrophy ?? "";
             }
         }
@@ -286,6 +326,8 @@ namespace CPW
                 case ClothesSlot.Head: P.wornHead = id; break;
                 case ClothesSlot.Chest: P.wornChest = id; break;
                 case ClothesSlot.Feet: P.wornFeet = id; break;
+                case ClothesSlot.Hands: P.wornHands = id; break;
+                case ClothesSlot.Skin: P.wornSkin = id; break;
                 default: P.wornTrophy = id; break;
             }
         }
@@ -318,7 +360,7 @@ namespace CPW
             AudioManager.Sfx("Clothes_2");
         }
 
-        /// <summary>Back to the bare penguin: nothing on head, body, feet or medal slot. Saves.</summary>
+        /// <summary>Back to the bare penguin: nothing on head, body, feet, flippers or medal slot, classic skin. Saves.</summary>
         public static void RemoveAll()
         {
             foreach (ClothesSlot s in System.Enum.GetValues(typeof(ClothesSlot))) SetWorn(s, "");
@@ -333,7 +375,8 @@ namespace CPW
         }
 
         // ---------- sets ----------
-        public static string SlotName(ClothesSlot s) => s == ClothesSlot.Head ? "Hat" : s == ClothesSlot.Chest ? "Outfit" : s == ClothesSlot.Feet ? "Shoes" : "Medal";
+        public static string SlotName(ClothesSlot s) => s == ClothesSlot.Head ? "Hat" : s == ClothesSlot.Chest ? "Outfit" : s == ClothesSlot.Feet ? "Shoes" :
+            s == ClothesSlot.Hands ? "Gloves" : s == ClothesSlot.Skin ? "Skin" : "Medal";
 
         /// <summary>A real outfit set (head + chest + feet sharing a set id), not a single piece or trophy.</summary>
         public static bool IsSetPiece(ClothesDef d) => d != null && d.slot != ClothesSlot.Trophy && d.setId != d.id;

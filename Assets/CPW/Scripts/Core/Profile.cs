@@ -65,6 +65,8 @@ namespace CPW
         public string wornFeet = "";
         public List<string> trophies = new List<string>();        // trophy Bonus ids (BandaidBadge ...)
         public string wornTrophy = "";
+        public string wornHands = "";     // gloves (ClothesSlot.Hands), "" = bare flippers
+        public string wornSkin = "";      // penguin skin (ClothesSlot.Skin, "skin_..."), "" = classic
 
         public List<CounterValue> counters = new List<CounterValue>(); // Counters section ids
         public List<string> claimedAchievements = new List<string>();
@@ -141,7 +143,7 @@ namespace CPW
             // Like the original (worn_items: [], no starter clothes) the penguin starts bare: nothing owned,
             // nothing worn. The player dresses it on the Character screen (Meta/WardrobeScreen).
             p.ownedClothes.Clear();
-            p.wornHead = p.wornChest = p.wornFeet = p.wornTrophy = "";
+            p.wornHead = p.wornChest = p.wornFeet = p.wornTrophy = p.wornHands = p.wornSkin = "";
             return p;
         }
     }

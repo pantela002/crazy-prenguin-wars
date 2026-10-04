@@ -24,6 +24,7 @@ namespace CPW
         public string onlineUserId = "";      // set for Online battles
         public int team = -1;                 // -1 = free for all
         public string head = "", chest = "", feet = "", trophy = "";   // Bonus ids
+        public string hands = "", skin = "";                            // cosmetic gloves / penguin skin (ClothesCatalog)
         public bool usesProfileInventory;     // ammo comes from (and is spent from) the local profile
         public List<ItemStack> loadout = new List<ItemStack>();        // ammo when not using the profile
         public List<string> boosters = new List<string>();             // booster item ids picked before battle

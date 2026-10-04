@@ -716,10 +716,12 @@ namespace CPW
                 {
                     slot.usesProfileInventory = true;
                     slot.head = prof.wornHead; slot.chest = prof.wornChest; slot.feet = prof.wornFeet; slot.trophy = prof.wornTrophy;
+                    slot.hands = prof.wornHands; slot.skin = prof.wornSkin;
                 }
                 else
                 {
                     slot.head = Fb.Str(d, "head"); slot.chest = Fb.Str(d, "chest"); slot.feet = Fb.Str(d, "feet"); slot.trophy = Fb.Str(d, "trophy");
+                    slot.hands = Fb.Str(d, "hands"); slot.skin = Fb.Str(d, "skin");
                     // Their ammo, so their weapon menu and replays look right (the snapshot carries the real counts later).
                     foreach (var o in Fb.Items(d != null && d.TryGetValue("items", out var iv) ? iv : null))
                     {
@@ -751,6 +753,8 @@ namespace CPW
                 { "chest", p.wornChest ?? "" },
                 { "feet", p.wornFeet ?? "" },
                 { "trophy", p.wornTrophy ?? "" },
+                { "hands", p.wornHands ?? "" },
+                { "skin", p.wornSkin ?? "" },
                 { "items", items },
                 { "joined", Fb.ServerTime },
                 { "hb", Fb.ServerTime },
