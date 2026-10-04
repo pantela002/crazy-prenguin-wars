@@ -28,7 +28,7 @@ namespace CPW
         {
             null,
             new[] { "SalmonSushi", "SpicySushi", "WasabiSushi", "ProteinBar", "Scroll", "Kamikaze", "Confetti" },
-            new[] { "Shield", "Bandage", "Umbrella", "PogoStick", "Innertube" },
+            new[] { "Shield", "RepulseShield", "Bandage", "FishSoup", "Umbrella", "PogoStick", "Innertube" },
             new[] { "Mine", "FlameMine", "SpringMine", "Caltrops", "Mushroom", "Burrito" },
         };
 

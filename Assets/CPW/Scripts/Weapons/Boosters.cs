@@ -23,6 +23,9 @@ namespace CPW
             public Shot Shot;
             public HashSet<IPenguin> Hit;
             public bool Ended;
+            public int Charges;           // Repulse Shield deflections / Fish Soup heals left
+            public float Radius, Cooldown, Amount;
+            public bool EndOnOwnerTurn;   // ends when the owner's next turn starts (Repulse Shield)
         }
 
         static readonly List<Active> active = new List<Active>();
@@ -186,6 +189,39 @@ namespace CPW
                     AudioManager.Sfx("Umbrella");
                     return true;
                 }
+                case "RepulseShield":
+                {
+                    // original Follower.RepulseShield: a 150 px sensor that pushes "weapon" objects away, 5 activations,
+                    // 250 ms apart. Lasts until the user's next turn starts.
+                    if (Find(p, id) != null) return false;
+                    var f = WeaponDefs.Follower("RepulseShield");
+                    var a = Add(p, id, -1);
+                    a.EndOnOwnerTurn = true;
+                    a.Charges = f != null && f.Activations > 0 ? f.Activations : 5;
+                    a.Radius = f != null && f.RadiusPx > 0 ? f.RadiusU : Units.W(150);
+                    a.Cooldown = f != null ? f.CooldownSec : 0.25f;
+                    a.Visual = Bubble(a.Radius * 2f, new Color(0.35f, 0.75f, 1f, 0.12f));
+                    a.VisualOffset = new Vector3(0, 0, -0.5f);
+                    p.AddEffect(id, 1);
+                    Fx.Sparks(pos + Vector2.up * 0.5f, new Color(0.45f, 0.85f, 1f), 18);
+                    Fx.FloatText(pos + Vector2.up * 1.6f, "REPULSE SHIELD", new Color(0.55f, 0.85f, 1f), 0.8f);
+                    AudioManager.Sfx("Shield");
+                    return true;
+                }
+                case "FishSoup":
+                {
+                    // original Follower.Status_Regeneration as a supply: heals at the start of the user's next turns
+                    if (Find(p, id) != null) return false;
+                    var rec = GameData.Item(id);
+                    var a = Add(p, id, -1);
+                    a.Charges = Mathf.Max(1, rec?.Int("DurationAmount", 3) ?? 3);
+                    a.Amount = Mathf.Max(1f, rec?.Float("HealPerTurn", 15f) ?? 15f);
+                    p.AddEffect("Regeneration", a.Charges + 1);
+                    Fx.Sparks(pos + Vector2.up * 0.8f, new Color(1f, 0.75f, 0.35f), 14);
+                    Fx.FloatText(pos + Vector2.up * 1.6f, "REGENERATION", new Color(0.5f, 1f, 0.5f), 0.8f);
+                    AudioManager.Sfx("Bandage");
+                    return true;
+                }
                 case "Confetti":
                     Fx.Confetti(pos + Vector2.up * 1.2f, 60);
                     Fx.Explosion(pos + Vector2.up, 1.5f, "ConfettiBoosterBlast");
@@ -261,6 +297,19 @@ namespace CPW
             {
                 var a = active[i];
                 if (a.Turns > 0 && --a.Turns <= 0) End(a);
+                bool owners = !a.Ended && Live(a.P) && a.P.PlayerIndex == playerIndex;
+                if (owners && a.EndOnOwnerTurn) End(a);
+                if (owners && a.Id == "FishSoup")
+                {
+                    float heal = Mathf.Min(a.Amount, a.P.MaxHP - a.P.HP);
+                    if (heal >= 1f)
+                    {
+                        a.P.Heal(heal);
+                        Fx.FloatText(a.P.Position + Vector2.up * 1.2f, "+" + Mathf.RoundToInt(heal), new Color(0.4f, 1f, 0.4f), 0.9f);
+                    }
+                    Fx.Sparks(a.P.Position + Vector2.up * 0.6f, new Color(0.5f, 1f, 0.5f), 10);
+                    if (--a.Charges <= 0) End(a);
+                }
                 if (a.Ended) active.RemoveAt(i);
             }
         }
@@ -296,6 +345,9 @@ namespace CPW
                             if (a.Visual) a.Visual.transform.localScale = Vector3.one * (v.y < -1f ? 1.15f : 0.75f);
                         }
                         break;
+                    case "RepulseShield":
+                        Repulse(a, pos, dt);
+                        break;
                     case "Burrito":
                         a.Timer -= dt;
                         a.Tick -= dt;
@@ -317,6 +369,43 @@ namespace CPW
                         if (a.Timer <= 0) End(a);
                         break;
                 }
+            }
+        }
+
+        /// <summary>Repulse Shield: an enemy missile entering the field while heading for the owner is turned around
+        /// (velocity mirrored on the field's normal); each turn-around spends a charge, at most one per cooldown.</summary>
+        static void Repulse(Active a, Vector2 pos, float dt)
+        {
+            a.Timer = Mathf.Max(0f, a.Timer - dt);
+            a.Tick -= dt;
+            if (a.Tick <= 0)
+            {
+                a.Tick = 0.3f;
+                Fx.Shimmer(pos + VisualRandom.OnUnitCircle * a.Radius * 0.9f, 0.7f);
+            }
+            if (a.Timer > 0 || !WeaponRuntime.Exists) return;
+            float r2 = a.Radius * a.Radius;
+            foreach (var pr in WeaponRuntime.I.Projectiles)
+            {
+                if (!pr || !pr.Alive || pr.Body == null || pr.Body.bodyType != RigidbodyType2D.Dynamic) continue;
+                if (pr.Shot != null && ReferenceEquals(pr.Shot.Shooter, a.P)) continue;
+                var off = pr.Pos - pos;
+                if (off.sqrMagnitude > r2) continue;
+                var v = pr.Body.Vel();
+                var n = off.sqrMagnitude > 1e-6f ? off.normalized : Vector2.up;
+                if (Vector2.Dot(v, n) >= 0f) continue;          // already leaving the field
+                var nv = Vector2.Reflect(v, n) * 0.9f + n * 2f;
+                pr.Body.SetVel(nv);
+                a.Timer = Mathf.Max(0.05f, a.Cooldown);
+                Fx.Sparks(pr.Pos, new Color(0.5f, 0.85f, 1f), 14);
+                Fx.Shimmer(pr.Pos, 1.1f);
+                AudioManager.Sfx("Shield");
+                if (--a.Charges <= 0)
+                {
+                    Fx.FloatText(pos + Vector2.up * 1.4f, "SHIELD DOWN", new Color(0.5f, 0.85f, 1f), 0.8f);
+                    End(a);
+                }
+                return;
             }
         }
 

@@ -304,6 +304,27 @@ def patch_config(cfg):
                        'DurationAmount': 2, 'RemakeAdded': True})                                         # INV
     _put(cfg, 'ItemPrice', {'ID': 'Innertube', 'InGame': 450})                                          # INV
     _put(cfg, 'BoosterIcon', {'ID': 'Innertube', 'SWF': 'flash/ui/icons_boosters.swf', 'Export': 'innertube'})
+    # Repulse Shield: the original Follower.RepulseShield (FollowerPhysic sensor radius 150 px, AffectsObjects
+    # weapon, 5 Activations, ActivationCooldown 250 ms, SimpleScript Homing -70 = steers missiles away) lost its
+    # item. As a supply its field shoves up to 5 incoming enemy missiles away from the user until the user's next
+    # turn starts (Boosters.cs reads the Follower row for radius / activations / cooldown).
+    _put(cfg, 'Item', {'ID': 'RepulseShield', 'Name': 'REPULSESHIELD', 'Description': 'REPULSESHIELDDESC', 'SortPriority': 28,
+                       'Type': 'Booster', 'Category': ['Special', 'Practice'], 'RequiredLevel': 9,
+                       'Icon': '#BoosterIcon.RepulseShield', 'PriceInfo': '#ItemPrice.RepulseShield', 'AmountPurchased': 1,
+                       'Graphics': '#WeaponGraphic.Punch', 'Follower': '#Follower.RepulseShield', 'DurationType': 'Turn',
+                       'DurationAmount': 1, 'RemakeAdded': True})                                         # INV level
+    _put(cfg, 'ItemPrice', {'ID': 'RepulseShield', 'InGame': 850})                                      # INV
+    _put(cfg, 'BoosterIcon', {'ID': 'RepulseShield', 'SWF': 'flash/ui/icons_boosters.swf', 'Export': 'repulseshield'})  # INV (no art)
+    # Fish Soup: the original Follower.Status_Regeneration (Emitter StatusRegeneration -> Explosion StatusRegeneration,
+    # Attack Add:-1 = a heal, every ActivationCooldown 5000 ms) had no item left. As a supply the soup regenerates
+    # 15 HP at the start of each of the user's next 3 turns (amount INV; the original ticked 1 HP every 5 s).
+    _put(cfg, 'Item', {'ID': 'FishSoup', 'Name': 'FISHSOUP', 'Description': 'FISHSOUPDESC', 'SortPriority': 29,
+                       'Type': 'Booster', 'Category': ['Special', 'Practice'], 'RequiredLevel': 5,
+                       'Icon': '#BoosterIcon.FishSoup', 'PriceInfo': '#ItemPrice.FishSoup', 'AmountPurchased': 1,
+                       'Graphics': '#WeaponGraphic.Punch', 'Follower': '#Follower.Status_Regeneration',
+                       'DurationType': 'Turn', 'DurationAmount': 3, 'HealPerTurn': 15, 'RemakeAdded': True})  # INV
+    _put(cfg, 'ItemPrice', {'ID': 'FishSoup', 'InGame': 300})                                           # INV
+    _put(cfg, 'BoosterIcon', {'ID': 'FishSoup', 'SWF': 'flash/ui/icons_boosters.swf', 'Export': 'fishsoup'})  # INV (no art)
 
 
 STRINGS = {
@@ -318,6 +339,10 @@ STRINGS = {
     'SPRINGMINEDESC': 'A mine with a spring in it. Throws whoever steps on it high into the air.',
     'INNERTUBE': 'Innertube',
     'INNERTUBEDESC': 'Saves you from drowning once: you wash up on dry land instead. Lasts until the end of your next turn.',
+    'REPULSESHIELD': 'Repulse Shield',
+    'REPULSESHIELDDESC': 'A force field that shoves up to 5 incoming missiles away from you. Lasts until your next turn.',
+    'FISHSOUP': 'Fish Soup',
+    'FISHSOUPDESC': 'Hot fish soup. Regenerates 15 health at the start of each of your next 3 turns.',
 }
 
 

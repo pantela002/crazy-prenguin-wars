@@ -40,10 +40,15 @@ namespace CPW
         public static int RequiredLevel(Record item) => item == null ? 1 : Mathf.Max(1, item.Int("RequiredLevel", 1));
         public static int AmountPurchased(Record item) => item == null ? 1 : Mathf.Max(1, item.Int("AmountPurchased", 1));
 
-        /// <summary>Icon path following ModelLibrary.Icon conventions (Weapons/{WeaponIcon id}, Boosters/{BoosterIcon id}).</summary>
+        /// <summary>Icon path following ModelLibrary.Icon conventions: supplies use their textured Blender render
+        /// (Supplies/{item id}, Blender/scripts/supplies.py) and weapons theirs (WeaponsTextured/{item id}) when it
+        /// exists; otherwise Weapons/{WeaponIcon id},
+        /// Boosters/{BoosterIcon id}.</summary>
         public static string IconPath(Record item)
         {
             if (item == null) return null;
+            if (IsBooster(item) && ModelLibrary.Icon("Supplies/" + item.Id) != null) return "Supplies/" + item.Id;
+            if (IsWeapon(item) && ModelLibrary.Icon("WeaponsTextured/" + item.Id) != null) return "WeaponsTextured/" + item.Id;
             var icon = item.Str("Icon", "");
             var id = GameData.RefId(icon);
             if (icon.StartsWith("#BoosterIcon")) return "Boosters/" + id;

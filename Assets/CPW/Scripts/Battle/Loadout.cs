@@ -19,9 +19,14 @@ namespace CPW
             return false;
         }
 
-        /// <summary>Icon sprite path: "Weapons/{WeaponIcon id}" or "Boosters/{BoosterIcon id}".</summary>
+        /// <summary>Item icon. Supplies: the textured render Icons/Supplies/{id} (Blender/scripts/supplies.py);
+        /// weapons: the textured render Icons/WeaponsTextured/{id} when there is one. Then the original Flash icon,
+        /// then the older renders "Weapons/{WeaponIcon id}" / "Boosters/{BoosterIcon id}".</summary>
         public static Sprite Icon(string id)
         {
+            if (string.IsNullOrEmpty(id)) return null;
+            var own = IsBooster(id) ? ModelLibrary.Icon("Supplies/" + id) : IsWeapon(id) ? ModelLibrary.Icon("WeaponsTextured/" + id) : null;
+            if (own != null) return own;
             var orig = OriginalArt.Icon(id);
             if (orig != null) return orig;
             var r = GameData.Item(id);
