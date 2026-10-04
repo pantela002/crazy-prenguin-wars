@@ -12,7 +12,7 @@ saved to `Blender/blend/` (one file per category, one collection per asset). Thi
   exporting; in Unity +X is right, +Y up and -Z faces the camera. `build_all.py verify` re-imports the penguin and checks it.
 - Flat colors only: one material per color, color in the Principled base color (exported as sRGB values so
   `Mats.ApplyToon` reproduces them). Team color: the penguin's `Scarf` uses a white material named `Team` (tint it).
-- Poly budget: penguin about 5.5k triangles, clothes/weapons/props under 1.5k.
+- Poly budget: penguin about 5.5k triangles, weapons 2-6k, clothes/props under 1.5k.
 - Export-time data for the toon shader (`common._bake_vertex_data`): vertex color `Col` = baked ambient occlusion
   (hemisphere rays against the whole asset, contact shadows between parts) times a soft top-down gradient; UV0 = Unity
   object-space x/y (planar, used by `_DetailTex` and by the original sprites on props); UV1.xy/UV2.x = smoothed normal for
@@ -55,7 +55,11 @@ RedHat, RedSweater, Skates, army_boots_blue, army_boots_red, army_helmet_blue, a
 
 ## Weapons (`Models/Weapons/{WeaponGraphic id}.fbx`)
 Grip at the origin, barrel along +X, child empty `Muzzle` at the tip. Thrown items are held slightly above the origin.
-Icons: `Icons/Weapons/{WeaponIcon id}.png`.
+Multi-part bevelled models (2-6k triangles) with painted textures: `weapon_textures.py` writes seamless 512px PNGs (one tile
+per unit: chipped paint, brushed/blued metal, wood grain, knurled rubber, hazard stripes, panels, foil, fur...) to
+`Models/Weapons/Textures/`; the FBX materials reference them (white color x texture) and Unity samples them with the planar
+UV0. Icons: `Icons/WeaponsTextured/{Item id}.png` (step `weapon_icons`, 384 px, one tilted 3/4 view for all; rockets,
+shells, nukes and the satellite show the ammo like the original icons) and the older `Icons/Weapons/{WeaponIcon id}.png`.
 
 ArmorPiercingRocket, ArtilleryStrike, BasicNuke, Beanbag, Broom, Cannon, Cat, ChocoCannon, CinderGrenade, ClusterGrenade, ClusterRocket, DoomsdayDevice, Drill, Dynamite, EasterEgg, FireHose, Fireworks, FlameMine, Flamethrower, FlareGun, FragmentationMissile, FuelAirBomb, GasGrenade, Grenade, GrenadeLauncher, GreyGoo, HeatSeeker, ImpactCannon, LaserPistol, LemonGrenade, MegaNuke, Mine, MiniBazooka, Minigun, MiningLaser, Molotov, Mortar, Napalm, OrbitalLaser, Pistol, PlasmaBomb, PlasmaCannon, PlasmaMortar, PointTeleport, Punch, Railgun, Rock, Scythe, ShieldWall, Shotgun, SniperRifle, Snowball, StickyBomb, TeleportationGrenade, VoidGenerator, WandWind, WaterBalloon
 

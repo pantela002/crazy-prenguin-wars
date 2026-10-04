@@ -5,7 +5,7 @@ Usage (from the repo root):
     python3 Blender/scripts/build_all.py models          # all models only
     python3 Blender/scripts/build_all.py penguin clothes # some steps
     python3 Blender/scripts/build_all.py icons:Weapons,Clothes   # some icon sections
-Steps: penguin clothes weapons missiles props env textures icons docs verify  (models = the first six)
+Steps: penguin clothes weapons missiles props env textures icons weapon_icons[:id,id] docs verify  (models = the first six)
        clothes_sprites[:id,id] (not in "all": clothes on the original 2D penguin, see clothes_sprites.py)
 Env: CPW_SAMPLES=32 (Cycles samples for icons).
 """
@@ -20,7 +20,7 @@ import bpy  # noqa: E402,F401
 import common as C  # noqa: E402
 
 MODEL_STEPS = ["penguin", "clothes", "weapons", "missiles", "props", "env"]
-ALL_STEPS = MODEL_STEPS + ["textures", "icons", "docs", "verify"]
+ALL_STEPS = MODEL_STEPS + ["textures", "icons", "weapon_icons", "docs", "verify"]
 
 
 def step(name, arg=None):
@@ -49,6 +49,9 @@ def step(name, arg=None):
     elif name == "icons":
         import icons
         icons.run(arg.split(",") if arg else None)
+    elif name == "weapon_icons":
+        import weapons
+        weapons.icons(arg.split(",") if arg else None)
     elif name == "clothes_sprites":
         import penguin_rig_fill
         penguin_rig_fill.main()
@@ -115,7 +118,7 @@ def write_docs():
     w("  exporting; in Unity +X is right, +Y up and -Z faces the camera. `build_all.py verify` re-imports the penguin and checks it.")
     w("- Flat colors only: one material per color, color in the Principled base color (exported as sRGB values so")
     w("  `Mats.ApplyToon` reproduces them). Team color: the penguin's `Scarf` uses a white material named `Team` (tint it).")
-    w("- Poly budget: penguin about 5.5k triangles, clothes/weapons/props under 1.5k.")
+    w("- Poly budget: penguin about 5.5k triangles, weapons 2-6k, clothes/props under 1.5k.")
     w("- Export-time data for the toon shader (`common._bake_vertex_data`): vertex color `Col` = baked ambient occlusion")
     w("  (hemisphere rays against the whole asset, contact shadows between parts) times a soft top-down gradient; UV0 = Unity")
     w("  object-space x/y (planar, used by `_DetailTex` and by the original sprites on props); UV1.xy/UV2.x = smoothed normal for")
@@ -146,7 +149,11 @@ def write_docs():
     w("")
     w("## Weapons (`Models/Weapons/{WeaponGraphic id}.fbx`)")
     w("Grip at the origin, barrel along +X, child empty `Muzzle` at the tip. Thrown items are held slightly above the origin.")
-    w("Icons: `Icons/Weapons/{WeaponIcon id}.png`.")
+    w("Multi-part bevelled models (2-6k triangles) with painted textures: `weapon_textures.py` writes seamless 512px PNGs (one tile")
+    w("per unit: chipped paint, brushed/blued metal, wood grain, knurled rubber, hazard stripes, panels, foil, fur...) to")
+    w("`Models/Weapons/Textures/`; the FBX materials reference them (white color x texture) and Unity samples them with the planar")
+    w("UV0. Icons: `Icons/WeaponsTextured/{Item id}.png` (step `weapon_icons`, 384 px, one tilted 3/4 view for all; rockets,")
+    w("shells, nukes and the satellite show the ammo like the original icons) and the older `Icons/Weapons/{WeaponIcon id}.png`.")
     w("")
     w(", ".join(_listing("Models/Weapons", ".fbx")))
     w("")
