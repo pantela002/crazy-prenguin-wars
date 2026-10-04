@@ -32,7 +32,7 @@ namespace CPW
         /// the original weapon clips and effects keep the proportions of the original game.</summary>
         public static float BattleHeight => PenguinSprite.NaturalHeight;
         /// <summary>Show the original 2D sprite penguin instead of the 3D one (when its art is imported).</summary>
-        public static bool UseOriginalSprite = false;
+        public static bool UseOriginalSprite = true;
         /// <summary>Hold the textured 3D weapon models (true) or the original 2D Flash weapon clips (false). Either one
         /// falls back to the other when it is missing.</summary>
         public static bool Prefer3DWeapons = true;
