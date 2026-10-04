@@ -30,10 +30,36 @@ namespace CPW
             inst.gameObject.SetActive(true);
             inst.targetPos = layout == Layout.Home ? new Vector3(0f, 0.47f, 0) : new Vector3(-3.1f, -1.55f, -0.8f);
             inst.pivot.localPosition = inst.targetPos;
+            inst.pivot.localScale = Vector3.one;
+            inst.frameVp = default;
             inst.targetSpin = 0;
             if (inst.penguin != null && inst.penguin.IsSprite) inst.spin = 0;
             if (inst.penguin != null) inst.penguin.SetFacing(1);
             inst.RefreshClothes(true);
+        }
+
+        Rect frameVp;
+
+        /// <summary>
+        /// Stand the penguin in a screen region (viewport units, 0..1 of the screen): feet near its bottom, centred,
+        /// scaled down when the whole penguin with its hat would not fit. The wardrobe passes the free area above its
+        /// stats panel, so the outfit, shoes and gloves are never behind the UI whatever the screen's aspect.
+        /// </summary>
+        public static void Frame(Rect viewport)
+        {
+            if (inst == null || inst.pivot == null || viewport == inst.frameVp || viewport.width <= 0 || viewport.height <= 0) return;
+            var cam = GameManager.I != null ? GameManager.I.MenuCamera : null;
+            if (cam == null) return;
+            inst.frameVp = viewport;
+            float depth = Vector3.Dot(inst.pivot.parent.position + inst.targetPos - cam.transform.position, cam.transform.forward);
+            var bl = cam.ViewportToWorldPoint(new Vector3(viewport.xMin, viewport.yMin, depth));
+            var tr = cam.ViewportToWorldPoint(new Vector3(viewport.xMax, viewport.yMax, depth));
+            float h = inst.penguin != null && inst.penguin.Height > 0 ? inst.penguin.Height * inst.penguin.transform.localScale.y : PenguinAvatar.ModelHeight;
+            // room for the hat above the head, the floe below the feet and the "Drag to spin" hint under it
+            float needH = h * 1.25f + 0.5f, needW = Mathf.Max(1.7f, h * 0.75f);
+            float scale = Mathf.Clamp(Mathf.Min((tr.y - bl.y) / needH, (tr.x - bl.x) / needW), 0.3f, 1f);
+            inst.pivot.localScale = Vector3.one * scale;
+            inst.pivot.position = new Vector3((bl.x + tr.x) / 2, bl.y + 0.4f * scale, bl.z);
         }
 
         public static void Hide()

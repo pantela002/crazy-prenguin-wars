@@ -25,6 +25,14 @@ namespace CPW
         static int tab;
         static readonly ClothesSlot[] Slots = TabSlots;
 
+        /// <summary>
+        /// The original 2D sprite penguin has no art for gloves and skins: their tabs and slot chips are hidden while
+        /// it is in use (owned and worn gloves / skins stay in the profile and come back with the 3D penguin).
+        /// </summary>
+        static bool SpriteLook => PenguinAvatar.UseOriginalSprite && PenguinSprite.Available;
+        static bool SlotShown(ClothesSlot s) => !SpriteLook || (s != ClothesSlot.Hands && s != ClothesSlot.Skin);
+        static bool TabShown(int i) => i >= SetsTab || i >= TabSlots.Length || SlotShown(TabSlots[i]);
+
         // try-on per slot (index = (int)ClothesSlot, null = show what is worn); selection drives the detail bar
         readonly string[] tryOn = new string[6];
         ClothesDef sel;
@@ -35,6 +43,8 @@ namespace CPW
         Button undoBtn, removeBtn;
         List<Button> tabs;
         PenguinAvatar avatar;
+        RectTransform dragArea;
+        static readonly Vector3[] corners = new Vector3[4];
 
         protected override string Title => MetaUI.TOr("CHARACTER_TITLE", "Character");
         protected override bool DrawBackground => false;
@@ -48,6 +58,7 @@ namespace CPW
 
             // drag over the penguin to spin it
             var drag = UI.Panel(Content, new Color(0, 0, 0, 0.001f), false, "DragArea");
+            dragArea = drag.rectTransform;   // the 3D penguin is framed in it (Tick), above the stats panel
             UI.Anchor(drag.rectTransform, 0.085f, 0.3f, 0.415f, 1);
             drag.gameObject.AddComponent<DragRotate>();
             var hint = UI.Label(drag.transform, "Drag to spin", 26, new Color(1, 1, 1, 0.75f), TextAnchor.LowerCenter);
@@ -87,6 +98,17 @@ namespace CPW
 
         public override void OnShow() => MenuScene3D.Show(MenuScene3D.Layout.Wardrobe);
 
+        public override void Tick(float dt)
+        {
+            base.Tick(dt);
+            // the stats panel covered the penguin from the beak down: keep it inside the area above the panel
+            // (screen-space overlay canvas: the corners are screen pixels)
+            if (dragArea == null || Screen.width <= 0 || Screen.height <= 0) return;
+            dragArea.GetWorldCorners(corners);
+            float w = Screen.width, h = Screen.height;
+            MenuScene3D.Frame(Rect.MinMaxRect(corners[0].x / w, corners[0].y / h, corners[2].x / w, corners[2].y / h));
+        }
+
         public override void OnHide()
         {
             // drop the try-on so the home penguin wears the real outfit
@@ -99,12 +121,14 @@ namespace CPW
             var h = UI.HBox(row, 10, TextAnchor.MiddleCenter, 0, true);
             h.childForceExpandHeight = true;
             tabs = new List<Button>();
+            if (!TabShown(tab)) tab = 0;
             for (int i = 0; i < TabNames.Length; i++)
             {
                 int idx = i;
                 string label = TabNames[i] ?? Loc.T("TAB_TROPHY");
                 var b = UI.Button(row, label, () => SelectTab(idx), i == tab ? UI.ButtonStyle.Primary : UI.ButtonStyle.Dark, 26);
                 UI.Layout(b, 10, -1, 1, 1);
+                b.gameObject.SetActive(TabShown(i));
                 tabs.Add(b);
             }
             MetaUI.SetTabSelected(tabs, tab);
@@ -187,6 +211,7 @@ namespace CPW
             UI.Clear(chips);
             foreach (var s in Slots)
             {
+                if (!SlotShown(s)) continue;
                 var slot = s;
                 string id = Preview(s);
                 bool trying = tryOn[(int)s] != null;
