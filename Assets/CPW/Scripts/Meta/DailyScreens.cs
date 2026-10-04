@@ -174,8 +174,13 @@ namespace CPW
             }, UI.ButtonStyle.Good, 32);
             UI.Anchor((RectTransform)b.transform, 0.45f, 0.25f, 0.97f, 0.5f);
             b.interactable = !bought;
-            var d = UI.Label(card.transform, ItemCatalog.Description(item), 24, Color.white);
-            UI.Anchor(d.rectTransform, 0.04f, 0.02f, 0.96f, 0.23f);
+            // plain light text was hard to read on the orange paper: a dark backing strip and outlined white text
+            var back = UI.PanelRaw(card.transform, new Color32(70, 30, 0, 170), true, "DescriptionBack");
+            back.raycastTarget = false;
+            UI.Anchor(back.rectTransform, 0.03f, 0.03f, 0.97f, 0.235f);
+            var d = UI.Label(back.transform, ItemCatalog.Description(item), 24, Color.white);
+            UI.Stretch(d.rectTransform, 12, 12, 4, 4);
+            MetaUI.Outlined(d, new Color32(60, 24, 0, 255), 1.5f);
         }
     }
 
