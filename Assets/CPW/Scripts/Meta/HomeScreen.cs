@@ -295,17 +295,39 @@ namespace CPW
             {
                 offeredThisRun = true;
                 UI.Popup(Loc.T("TUTORIAL_INTRO_TITLE"), Loc.T("TUTORIAL_INTRO_DESCRIPTION"),
-                    new UI.PopupButton("Skip", () => { P.AddCounter("flag.tutorialOffered", 1); ProfileService.Save(); }, UI.ButtonStyle.Secondary),
+                    new UI.PopupButton("Skip", () =>
+                    {
+                        P.AddCounter("flag.tutorialOffered", 1); ProfileService.Save();
+                        // the gift that waited behind the tutorial offer comes now, on this arrival, not on a later one
+                        if (alive && !dailyShownThisRun && DailyScreen.CanClaim) dailyDelay = DailyDelay;
+                    }, UI.ButtonStyle.Secondary),
                     new UI.PopupButton(Loc.T("TUTORIAL_INTRO_BUTTON"), () => BattleFactory.Launch(BattleFactory.Tutorial())));
                 return;
             }
             Progression.ShowPendingLevelUps();
             League.TrySettle();
-            if (!dailyShownThisRun && DailyScreen.CanClaim)
-            {
-                dailyShownThisRun = true;
-                ScreenManager.Show(() => new DailyScreen());
-            }
+            // the daily gift opens on home arrival, but only once the home has been on screen for a moment: opened
+            // from here (same frame) it replaced the home before it was ever drawn, so the first tap a player aimed
+            // at PLAY after the splash landed on the gift screen. A tap on the home before it opens cancels it for
+            // this arrival (the Gifts button still has its badge).
+            if (!dailyShownThisRun && DailyScreen.CanClaim) dailyDelay = DailyDelay;
+        }
+
+        const float DailyDelay = 0.5f;
+        float dailyDelay = -1;
+
+        void TickDaily(float dt)
+        {
+            if (dailyDelay < 0) return;
+            bool tapped = Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began);
+            if (tapped && UI.PopupLayer.childCount == 0) { dailyDelay = -1; return; }
+            if (UI.PopupLayer.childCount > 0) return;   // a level-up / tutorial popup is up: wait for it
+            dailyDelay -= dt;
+            if (dailyDelay > 0) return;
+            dailyDelay = -1;
+            if (dailyShownThisRun || !DailyScreen.CanClaim) return;
+            dailyShownThisRun = true;
+            ScreenManager.Show(() => new DailyScreen());
         }
 
         public override void OnHide()
@@ -319,6 +341,7 @@ namespace CPW
         {
             if (stage != null && stage.Update(dt)) Relayout();
             TickHeader(dt);
+            TickDaily(dt);
             badgeTimer += dt;
             if (badgeTimer > 1f)
             {
