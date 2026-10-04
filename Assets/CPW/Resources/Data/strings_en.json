@@ -1063,5 +1063,9 @@
 "SPRINGMINE": "Spring Mine",
 "SPRINGMINEDESC": "A mine with a spring in it. Throws whoever steps on it high into the air.",
 "INNERTUBE": "Innertube",
-"INNERTUBEDESC": "Saves you from drowning once: you wash up on dry land instead. Lasts until the end of your next turn."
+"INNERTUBEDESC": "Saves you from drowning once: you wash up on dry land instead. Lasts until the end of your next turn.",
+"REPULSESHIELD": "Repulse Shield",
+"REPULSESHIELDDESC": "A force field that shoves up to 5 incoming missiles away from you. Lasts until your next turn.",
+"FISHSOUP": "Fish Soup",
+"FISHSOUPDESC": "Hot fish soup. Regenerates 15 health at the start of each of your next 3 turns."
 }
