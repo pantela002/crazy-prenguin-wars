@@ -11,9 +11,11 @@ namespace CPW
     ///
     /// The look is the textured 3D penguin from Blender (Blender/scripts/penguin.py, clothes.py; textures applied by
     /// WearTextures): a simple cartoon bird whose fixed sockets carry hats, outfits, shoes and gloves through every
-    /// animation, and whose skin is a texture swap. The held weapon is the ORIGINAL Flash weapon clip (draw / aim / fire)
-    /// riding the right flipper, with the Blender weapon model as the fallback for the few missing clips. The original 2D
-    /// sprite penguin (PenguinSprite) is still available behind <see cref="UseOriginalSprite"/>.
+    /// animation, and whose skin is a texture swap. The held weapon is the textured Blender weapon model
+    /// (Resources/Models/Weapons, grip at the origin, barrel +X, "Muzzle" empty at the tip) in the right flipper, with
+    /// its own draw / aim / recoil / throw animation; the ORIGINAL Flash weapon clip is only the fallback when a model
+    /// is missing (or with <see cref="Prefer3DWeapons"/> off). The original 2D sprite penguin (PenguinSprite) is still
+    /// available behind <see cref="UseOriginalSprite"/>.
     ///
     /// Model contract (see Docs/ART.md): parts Body, Head, Beak, EyeL/R, PupilL/R, FlipperL/R, FootL/R and empties
     /// HeadSocket, ChestSocket, Belly, FootSocketL/R, HandSocket, GloveSocketL/R, all exported as root objects with origins
@@ -31,6 +33,11 @@ namespace CPW
         public static float BattleHeight => PenguinSprite.NaturalHeight;
         /// <summary>Show the original 2D sprite penguin instead of the 3D one (when its art is imported).</summary>
         public static bool UseOriginalSprite = false;
+        /// <summary>Hold the textured 3D weapon models (true) or the original 2D Flash weapon clips (false). Either one
+        /// falls back to the other when it is missing.</summary>
+        public static bool Prefer3DWeapons = true;
+        /// <summary>Held model size relative to its Blender size (the models are made for the 2.6 unit penguin).</summary>
+        public const float WeaponScale = 1.1f;
 
         public AvatarState State { get; private set; }
         public int Facing { get; private set; } = 1;
@@ -90,15 +97,24 @@ namespace CPW
 
         Transform facingNode, poseNode, model;
         Part body, head, flipL, flipR, footL, footR, eyeL, eyeR, pupilL, pupilR, beak;
-        Transform tip;                         // weapon tip in the hand (Muzzle follows it, clamped near the body)
+        Transform tip;                         // weapon tip in holder space at the rest pose (Muzzle: AimedTipPose)
         Transform headSocket, chestSocket, footSocketL, footSocketR, handSocket, gloveSocketL, gloveSocketR, weaponHolder;
         float restFlipR = -100f;               // rest direction of the right flipper (shoulder -> tip), degrees in the XY plane
         readonly List<Renderer> renderers = new List<Renderer>();
         MaterialPropertyBlock mpb;
         static readonly int FlashId = Shader.PropertyToID("_Flash");
 
-        // held weapon: the original clip on a SpriteRenderer (3D model fallback)
+        // held weapon: the 3D model on weaponRig (draw / recoil / throw offsets), or the original clip on a SpriteRenderer
         SpriteRenderer weaponSr;
+        Transform weaponRig;
+        readonly Dictionary<string, GameObject> weaponPool = new Dictionary<string, GameObject>();
+        bool uprightItem;                      // thrown items (grenades, bottles, eggs) stay upright in the flipper
+        bool gunLike;                          // recoil on fire (guns, launchers, melee swing)
+        float drawT = 1f, throwT = -1f;
+        // rest pose (pose space) of the right shoulder and the hand, and the hand socket's scale in pose units: the
+        // muzzle is computed from these for the aimed pose, so it does not wobble with idle / walk / recoil animation
+        Vector3 shoulderRest, handRest;
+        float handScale = 1f;
         readonly SpriteAnimPlayer weaponPlayer = new SpriteAnimPlayer();
         string hold;
         bool allowRotation = true;
@@ -155,6 +171,12 @@ namespace CPW
             weaponHolder = new GameObject("WeaponHolder").transform;
             weaponHolder.SetParent(handSocket, false);
             weaponHolder.localRotation = Quaternion.AngleAxis(restFlipR, Vector3.forward);
+            weaponRig = new GameObject("WeaponRig").transform;
+            weaponRig.SetParent(weaponHolder, false);
+            shoulderRest = flipR != null ? poseNode.InverseTransformPoint(flipR.t.position) : new Vector3(-0.45f, 1.3f, -0.3f);
+            handRest = poseNode.InverseTransformPoint(handSocket.position);
+            handScale = Mathf.Max(0.05f, poseNode.InverseTransformVector(handSocket.TransformVector(Vector3.right)).magnitude);
+            ResetRig();
             weaponSr = new GameObject("WeaponClip").AddComponent<SpriteRenderer>();
             weaponSr.transform.SetParent(weaponHolder, false);
             // the clips are drawn for the original penguin (NaturalHeight tall at scale 1); in front of the flipper
@@ -445,6 +467,8 @@ namespace CPW
                 // the clip's "fire" section (muzzle flash / recoil), then back to the "aim" pose
                 var w = weaponPlayer.Set;
                 if (w != null && w.Segment("fire", out int fa, out int fb)) { weaponPlayer.Play(w, fa, fb, false, onWeaponFired); ShowWeaponFrame(); }
+                // a held item is thrown: follow-through swing, the item is gone until the next one is "drawn"
+                if (weapon != null && uprightItem) throwT = 0f;
             }
             if (s == AvatarState.Hurt) Flash();
             if (s == AvatarState.Dead) SpawnGhost();
@@ -466,10 +490,11 @@ namespace CPW
             if (sprite != null) { sprite.ApplyAim(aimTarget); UpdateMuzzle(); }
         }
 
-        /// <summary>Show a weapon by WeaponGraphic id (null/empty = flippers empty): the original clip, else the 3D model.</summary>
+        /// <summary>Show a weapon by WeaponGraphic id (null/empty = flippers empty): the textured 3D model, else the
+        /// original clip, else the default model (see <see cref="Prefer3DWeapons"/>).</summary>
         public void HoldWeapon(string weaponGraphicId)
         {
-            bool showing = weapon != null || (weaponSr != null && weaponSr.sprite != null) || (sprite != null && sprite.HasWeapon);
+            bool showing = (weapon != null && weapon.activeSelf) || (weaponSr != null && weaponSr.sprite != null) || (sprite != null && sprite.HasWeapon);
             if (HeldWeapon == weaponGraphicId && (showing || string.IsNullOrEmpty(weaponGraphicId))) return;
             HeldWeapon = weaponGraphicId;
             if (sprite != null)
@@ -479,17 +504,22 @@ namespace CPW
                 UpdateMuzzle();
                 return;
             }
-            if (weapon != null) { Destroy(weapon); weapon = null; }
+            if (weapon != null) { weapon.SetActive(false); weapon = null; }
             weaponSr.sprite = null;
             weaponPlayer.Hold(null, 0);
             hold = null;
             allowRotation = true;
+            uprightItem = false;
+            gunLike = false;
+            throwT = -1f;
+            ResetRig();
             tip.localPosition = new Vector3(0.25f, 0, 0);
             if (!string.IsNullOrEmpty(weaponGraphicId))
             {
                 hold = ArtCatalog.WeaponHoldType(weaponGraphicId);
                 allowRotation = ArtCatalog.WeaponAllowsRotation(weaponGraphicId);
-                var set = OriginalArt.WeaponAnim(weaponGraphicId);
+                string own = "Weapons/" + ArtCatalog.Strip(weaponGraphicId);
+                var set = Prefer3DWeapons && ModelLibrary.Exists(own) ? null : OriginalArt.WeaponAnim(weaponGraphicId);
                 if (set != null)
                 {
                     // draw, then hold the "aim" pose (Weapon.as: AIM_LABEL)
@@ -498,31 +528,57 @@ namespace CPW
                     ShowWeaponFrame();
                     MeasureTip(set.Still("aim"));
                 }
-                else
-                {
-                    string path = ArtCatalog.WeaponModel(weaponGraphicId);
-                    weapon = ModelLibrary.Spawn(path, weaponHolder, PrimitiveType.Cube, 1f, new Color(0.3f, 0.33f, 0.38f));
-                    weapon.transform.localRotation = Quaternion.identity;
-                    if (weapon.name.EndsWith("(fallback)"))
-                    {
-                        weapon.transform.localScale = new Vector3(0.9f, 0.18f, 0.18f);
-                        weapon.transform.localPosition = new Vector3(0.35f, 0.1f, 0);
-                        tip.localPosition = new Vector3(0.8f, 0.1f, 0);
-                    }
-                    else
-                    {
-                        weapon.transform.localPosition = Vector3.zero;
-                        weapon.transform.localScale = Vector3.one;
-                        var mz = FindPrefix(weapon.transform, "Muzzle");
-                        if (mz != null) tip.position = mz.position;
-                    }
-                }
+                else Hold3D(ModelLibrary.Exists(own) ? own : ArtCatalog.WeaponModel(weaponGraphicId));
             }
             RefreshWeaponVisibility();
             UpdateMuzzle();
             RefreshRenderers();
         }
 
+        /// <summary>Weapon models sit a little in front of the flipper (towards the camera) so the flipper holds them
+        /// from behind instead of cutting through them.</summary>
+        const float RigDepth = -0.1f;
+        /// <summary>Upright items lean this much of the aim angle.</summary>
+        const float UprightLean = 0.3f;
+
+        void ResetRig()
+        {
+            if (weaponRig == null) return;
+            weaponRig.localPosition = new Vector3(0, 0, RigDepth / handScale);
+            weaponRig.localRotation = Quaternion.identity;
+            weaponRig.localScale = Vector3.one * (WeaponScale / handScale);
+        }
+
+        /// <summary>Put the textured model in the flipper (pooled per avatar: switching weapons does not re-instantiate)
+        /// and measure its Muzzle empty in holder space at the rest pose.</summary>
+        void Hold3D(string path)
+        {
+            if (!weaponPool.TryGetValue(path, out weapon) || weapon == null)
+            {
+                weapon = ModelLibrary.Spawn(path, weaponRig, PrimitiveType.Cube, 1f, new Color(0.3f, 0.33f, 0.38f));
+                if (weapon.name.EndsWith("(fallback)"))
+                {
+                    weapon.transform.localScale = new Vector3(0.9f, 0.18f, 0.18f);
+                    weapon.transform.localPosition = new Vector3(0.35f, 0.1f, 0);
+                }
+                else
+                {
+                    weapon.transform.localPosition = Vector3.zero;
+                    weapon.transform.localScale = Vector3.one;
+                }
+                weapon.transform.localRotation = Quaternion.identity;
+                weaponPool[path] = weapon;
+            }
+            weapon.SetActive(true);
+            ResetRig();
+            var mz = FindPrefix(weapon.transform, "Muzzle");
+            Vector3 local = mz != null ? weaponRig.InverseTransformPoint(mz.position) : new Vector3(0.8f, 0.1f, 0);
+            tip.position = weaponRig.TransformPoint(local);
+            // thrown things (grenade, bottle, egg, rock, cat...) are short: held upright; long ones (broom, drill) aim
+            uprightItem = (hold == "small_object" || hold == "large_object") && local.x < 0.45f;
+            gunLike = !uprightItem;
+            drawT = 0f;
+        }
         void HoldWeaponPose()
         {
             var set = weaponPlayer.Set;
@@ -859,11 +915,24 @@ namespace CPW
             if (flipL != null) flipL.t.localRotation = Quaternion.AngleAxis(flL, Vector3.forward) * flipL.rot;
             if (flipR != null)
             {
-                float target = aimR ? (aimAngle + 12f * kick) - restFlipR : -flR;
+                // aimed: the flipper (and the weapon in it) points along the aim; the body's roll is taken out so
+                // the barrel stays on the aim line while the body sways
+                float target = aimR ? (aimAngle + 12f * kick) - restFlipR - bodyRoll : -flR;
+                float rate = 22f;
+                if (throwT >= 0f && throwT < ThrowSwing)
+                {
+                    // overarm follow-through: from over the head down past the aim
+                    float k = throwT / ThrowSwing;
+                    float swing = Mathf.Lerp(95f, -40f, 1f - (1f - k) * (1f - k) * (1f - k));
+                    target = aimAngle + swing - restFlipR - bodyRoll;
+                    if (k < 0.05f) flipRCurrent = target;
+                    rate = 60f;
+                }
                 if (float.IsNaN(flipRCurrent)) flipRCurrent = target;
-                flipRCurrent = Mathf.LerpAngle(flipRCurrent, target, 1f - Mathf.Exp(-dt * 22f));
+                flipRCurrent = Mathf.LerpAngle(flipRCurrent, target, 1f - Mathf.Exp(-dt * rate));
                 flipR.t.localRotation = Quaternion.AngleAxis(flipRCurrent, Vector3.forward) * flipR.rot;
             }
+            if (weapon != null && weaponRig != null) AnimateRig(dt, kick, aimAngle);
             Foot(footL, footLift, footPhase);
             Foot(footR, footLift, footPhase + Mathf.PI);
             Eye(eyeL, eyeSquash);
@@ -880,23 +949,96 @@ namespace CPW
             UpdateMuzzle();
         }
 
+        const float ThrowSwing = 0.24f, ThrowHidden = 0.6f, ThrowPop = 0.25f;
+
+        static float EaseOutBack(float x)
+        {
+            const float c1 = 1.70158f, c3 = c1 + 1f;
+            x = Mathf.Clamp01(x);
+            return 1f + c3 * Mathf.Pow(x - 1f, 3f) + c1 * Mathf.Pow(x - 1f, 2f);
+        }
+
+        /// <summary>
+        /// The held model on top of the flipper pose: draw (swings up from pointing down and grows in with a little
+        /// overshoot), recoil for guns (kicks back along the barrel, muzzle climbs, a squash), upright items stay
+        /// upright with a lean toward the aim and a little wobble, thrown items vanish on the throw and pop back.
+        /// </summary>
+        void AnimateRig(float dt, float kick, float aimAngle)
+        {
+            Vector3 pos = new Vector3(0, 0, RigDepth / handScale);
+            float rot = 0f, sc = 1f;
+            if (drawT < 1f)
+            {
+                drawT = Mathf.Min(1f, drawT + dt / 0.32f);
+                rot -= 70f * (1f - EaseOutBack(drawT));
+                sc *= Mathf.Lerp(0.35f, 1f, Mathf.Clamp01(drawT * 1.7f));
+            }
+            if (gunLike && kick > 0f)
+            {
+                pos.x -= 0.16f * kick / handScale;
+                rot += 14f * kick;
+                sc *= 1f + 0.05f * kick;
+            }
+            if (uprightItem)
+            {
+                // the holder turns with the flipper; turn the item back to (nearly) upright in pose space
+                Vector3 r = poseNode.InverseTransformVector(weaponHolder.right);
+                float ha = Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg;
+                float lean = aimAngle * UprightLean + 4f * Mathf.Sin(t * 2.6f);
+                rot += Mathf.DeltaAngle(ha, lean);
+            }
+            if (throwT >= 0f)
+            {
+                throwT += dt;
+                if (throwT < ThrowHidden) sc = 0f;
+                else if (throwT < ThrowHidden + ThrowPop) sc *= EaseOutBack((throwT - ThrowHidden) / ThrowPop);
+                else throwT = -1f;
+            }
+            weaponRig.localPosition = pos;
+            weaponRig.localRotation = Quaternion.AngleAxis(rot, Vector3.forward);
+            weaponRig.localScale = Vector3.one * (WeaponScale / handScale * Mathf.Max(sc, 0.0001f));
+        }
+
         /// <summary>World-space body center (half the avatar height above the feet).</summary>
         public Vector3 Center => transform.position + transform.up * (Height * 0.45f);
 
-        /// <summary>Muzzle = weapon tip, pulled in to at most MuzzleReach from the body center so shots fired while
-        /// pressed against a wall do not start inside the terrain (penguin collider radius is about Height * 0.43).</summary>
-        public float MuzzleReach = 0.95f;
+        /// <summary>Muzzle = weapon tip, pulled in to at most MuzzleReach (model units, 2.6 = penguin height) from the
+        /// body center; long barrels (sniper, nukes, scythe) reach about 1.3. BattleController.ShotOrigin also pulls the
+        /// origin back out of terrain when the penguin is pressed against a wall.</summary>
+        public float MuzzleReach = 1.5f;
 
         void UpdateMuzzle()
         {
             if (Muzzle == null || (tip == null && sprite == null)) return;
             Vector3 c = Center;
-            Vector3 d = (sprite != null ? sprite.TipWorld() : tip.position) - c;
+            Vector3 p = sprite != null ? sprite.TipWorld()
+                : !string.IsNullOrEmpty(HeldWeapon) ? facingNode.TransformPoint(AimedTipPose()) : tip.position;
+            Vector3 d = p - c;
             d.z = 0;
             float max = MuzzleReach * Mathf.Max(0.5f, Height / ModelHeight);
             if (d.magnitude > max) d = d.normalized * max;
             Muzzle.position = new Vector3(c.x + d.x, c.y + d.y, transform.position.z);
             Muzzle.rotation = Quaternion.Euler(0, 0, Facing > 0 ? aimTarget : 180f - aimTarget);
+        }
+
+        /// <summary>
+        /// Pose-space position of the weapon tip (the model's Muzzle empty, or the clip's barrel end) when the flipper
+        /// points along the aim, from the rest pose: the hand swung about the shoulder, plus the tip offset turned with
+        /// the weapon (upright items only lean). This is exactly where the drawn barrel ends once the aim pose has
+        /// settled, but it does not move with breathing, walking, recoil or the draw animation, so shots, the aim
+        /// preview and network replays all start from the same point.
+        /// </summary>
+        Vector3 AimedTipPose()
+        {
+            float a = allowRotation ? aimTarget : 0f;
+            float th = (a - restFlipR) * Mathf.Deg2Rad;
+            Vector3 d = handRest - shoulderRest;
+            float cs = Mathf.Cos(th), sn = Mathf.Sin(th);
+            Vector3 hand = shoulderRest + new Vector3(d.x * cs - d.y * sn, d.x * sn + d.y * cs, d.z);
+            float ia = (weapon != null && uprightItem ? a * UprightLean : a) * Mathf.Deg2Rad;
+            Vector3 o = tip.localPosition * handScale;
+            float ci = Mathf.Cos(ia), si = Mathf.Sin(ia);
+            return hand + new Vector3(o.x * ci - o.y * si, o.x * si + o.y * ci, o.z);
         }
 
         static void Foot(Part f, float lift, float phase)
