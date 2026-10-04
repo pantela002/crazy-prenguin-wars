@@ -26,3 +26,5 @@
 Assets/CPW/Resources/firebase_config.json
 Assets/CPW/Resources/firebase_config.json.meta
 .claude/
+__pycache__/
+*.pyc
