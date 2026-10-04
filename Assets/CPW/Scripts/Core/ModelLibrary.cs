@@ -37,7 +37,10 @@ namespace CPW
             {
                 go = Object.Instantiate(prefab, parent, false);
                 go.name = path;
-                Mats.ApplyToon(go);
+                // textured models keep their PNGs in Models/{folder}/Textures; materials the import left without a
+                // texture get it back by name there (Mats.NamedTexture)
+                int slash = path.LastIndexOf('/');
+                Mats.ApplyToon(go, true, slash > 0 ? "Models/" + path.Substring(0, slash) + "/Textures" : null);
                 // level objects wear the original game's sprite (with its damage stages) when it was imported
                 PropSkin.Attach(go, path);
             }
