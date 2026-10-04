@@ -21,7 +21,7 @@ namespace CPW
         CanvasGroup controlsGroup;
 
         // top
-        Text matchClock, turnSeconds, turnName;
+        Text matchClock, turnSeconds, turnName, apLabel;
         Image turnRing;
         class Row
         {
@@ -231,7 +231,7 @@ namespace CPW
             AddPulse("walk", left); AddPulse("walk2", right); AddPulse("jump", jumpBtn);
 
             // energy (action points) bar (bottom-center)
-            var apLabel = UI.Label(controls, "ENERGY", 26, Color.white, TextAnchor.MiddleCenter, true);
+            apLabel = UI.Label(controls, "ENERGY", 26, Color.white, TextAnchor.MiddleCenter, true);
             UI.Place(apLabel.rectTransform, new Vector2(0.5f, 0), new Vector2(300, 36), new Vector2(0, 74));
             apFill = UI.Bar(controls, Theme.Xp);
             apFill.transform.parent.GetComponent<Image>().raycastTarget = false;
@@ -552,6 +552,7 @@ namespace CPW
             bool turn = c.CurrentPhase == BattleController.Phase.Turn;
             float lift = BattleRules.Radius * 2.8f;
             Tag activeTag = null;
+            bool apOn = true;
             for (int i = 0; i < tags.Count; i++)
             {
                 var p = c.Penguins[i];
@@ -567,7 +568,10 @@ namespace CPW
                 if (t.arrow.gameObject.activeSelf != act) t.arrow.gameObject.SetActive(act);
                 if (act) t.arrow.rectTransform.anchoredPosition = new Vector2(0, 56 + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 4f)) * 14f);
                 if (act) activeTag = t;
+                if (apOn && LabelUnderTag(apLabel, t, act ? 70 : 0)) apOn = false;
             }
+            // a penguin standing just above the energy bar: its tag wins over the ENERGY label ("ENERGYnent")
+            if (apLabel.enabled != apOn) apLabel.enabled = apOn;
             UpdateTurnName(activeTag);
         }
 
@@ -581,17 +585,20 @@ namespace CPW
         void UpdateTurnName(Tag active)
         {
             bool on = !bannerRt.gameObject.activeSelf;
-            if (on && active != null && active.name.enabled)
-            {
-                turnName.rectTransform.GetWorldCorners(nameCorners);
-                float scale = root.lossyScale.x;
-                float cx = (nameCorners[0].x + nameCorners[2].x) / 2, halfW = (turnName.preferredWidth * scale) / 2 + 30 * scale;
-                var label = Rect.MinMaxRect(cx - halfW, nameCorners[0].y - 10 * scale, cx + halfW, nameCorners[2].y + 10 * scale);
-                active.rt.GetWorldCorners(nameCorners);   // the whole tag: name, HP bar and the bobbing arrow's band
-                var tag = Rect.MinMaxRect(nameCorners[0].x, nameCorners[0].y, nameCorners[2].x, nameCorners[2].y + 70 * scale);
-                if (label.Overlaps(tag)) on = false;
-            }
+            if (on && active != null && active.name.enabled && LabelUnderTag(turnName, active, 70)) on = false;
             if (turnName.enabled != on) turnName.enabled = on;
+        }
+
+        /// <summary>Whether a HUD label's text (with some padding) overlaps a world name tag; arrowBand adds the bobbing arrow's band above it.</summary>
+        bool LabelUnderTag(Text text, Tag t, float arrowBand)
+        {
+            text.rectTransform.GetWorldCorners(nameCorners);
+            float scale = root.lossyScale.x;
+            float cx = (nameCorners[0].x + nameCorners[2].x) / 2, halfW = (text.preferredWidth * scale) / 2 + 30 * scale;
+            var label = Rect.MinMaxRect(cx - halfW, nameCorners[0].y - 10 * scale, cx + halfW, nameCorners[2].y + 10 * scale);
+            t.rt.GetWorldCorners(nameCorners);   // the whole tag: name, HP bar (and the arrow's band)
+            var tag = Rect.MinMaxRect(nameCorners[0].x, nameCorners[0].y, nameCorners[2].x, nameCorners[2].y + arrowBand * scale);
+            return label.Overlaps(tag);
         }
 
         // ================================================================ input
