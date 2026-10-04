@@ -49,8 +49,11 @@ namespace CPW
 
         public BattleAI(BattleController controller) { c = controller; }
 
-        float AngleError => skill == 0 ? 7f : skill == 1 ? 3.5f : 1.2f;
-        float PowerError => skill == 0 ? 0.1f : skill == 1 ? 0.05f : 0.02f;
+        /// <summary>The tutorial's "opponent's turn" lesson: this shot should land on the player.</summary>
+        bool Lesson => c.Tutorial != null && c.Tutorial.OpponentShouldHit;
+        // the easy AI's +-7 degrees / 10% power made the tutorial opponent miss nearly every time
+        float AngleError => Lesson ? 0f : skill == 0 ? 7f : skill == 1 ? 3.5f : 1.2f;
+        float PowerError => Lesson ? 0f : skill == 0 ? 0.1f : skill == 1 ? 0.05f : 0.02f;
 
         public void BeginTurn(Penguin p)
         {
@@ -336,6 +339,9 @@ namespace CPW
                 options.Add(w);
             }
             if (options.Count == 0) return me.Ammo.Has("Punch") ? "Punch" : null;
+            // lesson shot: a lobbed weapon, whose path the search simulates against the terrain (a gun's straight
+            // line at the target can be blocked by a hill between the penguins)
+            if (Lesson) foreach (var w in options) if (WeaponSystem.Targeting(w) == TargetingMode.PowerBar) return w;
             if (skill == 0) return options[Random.Range(0, Mathf.Min(options.Count, 3))];
             // normal/hard: prefer stronger (higher RequiredLevel) weapons, hard spends rare ammo
             string best = options[0];

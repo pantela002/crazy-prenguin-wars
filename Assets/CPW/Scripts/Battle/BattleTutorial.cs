@@ -38,6 +38,13 @@ namespace CPW
             }
         }
 
+        /// <summary>
+        /// The opponent's turn right after the player's first shot is the lesson "your opponent shoots back"
+        /// (TUTORIAL_OPPONENTS_TURN): the easy AI aims without its usual error then, so the shot lands. Its later
+        /// turns stay easy.
+        /// </summary>
+        public bool OpponentShouldHit => Current == Step.OpponentTurn && !Mine;
+
         /// <summary>The weapon the current step asks for (the weapon menu opens on its tab and pulses it).</summary>
         public string WantedWeapon => Current == Step.ChangeWeapon || Current == Step.SelectPistol ? "Pistol" : null;
 
