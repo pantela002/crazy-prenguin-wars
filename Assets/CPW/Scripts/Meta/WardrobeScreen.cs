@@ -8,23 +8,25 @@ namespace CPW
     /// <summary>
     /// Character screen (the original EquipmentScreen): style the 3D penguin. New players start bare and dress up here.
     ///
-    /// Left: equipped-slot chips (hat, outfit, shoes, medal), the big penguin preview (drag to spin) and the
+    /// Left: equipped-slot chips (hat, outfit, shoes, gloves, skin, medal), the big 3D penguin preview (drag to spin) and the
     /// Attack / Defence / Luck totals with the change the current try-on would make (like the original
     /// EquipmentStatsElement +/- modifiers), plus "Complete set" when hat, outfit and shoes match (WornItems.hasSet).
-    /// Right: tabs Hats / Outfits / Shoes / Medals / Sets, the item grid and a detail bar with Buy / Unlock / Wear /
+    /// Right: tabs Hats / Outfits / Shoes / Gloves / Skins / Medals / Sets, the item grid and a detail bar with Buy / Unlock / Wear /
     /// Take off. Tapping any item, owned or not, tries it on (ItemWearPreview in the original); try-ons in several
     /// slots combine so a whole look can be tested before buying. Tapping a selected owned item again wears or
     /// removes it. "Remove all" takes everything off.
     /// </summary>
     public class WardrobeScreen : MetaScreen
     {
-        const int SetsTab = 4;
+        // tab i shows TabSlots[i]; the last tab is Sets
+        static readonly ClothesSlot[] TabSlots = { ClothesSlot.Head, ClothesSlot.Chest, ClothesSlot.Feet, ClothesSlot.Hands, ClothesSlot.Skin, ClothesSlot.Trophy };
+        static readonly string[] TabNames = { "Hats", "Outfits", "Shoes", "Gloves", "Skins", null, "Sets" };
+        const int SetsTab = 6;
         static int tab;
-        static readonly string[] TabNames = { "Hats", "Outfits", "Shoes", null, "Sets" };
-        static readonly ClothesSlot[] Slots = { ClothesSlot.Head, ClothesSlot.Chest, ClothesSlot.Feet, ClothesSlot.Trophy };
+        static readonly ClothesSlot[] Slots = TabSlots;
 
-        // try-on per slot (null = show what is worn); selection drives the detail bar
-        readonly string[] tryOn = new string[4];
+        // try-on per slot (index = (int)ClothesSlot, null = show what is worn); selection drives the detail bar
+        readonly string[] tryOn = new string[6];
         ClothesDef sel;
         string selSet;
 
@@ -79,7 +81,7 @@ namespace CPW
             detail = dp.rectTransform;
 
             // open on what the penguin wears in the current tab
-            if (tab < SetsTab) sel = ClothesCatalog.Get(ClothesCatalog.Worn(Slots[tab]));
+            if (tab < SetsTab) sel = ClothesCatalog.Get(ClothesCatalog.Worn(TabSlots[tab]));
             Refresh();
         }
 
@@ -101,7 +103,7 @@ namespace CPW
             {
                 int idx = i;
                 string label = TabNames[i] ?? Loc.T("TAB_TROPHY");
-                var b = UI.Button(row, label, () => SelectTab(idx), i == tab ? UI.ButtonStyle.Primary : UI.ButtonStyle.Dark, 30);
+                var b = UI.Button(row, label, () => SelectTab(idx), i == tab ? UI.ButtonStyle.Primary : UI.ButtonStyle.Dark, 26);
                 UI.Layout(b, 10, -1, 1, 1);
                 tabs.Add(b);
             }
@@ -113,7 +115,7 @@ namespace CPW
             tab = i;
             MetaUI.SetTabSelected(tabs, i);
             sel = null; selSet = null;
-            if (i < SetsTab) sel = ClothesCatalog.Get(Preview(Slots[i]));
+            if (i < SetsTab) sel = ClothesCatalog.Get(Preview(TabSlots[i]));
             else selSet = ClothesCatalog.FullSet(Preview(ClothesSlot.Head), Preview(ClothesSlot.Chest), Preview(ClothesSlot.Feet));
             Refresh();
         }
@@ -156,7 +158,9 @@ namespace CPW
                 var scene = Object.FindFirstObjectByType<MenuScene3D>();
                 if (scene != null) avatar = scene.GetComponentInChildren<PenguinAvatar>(true);
             }
-            if (avatar != null) avatar.SetClothes(Preview(ClothesSlot.Head), Preview(ClothesSlot.Chest), Preview(ClothesSlot.Feet));
+            if (avatar == null) return;
+            avatar.SetClothes(Preview(ClothesSlot.Head), Preview(ClothesSlot.Chest), Preview(ClothesSlot.Feet));
+            avatar.SetLook(Preview(ClothesSlot.Hands), Preview(ClothesSlot.Skin));
         }
 
         void Refresh()
@@ -204,7 +208,7 @@ namespace CPW
 
         void OpenSlot(ClothesSlot s)
         {
-            tab = (int)s;
+            tab = System.Array.IndexOf(TabSlots, s);
             MetaUI.SetTabSelected(tabs, tab);
             sel = ClothesCatalog.Get(Preview(s));
             selSet = null;
@@ -216,7 +220,7 @@ namespace CPW
         {
             UI.Clear(grid);
             if (tab == SetsTab) { FillSets(); return; }
-            var list = ClothesCatalog.BySlot(Slots[tab]);
+            var list = ClothesCatalog.BySlot(TabSlots[tab]);
             // worn first, then owned, then by level
             list.Sort((a, b) =>
             {
@@ -400,7 +404,8 @@ namespace CPW
             if (sel == null)
             {
                 string msg = tab == SetsTab ? "Tap a set to try on the whole outfit." :
-                    tab == (int)ClothesSlot.Trophy ? "Medals are won by completing challenges. Tap one to see how." :
+                    TabSlots[tab] == ClothesSlot.Trophy ? "Medals are won by completing challenges. Tap one to see how." :
+                    TabSlots[tab] == ClothesSlot.Skin ? "Tap a skin to try it on. Take it off for the classic penguin." :
                     "Tap an item to try it on. Tap it again to wear it.";
                 var l = UI.Label(detail, msg, 34, Theme.Muted, TextAnchor.MiddleCenter);
                 UI.Stretch(l.rectTransform, 30, 30, 10, 10);

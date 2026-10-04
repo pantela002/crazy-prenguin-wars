@@ -103,6 +103,7 @@ namespace CPW
                 name = string.IsNullOrEmpty(P.displayName) ? "Penguin" : P.displayName,
                 isAI = false, isLocalHuman = true, usesProfileInventory = true,
                 head = P.wornHead, chest = P.wornChest, feet = P.wornFeet, trophy = P.wornTrophy,
+                hands = P.wornHands, skin = P.wornSkin,
                 level = P.level, colorIndex = 0
             };
             return s;
@@ -170,13 +171,16 @@ namespace CPW
         static void DressAi(PlayerSlot s)
         {
             if (UnityEngine.Random.value < 0.25f) return;  // some penguins go au naturel
-            foreach (var slot in new[] { ClothesSlot.Head, ClothesSlot.Chest, ClothesSlot.Feet })
+            foreach (var slot in new[] { ClothesSlot.Head, ClothesSlot.Chest, ClothesSlot.Feet, ClothesSlot.Hands, ClothesSlot.Skin })
             {
                 var pool = ClothesCatalog.BySlot(slot);
                 pool.RemoveAll(d => d.level > s.level || d.vipOnly);
-                if (pool.Count == 0 || UnityEngine.Random.value < 0.3f) continue;
+                // gloves and skins are rarer than hats and outfits
+                float skip = slot == ClothesSlot.Hands ? 0.6f : slot == ClothesSlot.Skin ? 0.75f : 0.3f;
+                if (pool.Count == 0 || UnityEngine.Random.value < skip) continue;
                 var id = pool[UnityEngine.Random.Range(0, pool.Count)].id;
-                if (slot == ClothesSlot.Head) s.head = id; else if (slot == ClothesSlot.Chest) s.chest = id; else s.feet = id;
+                if (slot == ClothesSlot.Head) s.head = id; else if (slot == ClothesSlot.Chest) s.chest = id;
+                else if (slot == ClothesSlot.Feet) s.feet = id; else if (slot == ClothesSlot.Hands) s.hands = id; else s.skin = id;
             }
         }
 
@@ -316,7 +320,7 @@ namespace CPW
             n.seed = Environment.TickCount;
             // the local player's clothes may have changed
             foreach (var s in n.players)
-                if (s.usesProfileInventory) { s.head = P.wornHead; s.chest = P.wornChest; s.feet = P.wornFeet; s.trophy = P.wornTrophy; s.level = P.level; }
+                if (s.usesProfileInventory) { s.head = P.wornHead; s.chest = P.wornChest; s.feet = P.wornFeet; s.trophy = P.wornTrophy; s.hands = P.wornHands; s.skin = P.wornSkin; s.level = P.level; }
             return n;
         }
 

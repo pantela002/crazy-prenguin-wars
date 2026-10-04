@@ -10,9 +10,11 @@ saved to `Blender/blend/` (one file per category, one collection per asset). Thi
   FBX export: `axis_forward='-Z', axis_up='Y', bake_space_transform=True, apply_scale_options='FBX_SCALE_ALL'`, modifiers
   applied, MESH+EMPTY only. Unity mirrors X on import, so the scripts turn the scene 180 degrees around Z just before
   exporting; in Unity +X is right, +Y up and -Z faces the camera. `build_all.py verify` re-imports the penguin and checks it.
-- Flat colors only: one material per color, color in the Principled base color (exported as sRGB values so
-  `Mats.ApplyToon` reproduces them). Team color: the penguin's `Scarf` uses a white material named `Team` (tint it).
-- Poly budget: penguin about 5.5k triangles, clothes/weapons/props under 1.5k.
+- Materials: one per color, color in the Principled base color (exported as sRGB values so `Mats.ApplyToon`
+  reproduces them). Textured materials (penguin and wearables) are named `T_{texture}__{tint}`: the FBX keeps only the
+  tint as diffuse color and `WearTextures.Apply` puts `Textures/Clothes/{texture}.png` (or the penguin skin) on `_MainTex`;
+  their UV0 is the real texture layout (see Penguin and Wearables below).
+- Poly budget: penguin about 5.5k triangles, clothes/weapons/props under 1.5k (gloves: 2.5k for the pair).
 - Export-time data for the toon shader (`common._bake_vertex_data`): vertex color `Col` = baked ambient occlusion
   (hemisphere rays against the whole asset, contact shadows between parts) times a soft top-down gradient; UV0 = Unity
   object-space x/y (planar, used by `_DetailTex` and by the original sprites on props); UV1.xy/UV2.x = smoothed normal for
@@ -24,18 +26,30 @@ saved to `Blender/blend/` (one file per category, one collection per asset). Thi
 
 ## Penguin (`Models/Penguin/Penguin.fbx`)
 About 2.6 units tall, feet at the origin, beak towards +X, belly towards -Z (turned 40 degrees from facing the camera).
-Parts (origins at their joints): Body (pivot at the bottom), Belly, Head (pivot at the neck), Beak, EyeL, EyeR, PupilL, PupilR,
-FlipperL, FlipperR (pivots at the shoulders), FootL, FootR (pivots at the ankles), Scarf. Empties: HeadSocket (head center),
-ChestSocket (body axis), FootSocketL/R (ankles), HandSocket (tip of the right flipper, the one nearer the camera).
+A simple chubby cartoon penguin made for dressing up: tall egg body, big round head with a 3-feather tuft, googly eyes, a
+big bill, tapered flippers and three-toed feet. Every part uses the one material `T_penguin__white`, so the whole penguin
+is one draw call and a skin is a texture swap.
+Parts (origins at their joints): Body (pivot at the bottom), Head (pivot at the neck), Beak, EyeL, EyeR, PupilL, PupilR,
+FlipperL, FlipperR (pivots at the shoulders), FootL, FootR (pivots at the ankles). Empties: Belly (front of the belly),
+HeadSocket (head center), ChestSocket (body axis), FootSocketL/R (ankles), HandSocket (tip of the right flipper, the one
+nearer the camera; the held weapon), GloveSocketL/R (on each flipper, 74% of the way from shoulder to tip; gloves).
+No scarf any more: the team color is a ring under the feet (`PenguinAvatar`).
+
+### Skins (`Textures/Penguin/{skin}.png`, written by `penguin_skins.py`)
+One 1024x1024 atlas per skin. Regions (u0, v0, u1, v1, v up): body (0, .5, 1, 1) unwrapped around the body (u = angle,
+0.5 = front, seam at the back; v = height), head (0, 0, .5, .5), flippers (.5, .25, .75, .5), feet (.75, .25, 1, .5),
+upper bill (.5, .125, .75, .25), lower bill (.5, 0, .75, .125), eye white (.75, .125, .875, .25), pupil (.875, .125, 1, .25).
+Each region has a 3% border against bilinear bleeding. Skins: classic, emperor, golden, arctic, zombie, galaxy, camo, robot, lava (classic is the default; the others are the
+wardrobe items `skin_{name}`). To add one: a palette + pattern entry in `penguin_skins.SKINS` and an item in
+`ClothesCatalog.Cosmetics`.
 **Every part is a root object in the FBX** (Blender 4.2's exporter writes wrong transforms for objects nested two levels
 deep when `bake_space_transform` is on). `PenguinAvatar` rebuilds this hierarchy at runtime (`worldPositionStays`):
 
-- Belly -> Body
 - Head -> Body
 - FlipperL -> Body
 - FlipperR -> Body
-- Scarf -> Body
 - ChestSocket -> Body
+- Belly -> Body
 - Beak -> Head
 - EyeL -> Head
 - EyeR -> Head
@@ -43,15 +57,24 @@ deep when `bake_space_transform` is on). `PenguinAvatar` rebuilds this hierarchy
 - PupilL -> EyeL
 - PupilR -> EyeR
 - HandSocket -> FlipperR
+- GloveSocketL -> FlipperL
+- GloveSocketR -> FlipperR
 - FootSocketL -> FootL
 - FootSocketR -> FootR
 
 ## Clothes (`Models/Clothes/{Bonus id}.fbx`)
 Origin = socket. Head items -> HeadSocket, chest items -> ChestSocket, feet items -> FootSocketL and the same model on
-FootSocketR (feet items are symmetric around the foot axis, no mirroring needed). Already turned like the penguin, so attach
-with identity local rotation. Icons: `Icons/Clothes/{id}.png`.
+FootSocketR (feet items are symmetric around the foot axis, no mirroring needed). Gloves (`gloves_*`) hold two objects:
+`GloveR` (origin = GloveSocketR) and `GloveL` (already mirrored; PenguinAvatar moves it to GloveSocketL). Already turned
+like the penguin, so attach with identity local rotation. Icons: `Icons/Clothes/{id}.png` (`wear_icons.py`; skins too).
 
-RedHat, RedSweater, Skates, army_boots_blue, army_boots_red, army_helmet_blue, army_helmet_red, army_jacket_blue, army_jacket_red, bunny_chest, bunny_feet, bunny_head, clown_chest, clown_feet, clown_head, cowboy_chest, cowboy_feet, cowboy_head, dark_assassin_chest, dark_assassin_feet, dark_assassin_head, desert_chest, desert_feet, desert_head, elvis_chest, elvis_feet, elvis_head, flannel_chest, flannel_feet, flannel_head, football_chest, football_feet, football_head, gladiator_chest, gladiator_feet, gladiator_head, hockey_chest, hockey_feet, hockey_head, king_chest, king_feet, king_head, paper_chest, paper_feet, paper_head, polar_chest, polar_feet, polar_head, rain_chest, rain_feet, rain_head, schoolgirl_chest, schoolgirl_feet, schoolgirl_head, sm_chest, sm_feet, sm_head, space_chest, space_feet, space_head, specialforce_chest, specialforce_feet, specialforce_head, tuxedo_chest, tuxedo_feet, tuxedo_head, welder_chest, welder_feet, welder_head, wizard_chest, wizard_feet, wizard_head
+Wearable textures (`Textures/Clothes/{name}.png`, 256x256 seamless tiles from `wear_kit.py`): gray ones multiplied by the
+material tint (cotton, knit, wool, felt, denim, canvas, leather, fur, rubber, plastic, satin, metal, hammered, paper, sequin,
+quilted, stripes, scales, wood, glass) and colored ones used with a white tint (plaid, camo, polka, starry). UVs are
+cylindrical/spherical/box projections in world units (`wear_kit.TEX_SCALE` per texture), seam at the back.
+Previews: `python3 Blender/scripts/wear_preview.py out.png --sets flannel,army --view 34` or `--skins`.
+
+RedHat, RedSweater, Skates, army_boots_blue, army_boots_red, army_helmet_blue, army_helmet_red, army_jacket_blue, army_jacket_red, bunny_chest, bunny_feet, bunny_head, clown_chest, clown_feet, clown_head, cowboy_chest, cowboy_feet, cowboy_head, dark_assassin_chest, dark_assassin_feet, dark_assassin_head, desert_chest, desert_feet, desert_head, elvis_chest, elvis_feet, elvis_head, flannel_chest, flannel_feet, flannel_head, football_chest, football_feet, football_head, gladiator_chest, gladiator_feet, gladiator_head, gloves_boxing, gloves_cartoon, gloves_gold, gloves_mittens, gloves_work, hockey_chest, hockey_feet, hockey_head, king_chest, king_feet, king_head, paper_chest, paper_feet, paper_head, polar_chest, polar_feet, polar_head, rain_chest, rain_feet, rain_head, schoolgirl_chest, schoolgirl_feet, schoolgirl_head, sm_chest, sm_feet, sm_head, space_chest, space_feet, space_head, specialforce_chest, specialforce_feet, specialforce_head, tuxedo_chest, tuxedo_feet, tuxedo_head, welder_chest, welder_feet, welder_head, wizard_chest, wizard_feet, wizard_head
 
 ## Weapons (`Models/Weapons/{WeaponGraphic id}.fbx`)
 Grip at the origin, barrel along +X, child empty `Muzzle` at the tip. Thrown items are held slightly above the origin.
@@ -188,7 +211,7 @@ to the far layer; the rest to the near layer).
 ## Icons (`Icons/...`, 256x256 PNG, transparent, outline + drop shadow)
 - **Weapons** (55): ArmorPiercingRocket, ArtilleryStrike, BasicNuke, Beanbag, Broom, Cannon, Cat, ChocoCannon, CinderGrenade, ClusterGrenade, ClusterRocket, DoomsdayDevice, Drill, Dynamite, EasterEgg, FireHose, Fireworks, Flamethrower, FlareGun, FragmentationMissile, FuelAirBomb, GasGrenade, Grenade, GrenadeLauncher, GreyGoo, HeatSeeker, ImpactCannon, LaserPistol, LemonGrenade, MegaNuke, MiniBazooka, Minigun, MiningLaser, Molotov, Mortar, Napalm, OrbitalLaser, Pistol, PlasmaBomb, PlasmaCannon, PlasmaMortar, PointTeleport, Punch, Railgun, Rock, Scythe, ShieldWall, Shotgun, SniperRifle, Snowball, StickyBomb, TeleportationGrenade, VoidGenerator, WandWind, WaterBalloon
 - **Boosters** (18): Bandage, Burrito, Caltrops, Confetti, FlameMine, Innertube, Kamikaze, Mine, Mushroom, PogoStick, ProteinBar, SalmonSushi, Scroll, Shield, SpicySushi, SpringMine, Umbrella, WasabiSushi
-- **Clothes** (72): RedHat, RedSweater, Skates, army_boots_blue, army_boots_red, army_helmet_blue, army_helmet_red, army_jacket_blue, army_jacket_red, bunny_chest, bunny_feet, bunny_head, ...
+- **Clothes** (85): RedHat, RedSweater, Skates, army_boots_blue, army_boots_red, army_helmet_blue, army_helmet_red, army_jacket_blue, army_jacket_red, bunny_chest, bunny_feet, bunny_head, ...
 - **Trophies** (32): BandaidBadge, CreativityMedal, EagleEyeBadge, EfficiencyTrophy, EliteTrophy, ExplosivesExpertMedal, FlameBadge, GrenadierMedal, IndomitableMedal, InsanityMedal, MarineCertificate, MarkofAssassin, MedalofPain, MedalofVeteran, OverkillTrophy, PilotsLicense, Pinofcrafting, PurpleHeart, RibbonofExpertise, SharpshooterTrophy, SnackTrophy, TelekinesisMedal, TerraformerCertificate, ThreadsofFateMedal, TrapMasterTrophy, TrophyofPerseverance, TrophyofVeteran, TrophyofWar, TrophyofWealth, TrophyoftheMaster, UnderdogBadge, WeaponsExpertMedal
 - **Emoticons** (16): EmoticonAngry, EmoticonCrying, EmoticonDizzy, EmoticonFacepalm, EmoticonLaugh, EmoticonNice, EmoticonOuch, EmoticonPhew, EmoticonScream, EmoticonSrsly, EmoticonTaunt, EmoticonTrollface, EmoticonWaiting, EmoticonWoot, EmoticonWow, EmoticonWtf
 - **Slot** (6): Ammo, Bolt, Cash, Coin, Lemon, Xp
@@ -218,9 +241,11 @@ Everything is resized to power-of-two sizes there; `Textures/original_art.txt` k
 - `Textures/Detail/*.png`: 256x256 gray detail tiles for the 3D models (0.5 = neutral).
 
 ## Code
-- `Scripts/Art/PenguinAvatar.cs`: spawns the penguin, rebuilds the hierarchy, procedural animation per `AvatarState`,
-  clothes on sockets, held weapon on HandSocket (Muzzle), team-colored scarf, hit flash (`_Flash` via MaterialPropertyBlock),
-  emote bubble. Works with primitive fallbacks when models are missing.
+- `Scripts/Art/PenguinAvatar.cs`: spawns the 3D penguin (battle height = `PenguinSprite.NaturalHeight`), rebuilds the
+  hierarchy, procedural animation per `AvatarState`, clothes on sockets, gloves, skins (`SetLook`), the original weapon
+  clip on the flipper (3D weapon model as fallback, Muzzle at its tip), team ring under the feet, hit flash (`_Flash` via
+  MaterialPropertyBlock), emote bubble. Works with primitive fallbacks when models are missing.
+- `Scripts/Art/WearTextures.cs`: puts the textures on the `T_*` materials (and swaps penguin skins).
 - `Scripts/Art/ArtCatalog.cs`: id -> model/icon path helpers with fallbacks.
 - `Scripts/Art/PropSkin.cs`: original item sprites (and damage stages) on the level object models.
 - `Scripts/Terrain/LevelBackground.cs`, `WaterVolume.cs`, `TerrainStyle.cs`: original backgrounds, liquids and terrain

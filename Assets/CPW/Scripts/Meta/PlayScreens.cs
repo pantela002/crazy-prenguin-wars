@@ -418,7 +418,7 @@ namespace CPW
                 if (s.type == 0)
                 {
                     slot = new PlayerSlot { name = name, isAI = false, isLocalHuman = true, usesProfileInventory = false, level = P.level, colorIndex = i };
-                    if (i == 0) { slot.head = P.wornHead; slot.chest = P.wornChest; slot.feet = P.wornFeet; slot.trophy = P.wornTrophy; }
+                    if (i == 0) { slot.head = P.wornHead; slot.chest = P.wornChest; slot.feet = P.wornFeet; slot.trophy = P.wornTrophy; slot.hands = P.wornHands; slot.skin = P.wornSkin; }
                 }
                 else slot = BattleFactory.AiSlot(name, P.level, s.type - 1, i);
                 slot.loadout = BattleFactory.CustomLoadout();

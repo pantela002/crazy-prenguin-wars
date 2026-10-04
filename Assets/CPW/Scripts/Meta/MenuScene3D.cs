@@ -7,8 +7,9 @@ namespace CPW
     /// and ice blocks (the Blender Env/Props models, primitive fallbacks when missing), distant snowy peaks, clouds,
     /// a sun glow and falling snow, plus the player's penguin (PenguinAvatar) wearing their clothes on an ice floe. It sits in front of GameManager.MenuCamera
     /// and is hidden whenever a battle starts so battle cameras never see it.
-    /// The penguin is the original 2D sprite penguin when its art is imported (PenguinAvatar.IsSprite): a flat card
-    /// standing on the floe that turns around by mirroring instead of spinning in 3D.
+    /// The penguin is the textured 3D penguin (hat, outfit, shoes, gloves and skin from the profile; the wardrobe drag
+    /// spins it). With PenguinAvatar.UseOriginalSprite it is the original 2D sprite penguin instead: a flat card standing
+    /// on the floe that turns around by mirroring instead of spinning in 3D.
     /// </summary>
     public class MenuScene3D : MonoBehaviour
     {
@@ -19,7 +20,7 @@ namespace CPW
         Transform pivot;
         float spin, targetSpin, idleT, celebrateUntil;
         Vector3 targetPos;
-        string lastHead, lastChest, lastFeet;
+        string lastHead, lastChest, lastFeet, lastHands, lastSkin;
 
         /// <summary>Show the scene with the penguin placed for the given screen.</summary>
         public static void Show(Layout layout)
@@ -278,9 +279,11 @@ namespace CPW
         {
             if (penguin == null) return;
             var P = ProfileService.P;
-            if (!force && P.wornHead == lastHead && P.wornChest == lastChest && P.wornFeet == lastFeet) return;
-            lastHead = P.wornHead; lastChest = P.wornChest; lastFeet = P.wornFeet;
+            if (!force && P.wornHead == lastHead && P.wornChest == lastChest && P.wornFeet == lastFeet &&
+                P.wornHands == lastHands && P.wornSkin == lastSkin) return;
+            lastHead = P.wornHead; lastChest = P.wornChest; lastFeet = P.wornFeet; lastHands = P.wornHands; lastSkin = P.wornSkin;
             penguin.SetClothes(P.wornHead, P.wornChest, P.wornFeet);
+            penguin.SetLook(P.wornHands, P.wornSkin);
         }
 
         void OnEnable() { ProfileService.Changed += OnProfileChanged; BattleEvents.BattleStarted += OnBattle; }
