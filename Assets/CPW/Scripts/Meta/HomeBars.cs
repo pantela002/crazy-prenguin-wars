@@ -77,9 +77,10 @@ namespace CPW
             var logoArt = UI.Skin.OriginalIcon("Ui/logo");
             if (logoArt != null)
             {
-                // the original Crazy Penguin Wars logo, a little taller than the bar like the original
+                // the original Crazy Penguin Wars logo; it hangs a little below the bar like the original but never
+                // above it: the bar's top is the safe area's top edge, so anything higher is cut by the screen
                 var li = UI.Image(logo, logoArt, Color.white, true, "Art");
-                UI.Stretch(li.rectTransform, 0, 0, -8, -2);
+                UI.Stretch(li.rectTransform, 0, 0, 4, -6);
             }
             else BuildTextLogo(logo);
 
@@ -126,6 +127,11 @@ namespace CPW
             coinText = Money(rp, "coin", 0, AddOrange);
             cashText = Money(rp, "cash", 1, AddGreen);
 
+            // the stats panels tuck UNDER the bar: their art reaches ~26 px up into it, so drawn on top they covered the
+            // bottom of the logo and the Gifts / Membership / Inbox captions sitting over them
+            bar.transform.SetAsLastSibling();
+            top.SetAsLastSibling();
+
             // ---- featured supplies between the panels (the original showed boosts here); tap opens the shop ----
             var featured = ItemCatalog.Featured();
             var fr = UI.Rect(Root, "Featured");
@@ -162,7 +168,7 @@ namespace CPW
                 MetaUI.Square(tile);
             }
             var l = UI.Label(b.transform, caption, 26, Color.white, TextAnchor.MiddleCenter, true);
-            UI.Anchor(l.rectTransform, -0.05f, 0, 1.05f, 0.32f);
+            UI.Anchor(l.rectTransform, 0, 0, 1, 0.3f);   // inside the button (best fit shrinks long captions)
             MetaUI.Outlined(l, BarDark, 2f);
             return b;
         }
@@ -424,11 +430,12 @@ namespace CPW
         void PersonSlot(string name, int level, string icon, bool online, Action onClick)
         {
             var rt = SlotBase("Friend " + name, onClick);
-            var tile = MetaUI.IconTile(MetaUI.Box(rt, 0.12f, 0.3f, 0.88f, 0.92f), icon, name, null, icon == null);
+            var tile = MetaUI.IconTile(MetaUI.Box(rt, 0.14f, 0.42f, 0.86f, 0.94f), icon, name, null, icon == null);
             MetaUI.Square(tile);
             var n = UI.Label(rt, name, 22, BarDark, TextAnchor.MiddleCenter, true);
-            UI.Anchor(n.rectTransform, 0.04f, 0.04f, 0.96f, 0.3f);
+            SlotCaption(n);
             foreach (var s in n.GetComponents<Shadow>()) UnityEngine.Object.Destroy(s);
+            MetaUI.Outlined(n, Color.white, 1.5f);
             var starArt = UI.Skin.Icon("Ui/star");
             var star = UI.Image(rt, starArt ?? UI.Circle, starArt != null ? Color.white : MetaUI.Purple, true, "Level");
             UI.Place(star.rectTransform, new Vector2(0, 1), new Vector2(56, 56), new Vector2(-12, 14));
@@ -442,27 +449,38 @@ namespace CPW
             }
         }
 
+        /// <summary>
+        /// Caption band of a friend slot: above the tile art's dark bottom lip (the bottom ~22 px of a 124 px tile),
+        /// where dark text used to sink into the lip and read as cut off.
+        /// </summary>
+        static void SlotCaption(Text t)
+        {
+            var r = t.rectTransform;
+            r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(1, 0); r.pivot = new Vector2(0.5f, 0);
+            r.offsetMin = new Vector2(10, 22); r.offsetMax = new Vector2(-10, 52);
+        }
+
         void AddSlot()
         {
             var rt = SlotBase("AddFriend", () => ScreenManager.Show(() => new FriendsScreen(0)));
             if (UI.Skin.OriginalIcon("Ui/add_friend") != null)
             {
                 // the original "add a friend" penguin with the green plus
-                var add = MetaUI.IconTile(MetaUI.Box(rt, 0.1f, 0.26f, 0.9f, 0.96f), "Ui/add_friend", "Add", null, false);
+                var add = MetaUI.IconTile(MetaUI.Box(rt, 0.12f, 0.4f, 0.88f, 0.96f), "Ui/add_friend", "Add", null, false);
                 MetaUI.Square(add);
                 var cap = UI.Label(rt, Loc.T("BUTTON_ADD"), 24, BarBlue, TextAnchor.MiddleCenter, true);
-                UI.Anchor(cap.rectTransform, 0.04f, 0.04f, 0.96f, 0.3f);
+                SlotCaption(cap);
                 MetaUI.Outlined(cap, Color.white, 1.5f);
                 return;
             }
-            var tile = MetaUI.IconTile(MetaUI.Box(rt, 0.16f, 0.3f, 0.84f, 0.92f), "Ui/app_icon", "Add", null, false);
+            var tile = MetaUI.IconTile(MetaUI.Box(rt, 0.16f, 0.42f, 0.84f, 0.94f), "Ui/app_icon", "Add", null, false);
             MetaUI.Square(tile);
             tile.gameObject.AddComponent<CanvasGroup>().alpha = 0.55f;
             var plus = UI.Label(rt, "+", 64, Theme.Good, TextAnchor.MiddleCenter, true);
-            UI.Anchor(plus.rectTransform, 0.02f, 0.3f, 0.5f, 0.8f);
+            UI.Anchor(plus.rectTransform, 0.02f, 0.42f, 0.5f, 0.9f);
             MetaUI.Outlined(plus, Color.white, 3f);
             var n = UI.Label(rt, Loc.T("BUTTON_ADD"), 24, BarBlue, TextAnchor.MiddleCenter, true);
-            UI.Anchor(n.rectTransform, 0.04f, 0.04f, 0.96f, 0.3f);
+            SlotCaption(n);
             foreach (var s in n.GetComponents<Shadow>()) UnityEngine.Object.Destroy(s);
         }
     }
