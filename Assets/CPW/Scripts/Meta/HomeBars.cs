@@ -13,7 +13,8 @@ namespace CPW
     /// </summary>
     public partial class HomeScreen
     {
-        const float BarHeight = 106, StatsHeight = 104, HeaderHeight = BarHeight + StatsHeight;
+        // StatsGap: the stats panels' content starts below the bar and its 5-unit edge (the bar is drawn in front of them)
+        const float BarHeight = 106, StatsGap = 6, StatsHeight = 104, HeaderHeight = BarHeight + StatsGap + StatsHeight;
         const float StripHeight = 150, SlotTileHeight = 196, GearTop = SlotTileHeight + 12 + 92;
         const int FriendSlots = 5;
 
@@ -102,7 +103,7 @@ namespace CPW
             AddBadge(inbox.transform, () => Social.InboxCount, new Vector2(-14, -2));
 
             // ---- stats row: level star + XP (left), Cash and coins with Add (right) ----
-            var lp = Hanging(new Vector2(0, 1), new Vector2(Edge - 6, -BarHeight + 8), new Vector2(560, StatsHeight));
+            var lp = Hanging(new Vector2(0, 1), new Vector2(Edge - 6, -BarHeight - StatsGap), new Vector2(560, StatsHeight));
             var lvlBtn = lp.gameObject.AddComponent<Button>();
             lvlBtn.onClick.AddListener(() => { UI.Click(); ScreenManager.Show(() => new ProfileScreen()); });
             var starArt = UI.Skin.Icon("Ui/star");
@@ -123,7 +124,7 @@ namespace CPW
             xpText.rectTransform.offsetMin = new Vector2(126, 6); xpText.rectTransform.offsetMax = new Vector2(-18, -4);
             MetaUI.Outlined(xpText, BarDark, 2f);
 
-            var rp = Hanging(new Vector2(1, 1), new Vector2(-(Edge - 6), -BarHeight + 8), new Vector2(590, StatsHeight));
+            var rp = Hanging(new Vector2(1, 1), new Vector2(-(Edge - 6), -BarHeight - StatsGap), new Vector2(590, StatsHeight));
             coinText = Money(rp, "coin", 0, AddOrange);
             cashText = Money(rp, "cash", 1, AddGreen);
 
@@ -201,11 +202,12 @@ namespace CPW
             UI.Place(p.rectTransform, anchor, size, offset);
             if (UI.Skin.Has("stats"))
             {
-                // the original hanging trapezoid (HUD_Level / HUD_money) a bit taller than the row so it tucks under the bar
+                // the original hanging trapezoid (HUD_Level / HUD_money): the row sits below the bar, the art reaches
+                // up under it so the panel still hangs from the bar
                 p.color = new Color(0, 0, 0, 0);   // keeps the raycast area of the level button
                 var art = UI.Image(p.transform, null, Color.white, false, "Art");
                 UI.Skin.Apply(art, "stats");
-                UI.Stretch(art.rectTransform, -10, -10, -18, -4);
+                UI.Stretch(art.rectTransform, -10, -10, -(18 + 8 + StatsGap), -4);
                 art.transform.SetAsFirstSibling();
                 return p.rectTransform;
             }
