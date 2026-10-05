@@ -210,7 +210,15 @@ namespace CPW
                 else
                 {
                     var dmg = WorldQuery.FindDamageable(c);
-                    if (dmg == null || dmg is Deployable) continue;
+                    if (dmg is Deployable || c.GetComponentInParent<Projectile>() != null) continue;   // a missile ignores both
+                    if (dmg == null)
+                    {
+                        // any other solid body (a power-up crate, a prop that is not a damageable): a solid missile
+                        // bumps into it like into the ground, so the prediction must stop there too
+                        hitIt = (affects & Affects.Terrain) != 0;
+                        if (hitIt && h.distance < best) { best = h.distance; point = h.centroid; found = true; }
+                        continue;
+                    }
                     // the shooter stands at the muzzle: ignore penguins right where the shot starts
                     if (dmg is IPenguin && t < WeaponTuning.ShooterGraceSec && (dmg.Position - origin).sqrMagnitude < 4f) continue;
                     var cat = dmg is IPenguin ? Affects.Penguin : Affects.Object;
